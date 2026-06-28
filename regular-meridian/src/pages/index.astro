@@ -1,0 +1,18 @@
+---
+import '../styles/global.css';
+import App from '../components/App.tsx';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>16-0play - The Ultimate Cricket Management Simulator</title>
+  </head>
+  <body>
+    <App client:only="react" />
+  </body>
+</html>

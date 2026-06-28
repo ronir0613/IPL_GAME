@@ -1,0 +1,2228 @@
+[
+  {
+    "player": "AB de Villiers",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Abishek Porel",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Adam Gilchrist",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Aditya Tare",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Alex Carey",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Amit Paunikar",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Ankush Bains",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Anuj Rawat",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Aravelly Avanish",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Arun Karthik",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Aryan Juyal",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "BR Sharath",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Ben Duckett",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Ben Dunk",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Brad Haddin",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Brendan Taylor",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Brendon McCullum",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Chandan Madan",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Chidhambaram Gautam",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Davy Jacobs",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Devon Conway",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Devraj Patil",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Dhruv Jurel",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Dinesh Chandimal",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Dinesh Karthik",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Dishant Yagnik",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Eklavya Dwivedi",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Harvik Desai",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Heinrich Klaasen",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Ishan Kishan",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Jitesh Sharma",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Johnson Charles",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Jonny Bairstow",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Jordan Cox",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Jos Buttler",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Josh Inglis",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Josh Philippe",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "KL Rahul",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kamran Akmal",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kartik Sharma",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kedar Devdhar",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Krishnan Shrijith",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kumar Kushagra",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kumar Sangakkara",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kunal Singh Rathore",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kusal Mendis",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Kusal Perera",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Lhuan-dre Pretorius",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Litton Das",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Lokesh Rahul",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Luke Ronchi",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Luvnith Sisodia",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "MS Dhoni",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Mahesh Rawat",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Manvinder Bisla",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Mark Boucher",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Matthew Wade",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Mohammed Azharuddeen",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Morne van Wyk",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Mukul Choudhary",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Naman Ojha",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Narayan Jagadeesan",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Nicholas Pooran",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Nikhil Naik",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Nitin Saini",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Parthiv Patel",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Phil Salt",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Pinal Shah",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Prabhsimran Singh",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Punit Bisht",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Quinton de Kock",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Rahmanullah Gurbaz",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Rishabh Pant",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Robin Minz",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Robin Uthappa",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Ryan Rickelton",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Salil Arora",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Sam Billings",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Sanju Samson",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Shai Hope",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Sheldon Jackson",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Shreevats Goswami",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Srikar Bharat",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Sushant Marathe",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tatenda Taibu",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tejasvi Dahiya",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tim Paine",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tim Seifert",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tom Banton",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tom Kohler-Cadmore",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Tristan Stubbs",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Uday Kaul",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Unmukt Chand",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Upendra Yadav",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Urvil Patel",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Vansh Bedi",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Vishnu Vinod",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Wriddhiman Saha",
+    "base_role": "WK",
+    "recommended_default_role": "WK",
+    "allowed_roles": "WK,BAT"
+  },
+  {
+    "player": "Aaron Hardie",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Abdul Basith",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Abhinav Manohar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Abhishek Nayar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Abhishek Raut",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Abhishek Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Abid Mushtaq",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ajay Mandal",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ajit Chandila",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Akash Vasisht",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Akila Dananjaya",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Albie Morkel",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Aman Khan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Amit Yadav",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Amitoze Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Andre Russell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Andrew Flintoff",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Andrew McDonald",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Andrew Symonds",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Aneeshwar Gautam",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Angelo Mathews",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ankit Soni",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Anshul Kamboj",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Anukul Roy",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Arshin Kulkarni",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ashish Reddy",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ashley Noffke",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ashok Menaria",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ashutosh Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Atharva Ankolekar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Atharva Taide",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Axar Patel",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Azhar Mahmood",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Azmatullah Omarzai",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "BN Bharath",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Baba Aparajith",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ben Cutting",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ben Stokes",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Benny Howell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Bhagath Varma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Biplab Samantray",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Bipul Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Brad Hogg",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Brydon Carse",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Cameron Green",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Carlos Brathwaite",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chaitanya Bishnoi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chamika Karunaratne",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Charith Asalanka",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chirag Jani",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chris Barnwell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chris Gayle",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chris Green",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chris Morris",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Chris Woakes",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Colin de Grandhomme",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Cooper Connolly",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Corbin Bosch",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Corey Anderson",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Daksh Kamra",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dan Christian",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Daniel Sams",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Daniel Vettori",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Daren Sammy",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Daryl Mitchell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dasun Shanaka",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "David Hussey",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "David Wiese",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "David Willey",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Deepak Hooda",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dian Forrester",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dimitri Mascarenhas",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dominic Drakes",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Donovan Ferreira",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dwaine Pretorius",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dwayne Bravo",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Dwayne Smith",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Emanjot Singh Chahal",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Fabian Allen",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Farhaan Behardien",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Farveez Maharoof",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ganapathi Vignesh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Gaurav Dhiman",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "George Garton",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "George Linde",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Glenn Maxwell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Glenn Phillips",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Gnaneswara Rao",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Graham Napier",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Gurkeerat Singh Mann",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Hanuma Vihari",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Harbhajan Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Hardik Pandya",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Harmeet Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Harsh Dubey",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Harshal Patel",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Iqbal Abdulla",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Irfan Pathan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Isuru Udana",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jack Edwards",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jacob Bethell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jacob Oram",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jacques Kallis",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jalaj Saxena",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "James Faulkner",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "James Franklin",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "James Hopes",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "James Neesham",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jamie Overton",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jason Holder",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Javon Searles",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jean-Paul Duminy",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jeevan Mendis",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Jesse Ryder",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Joginder Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Johan Botha",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Johan van der Wath",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "John Hastings",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Justin Kemp",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kamindu Mendis",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kanishk Chouhan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kanishk Seth",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Karan Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Karim Janat",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kedar Jadhav",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Keemo Paul",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kevon Cooper",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kieron Pollard",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kishore Kamath",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Krains Fuletra",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Krishnappa Gowtham",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Krunal Pandya",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Kyle Mayers",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Lalit Yadav",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Laxmi Shukla",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Lee Carseldine",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Liam Livingstone",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Luke Wright",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Macneil Noronha",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Madhav Tiwari",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mahipal Lomror",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Manan Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Manav Suthar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mandeep Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mangesh Yadav",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Manoj Bhandage",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Manvanth Kumar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Marco Jansen",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Marcus Stoinis",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Marlon Samuels",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Matthew Short",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mayank Rawat",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mayank Tehlan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Michael Bracewell",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Michael Neser",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Milind Kumar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mitchell Marsh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mitchell Owen",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mitchell Santner",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mithun Manhas",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Moeen Ali",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mohammad Hafeez",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mohammad Nabi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Mohit Rathee",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Moises Henriques",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Monu Kumar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Musheer Khan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Nathan Coulter-Nile",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Niraj Patel",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Nishant Sindhu",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Nitish Kumar Reddy",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Odean Smith",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Padmanabhan Prasanth",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Pardeep Sahu",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Parvez Rasool",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Paul Collingwood",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Pavan Deshpande",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Pawan Negi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Piyush Chawla",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Prashant Veer",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Pratyush Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Prerak Mankad",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Prince Balwant Rai",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "R Ashwin",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rachin Ravindra",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rahul Tewatia",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Raiphi Gomez",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Raj Bawa",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rajagopal Sathish",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rajat Bhatia",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Raju Bhatkal",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rajvardhan Hangargekar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ramakrishna Ghosh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rashid Khan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rashid Khan (vc)",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ravi Bopara",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ravichandran Ashwin",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ravindra Jadeja",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Reetinder Sodhi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rehan Ahmed",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Rishi Dhawan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Robbie Frylinck",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Roelof van der Merwe",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Romario Shepherd",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ryan McLaren",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ryan Ninan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Ryan ten Doeschate",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sam Curran",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Samarth Vyas",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sameer Rizvi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sanath Jayasuriya",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sanjay Bangar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sanjay Yadav",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sanvir Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Saurabh Bandekar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Saurabh Kumar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Scott Kuggeleijn",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Scott Styris",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sean Abbott",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shahbaz Ahmed",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shahid Afridi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shakib Al Hasan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shams Mulani",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shane Watson",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shardul Thakur",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shashank Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shaun Pollock",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shivam Dube",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shivam Mavi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shivam Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shivam Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shivang Kumar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shoaib Malik",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shrikant Mundhe",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shrikant Wagh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Shubham Ranjane",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sikandar Raza",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sonu Yadav",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Steve O'Keefe",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Steve Smith",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Stuart Binny",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sumit Kumar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sumit Narwal",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sunil Joshi",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Sunil Narine",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Suryansh Shedge",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Suyash Prabhudessai",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "T Suman",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Tajinder Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Tanush Kotian",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Thisara Perera",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Tilak Varma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Tillakaratne Dilshan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Tom Curran",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Udit Patel",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Utkarsh Singh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Venkatesh Iyer",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Venkatesh Iyer (vc)",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Vidyut Sivaramakrishnan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Vihaan Malhotra",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Vijay Shankar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Vivrant Sharma",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Wanindu Hasaranga",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Washington Sundar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Wiaan Mulder",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Wilkin Mota",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Will Jacks",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Writtick Chatterjee",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Yo Mahesh",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Yogesh Nagar",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Yusuf Pathan",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Yuvraj Chaudhary",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  },
+  {
+    "player": "Zak Foulkes",
+    "base_role": "AR",
+    "recommended_default_role": "AR",
+    "allowed_roles": "BAT_AR,AR,BOWL_AR"
+  }
+]
