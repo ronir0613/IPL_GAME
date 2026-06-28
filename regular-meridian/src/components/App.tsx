@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList } from 'lucide-react';
+import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { generateGambleTeam } from '@/lib/gamble';
@@ -498,7 +498,7 @@ function HomeScreen({ onPlay, onLeaderboard }: { onPlay: () => void, onLeaderboa
             Leaderboard
           </motion.button>
           
-          <Link href="/explore">
+          <a href="/explore">
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="text-[var(--text-muted)] hover:text-[var(--text-muted)] text-xs uppercase tracking-widest font-bold flex items-center gap-2 mt-4"
@@ -506,7 +506,7 @@ function HomeScreen({ onPlay, onLeaderboard }: { onPlay: () => void, onLeaderboa
               <span>Explore Player Database</span>
               <span>→</span>
             </motion.div>
-          </Link>
+          </a>
         </div>
       </motion.div>
     </div>
@@ -3464,16 +3464,25 @@ function PlayoffsWatchScreen({
 }
 
 function MainAppContent() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const phase = (searchParams.get('phase') as GamePhase) || 'home';
+  const [phase, setPhaseState] = useState<GamePhase>('home');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('phase') as GamePhase;
+    if (p) {
+      setPhaseState(p);
+    }
+  }, []);
 
   const setPhase = (newPhase: GamePhase) => {
-    if (phase === 'home') {
-      router.push(newPhase === 'home' ? '/' : `?phase=${newPhase}`);
+    setPhaseState(newPhase);
+    const url = new URL(window.location.href);
+    if (newPhase === 'home') {
+      url.searchParams.delete('phase');
     } else {
-      router.replace(newPhase === 'home' ? '/' : `?phase=${newPhase}`);
+      url.searchParams.set('phase', newPhase);
     }
+    window.history.pushState({}, '', url);
   };
   const [squad, setSquad] = useState<SquadSlot[]>([]);
   const [rerolls, setRerolls] = useState(1);
@@ -3733,12 +3742,41 @@ function MainAppContent() {
   );
 }
 
+function ThemeToggle() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  const toggle = () => {
+    const nextTheme = !isDark ? 'dark' : 'light';
+    setIsDark(!isDark);
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', nextTheme);
+  };
+
+  return (
+    <button 
+      onClick={toggle} 
+      className="fixed top-4 right-4 z-50 p-2 bg-[var(--color-card-bg)] border border-[var(--color-card-border)] rounded-full shadow-md text-[var(--color-text-primary)] hover:scale-105 transition-transform"
+      aria-label="Toggle dark mode"
+    >
+      {isDark ? <Sun size={20} /> : <Moon size={20} />}
+    </button>
+  );
+}
+
 export default function MainApp() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-yellow-400 font-bold text-2xl animate-pulse">Loading...</div>}>
+      <ThemeToggle />
       <MainAppContent />
     </Suspense>
   );
 }
-
 
