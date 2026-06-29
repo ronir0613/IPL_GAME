@@ -241,53 +241,83 @@ function ProgressBar({ value, color = '#f5c842' }: { value: number; color?: stri
   );
 }
 
-function PitchLayout({ squad, onSlotClick, settings, selectedSlot }: {
+function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
   squad: SquadSlot[];
   onSlotClick?: (idx: number) => void;
   settings?: GameSettings;
   selectedSlot?: number | null;
 }) {
   return (
-    <div className="pitch-bg rounded-xl flex flex-col justify-around h-[450px] relative overflow-hidden">
-      {/* Pitch markings oval */}
-      <div className="absolute inset-0 pointer-events-none p-4">
-        <div className="w-full h-full border border-white opacity-10 rounded-[100px]" />
-        <div className="absolute top-[35%] bottom-[35%] left-[40%] right-[40%] border border-white opacity-10 rounded-sm bg-white/5" />
+    <div className="rounded-xl flex flex-col items-center justify-center h-[350px] relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+        <div className="w-[350px] h-[350px] rounded-full bg-[var(--card-border)] opacity-20" />
       </div>
+      
+      <div className="w-[350px] h-[350px] relative rounded-full overflow-hidden shadow-2xl border-2 border-[#555]">
+        {/* Background to serve as the 'border' color between slices if there are gaps */}
+        <div className="absolute inset-0 bg-[#333]" />
 
-      {squad.map((slot, idx) => {
-        const filled = !!slot.player;
-        const hideRatings = settings?.showRatings === 'off';
-        const isSelected = selectedSlot === idx;
-        return (
-          <motion.div
-            key={idx}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: isSelected ? 1.1 : 1, opacity: 1 }}
-            transition={{ delay: idx * 0.05 }}
-            onClick={() => onSlotClick?.(idx)}
-            className={`absolute flex flex-col items-center justify-center -translate-x-1/2 -translate-y-1/2
-              ${onSlotClick ? 'cursor-pointer' : 'cursor-default'}
-              w-11 h-14 rounded-lg`}
-            style={{ 
-              left: slot.x + '%', 
-              top: slot.y + '%',
-              border: filled ? (isSelected ? '2px solid #22c55e' : '1px solid #f5c842') : '1px dashed rgba(255,255,255,0.2)',
-              background: filled ? (isSelected ? 'rgba(34,197,94,0.2)' : 'rgba(245,200,66,0.12)') : 'transparent',
-              zIndex: isSelected ? 20 : 10
-            }}
-          >
-            {filled ? (
-              <>
-                <span className="text-[10px] font-bold text-yellow-400">{initials(slot.player!.name)}</span>
-                <span className="text-[9px] text-[var(--text-primary)]/70">{hideRatings ? '?' : slot.player!.overall}</span>
-              </>
-            ) : (
-              <span className="text-[8px] text-[var(--text-muted)] font-bold tracking-tighter text-center leading-tight px-1 uppercase">{slot.position}</span>
-            )}
-          </motion.div>
-        );
-      })}
+        {squad.map((slot, idx) => {
+          const filled = !!slot.player;
+          const hideRatings = settings?.showRatings === 'off';
+          const isSelected = selectedSlot === idx;
+          const rotation = idx * (360 / 11);
+
+          const baseStyle = filled 
+            ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.2)' : '#e5e5e5')
+            : '#f4f4f4';
+            
+          const hoverStyle = filled ? (isSelected ? '#22c55e' : (slot.player!.is_overseas ? '#3b82f6' : '#d4d4d4')) : '#e0e0e0';
+
+          return (
+            <motion.div
+              key={idx}
+              className="absolute inset-0 origin-center pointer-events-none"
+              style={{ 
+                transform: `rotate(${rotation}deg)`,
+              }}
+            >
+              <motion.div
+                onClick={() => onSlotClick?.(idx)}
+                className={`absolute inset-0 origin-center transition-colors duration-200 pointer-events-auto ${onSlotClick ? 'cursor-pointer' : 'cursor-default'}`}
+                style={{
+                  clipPath: 'polygon(50% 50%, 36.5% 0%, 63.5% 0%)',
+                  background: isSelected ? 'rgba(34,197,94,0.4)' : (filled ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.05)') : 'rgba(0,0,0,0.2)'),
+                  border: isSelected ? '1px solid #22c55e' : 'none'
+                }}
+                whileHover={{ background: hoverStyle, scale: 1.05 }}
+              >
+                {/* Content Container */}
+                <div 
+                  className="absolute"
+                  style={{
+                    top: '15%',
+                    left: '50%',
+                    transform: `translate(-50%, -50%) rotate(${-rotation}deg)`,
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center'
+                  }}
+                >
+                  {filled ? (
+                    <>
+                      <span className={`text-[12px] font-black drop-shadow-md ${slot.player!.is_overseas ? 'text-blue-300' : 'text-yellow-400'}`}>{initials(slot.player!.name)}</span>
+                      <span className="text-[10px] text-white font-bold drop-shadow-md">{hideRatings ? '?' : slot.player!.overall}</span>
+                    </>
+                  ) : (
+                    <span className="text-[10px] text-white/50 font-bold tracking-tighter text-center leading-tight px-1 uppercase">{['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'][idx]}</span>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          );
+        })}
+
+        {/* Center Circle XI */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90px] h-[90px] bg-[#eee] rounded-full border-4 border-[#333] shadow-inner flex items-center justify-center z-20 pointer-events-none">
+          <span className="text-4xl font-black text-[#5c3a21]" style={{ fontFamily: 'serif' }}>XI</span>
+        </div>
+      </div>
     </div>
   );
 }
@@ -299,12 +329,12 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
   selectedSlot?: number | null;
 }) {
   const benchSlots = squad.map((s, i) => ({ s, i })).filter(({ s }) => s.position === 'BENCH');
-  if (benchSlots.length === 0) return null;
+  if (benchSlots.length === 0 || settings?.mode !== 'franchise') return null;
 
   return (
-    <div className="mt-4 bg-[#111] p-4 rounded-xl border border-[var(--card-border)]">
+    <div className="mt-4 w-full">
       <div className="text-xs text-[var(--text-muted)] font-bold uppercase tracking-widest mb-3">Bench ({benchSlots.filter(x => x.s.player).length}/14)</div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 justify-center">
         {benchSlots.map(({ s: slot, i: idx }) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
@@ -313,9 +343,9 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
             <motion.div
               key={idx}
               onClick={() => onSlotClick?.(idx)}
-              className={`flex flex-col items-center justify-center
+              className={`flex flex-col items-center justify-center p-2
                 ${onSlotClick ? 'cursor-pointer' : 'cursor-default'}
-                w-12 h-14 rounded-lg relative overflow-hidden transition-all`}
+                w-16 h-20 rounded-lg relative overflow-hidden transition-all`}
               style={{ 
                 border: filled ? (isSelected ? '2px solid #22c55e' : '1px solid #3b82f6') : '1px dashed rgba(255,255,255,0.2)',
                 background: filled ? (isSelected ? 'rgba(34,197,94,0.2)' : 'rgba(59,130,246,0.12)') : 'transparent',
@@ -323,8 +353,8 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
             >
               {filled ? (
                 <>
-                  <span className="text-[10px] font-bold text-blue-400">{initials(slot.player!.name)}</span>
-                  <span className="text-[9px] text-[var(--text-primary)]/70">{hideRatings ? '?' : slot.player!.overall}</span>
+                  <span className="text-[10px] font-bold text-[var(--text-primary)] text-center break-words leading-tight">{initials(slot.player!.name)}</span>
+                  <span className="text-[10px] font-bold mt-1 text-blue-400">{hideRatings ? '?' : slot.player!.overall}</span>
                   {slot.player!.is_overseas && <span className="absolute top-0 right-0 text-[8px]">✈️</span>}
                 </>
               ) : (
@@ -1158,16 +1188,16 @@ function DraftScreen({
           </div>
         </div>
 
-        <PitchLayout 
+        <WheelLayout 
           squad={squad.filter(s => s.position !== 'BENCH')} 
-          onSlotClick={moveMode ? handleSlotClick : undefined} 
+          onSlotClick={(idx) => moveMode ? handleSlotClick(idx) : setSelectedSlotForMove(idx === selectedSlotForMove ? null : idx)} 
           settings={settings} 
           selectedSlot={selectedSlotForMove}
         />
         {settings.mode === 'franchise' && (
           <BenchLayout 
             squad={squad} 
-            onSlotClick={moveMode ? handleSlotClick : undefined} 
+            onSlotClick={(idx) => moveMode ? handleSlotClick(idx) : setSelectedSlotForMove(idx === selectedSlotForMove ? null : idx)} 
             settings={settings} 
             selectedSlot={selectedSlotForMove} 
           />
@@ -1369,31 +1399,48 @@ function DraftScreen({
         )}
       </div>
 
-      {/* Right: Squad drafted */}
-      <div className="w-[340px] flex-shrink-0 flex flex-col gap-4 max-h-[800px] overflow-y-auto custom-scrollbar">
-        {/* Drafted Squad Grid */}
-        <div className="mt-2">
-          <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 font-bold px-1">Drafted Squad</div>
-          <div className="flex flex-col gap-2">
-            {squad.filter(s => s.player).map((slot, idx) => (
-              <div key={slot.player?.id || `bench-${idx}`} className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-lg p-2 flex items-center gap-2 hover:border-gray-600 transition-colors">
-                <RatingBadge rating={slot.player!.overall} size="sm" hidden={settings.showRatings === 'off'} />
-                <div className="min-w-0 flex-1">
-                  <div className="text-[9px] text-[var(--text-muted)] font-bold uppercase">{slot.position}</div>
-                  <div className="text-xs font-semibold text-[var(--text-primary)] truncate" title={slot.player!.name}>
-                    {slot.player!.name} {slot.player!.is_overseas && '✈️'}
-                  </div>
-                  <PlayerFormInline form={playerForms[slot.player!.id]} compact />
-                </div>
-              </div>
-            ))}
-            {squad.filter(s => s.player).length === 0 && (
-              <div className="text-center py-6 border border-dashed border-[var(--card-border)] rounded-xl text-[var(--text-muted)] text-xs">
-                No players drafted yet.
-              </div>
-            )}
+      {/* Right: Selected Player Detail */}
+      <div className="w-[340px] flex-shrink-0 flex flex-col gap-4">
+        {selectedSlotForMove !== null && squad[selectedSlotForMove]?.player ? (
+          <div className="card p-6 flex flex-col gap-4 relative overflow-hidden shadow-2xl border border-[var(--card-border)]">
+             {squad[selectedSlotForMove].player!.is_overseas && (
+               <div className="absolute inset-0 bg-blue-500/10 pointer-events-none" />
+             )}
+             <div className="flex justify-between items-start z-10">
+               <div>
+                 <div className="text-2xl font-black text-[var(--text-primary)]">
+                   {squad[selectedSlotForMove].player!.name}
+                   {squad[selectedSlotForMove].player!.is_overseas && <span className="ml-2" title="Overseas Player">✈️</span>}
+                 </div>
+                 <div className="text-sm font-bold text-[var(--text-muted)] mt-1 uppercase tracking-widest">
+                   {squad[selectedSlotForMove].player!.team} • {squad[selectedSlotForMove].player!.season}
+                 </div>
+               </div>
+               <RatingBadge rating={squad[selectedSlotForMove].player!.overall} size="lg" hidden={settings.showRatings === 'off'} />
+             </div>
+             
+             <div className="flex gap-4 mt-4 pt-4 border-t border-[var(--card-border)] z-10">
+               <div className="flex-1">
+                 <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest font-bold">Role</div>
+                 <div className="text-sm font-bold text-[var(--text-primary)]">{squad[selectedSlotForMove].player!.role}</div>
+               </div>
+               <div className="flex-1 border-l border-[var(--card-border)] pl-4">
+                 <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest font-bold">Position</div>
+                 <div className="text-sm font-bold text-[var(--text-primary)]">{squad[selectedSlotForMove].position}</div>
+               </div>
+             </div>
+             
+             {playerForms && playerForms[squad[selectedSlotForMove].player!.id] && (
+               <div className="z-10 mt-2">
+                 <PlayerFormInline form={playerForms[squad[selectedSlotForMove].player!.id]} />
+               </div>
+             )}
           </div>
-        </div>
+        ) : (
+          <div className="card p-6 flex flex-col items-center justify-center text-center opacity-50 min-h-[300px]">
+            <div className="text-sm text-[var(--text-muted)]">Select a drafted player on the wheel to view details.</div>
+          </div>
+        )}
       </div>
     </div>
     </div>
@@ -1415,18 +1462,31 @@ function SquadCompleteScreen({
   playerForms: Record<number, PlayerForm>;
 }) {
   const [localControl, setLocalControl] = useState<'full' | 'ai'>('ai');
+  const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
 
   const strength = calcSquadStrength(squad);
   const odds = calcOdds(strength.overall);
 
-
   return (
-    <div className="min-h-screen flex gap-0">
-      {/* Left: Pitch */}
-      <div className="w-72 flex-shrink-0 p-4 flex flex-col gap-4">
+    <div className="min-h-screen flex gap-0 max-w-[1600px] mx-auto">
+      {/* Left: Wheel */}
+      <div className="w-[340px] flex-shrink-0 p-4 flex flex-col gap-4 overflow-y-auto custom-scrollbar">
         <div className="text-sm font-bold text-yellow-400">Squad Complete ✓</div>
-        <PitchLayout squad={squad} />
-        <div className="card p-3 space-y-2">
+        <WheelLayout 
+          squad={squad.filter(s => s.position !== 'BENCH')} 
+          onSlotClick={setSelectedSlot} 
+          selectedSlot={selectedSlot} 
+          settings={settings} 
+        />
+        {settings.mode === 'franchise' && (
+          <BenchLayout 
+            squad={squad} 
+            onSlotClick={setSelectedSlot} 
+            settings={settings} 
+            selectedSlot={selectedSlot} 
+          />
+        )}
+        <div className="card p-3 space-y-2 mt-4">
           {settings.showRatings === 'on' ? (
             <>
               {[
@@ -1445,18 +1505,6 @@ function SquadCompleteScreen({
                 <span className="text-sm font-bold text-[var(--text-muted)]">Effective Overall</span>
                 <span className="text-xl font-black text-yellow-400">{strength.overall}</span>
               </div>
-              {strength.breakdown?.identities && strength.breakdown.identities.length > 0 && (
-                <div className="pt-2 border-t border-[var(--card-border)]">
-                  <div className="text-xs text-[var(--text-muted)] mb-1">Team Identity Bonuses:</div>
-                  <div className="flex flex-wrap gap-1">
-                    {strength.breakdown.identities.map((id, i) => (
-                      <span key={i} className="text-xs bg-purple-900/40 text-purple-300 px-2 py-0.5 rounded-full border border-purple-700/50">
-                        {id}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
             </>
           ) : (
             <div className="flex items-center justify-center text-center opacity-50 py-8">
@@ -1466,16 +1514,77 @@ function SquadCompleteScreen({
         </div>
       </div>
 
+      {/* Middle: Player Form */}
+      <div className="w-[400px] flex-shrink-0 p-6 border-l border-[var(--card-border)] overflow-y-auto custom-scrollbar">
+        <div className="text-xl font-black text-[var(--text-primary)] mb-6">Player Form</div>
+        {selectedSlot !== null && squad[selectedSlot]?.player ? (
+          <div className="card p-6 flex flex-col gap-4 relative overflow-hidden shadow-2xl border border-[var(--card-border)]">
+             {squad[selectedSlot].player!.is_overseas && (
+               <div className="absolute inset-0 bg-blue-500/10 pointer-events-none" />
+             )}
+             <div className="flex justify-between items-start z-10">
+               <div>
+                 <div className="text-2xl font-black text-[var(--text-primary)]">
+                   {squad[selectedSlot].player!.name}
+                   {squad[selectedSlot].player!.is_overseas && <span className="ml-2" title="Overseas Player">✈️</span>}
+                 </div>
+                 <div className="text-sm font-bold text-[var(--text-muted)] mt-1 uppercase tracking-widest">
+                   {squad[selectedSlot].player!.team} • {squad[selectedSlot].player!.season}
+                 </div>
+               </div>
+               <RatingBadge rating={squad[selectedSlot].player!.overall} size="lg" hidden={settings.showRatings === 'off'} />
+             </div>
+             
+             {playerForms && playerForms[squad[selectedSlot].player!.id] && (
+               <div className="z-10 mt-2">
+                 <PlayerFormInline form={playerForms[squad[selectedSlot].player!.id]} />
+               </div>
+             )}
+          </div>
+        ) : (
+          <div className="card overflow-hidden">
+            <div className="p-4 bg-[var(--card-bg)] border-b border-[var(--card-border)] flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
+              <span className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Pre-Season Form Report</span>
+            </div>
+            <div className="divide-y divide-gray-800/60 max-h-[600px] overflow-y-auto custom-scrollbar">
+              {squad.filter(s => s.player).map((slot, idx) => {
+                const p = slot.player!;
+                const form = playerForms[p.id];
+                return (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="px-4 py-3 hover:bg-white/5 transition-colors cursor-pointer"
+                    onClick={() => setSelectedSlot(squad.indexOf(slot))}
+                  >
+                    <div className="flex items-start gap-3">
+                      <RatingBadge rating={p.overall} size="sm" hidden={settings.showRatings === 'off'} />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-bold text-[var(--text-primary)] truncate">{p.name}</span>
+                          {p.is_overseas && <span className="text-[9px] text-blue-400">✈️ </span>}
+                          <span className="text-[9px] text-[var(--text-muted)] font-bold uppercase ml-auto shrink-0">{p.role}</span>
+                        </div>
+                        <PlayerFormInline form={form} compact />
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
 
-      {/* Right side: Form Report panel */}
-      <div className="flex-1 p-6 border-l border-[var(--card-border)] overflow-y-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          {/* Pre-Season Odds */}
-          <div className="text-2xl font-black text-[var(--text-primary)] mb-1">Squad Complete</div>
-          <div className="text-[var(--text-muted)] text-sm mb-6">Here&apos;s what the bookies make of your XI. Simulate the season and chase the impossible.</div>
+      {/* Right side: Predictions panel */}
+      <div className="flex-1 p-6 border-l border-[var(--card-border)] overflow-y-auto flex flex-col min-w-[400px]">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col h-full">
+          <div className="text-2xl font-black text-[var(--text-primary)] mb-1">Pre-Season Predictions</div>
+          <div className="text-[var(--text-muted)] text-sm mb-6">Here's what the bookies make of your XI. Simulate the season and chase the impossible.</div>
 
           <div className="card p-5 mb-6">
-            <div className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-4">Pre-Season Odds</div>
             <div className="flex justify-between items-end mb-6">
               <div>
                 <div className="text-xs text-[var(--text-muted)]">Projected Finish</div>
@@ -1516,7 +1625,7 @@ function SquadCompleteScreen({
                   }`}
                 >
                   <div className="font-black text-lg text-[var(--text-primary)] mb-1">🤖 AI Managed</div>
-                  <div className="text-xs text-[var(--text-muted)] font-medium">Assistant sets the XI. Simulate the entire season automatically.</div>
+                  <div className="text-xs text-[var(--text-muted)] font-medium">Assistant sets the XI.</div>
                 </button>
                 <button
                   onClick={() => setLocalControl('full')}
@@ -1527,13 +1636,13 @@ function SquadCompleteScreen({
                   }`}
                 >
                   <div className="font-black text-lg text-[var(--text-primary)] mb-1">👑 Full Control</div>
-                  <div className="text-xs text-[var(--text-muted)] font-medium">Manage playing XI and impact subs before every match.</div>
+                  <div className="text-xs text-[var(--text-muted)] font-medium">Manage playing XI manually.</div>
                 </button>
               </div>
             </div>
           )}
 
-          <div className="flex gap-4 mb-6">
+          <div className="mt-auto pt-6 flex gap-4">
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -1546,44 +1655,11 @@ function SquadCompleteScreen({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onRestart} 
-              className="px-6 py-4 rounded-xl font-bold bg-[var(--card-bg)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[#222] transition-colors border border-[var(--card-border)] flex-shrink-0"
+              className="px-6 py-4 rounded-full font-bold bg-[var(--card-bg)] text-[var(--text-primary)] hover:text-yellow-400 hover:border-yellow-400 transition-colors border-2 border-[var(--card-border)] flex-shrink-0 flex items-center justify-center text-2xl"
+              title="Restart"
             >
-              ⟺ Restart
+              ↻
             </motion.button>
-          </div>
-
-          {/* Form Report */}
-          <div className="card overflow-hidden">
-            <div className="p-4 bg-[var(--card-bg)] border-b border-[var(--card-border)] flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
-              <span className="text-xs font-black uppercase tracking-widest text-[var(--text-muted)]">Pre-Season Form Report</span>
-            </div>
-            <div className="divide-y divide-gray-800/60">
-              {squad.filter(s => s.player).map(slot => {
-                const p = slot.player!;
-                const form = playerForms[p.id];
-                return (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="px-4 py-3 hover:bg-white/3 transition-colors"
-                  >
-                    <div className="flex items-start gap-3">
-                      <RatingBadge rating={p.overall} size="sm" hidden={settings.showRatings === 'off'} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-[var(--text-primary)] truncate">{p.name}</span>
-                          {p.is_overseas && <span className="text-[9px] text-blue-400">✈️ </span>}
-                          <span className="text-[9px] text-[var(--text-muted)] font-bold uppercase ml-auto shrink-0">{p.role}</span>
-                        </div>
-                        <PlayerFormInline form={form} />
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
           </div>
         </motion.div>
       </div>
@@ -1668,15 +1744,15 @@ function MatchPrepScreen({
           </div>
         </div>
 
-        <PitchLayout 
+        <WheelLayout 
           squad={localSquad.filter(s => s.position !== 'BENCH')} 
-          onSlotClick={moveMode ? handleSlotClick : undefined} 
+          onSlotClick={(idx) => moveMode ? handleSlotClick(idx) : setSelectedSlotForMove(idx === selectedSlotForMove ? null : idx)} 
           settings={settings} 
           selectedSlot={selectedSlotForMove}
         />
         <BenchLayout 
           squad={localSquad} 
-          onSlotClick={moveMode ? handleSlotClick : undefined} 
+          onSlotClick={(idx) => moveMode ? handleSlotClick(idx) : setSelectedSlotForMove(idx === selectedSlotForMove ? null : idx)} 
           settings={settings} 
           selectedSlot={selectedSlotForMove} 
         />
