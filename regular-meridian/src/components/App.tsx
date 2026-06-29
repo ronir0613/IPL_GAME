@@ -494,7 +494,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   );
 }
 
-function HomeScreen({ onPlay, onLeaderboard }: { onPlay: () => void, onLeaderboard: () => void }) {
+function HomeScreen({ onPlay, onLeaderboard, hasActiveGame, onContinue }: { onPlay: () => void, onLeaderboard: () => void, hasActiveGame?: boolean, onContinue?: () => void }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 space-y-12 py-12">
       <motion.div
@@ -508,14 +508,35 @@ function HomeScreen({ onPlay, onLeaderboard }: { onPlay: () => void, onLeaderboa
         <div className="text-[var(--text-muted)] text-lg md:text-xl font-bold tracking-widest uppercase mb-10">The Perfect IPL Season</div>
         
         <div className="flex flex-col items-center gap-4 mt-8">
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={onPlay}
-            className="btn-primary text-2xl font-black px-16 py-5 pulse-gold w-full max-w-md uppercase tracking-widest shadow-2xl"
-          >
-            PLAY
-          </motion.button>
+          {hasActiveGame ? (
+            <>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={onContinue}
+                className="btn-primary text-xl font-black px-16 py-4 w-full max-w-md uppercase tracking-widest shadow-xl pulse-gold"
+              >
+                CONTINUE DRAFTING
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={onPlay}
+                className="btn-secondary text-lg font-bold px-16 py-3 w-full max-w-md uppercase tracking-widest shadow-xl"
+              >
+                START NEW
+              </motion.button>
+            </>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onPlay}
+              className="btn-primary text-2xl font-black px-16 py-5 pulse-gold w-full max-w-md uppercase tracking-widest shadow-2xl"
+            >
+              PLAY
+            </motion.button>
+          )}
           
           <motion.button
             whileHover={{ scale: 1.04 }}
@@ -3579,6 +3600,7 @@ function NavBar({ currentPhase, onNavigate }: { currentPhase: GamePhase, onNavig
 
 function MainAppContent() {
   const [phase, setPhaseState] = useState<GamePhase>('home');
+  const [lastActivePhase, setLastActivePhase] = useState<GamePhase | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -3589,6 +3611,9 @@ function MainAppContent() {
   }, []);
 
   const setPhase = (newPhase: GamePhase) => {
+    if (newPhase !== 'home' && newPhase !== 'leaderboard') {
+      setLastActivePhase(newPhase);
+    }
     setPhaseState(newPhase);
     const url = new URL(window.location.href);
     if (newPhase === 'home') {
@@ -3743,7 +3768,7 @@ function MainAppContent() {
   };
 
   const renderScreen = () => {
-    if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} />;
+    if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} hasActiveGame={squad.length > 0 && !results} onContinue={() => setPhase(lastActivePhase || 'mode-select')} />;
     if (phase === 'leaderboard') return <LeaderboardScreen onBack={() => setPhase('home')} />;
     if (phase === 'mode-select') return <ModeSelectScreen onSelectMode={(m) => {
       setSettings(prev => ({ ...prev, mode: m }));
@@ -3844,7 +3869,12 @@ function MainAppContent() {
         }}
       />
     );
-    if (phase === 'results' && results) return <ResultsScreen squad={squad} results={results} settings={settings} onRestart={() => setPhase('mode-select')} onViewLeaderboard={() => setPhase('leaderboard')} />;
+    if (phase === 'results' && results) return <ResultsScreen squad={squad} results={results} settings={settings} onRestart={() => {
+      setSquad([]);
+      setResults(null);
+      setLastActivePhase(null);
+      setPhase('home');
+    }} onViewLeaderboard={() => setPhase('leaderboard')} />;
     
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
