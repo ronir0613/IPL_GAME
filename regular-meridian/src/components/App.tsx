@@ -1085,11 +1085,14 @@ function DraftScreen({
 
   // Global quotas
   const ROLE_QUOTAS: Record<'WK' | 'BAT' | 'AR' | 'BOWL', number> = { WK: 1, BAT: 4, AR: 2, BOWL: 4 };
+  const FRANCHISE_MAX_QUOTAS: Record<'WK' | 'BAT' | 'AR' | 'BOWL', number> = { WK: 3, BAT: 8, AR: 5, BOWL: 9 };
 
   const isRoleNeeded = (role: Role) => {
-    if (settings.mode === 'franchise') return true;
     const quotaRole = getBaseQuotaRole(role);
     const count = squad.filter(s => s.player && getBaseQuotaRole(s.player.role) === quotaRole).length;
+    if (settings.mode === 'franchise') {
+      return count < FRANCHISE_MAX_QUOTAS[quotaRole];
+    }
     return count < ROLE_QUOTAS[quotaRole];
   };
 
@@ -1174,7 +1177,7 @@ function DraftScreen({
 
   const isPlayerDisabled = (p: Player) => {
     const allowed = p.allowedRoles && p.allowedRoles.length > 0 ? p.allowedRoles : [p.role];
-    const roleFull = settings.mode !== 'franchise' && allowed.every(r => !isRoleNeeded(r));
+    const roleFull = allowed.every(r => !isRoleNeeded(r));
     const alreadyPicked = pickedNames.has(p.name.toLowerCase().trim());
     const overseasLimit = p.is_overseas && overseasCount >= maxOverseas;
     const rosterFull = filledCount >= maxPlayers;
@@ -1185,7 +1188,7 @@ function DraftScreen({
     if (pickedNames.has(p.name.toLowerCase().trim())) return 'Already in XI';
     if (p.is_overseas && overseasCount >= maxOverseas) return `Max ${maxOverseas} Overseas`;
     const allowed = p.allowedRoles && p.allowedRoles.length > 0 ? p.allowedRoles : [p.role];
-    if (settings.mode !== 'franchise' && allowed.every(r => !isRoleNeeded(r))) return 'Role Full';
+    if (allowed.every(r => !isRoleNeeded(r))) return 'Role Full';
     if (filledCount >= maxPlayers) return 'Roster Full';
     return null;
   };
@@ -3793,6 +3796,13 @@ function MainAppContent() {
       setPhaseState(p);
     }
   }, []);
+
+  useEffect(() => {
+    const el = document.getElementById('home-only-content');
+    if (el) {
+      el.style.display = phase === 'home' ? 'block' : 'none';
+    }
+  }, [phase]);
 
   const setPhase = (newPhase: GamePhase) => {
     if (newPhase !== 'home' && newPhase !== 'leaderboard') {

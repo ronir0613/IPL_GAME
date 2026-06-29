@@ -231,9 +231,9 @@ export function generateGambleTeam(playersPool: Player[]): GambleResult {
       weaknesses = ['Inexperience', 'Handling pressure'];
       projectedRecord = '8-8';
     } else if (archRand < 94) {
-      // 8% T20 Mercenaries (ignores overseas limit)
+      // 8% T20 Mercenaries
       philosophy = 'T20 MERCENARIES';
-      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => !!p.is_overseas && p.overall > 80, undefined, true);
+      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => !!p.is_overseas && p.overall > 80);
       strengths = ['Global experience', 'Match winners', 'High strike rates'];
       weaknesses = ['Team chemistry', 'Local conditions'];
       projectedRecord = '10-6';
