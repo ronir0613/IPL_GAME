@@ -507,6 +507,13 @@ function HomeScreen({ onPlay, onLeaderboard }: { onPlay: () => void, onLeaderboa
               <span>→</span>
             </motion.div>
           </a>
+
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mt-12">
+            <a href="/about-us" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">About Us</a>
+            <a href="/contact-us" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">Contact Us</a>
+            <a href="/privacy-policy" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">Privacy Policy</a>
+            <a href="/terms-and-conditions" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">Terms & Conditions</a>
+          </div>
         </div>
       </motion.div>
     </div>
