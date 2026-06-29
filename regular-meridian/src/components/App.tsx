@@ -369,93 +369,92 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   }, [leaderboard, filterMode, filterDiff, filterRatings]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-12 px-4 max-w-4xl mx-auto">
+    <div className="min-h-screen flex flex-col items-center py-16 px-4 md:px-8 max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full">
-        <div className="text-center mb-8">
-           <h2 className="text-4xl font-black uppercase tracking-widest text-[var(--text-primary)] mb-2">
-             Leaderboard
+        {/* Header */}
+        <div className="mb-12 relative mt-8">
+           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-to-r from-[#007cf0] via-[#7928ca] to-[#ff0080] blur-[100px] opacity-10 -z-10 rounded-full" />
+           <h2 className="text-4xl md:text-[48px] leading-tight font-semibold tracking-[-2.4px] text-[var(--color-ink)] mb-4 text-center">
+             16-0 Global Leaderboard.
            </h2>
-           <p className="text-[var(--text-muted)] text-sm">Best all-time top-flight XIs · Normal Difficulty · ranked by points.</p>
+           <p className="text-[var(--color-body)] text-[18px] text-center max-w-2xl mx-auto">Best all-time top-flight XIs, ranked by points.</p>
         </div>
 
-        <div className="flex justify-center gap-4 mb-8">
-           <button className="bg-[#00d084] text-black px-6 py-1.5 rounded-full font-bold text-sm hover:opacity-90 transition-opacity">Global</button>
-           <button className="bg-[var(--card-bg)] text-[var(--text-primary)] border border-[var(--card-border)] px-6 py-1.5 rounded-full font-bold text-sm hover:bg-[var(--card-border)]/50 transition-colors">Friends</button>
-        </div>
-
-        <div className="mb-8 w-full">
-          <div className="flex items-center gap-2 text-sm text-[var(--text-muted)] mb-2 font-bold cursor-pointer hover:text-[var(--text-primary)] transition-colors w-fit">
-            Filters ▼
+        {/* Filters */}
+        <div className="mb-8 w-full flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs uppercase tracking-widest text-[var(--color-mute)]">Filters</span>
           </div>
-          <div className="p-4 rounded-xl border border-[var(--card-border)] bg-[var(--card-bg)] flex flex-wrap gap-3">
-            <select value={filterMode} onChange={(e) => setFilterMode(e.target.value)} className="bg-[var(--card-border)] border border-[var(--card-border)] text-[var(--text-primary)] text-sm rounded px-3 py-1.5 outline-none font-medium">
-              <option>All modes</option>
-              <option>Classic</option>
-              <option>Franchise</option>
-              <option>Gamble</option>
-            </select>
-            <select value={filterDiff} onChange={(e) => setFilterDiff(e.target.value)} className="bg-[var(--card-border)] border border-[var(--card-border)] text-[var(--text-primary)] text-sm rounded px-3 py-1.5 outline-none font-medium">
-              <option>All difficulties</option>
-              <option>Easy</option>
-              <option>Normal</option>
-              <option>Hard</option>
-            </select>
-            <select value={filterRatings} onChange={(e) => setFilterRatings(e.target.value)} className="bg-[var(--card-border)] border border-[var(--card-border)] text-[var(--text-primary)] text-sm rounded px-3 py-1.5 outline-none font-medium">
-              <option>Any ratings</option>
-              <option>Ratings On</option>
-              <option>Ratings Off</option>
-            </select>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'All modes' },
+              { label: 'Classic' },
+              { label: 'Franchise' },
+              { label: 'Gamble' }
+            ].map(f => (
+              <button 
+                key={f.label}
+                onClick={() => setFilterMode(f.label)}
+                className={`px-4 py-1.5 rounded-full text-[14px] transition-colors shadow-sm ${filterMode === f.label ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-medium' : 'bg-[var(--color-canvas)] text-[var(--color-ink)] border border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft-2)]'}`}
+              >
+                {f.label}
+              </button>
+            ))}
           </div>
-        </div>
-
-        <div className="flex items-center justify-between mb-4 w-full">
-           <button onClick={onBack} className="btn-secondary px-6 py-2 text-sm font-bold uppercase tracking-widest shadow-md">Back</button>
         </div>
         
+        {/* Table */}
         {filteredLeaderboard.length === 0 ? (
-          <div className="text-center text-[var(--text-muted)] py-12 font-medium">No records yet. Go play a season!</div>
+          <div className="text-center text-[var(--color-mute)] py-20 font-medium bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-2)]">No records yet. Go play a season!</div>
         ) : (
-          <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl overflow-hidden shadow-xl">
+          <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] overflow-hidden shadow-[var(--shadow-vercel-3)] mb-12">
              <table className="w-full text-left border-collapse">
                <thead>
-                 <tr className="bg-[var(--card-border)]/50 text-[var(--text-muted)] text-xs uppercase tracking-widest">
-                   <th className="p-4 w-12 text-center">#</th>
-                   <th className="p-4">PLAYER</th>
-                   <th className="p-4 text-right">RESULT</th>
-                   <th className="p-4 text-right">PTS</th>
+                 <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] text-[var(--color-mute)] text-[12px] font-mono uppercase tracking-widest">
+                   <th className="px-6 py-4 w-16 text-center">Rank</th>
+                   <th className="px-6 py-4">Player</th>
+                   <th className="px-6 py-4 text-right">Result</th>
+                   <th className="px-6 py-4 text-right">Points</th>
                  </tr>
                </thead>
-               <tbody className="divide-y divide-[var(--card-border)]/50">
-                 {filteredLeaderboard.map((entry, idx) => (
-                   <tr key={entry.id || idx} className="hover:bg-[var(--card-border)]/30 transition-colors">
-                     <td className="p-4 font-black text-[var(--text-primary)] text-center text-lg">{idx + 1}</td>
-                     <td className="p-4">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-[var(--text-primary)] text-base">{entry.handle || 'Anonymous'}</span>
-                          {entry.champion && <span className="text-[#00d084] font-bold">✓</span>}
-                          <span className="bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">{entry.mode}</span>
-                        </div>
-                        <div className="text-xs text-[var(--text-muted)] mt-0.5 font-medium">
-                          {entry.overall ? `${entry.overall} rated` : 'Unknown rating'} · {entry.mode === 'gamble' ? 'Gamble' : 'Normal'}
-                        </div>
-                     </td>
-                     <td className="p-4 text-right">
-                        <div className={`font-bold flex items-center justify-end gap-1.5 ${entry.wins === 16 && entry.losses === 0 ? 'text-yellow-500' : 'text-[var(--text-primary)]'}`}>
-                          {entry.wins}-{entry.losses} {entry.wins === 16 && entry.losses === 0 && <span className="text-sm">✨</span>}
-                        </div>
-                        <div className="text-[11px] text-[var(--text-muted)] mt-0.5 font-bold uppercase tracking-widest">
-                          {(() => {
-                            const posStr = entry.position + (['st','nd','rd'][entry.position-1]||'th');
-                            const finishStr = entry.finish || (entry.champion ? 'Champions' : posStr);
-                            return finishStr.toLowerCase() === posStr.toLowerCase() ? finishStr : `${posStr} · ${finishStr}`;
-                          })()}
-                        </div>
-                     </td>
-                     <td className="p-4 text-right font-black text-[var(--text-primary)] text-xl">
-                        {entry.points}
-                     </td>
-                   </tr>
-                 ))}
+               <tbody className="divide-y divide-[var(--color-hairline)]">
+                 {filteredLeaderboard.map((entry, idx) => {
+                   let rankDisplay: React.ReactNode = idx + 1;
+                   if (idx === 0) rankDisplay = <span className="text-xl">🥇</span>;
+                   else if (idx === 1) rankDisplay = <span className="text-xl">🥈</span>;
+                   else if (idx === 2) rankDisplay = <span className="text-xl">🥉</span>;
+
+                   return (
+                     <tr key={entry.id || idx} className="hover:bg-[var(--color-canvas-soft-2)] transition-colors group">
+                       <td className="px-6 py-4 font-mono font-medium text-[var(--color-ink)] text-center text-[14px]">{rankDisplay}</td>
+                       <td className="px-6 py-4">
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-[var(--color-ink)] text-[16px]">{entry.handle || 'Anonymous'}</span>
+                            {entry.champion && <span className="text-[#0070f3] font-bold" title="Champion">✓</span>}
+                            <span className="bg-[var(--color-canvas-soft)] text-[var(--color-mute)] border border-[var(--color-hairline)] font-mono text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">{entry.mode}</span>
+                          </div>
+                          <div className="text-[14px] text-[var(--color-body)] mt-1">
+                            {entry.overall ? `${entry.overall} rated` : 'Unknown rating'} · {entry.mode === 'gamble' ? 'Gamble' : 'Normal'}
+                          </div>
+                       </td>
+                       <td className="px-6 py-4 text-right">
+                          <div className={`font-medium flex items-center justify-end gap-1.5 ${entry.wins === 16 && entry.losses === 0 ? 'text-[#0070f3]' : 'text-[var(--color-ink)]'}`}>
+                            {entry.wins}-{entry.losses} {entry.wins === 16 && entry.losses === 0 && <span className="text-[14px]">✨</span>}
+                          </div>
+                          <div className="text-[12px] text-[var(--color-mute)] mt-1 uppercase font-mono">
+                            {(() => {
+                              const posStr = entry.position + (['st','nd','rd'][entry.position-1]||'th');
+                              const finishStr = entry.finish || (entry.champion ? 'Champions' : posStr);
+                              return finishStr.toLowerCase() === posStr.toLowerCase() ? finishStr : `${posStr} · ${finishStr}`;
+                            })()}
+                          </div>
+                       </td>
+                       <td className="px-6 py-4 text-right font-semibold text-[var(--color-ink)] text-[16px]">
+                          {entry.points}
+                       </td>
+                     </tr>
+                   );
+                 })}
                </tbody>
              </table>
           </div>
@@ -3470,6 +3469,38 @@ function PlayoffsWatchScreen({
   );
 }
 
+function NavBar({ currentPhase, onNavigate }: { currentPhase: GamePhase, onNavigate: (p: GamePhase) => void }) {
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-[var(--color-canvas)]/80 backdrop-blur-md border-b border-[var(--color-hairline)] px-4 sm:px-6 flex items-center justify-between shadow-sm">
+      <div className="flex items-center gap-6">
+        <button onClick={() => onNavigate('home')} className="text-[var(--color-ink)] font-black text-xl tracking-tighter hover:opacity-80 transition-opacity">
+          16-0
+        </button>
+        <div className="hidden sm:flex items-center gap-1">
+          <button 
+            onClick={() => onNavigate('home')}
+            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'home' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
+          >
+            Home
+          </button>
+          <button 
+            onClick={() => onNavigate('mode-select')}
+            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'mode-select' || currentPhase === 'draft' || currentPhase === 'watching' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
+          >
+            Play
+          </button>
+          <button 
+            onClick={() => onNavigate('leaderboard')}
+            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'leaderboard' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
+          >
+            Leaderboard
+          </button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 function MainAppContent() {
   const [phase, setPhaseState] = useState<GamePhase>('home');
 
@@ -3635,117 +3666,127 @@ function MainAppContent() {
     }
   };
 
-  if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} />;
-  if (phase === 'leaderboard') return <LeaderboardScreen onBack={() => setPhase('home')} />;
-  if (phase === 'mode-select') return <ModeSelectScreen onSelectMode={(m) => {
-    setSettings(prev => ({ ...prev, mode: m }));
-    if (m === 'gamble') {
-      setPhase('gamble-drafting');
-    } else {
-      setPhase('mode-settings');
-    }
-  }} />;
-  if (phase === 'mode-settings') return <ModeSettingsScreen settings={settings} setSettings={setSettings} onStart={handleStart} mode={settings.mode} />;
-  if (phase === 'gamble-drafting') return <GambleDraftScreen playersPool={playersPool} onComplete={(gambleSquad) => {
-    setSquad(gambleSquad);
-    const filledSlots = gambleSquad.filter(s => s.player !== null);
-    const forms = initPlayerForms(filledSlots);
-    setPlayerForms(forms);
-    setPhase('squad-complete');
-  }} />;
-  if (phase === 'draft') return <DraftScreen players={playersPool} squad={squad} onPickPlayer={handlePickPlayer} onSwapPlayers={handleSwapPlayers} rerolls={rerolls} onReroll={handleReroll} pickedNames={pickedNames} settings={settings} playerForms={playerForms} onFinishDraft={() => handleFinishDraft(squad)} />;
-  if (phase === 'squad-complete') return <SquadCompleteScreen squad={squad} onSimulate={(control) => runSimulation(control)} onRestart={() => setPhase('mode-select')} settings={settings} playerForms={playerForms} />;
-  if (phase === 'simulating') return <div className="min-h-screen flex items-center justify-center text-yellow-400 font-bold text-2xl animate-pulse">Simulating Season...</div>;
-  if (phase === 'watching' && watchData) return (
-    <WatchModeScreen
-      fixtures={watchData.fixtures}
-      teams={watchData.teams}
-      squad={watchData.squad}
-      playersPool={playersPool}
-      initialForms={playerForms}
-      control={settings.mode === 'franchise' && settings.franchiseControl === 'full' ? 'full' : 'ai'}
-      settings={settings}
-      onComplete={(teams, matchResults, finalForms, finalSeasonStats, finalSquad) => {
-        setPlayerForms(finalForms);
-        const finalWatchSquad = finalSquad || watchData.squad;
-        const sorted = sortTable(teams);
-        const userInPlayoffs = sorted.slice(0, 4).some(t => t.short === 'YOUR XI');
-        
-        if ((settings.mode === 'franchise' || settings.mode === 'gamble') && userInPlayoffs) {
-          setPlayoffsData({
-            top4: sorted.slice(0, 4),
-            teams: sorted,
-            leagueMatches: matchResults,
-            forms: finalForms,
-            stats: finalSeasonStats,
-            squad: finalWatchSquad
-          });
-          setPhase('playoffs-watch');
-        } else {
-          finishSimulation(teams, matchResults, finalWatchSquad, watchData.strength, finalForms, finalSeasonStats);
-          setPhase('results');
-        }
-      }}
-      onSkip={() => {
-        // Simulate all remaining instantly
-        const teams = watchData.teams;
-        let currentForms = { ...playerForms };
-        let currentSeasonStats: Record<number, PlayerStats> = {};
-        const matchResults = watchData.fixtures.map(([a, b]) => {
-          const res = simulateMatch(teams[a], teams[b], playersPool, watchData.squad, currentForms);
-          if (res.matchStats) accumulateStats(currentSeasonStats, res.matchStats);
-          applyResult(teams, a, b, res);
-          if (res.isUserMatch) {
-            currentForms = updateAllForms(currentForms, watchData.squad, res.userWon, res.motm?.player.id);
+  const renderScreen = () => {
+    if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} />;
+    if (phase === 'leaderboard') return <LeaderboardScreen onBack={() => setPhase('home')} />;
+    if (phase === 'mode-select') return <ModeSelectScreen onSelectMode={(m) => {
+      setSettings(prev => ({ ...prev, mode: m }));
+      if (m === 'gamble') {
+        setPhase('gamble-drafting');
+      } else {
+        setPhase('mode-settings');
+      }
+    }} />;
+    if (phase === 'mode-settings') return <ModeSettingsScreen settings={settings} setSettings={setSettings} onStart={handleStart} mode={settings.mode} />;
+    if (phase === 'gamble-drafting') return <GambleDraftScreen playersPool={playersPool} onComplete={(gambleSquad) => {
+      setSquad(gambleSquad);
+      const filledSlots = gambleSquad.filter(s => s.player !== null);
+      const forms = initPlayerForms(filledSlots);
+      setPlayerForms(forms);
+      setPhase('squad-complete');
+    }} />;
+    if (phase === 'draft') return <DraftScreen players={playersPool} squad={squad} onPickPlayer={handlePickPlayer} onSwapPlayers={handleSwapPlayers} rerolls={rerolls} onReroll={handleReroll} pickedNames={pickedNames} settings={settings} playerForms={playerForms} onFinishDraft={() => handleFinishDraft(squad)} />;
+    if (phase === 'squad-complete') return <SquadCompleteScreen squad={squad} onSimulate={(control) => runSimulation(control)} onRestart={() => setPhase('mode-select')} settings={settings} playerForms={playerForms} />;
+    if (phase === 'simulating') return <div className="min-h-screen flex items-center justify-center text-yellow-400 font-bold text-2xl animate-pulse">Simulating Season...</div>;
+    if (phase === 'watching' && watchData) return (
+      <WatchModeScreen
+        fixtures={watchData.fixtures}
+        teams={watchData.teams}
+        squad={watchData.squad}
+        playersPool={playersPool}
+        initialForms={playerForms}
+        control={settings.mode === 'franchise' && settings.franchiseControl === 'full' ? 'full' : 'ai'}
+        settings={settings}
+        onComplete={(teams, matchResults, finalForms, finalSeasonStats, finalSquad) => {
+          setPlayerForms(finalForms);
+          const finalWatchSquad = finalSquad || watchData.squad;
+          const sorted = sortTable(teams);
+          const userInPlayoffs = sorted.slice(0, 4).some(t => t.short === 'YOUR XI');
+          
+          if ((settings.mode === 'franchise' || settings.mode === 'gamble') && userInPlayoffs) {
+            setPlayoffsData({
+              top4: sorted.slice(0, 4),
+              teams: sorted,
+              leagueMatches: matchResults,
+              forms: finalForms,
+              stats: finalSeasonStats,
+              squad: finalWatchSquad
+            });
+            setPhase('playoffs-watch');
+          } else {
+            finishSimulation(teams, matchResults, finalWatchSquad, watchData.strength, finalForms, finalSeasonStats);
+            setPhase('results');
           }
-          return res;
-        });
-        setPlayerForms(currentForms);
-        
-        const sorted = sortTable(teams);
-        const userInPlayoffs = sorted.slice(0, 4).some(t => t.short === 'YOUR XI');
-        
-        if ((settings.mode === 'franchise' || settings.mode === 'gamble') && userInPlayoffs) {
-          setPlayoffsData({
-            top4: sorted.slice(0, 4),
-            teams: sorted,
-            leagueMatches: matchResults,
-            forms: currentForms,
-            stats: currentSeasonStats,
-            squad: watchData.squad
+        }}
+        onSkip={() => {
+          const teams = watchData.teams;
+          let currentForms = { ...playerForms };
+          let currentSeasonStats: Record<number, PlayerStats> = {};
+          const matchResults = watchData.fixtures.map(([a, b]) => {
+            const res = simulateMatch(teams[a], teams[b], playersPool, watchData.squad, currentForms);
+            if (res.matchStats) accumulateStats(currentSeasonStats, res.matchStats);
+            applyResult(teams, a, b, res);
+            if (res.isUserMatch) {
+              currentForms = updateAllForms(currentForms, watchData.squad, res.userWon, res.motm?.player.id);
+            }
+            return res;
           });
-          setPhase('playoffs-watch');
-        } else {
-          finishSimulation(teams, matchResults, watchData.squad, watchData.strength, currentForms, currentSeasonStats);
+          setPlayerForms(currentForms);
+          
+          const sorted = sortTable(teams);
+          const userInPlayoffs = sorted.slice(0, 4).some(t => t.short === 'YOUR XI');
+          
+          if ((settings.mode === 'franchise' || settings.mode === 'gamble') && userInPlayoffs) {
+            setPlayoffsData({
+              top4: sorted.slice(0, 4),
+              teams: sorted,
+              leagueMatches: matchResults,
+              forms: currentForms,
+              stats: currentSeasonStats,
+              squad: watchData.squad
+            });
+            setPhase('playoffs-watch');
+          } else {
+            finishSimulation(teams, matchResults, watchData.squad, watchData.strength, currentForms, currentSeasonStats);
+            setPhase('results');
+          }
+        }}
+      />
+    );
+    if (phase === 'playoffs-watch' && playoffsData) return (
+      <PlayoffsWatchScreen
+        top4={playoffsData.top4}
+        teams={playoffsData.teams}
+        squad={playoffsData.squad}
+        playersPool={playersPool}
+        initialForms={playoffsData.forms}
+        seasonStats={playoffsData.stats}
+        settings={settings}
+        onComplete={(playoffMatches, champion, finalSquad, finalForms, finalStats) => {
+          finishSimulation(playoffsData.teams, playoffsData.leagueMatches, finalSquad, calcSquadStrength(finalSquad), finalForms, finalStats, { matches: playoffMatches, champion });
           setPhase('results');
-        }
-      }}
-    />
-  );
-  if (phase === 'playoffs-watch' && playoffsData) return (
-    <PlayoffsWatchScreen
-      top4={playoffsData.top4}
-      teams={playoffsData.teams}
-      squad={playoffsData.squad}
-      playersPool={playersPool}
-      initialForms={playoffsData.forms}
-      seasonStats={playoffsData.stats}
-      settings={settings}
-      onComplete={(playoffMatches, champion, finalSquad, finalForms, finalStats) => {
-        finishSimulation(playoffsData.teams, playoffsData.leagueMatches, finalSquad, calcSquadStrength(finalSquad), finalForms, finalStats, { matches: playoffMatches, champion });
-        setPhase('results');
-      }}
-    />
-  );
-  if (phase === 'results' && results) return <ResultsScreen squad={squad} results={results} settings={settings} onRestart={() => setPhase('mode-select')} onViewLeaderboard={() => setPhase('leaderboard')} />;
-  
+        }}
+      />
+    );
+    if (phase === 'results' && results) return <ResultsScreen squad={squad} results={results} settings={settings} onRestart={() => setPhase('mode-select')} onViewLeaderboard={() => setPhase('leaderboard')} />;
+    
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+        <div className="text-4xl mb-4">⚠️</div>
+        <div className="text-xl font-bold text-red-500 mb-2">Session Expired</div>
+        <div className="text-sm text-[var(--text-muted)] mb-6">Your session has expired or the page was refreshed. Please start a new game.</div>
+        <button onClick={() => setPhase('home')} className="btn-primary px-6 py-2">Go to Home</button>
+      </div>
+    );
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
-      <div className="text-4xl mb-4">⚠️</div>
-      <div className="text-xl font-bold text-red-500 mb-2">Session Expired</div>
-      <div className="text-sm text-[var(--text-muted)] mb-6">Your session has expired or the page was refreshed. Please start a new game.</div>
-      <button onClick={() => setPhase('home')} className="btn-primary px-6 py-2">Go to Home</button>
-    </div>
+    <>
+      <NavBar currentPhase={phase} onNavigate={setPhase} />
+      <div className="pt-16">
+        {renderScreen()}
+      </div>
+    </>
   );
 }
 
