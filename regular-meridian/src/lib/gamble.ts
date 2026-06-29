@@ -27,7 +27,8 @@ function draftLegalXI(
   arTarget: number = 2,
   bowlTarget: number = 4,
   filterFn?: (p: Player) => boolean,
-  sortFn?: (a: Player, b: Player) => number
+  sortFn?: (a: Player, b: Player) => number,
+  ignoreOverseasLimit: boolean = false
 ): Player[] {
   let available = filterFn ? pool.filter(filterFn) : [...pool];
   
@@ -52,7 +53,7 @@ function draftLegalXI(
       if (picked >= count) break;
       if (!selected.find(s => s.name.toLowerCase().trim() === p.name.toLowerCase().trim())) {
         // Enforce max 4 overseas players rule
-        if (p.is_overseas && overseasCount >= 4) {
+        if (!ignoreOverseasLimit && p.is_overseas && overseasCount >= 4) {
           continue;
         }
         
@@ -146,69 +147,93 @@ export function generateGambleTeam(playersPool: Player[]): GambleResult {
     // Normal Archetype Drafting
     const archRand = Math.random() * 100;
     
-    if (archRand < 10) {
-      // 10% Superteam (BALANCED but high rating)
+    if (archRand < 8) {
+      // 8% Superteam (BALANCED but high rating)
       philosophy = 'BALANCED';
       drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => p.overall >= 85);
       strengths = ['Elite talent in all departments', 'Star power'];
       weaknesses = ['High expectations'];
       projectedRecord = '13-3';
-    } else if (archRand < 22) {
-      // 12% Flawed - Aggressive Batting (Heavy bat, weak bowl)
+    } else if (archRand < 16) {
+      // 8% Flawed - Aggressive Batting (Heavy bat, weak bowl)
       philosophy = 'AGGRESSIVE BATTING';
       const bats = draftLegalXI(playersPool, 1, 6, 1, 3, p => (p.role.includes('BAT') || p.role === 'WK') ? p.overall > 84 : p.overall < 80);
       drafted = bats;
       strengths = ['Explosive batting', 'Chasing massive totals'];
       weaknesses = ['Defending targets', 'Pace attack'];
       projectedRecord = '10-6';
-    } else if (archRand < 34) {
-      // 12% Flawed - Defensive Bowling (Weak bat, heavy bowl)
+    } else if (archRand < 24) {
+      // 8% Flawed - Defensive Bowling (Weak bat, heavy bowl)
       philosophy = 'DEFENSIVE BOWLING';
       const bowls = draftLegalXI(playersPool, 1, 3, 1, 6, p => p.role.includes('BOWL') ? p.overall > 84 : p.overall < 80);
       drafted = bowls;
       strengths = ['Defending low totals', 'Taking wickets in clumps'];
       weaknesses = ['Setting targets', 'Top order collapses'];
       projectedRecord = '9-7';
-    } else if (archRand < 44) {
-      // 10% Power Hitters
+    } else if (archRand < 32) {
+      // 8% Power Hitters
       philosophy = 'POWER HITTERS';
       drafted = draftLegalXI(playersPool, 1, 5, 2, 3, p => p.overall > 80); 
       strengths = ['Six hitting', 'Finishing', 'Entertainment value'];
       weaknesses = ['Rotating strike', 'Spin bowling'];
       projectedRecord = '11-5';
-    } else if (archRand < 54) {
-      // 10% All Captains
-      philosophy = 'ALL CAPTAINS';
-      const captainNames = ['Dhoni', 'Kohli', 'Rohit', 'Gambhir', 'Warner', 'Smith', 'Williamson', 'Shreyas', 'Pant', 'Rahul', 'Hardik'];
-      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => captainNames.some(c => p.name.includes(c)));
-      strengths = ['Leadership', 'Experience', 'Tactical brilliance'];
-      weaknesses = ['Too many cooks', 'Who takes the final call?'];
-      projectedRecord = '12-4';
-    } else if (archRand < 66) {
-      // 12% All Rounders
+    } else if (archRand < 40) {
+      // 8% All Rounders
       philosophy = 'ALL ROUNDERS';
       drafted = draftLegalXI(playersPool, 1, 2, 6, 2, p => p.overall > 78);
       strengths = ['Depth everywhere', 'Multiple bowling options', 'Batting till 9'];
       weaknesses = ['Specialist skills', 'Top order anchors'];
       projectedRecord = '11-5';
-    } else if (archRand < 78) {
-      // 12% Pace Battery
-      philosophy = 'PACE BATTERY';
-      drafted = draftLegalXI(playersPool, 1, 4, 1, 5, p => p.overall > 78); 
+    } else if (archRand < 48) {
+      // 8% Pace Dominance
+      philosophy = 'PACE DOMINANCE';
+      const paceNames = ['Bumrah', 'Malinga', 'Starc', 'Boult', 'Rabada', 'Nortje', 'Shami', 'Siraj', 'Archer', 'Cummins', 'Steyn', 'Lee', 'Akhtar', 'McGrath', 'Zaheer', 'Irfan', 'Bhuvi', 'Wood', 'Ferguson'];
+      drafted = draftLegalXI(playersPool, 1, 4, 1, 5, p => p.role.includes('BOWL') ? paceNames.some(n => p.name.includes(n)) : p.overall > 78); 
       strengths = ['Intimidation', 'Pace and bounce', 'Early wickets'];
       weaknesses = ['Slow pitches', 'Spin options'];
       projectedRecord = '10-6';
+    } else if (archRand < 56) {
+      // 8% Spin Dominance
+      philosophy = 'SPIN DOMINANCE';
+      const spinNames = ['Rashid', 'Narine', 'Chahal', 'Ashwin', 'Mishra', 'Warne', 'Muralitharan', 'Kuldeep', 'Bishnoi', 'Zampa', 'Tahir', 'Harbhajan', 'Hasaranga', 'Theekshana', 'Nabi', 'Axar', 'Jadeja', 'Mujeeb'];
+      drafted = draftLegalXI(playersPool, 1, 4, 1, 5, p => p.role.includes('BOWL') ? spinNames.some(n => p.name.includes(n)) : p.overall > 78);
+      strengths = ['Controlling the middle overs', 'Spin choke', 'Slow pitches'];
+      weaknesses = ['Pace attack', 'Dew factor'];
+      projectedRecord = '10-6';
+    } else if (archRand < 64) {
+      // 8% Death Over Monsters
+      philosophy = 'DEATH OVER MONSTERS';
+      const deathNames = ['Bumrah', 'Malinga', 'Bravo', 'Russell', 'Rashid', 'Narine', 'Arshdeep', 'Pollard', 'Dhoni', 'Karthik', 'Maxwell', 'Tewatia'];
+      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => deathNames.some(n => p.name.includes(n)) || p.overall > 83);
+      strengths = ['Unchaseable totals', 'Defending anything in last 4'];
+      weaknesses = ['Powerplay', 'Top order anchors'];
+      projectedRecord = '11-5';
+    } else if (archRand < 72) {
+      // 8% Clutch Players
+      philosophy = 'CLUTCH PLAYERS';
+      const clutchNames = ['Dhoni', 'Gambhir', 'Stokes', 'Samuels', 'Watson', 'Pollard', 'Pandya', 'Raina', 'Maxwell', 'Warner', 'Rayudu', 'Kohli', 'Boult', 'Starc'];
+      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => clutchNames.some(n => p.name.includes(n)) || p.overall > 83);
+      strengths = ['Big match temperament', 'Performing under pressure'];
+      weaknesses = ['Inconsistency in group stages'];
+      projectedRecord = '11-5';
+    } else if (archRand < 80) {
+      // 8% Playoff Specialists
+      philosophy = 'PLAYOFF SPECIALISTS';
+      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => p.team === 'CSK' || p.team === 'MI');
+      strengths = ['Winning DNA', 'Experience'];
+      weaknesses = ['Aging squad', 'Overconfidence'];
+      projectedRecord = '12-4';
     } else if (archRand < 86) {
-      // 8% Youth Academy
+      // 6% Youth Academy
       philosophy = 'YOUTH ACADEMY';
       drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => p.season >= 2021);
       strengths = ['Energy', 'Athleticism', 'Fearless approach'];
       weaknesses = ['Inexperience', 'Handling pressure'];
       projectedRecord = '8-8';
     } else if (archRand < 94) {
-      // 8% T20 Mercenaries
+      // 8% T20 Mercenaries (ignores overseas limit)
       philosophy = 'T20 MERCENARIES';
-      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => !!p.is_overseas && p.overall > 80);
+      drafted = draftLegalXI(playersPool, 1, 4, 2, 4, p => !!p.is_overseas && p.overall > 80, undefined, true);
       strengths = ['Global experience', 'Match winners', 'High strike rates'];
       weaknesses = ['Team chemistry', 'Local conditions'];
       projectedRecord = '10-6';
