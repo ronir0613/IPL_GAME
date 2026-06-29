@@ -248,26 +248,17 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
   selectedSlot?: number | null;
 }) {
   return (
-    <div className="rounded-xl flex flex-col items-center justify-center h-[350px] relative overflow-hidden">
+    <div className="rounded-2xl flex flex-col items-center justify-center h-[380px] w-full relative overflow-hidden bg-[var(--color-canvas)] border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-3)] p-4">
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div className="w-[350px] h-[350px] rounded-full bg-[var(--card-border)] opacity-20" />
+        <div className="w-[340px] h-[340px] rounded-full bg-[var(--color-primary)] opacity-5 blur-2xl" />
       </div>
       
-      <div className="w-[350px] h-[350px] relative rounded-full overflow-hidden shadow-2xl border-2 border-[#555]">
-        {/* Background to serve as the 'border' color between slices if there are gaps */}
-        <div className="absolute inset-0 bg-[#333]" />
-
+      <div className="w-[320px] h-[320px] relative rounded-full overflow-hidden shadow-2xl border-4 border-[var(--color-canvas-soft)] bg-[var(--color-canvas-soft-2)] ring-4 ring-[var(--color-hairline)]">
         {squad.map((slot, idx) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
           const isSelected = selectedSlot === idx;
           const rotation = idx * (360 / 11);
-
-          const baseStyle = filled 
-            ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.2)' : '#e5e5e5')
-            : '#f4f4f4';
-            
-          const hoverStyle = filled ? (isSelected ? '#22c55e' : (slot.player!.is_overseas ? '#3b82f6' : '#d4d4d4')) : '#e0e0e0';
 
           return (
             <motion.div
@@ -279,33 +270,45 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
             >
               <motion.div
                 onClick={() => onSlotClick?.(idx)}
-                className={`absolute inset-0 origin-center transition-colors duration-200 pointer-events-auto ${onSlotClick ? 'cursor-pointer' : 'cursor-default'}`}
+                className={`absolute inset-0 origin-center transition-all duration-300 pointer-events-auto ${onSlotClick ? 'cursor-pointer' : 'cursor-default'}`}
                 style={{
-                  clipPath: 'polygon(50% 50%, 36.5% 0%, 63.5% 0%)',
-                  background: isSelected ? 'rgba(34,197,94,0.4)' : (filled ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.05)') : 'rgba(0,0,0,0.2)'),
+                  clipPath: 'polygon(50% 50%, 34% 0%, 66% 0%)',
+                  background: isSelected 
+                    ? 'rgba(34,197,94,0.4)' 
+                    : (filled ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.08)') : 'transparent'),
                   border: isSelected ? '1px solid #22c55e' : 'none'
                 }}
-                whileHover={{ background: hoverStyle, scale: 1.05 }}
+                whileHover={!isSelected ? { 
+                  background: filled 
+                    ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.15)') 
+                    : 'rgba(255,255,255,0.05)' 
+                } : {}}
               >
+                {/* Separator Lines */}
+                <div className="absolute top-0 bottom-1/2 left-0 right-0 border-r border-dashed border-[var(--color-hairline)] opacity-40 pointer-events-none" style={{ transform: 'translateX(-50%)' }} />
+
                 {/* Content Container */}
                 <div 
                   className="absolute"
                   style={{
-                    top: '15%',
+                    top: '16%',
                     left: '50%',
                     transform: `translate(-50%, -50%) rotate(${-rotation}deg)`,
                     display: 'flex', 
                     flexDirection: 'column', 
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    width: '60px'
                   }}
                 >
                   {filled ? (
-                    <>
-                      <span className={`text-[12px] font-black drop-shadow-md ${slot.player!.is_overseas ? 'text-blue-300' : 'text-yellow-400'}`}>{initials(slot.player!.name)}</span>
-                      <span className="text-[10px] text-white font-bold drop-shadow-md">{hideRatings ? '?' : slot.player!.overall}</span>
-                    </>
+                    <div className="flex flex-col items-center bg-[var(--color-canvas)]/60 backdrop-blur-sm rounded-lg px-2 py-1 border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-1)]">
+                      <span className={`text-[11px] font-bold tracking-tight truncate w-full text-center ${slot.player!.is_overseas ? 'text-blue-500' : 'text-[var(--color-ink)]'}`}>{initials(slot.player!.name)}</span>
+                      <span className="text-[10px] font-mono font-bold text-[var(--color-mute)]">{hideRatings ? '?' : slot.player!.overall}</span>
+                    </div>
                   ) : (
-                    <span className="text-[10px] text-white/50 font-bold tracking-tighter text-center leading-tight px-1 uppercase">{['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'][idx]}</span>
+                    <div className="w-8 h-8 rounded-full border border-dashed border-[var(--color-mute)] opacity-30 flex items-center justify-center">
+                      <span className="text-[10px] text-[var(--color-mute)] font-bold tracking-tighter uppercase">{['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'][idx]}</span>
+                    </div>
                   )}
                 </div>
               </motion.div>
@@ -314,8 +317,9 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
         })}
 
         {/* Center Circle XI */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90px] h-[90px] bg-[#eee] rounded-full border-4 border-[#333] shadow-inner flex items-center justify-center z-20 pointer-events-none">
-          <span className="text-4xl font-black text-[#5c3a21]" style={{ fontFamily: 'serif' }}>XI</span>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] bg-[var(--color-canvas)] rounded-full border border-[var(--color-hairline)] shadow-[0_0_30px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center z-20 pointer-events-none backdrop-blur-md">
+          <span className="text-3xl font-black text-[var(--color-primary)] tracking-tighter">XI</span>
+          <span className="text-[8px] font-mono text-[var(--color-mute)] uppercase tracking-widest mt-1">Squad</span>
         </div>
       </div>
     </div>
@@ -332,9 +336,16 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
   if (benchSlots.length === 0 || settings?.mode !== 'franchise') return null;
 
   return (
-    <div className="mt-4 w-full">
-      <div className="text-xs text-[var(--text-muted)] font-bold uppercase tracking-widest mb-3">Bench ({benchSlots.filter(x => x.s.player).length}/14)</div>
-      <div className="flex flex-wrap gap-2 justify-center">
+    <div className="mt-6 w-full bg-[var(--color-canvas)] p-4 rounded-2xl border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-2)]">
+      <div className="flex items-center justify-between mb-4">
+        <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest flex items-center gap-2">
+          <Moon size={14} className="text-[var(--color-primary)]" /> Franchise Bench
+        </div>
+        <div className="text-[10px] font-mono bg-[var(--color-canvas-soft-2)] px-2 py-1 rounded-md text-[var(--color-ink)] font-bold border border-[var(--color-hairline)]">
+          {benchSlots.filter(x => x.s.player).length} / 14 Filled
+        </div>
+      </div>
+      <div className="grid grid-cols-5 gap-2 justify-center">
         {benchSlots.map(({ s: slot, i: idx }) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
@@ -343,22 +354,31 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
             <motion.div
               key={idx}
               onClick={() => onSlotClick?.(idx)}
-              className={`flex flex-col items-center justify-center p-2
-                ${onSlotClick ? 'cursor-pointer' : 'cursor-default'}
-                w-16 h-20 rounded-lg relative overflow-hidden transition-all`}
+              className={`flex flex-col items-center justify-center p-1.5
+                ${onSlotClick ? 'cursor-pointer hover:border-yellow-500/50 hover:bg-yellow-500/5' : 'cursor-default'}
+                w-full aspect-[3/4] rounded-xl relative overflow-hidden transition-all shadow-sm`}
               style={{ 
-                border: filled ? (isSelected ? '2px solid #22c55e' : '1px solid #3b82f6') : '1px dashed rgba(255,255,255,0.2)',
-                background: filled ? (isSelected ? 'rgba(34,197,94,0.2)' : 'rgba(59,130,246,0.12)') : 'transparent',
+                border: filled 
+                  ? (isSelected ? '2px solid #22c55e' : (slot.player!.is_overseas ? '1px solid rgba(59,130,246,0.3)' : '1px solid var(--color-hairline)')) 
+                  : '1px dashed var(--color-hairline)',
+                background: filled 
+                  ? (isSelected ? 'rgba(34,197,94,0.1)' : (slot.player!.is_overseas ? 'rgba(59,130,246,0.05)' : 'var(--color-canvas-soft-2)')) 
+                  : 'var(--color-canvas-soft)',
               }}
+              whileHover={!isSelected ? { scale: 1.02, y: -2 } : {}}
             >
               {filled ? (
                 <>
-                  <span className="text-[10px] font-bold text-[var(--text-primary)] text-center break-words leading-tight">{initials(slot.player!.name)}</span>
-                  <span className="text-[10px] font-bold mt-1 text-blue-400">{hideRatings ? '?' : slot.player!.overall}</span>
-                  {slot.player!.is_overseas && <span className="absolute top-0 right-0 text-[8px]">✈️</span>}
+                  <div className="w-8 h-8 bg-[var(--color-canvas)] rounded-full border border-[var(--color-hairline)] shadow-sm flex items-center justify-center mb-1 relative">
+                    <span className="text-[10px] font-mono font-bold text-[var(--color-ink)]">{hideRatings ? '?' : slot.player!.overall}</span>
+                    {slot.player!.is_overseas && (
+                      <div className="absolute -top-1 -right-1 bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] shadow-sm">✈️</div>
+                    )}
+                  </div>
+                  <span className="text-[9px] font-bold text-[var(--color-ink)] text-center w-full truncate px-1">{initials(slot.player!.name)}</span>
                 </>
               ) : (
-                <span className="text-[8px] text-[var(--text-primary)]/30">{idx + 1}</span>
+                <span className="text-[10px] font-mono text-[var(--color-mute)]/40 font-bold">{idx + 1}</span>
               )}
             </motion.div>
           );
@@ -812,23 +832,34 @@ function GambleDraftScreen({
 
   if (draftState === 'drafting' && gambleResult) {
     return (
-      <div className="min-h-screen flex flex-col items-center pt-24 px-4 bg-[var(--color-canvas-soft)]">
-        <div className="text-[var(--color-mute)] font-mono text-xs uppercase tracking-widest mb-12">Drafting Players...</div>
-        <div className="flex flex-col w-full max-w-xl gap-3">
+      <div className="min-h-screen flex flex-col items-center pt-24 px-4 pb-24 bg-gradient-to-b from-[var(--color-canvas)] to-[var(--color-canvas-soft)] relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-primary)] opacity-5 rounded-full blur-3xl mix-blend-multiply" />
+           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 opacity-5 rounded-full blur-3xl mix-blend-multiply" />
+        </div>
+        <div className="text-[var(--color-mute)] font-mono text-xs uppercase tracking-widest mb-12 z-10 font-bold bg-[var(--color-canvas-soft-2)] px-4 py-2 rounded-full border border-[var(--color-hairline)] shadow-sm">Drafting Players...</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl z-10">
           <AnimatePresence>
             {revealedPlayers.map((p, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -30 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="flex items-center justify-between p-4 rounded-md bg-[var(--color-canvas)] border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-2)]"
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-canvas)]/80 backdrop-blur-md border border-[var(--color-hairline)] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] relative overflow-hidden group hover:border-[var(--color-primary)]/50 transition-colors"
               >
-                <div className="flex flex-col">
-                  <span className="font-semibold text-lg tracking-tight text-[var(--color-ink)]">{p.name}</span>
-                  <span className="text-xs text-[var(--color-body)] font-mono uppercase mt-1">{p.role}</span>
-                </div>
-                <div className="w-10 h-10 flex items-center justify-center font-mono font-semibold text-sm rounded bg-[var(--color-canvas-soft)] text-[var(--color-ink)] border border-[var(--color-hairline)]">
+                {p.is_overseas && <div className="absolute top-0 right-0 w-8 h-8 bg-blue-500/10 rounded-bl-xl flex items-center justify-center text-[10px]">✈️</div>}
+                
+                <div className="w-12 h-12 flex items-center justify-center font-mono font-bold text-lg rounded-full bg-[var(--color-canvas-soft-2)] text-[var(--color-ink)] border-2 border-[var(--color-hairline)] shadow-inner">
                   {p.overall}
+                </div>
+                
+                <div className="flex flex-col flex-1 min-w-0 pr-6">
+                  <span className="font-bold text-base tracking-tight text-[var(--color-ink)] truncate group-hover:text-[var(--color-primary)] transition-colors">{p.name}</span>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-[10px] text-[var(--color-mute)] font-mono font-bold uppercase bg-[var(--color-canvas-soft-2)] px-1.5 py-0.5 rounded">{p.role}</span>
+                    <span className="text-[10px] text-[var(--color-mute)] truncate">{p.team}</span>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -841,64 +872,107 @@ function GambleDraftScreen({
   if (draftState === 'reveal' && gambleResult) {
     const strength = calcSquadStrength(gambleResult.squad);
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-[var(--color-canvas-soft)]">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-br from-[var(--color-canvas-soft)] to-[var(--color-canvas)]">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-3xl bg-[var(--color-canvas)] p-10 rounded-lg border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-4)]"
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full max-w-4xl bg-[var(--color-canvas)]/90 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.15)] relative overflow-hidden"
         >
-          <div className="text-center mb-10">
-            <h1 className="text-4xl font-semibold tracking-tight text-[var(--color-ink)] mb-4">Your Gamble Team</h1>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--color-canvas-soft)] text-[var(--color-ink)] rounded-full font-mono text-xs border border-[var(--color-hairline)]">
-              TEAM TYPE: {gambleResult.philosophy}
+          {/* Decorative background glow */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none" />
+          
+          <div className="text-center mb-12 relative z-10">
+            <motion.h1 
+              initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-5xl font-black tracking-tighter text-[var(--color-ink)] mb-6 drop-shadow-sm"
+            >
+              Your Gamble Team
+            </motion.h1>
+            <div className="inline-flex items-center gap-3 px-5 py-2 bg-[var(--color-canvas-soft)]/80 backdrop-blur border border-[var(--color-hairline)] text-[var(--color-ink)] rounded-full font-mono text-xs shadow-sm font-bold">
+              <span className="text-[var(--color-primary)]">TEAM TYPE</span> {gambleResult.philosophy}
             </div>
             {gambleResult.specialEvent !== 'NONE' && (
-              <div className="mt-4 text-[var(--color-warning)] font-mono text-xs uppercase tracking-widest">
-                ! {gambleResult.specialEvent} !
-              </div>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
+                className="mt-6 text-[var(--color-warning)] font-mono text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-2 bg-[var(--color-warning)]/10 py-2 px-4 rounded-lg inline-flex w-auto mx-auto border border-[var(--color-warning)]/20"
+              >
+                <Zap size={16} /> {gambleResult.specialEvent} <Zap size={16} />
+              </motion.div>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-6 mb-8">
-            <div className="bg-[var(--color-canvas-soft)] p-6 rounded-md border border-[var(--color-hairline)]">
-              <div className="text-[var(--color-mute)] text-xs font-mono uppercase tracking-widest mb-4">Projected Record</div>
-              <div className="text-4xl font-semibold tracking-tight text-[var(--color-ink)]">{gambleResult.projectedRecord}</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative z-10">
+            <div className="bg-[var(--color-canvas-soft-2)]/50 backdrop-blur p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-2 text-[var(--color-mute)] text-xs font-mono uppercase tracking-widest font-bold mb-4">
+                <Target size={16} /> Projected Record
+              </div>
+              <div className="text-5xl font-black tracking-tighter text-[var(--color-ink)]">{gambleResult.projectedRecord}</div>
             </div>
-            <div className="bg-[var(--color-canvas-soft)] p-6 rounded-md border border-[var(--color-hairline)]">
-              <div className="text-[var(--color-mute)] text-xs font-mono uppercase tracking-widest mb-4">Team Strength</div>
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between text-sm"><span className="text-[var(--color-body)]">Batting:</span> <span className="font-mono text-[var(--color-ink)]">{strength.batting}</span></div>
-                <div className="flex justify-between text-sm"><span className="text-[var(--color-body)]">Bowling:</span> <span className="font-mono text-[var(--color-ink)]">{strength.bowling}</span></div>
-                <div className="flex justify-between text-sm mt-2 pt-2 border-t border-[var(--color-hairline)]"><span className="text-[var(--color-ink)] font-medium">Overall:</span> <span className="font-mono font-semibold text-[var(--color-ink)]">{strength.overall}</span></div>
+            
+            <div className="bg-[var(--color-canvas-soft-2)]/50 backdrop-blur p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm hover:shadow-md transition-shadow flex flex-col justify-center">
+              <div className="flex items-center gap-2 text-[var(--color-mute)] text-xs font-mono uppercase tracking-widest font-bold mb-4">
+                <Trophy size={16} /> Team Strength
+              </div>
+              <div className="flex flex-col gap-3">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-[var(--color-body)] font-bold">Batting</span> 
+                  <span className="font-mono text-base font-bold bg-[var(--color-canvas)] px-3 py-1 rounded-lg border border-[var(--color-hairline)]">{strength.batting}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-[var(--color-body)] font-bold">Bowling</span> 
+                  <span className="font-mono text-base font-bold bg-[var(--color-canvas)] px-3 py-1 rounded-lg border border-[var(--color-hairline)]">{strength.bowling}</span>
+                </div>
+                <div className="flex justify-between items-center mt-3 pt-3 border-t border-[var(--color-hairline)]">
+                  <span className="text-[var(--color-ink)] font-black text-lg">Overall Rating</span> 
+                  <span className="font-mono font-black text-2xl text-[var(--color-primary)] drop-shadow-md">{strength.overall}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 mb-10 p-6 bg-[var(--color-canvas-soft-2)] rounded-md border border-[var(--color-hairline)]">
-            <div>
-              <div className="text-[var(--color-success)] font-mono text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span>✓</span> Strengths
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 relative z-10">
+            <div className="bg-[var(--color-success)]/5 p-6 rounded-2xl border border-[var(--color-success)]/20 shadow-inner">
+              <div className="text-[var(--color-success)] font-mono text-sm font-bold uppercase tracking-widest mb-5 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-[var(--color-success)]/20 flex items-center justify-center">✓</div>
+                Strengths
               </div>
-              <ul className="text-[var(--color-body)] text-sm space-y-2">
-                {gambleResult.strengths.map((s, i) => <li key={i}>{s}</li>)}
+              <ul className="text-[var(--color-ink)] text-sm space-y-3 font-medium">
+                {gambleResult.strengths.map((s, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-[var(--color-success)] mt-0.5">•</span> {s}
+                  </li>
+                ))}
               </ul>
             </div>
-            <div>
-              <div className="text-[var(--color-error)] font-mono text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span>✗</span> Weaknesses
+            
+            <div className="bg-[var(--color-error)]/5 p-6 rounded-2xl border border-[var(--color-error)]/20 shadow-inner">
+              <div className="text-[var(--color-error)] font-mono text-sm font-bold uppercase tracking-widest mb-5 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-[var(--color-error)]/20 flex items-center justify-center">✗</div>
+                Weaknesses
               </div>
-              <ul className="text-[var(--color-body)] text-sm space-y-2">
-                {gambleResult.weaknesses.map((w, i) => <li key={i}>{w}</li>)}
+              <ul className="text-[var(--color-ink)] text-sm space-y-3 font-medium">
+                {gambleResult.weaknesses.map((w, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-[var(--color-error)] mt-0.5">•</span> {w}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => onComplete(gambleResult.squad)}
-            className="btn-primary w-full py-3 text-base"
+            className="w-full relative overflow-hidden rounded-2xl p-[2px] z-10 group shadow-xl"
           >
-            Accept Fate & Start Season
-          </button>
+            <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)] via-yellow-400 to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
+            <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover:bg-transparent">
+               <span className="font-bold text-lg text-[var(--color-ink)] group-hover:text-black transition-colors tracking-tight">Accept Fate & Start Season</span>
+               <Play size={20} className="text-[var(--color-primary)] group-hover:text-black transition-colors" />
+            </div>
+          </motion.button>
         </motion.div>
       </div>
     );
@@ -1489,200 +1563,223 @@ function SquadCompleteScreen({
   const odds = calcOdds(strength.overall);
 
   return (
-    <div className="min-h-screen flex gap-0 max-w-[1600px] mx-auto">
-      {/* Left: Wheel */}
-      <div className="w-[340px] flex-shrink-0 p-4 flex flex-col gap-4 overflow-y-auto custom-scrollbar">
-        <div className="text-sm font-bold text-yellow-400">Squad Complete ✓</div>
-        <WheelLayout 
-          squad={squad.filter(s => s.position !== 'BENCH')} 
-          onSlotClick={setSelectedSlot} 
-          selectedSlot={selectedSlot} 
-          settings={settings} 
-        />
-        {settings.mode === 'franchise' && (
-          <BenchLayout 
-            squad={squad} 
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] p-4 md:p-8">
+      <div className="max-w-[1600px] w-full flex flex-col lg:flex-row gap-6 bg-[var(--color-canvas)]/60 backdrop-blur-3xl rounded-[2rem] border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] p-6 md:p-8 relative overflow-hidden">
+        
+        {/* Subtle background effects */}
+        <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
+        
+        {/* Left: Wheel */}
+        <div className="w-full lg:w-[380px] flex-shrink-0 flex flex-col gap-6 z-10">
+          <div className="flex items-center gap-3 bg-[var(--color-success)]/10 text-[var(--color-success)] px-4 py-2 rounded-full w-max border border-[var(--color-success)]/20 shadow-sm">
+            <span className="font-bold text-sm tracking-tight">Squad Complete</span>
+            <div className="w-5 h-5 rounded-full bg-[var(--color-success)] flex items-center justify-center text-[var(--color-canvas)] text-xs">✓</div>
+          </div>
+          
+          <WheelLayout 
+            squad={squad.filter(s => s.position !== 'BENCH')} 
             onSlotClick={setSelectedSlot} 
-            settings={settings} 
             selectedSlot={selectedSlot} 
+            settings={settings} 
           />
-        )}
-        <div className="card p-3 space-y-2 mt-4">
-          {settings.showRatings === 'on' ? (
-            <>
-              {[
-                { label: 'Batting', val: strength.batting, color: '#22c55e' },
-                { label: 'Bowling', val: strength.bowling, color: '#3b82f6' },
-              ].map(({ label, val, color }) => (
-                <div key={label}>
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-[var(--color-mute)]">{label}</span>
-                    <span className="font-bold text-[var(--color-ink)]">{val}</span>
+          
+          {settings.mode === 'franchise' && (
+            <BenchLayout 
+              squad={squad} 
+              onSlotClick={setSelectedSlot} 
+              settings={settings} 
+              selectedSlot={selectedSlot} 
+            />
+          )}
+          
+          <div className="bg-[var(--color-canvas)] p-5 rounded-2xl border border-[var(--color-hairline)] shadow-sm space-y-4">
+            {settings.showRatings === 'on' ? (
+              <>
+                {[
+                  { label: 'Batting', val: strength.batting, color: '#22c55e' },
+                  { label: 'Bowling', val: strength.bowling, color: '#3b82f6' },
+                ].map(({ label, val, color }) => (
+                  <div key={label}>
+                    <div className="flex justify-between items-center text-xs mb-1.5 font-bold">
+                      <span className="text-[var(--color-mute)] uppercase tracking-wider">{label}</span>
+                      <span className="text-[var(--color-ink)]">{val}</span>
+                    </div>
+                    <ProgressBar value={val} color={color} />
                   </div>
-                  <ProgressBar value={val} color={color} />
+                ))}
+                <div className="flex justify-between items-center pt-3 mt-1 border-t border-[var(--color-hairline)]">
+                  <span className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-wider">Effective Overall</span>
+                  <span className="text-2xl font-black tracking-tight text-[var(--color-primary)]">{strength.overall}</span>
                 </div>
-              ))}
-              <div className="flex justify-between pt-1">
-                <span className="text-sm font-bold text-[var(--color-mute)]">Effective Overall</span>
-                <span className="text-xl font-semibold tracking-tight text-yellow-400">{strength.overall}</span>
+              </>
+            ) : (
+              <div className="flex items-center justify-center text-center py-10 opacity-60">
+                <div className="text-xs font-mono font-bold text-[var(--color-mute)] uppercase tracking-widest flex items-center gap-2">
+                  <span className="text-lg">👁️</span> Ratings Hidden
+                </div>
               </div>
-            </>
+            )}
+          </div>
+        </div>
+
+        {/* Middle: Player Form */}
+        <div className="w-full lg:w-[440px] flex-shrink-0 flex flex-col z-10 h-[calc(100vh-10rem)] max-h-[850px]">
+          <div className="text-xl font-bold tracking-tight text-[var(--color-ink)] mb-4 flex items-center gap-2">
+            Player Form
+          </div>
+          
+          {selectedSlot !== null && squad[selectedSlot]?.player ? (
+            <div className="bg-[var(--color-canvas)] p-6 rounded-2xl flex flex-col gap-5 relative overflow-hidden shadow-lg border border-[var(--color-hairline)] mb-4">
+               {squad[selectedSlot].player!.is_overseas && (
+                 <div className="absolute inset-0 bg-blue-500/5 pointer-events-none" />
+               )}
+               <div className="flex justify-between items-start z-10">
+                 <div className="flex flex-col gap-1">
+                   <div className="text-2xl font-bold tracking-tight text-[var(--color-ink)] flex items-center">
+                     {squad[selectedSlot].player!.name}
+                     {squad[selectedSlot].player!.is_overseas && <span className="ml-2 text-sm" title="Overseas Player">✈️</span>}
+                   </div>
+                   <div className="inline-flex items-center gap-2 bg-[var(--color-canvas-soft-2)] px-2.5 py-1 rounded-md text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest border border-[var(--color-hairline)] w-max">
+                     {squad[selectedSlot].player!.team} • {squad[selectedSlot].player!.season}
+                   </div>
+                 </div>
+                 <RatingBadge rating={squad[selectedSlot].player!.overall} size="lg" hidden={settings.showRatings === 'off'} />
+               </div>
+               
+               {playerForms && playerForms[squad[selectedSlot].player!.id] && (
+                 <div className="z-10 mt-1 pt-5 border-t border-[var(--color-hairline)]">
+                   <PlayerFormInline form={playerForms[squad[selectedSlot].player!.id]} />
+                 </div>
+               )}
+            </div>
           ) : (
-            <div className="flex items-center justify-center text-center opacity-50 py-8">
-              <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest">Ratings Hidden</div>
+            <div className="bg-[var(--color-canvas)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-sm flex flex-col flex-1">
+              <div className="p-4 bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" />
+                <span className="text-xs font-bold tracking-widest uppercase text-[var(--color-mute)]">Pre-Season Form Report</span>
+              </div>
+              <div className="divide-y divide-[var(--color-hairline)] overflow-y-auto custom-scrollbar flex-1">
+                {squad.filter(s => s.player).map((slot, idx) => {
+                  const p = slot.player!;
+                  const form = playerForms[p.id];
+                  return (
+                    <motion.div
+                      key={p.id}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.03 }}
+                      className="px-5 py-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors cursor-pointer"
+                      onClick={() => setSelectedSlot(squad.indexOf(slot))}
+                    >
+                      <div className="flex items-start gap-4">
+                        <RatingBadge rating={p.overall} size="sm" hidden={settings.showRatings === 'off'} />
+                        <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold text-[var(--color-ink)] truncate">{p.name}</span>
+                            {p.is_overseas && <span className="text-[10px] text-blue-500">✈️</span>}
+                            <span className="text-[9px] bg-[var(--color-canvas)] px-1.5 py-0.5 rounded text-[var(--color-mute)] border border-[var(--color-hairline)] font-bold uppercase ml-auto shrink-0">{p.role}</span>
+                          </div>
+                          <PlayerFormInline form={form} compact />
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Middle: Player Form */}
-      <div className="w-[400px] flex-shrink-0 p-6 border-l border-[var(--color-hairline)] overflow-y-auto custom-scrollbar">
-        <div className="text-xl font-semibold tracking-tight text-[var(--color-ink)] mb-6">Player Form</div>
-        {selectedSlot !== null && squad[selectedSlot]?.player ? (
-          <div className="card p-6 flex flex-col gap-4 relative overflow-hidden shadow-2xl border border-[var(--color-hairline)]">
-             {squad[selectedSlot].player!.is_overseas && (
-               <div className="absolute inset-0 bg-blue-500/10 pointer-events-none" />
-             )}
-             <div className="flex justify-between items-start z-10">
-               <div>
-                 <div className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
-                   {squad[selectedSlot].player!.name}
-                   {squad[selectedSlot].player!.is_overseas && <span className="ml-2" title="Overseas Player">✈️</span>}
-                 </div>
-                 <div className="text-sm font-bold text-[var(--color-mute)] mt-1 uppercase tracking-widest">
-                   {squad[selectedSlot].player!.team} • {squad[selectedSlot].player!.season}
-                 </div>
-               </div>
-               <RatingBadge rating={squad[selectedSlot].player!.overall} size="lg" hidden={settings.showRatings === 'off'} />
-             </div>
-             
-             {playerForms && playerForms[squad[selectedSlot].player!.id] && (
-               <div className="z-10 mt-2">
-                 <PlayerFormInline form={playerForms[squad[selectedSlot].player!.id]} />
-               </div>
-             )}
-          </div>
-        ) : (
-          <div className="card overflow-hidden">
-            <div className="p-4 bg-[var(--color-canvas)] border-b border-[var(--color-hairline)] flex items-center gap-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse" />
-              <span className="text-xs font-semibold tracking-tight uppercase tracking-widest text-[var(--color-mute)]">Pre-Season Form Report</span>
-            </div>
-            <div className="divide-y divide-gray-800/60 max-h-[600px] overflow-y-auto custom-scrollbar">
-              {squad.filter(s => s.player).map((slot, idx) => {
-                const p = slot.player!;
-                const form = playerForms[p.id];
-                return (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="px-4 py-3 hover:bg-white/5 transition-colors cursor-pointer"
-                    onClick={() => setSelectedSlot(squad.indexOf(slot))}
-                  >
-                    <div className="flex items-start gap-3">
-                      <RatingBadge rating={p.overall} size="sm" hidden={settings.showRatings === 'off'} />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-[var(--color-ink)] truncate">{p.name}</span>
-                          {p.is_overseas && <span className="text-[9px] text-blue-400">✈️ </span>}
-                          <span className="text-[9px] text-[var(--color-mute)] font-bold uppercase ml-auto shrink-0">{p.role}</span>
-                        </div>
-                        <PlayerFormInline form={form} compact />
-                      </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
+        {/* Right side: Predictions panel */}
+        <div className="flex-1 flex flex-col z-10 min-w-[350px] lg:border-l lg:border-[var(--color-hairline)] lg:pl-8 h-[calc(100vh-10rem)] max-h-[850px]">
+          <div className="flex flex-col h-full overflow-y-auto custom-scrollbar pr-2">
+            <div className="text-2xl font-bold tracking-tight text-[var(--color-ink)] mb-2">Pre-Season Predictions</div>
+            <div className="text-[var(--color-mute)] text-sm mb-8 leading-relaxed font-medium">Here's what the bookies make of your XI. Simulate the season and chase the impossible.</div>
 
-      {/* Right side: Predictions panel */}
-      <div className="flex-1 p-6 border-l border-[var(--color-hairline)] overflow-y-auto flex flex-col min-w-[400px]">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col h-full">
-          <div className="text-2xl font-semibold tracking-tight text-[var(--color-ink)] mb-1">Pre-Season Predictions</div>
-          <div className="text-[var(--color-mute)] text-sm mb-6">Here's what the bookies make of your XI. Simulate the season and chase the impossible.</div>
-
-          <div className="card p-5 mb-6">
-            <div className="flex justify-between items-end mb-6">
-              <div>
-                <div className="text-xs text-[var(--color-mute)]">Projected Finish</div>
-                <div className="text-4xl font-semibold tracking-tight text-[var(--color-ink)]">{odds.pos}{['st','nd','rd'][odds.pos-1]||'th'}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-xs text-[var(--color-mute)]">Expected Points</div>
-                <div className="text-4xl font-semibold tracking-tight text-yellow-400">{odds.expectedPoints}</div>
-              </div>
-            </div>
-            <div className="space-y-3">
-              {[
-                { label: 'Win IPL', val: odds.winIPL, color: '#f5c842' },
-                { label: 'Top 4', val: odds.top4, color: '#22c55e' },
-                { label: 'Bottom 2', val: odds.bottom2, color: '#ef4444' },
-              ].map(({ label, val, color }) => (
-                <div key={label}>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-[var(--color-mute)]">{label}</span>
-                    <span className="font-bold" style={{ color }}>{val}%</span>
-                  </div>
-                  <ProgressBar value={val} color={color} />
+            <div className="bg-[var(--color-canvas)] p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm mb-6">
+              <div className="flex justify-between items-end mb-8">
+                <div className="flex flex-col gap-1">
+                  <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)]">Projected Finish</div>
+                  <div className="text-5xl font-black tracking-tighter text-[var(--color-ink)]">{odds.pos}<span className="text-2xl text-[var(--color-mute)]">{['st','nd','rd'][odds.pos-1]||'th'}</span></div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {settings.mode === 'franchise' && (
-            <div className="card p-5 mb-6 flex flex-col gap-4">
-              <div className="text-xs text-[var(--color-mute)] uppercase tracking-wider font-bold">Franchise Control Mode</div>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setLocalControl('ai')}
-                  className={`flex-1 p-4 rounded-xl text-left transition-all border-2 flex flex-col ${
-                    localControl === 'ai' 
-                      ? 'bg-blue-900/20 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.2)]' 
-                      : 'bg-[var(--color-canvas)] border-[var(--color-hairline)] hover:border-[var(--color-hairline)]'
-                  }`}
-                >
-                  <div className="font-semibold tracking-tight text-lg text-[var(--color-ink)] mb-1">🤖 AI Managed</div>
-                  <div className="text-xs text-[var(--color-mute)] font-medium">Assistant sets the XI.</div>
-                </button>
-                <button
-                  onClick={() => setLocalControl('full')}
-                  className={`flex-1 p-4 rounded-xl text-left transition-all border-2 flex flex-col ${
-                    localControl === 'full' 
-                      ? 'bg-yellow-900/20 border-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.2)]' 
-                      : 'bg-[var(--color-canvas)] border-[var(--color-hairline)] hover:border-[var(--color-hairline)]'
-                  }`}
-                >
-                  <div className="font-semibold tracking-tight text-lg text-[var(--color-ink)] mb-1">👑 Full Control</div>
-                  <div className="text-xs text-[var(--color-mute)] font-medium">Manage playing XI manually.</div>
-                </button>
+                <div className="text-right flex flex-col gap-1">
+                  <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)]">Expected Pts</div>
+                  <div className="text-5xl font-black tracking-tighter text-[var(--color-primary)]">{odds.expectedPoints}</div>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[
+                  { label: 'Win IPL', val: odds.winIPL, color: '#f5c842' },
+                  { label: 'Top 4', val: odds.top4, color: '#22c55e' },
+                  { label: 'Bottom 2', val: odds.bottom2, color: '#ef4444' },
+                ].map(({ label, val, color }) => (
+                  <div key={label}>
+                    <div className="flex justify-between text-xs font-bold uppercase tracking-wider mb-2">
+                      <span className="text-[var(--color-mute)]">{label}</span>
+                      <span style={{ color }}>{val}%</span>
+                    </div>
+                    <ProgressBar value={val} color={color} />
+                  </div>
+                ))}
               </div>
             </div>
-          )}
 
-          <div className="mt-auto pt-6 flex gap-4">
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onSimulate(localControl)} 
-              className="btn-primary flex-1 py-4 text-xl"
-            >
-              ▶ SIMULATE SEASON
-            </motion.button>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={onRestart} 
-              className="px-6 py-4 rounded-full font-bold bg-[var(--color-canvas)] text-[var(--color-ink)] hover:text-yellow-400 hover:border-yellow-400 transition-colors border-2 border-[var(--color-hairline)] flex-shrink-0 flex items-center justify-center text-2xl"
-              title="Restart"
-            >
-              ↻
-            </motion.button>
+            {settings.mode === 'franchise' && (
+              <div className="bg-[var(--color-canvas)] p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm mb-6 flex flex-col gap-4">
+                <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold">Franchise Control Mode</div>
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setLocalControl('ai')}
+                    className={`p-4 rounded-xl text-left transition-all border-2 flex flex-col h-full ${
+                      localControl === 'ai' 
+                        ? 'bg-blue-500/10 border-blue-500' 
+                        : 'bg-[var(--color-canvas-soft)] border-[var(--color-hairline)] hover:border-blue-500/50'
+                    }`}
+                  >
+                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><span>🤖</span> AI Managed</div>
+                    <div className="text-[10px] text-[var(--color-mute)] font-medium leading-tight">Assistant sets the XI based on form and conditions.</div>
+                  </button>
+                  <button
+                    onClick={() => setLocalControl('full')}
+                    className={`p-4 rounded-xl text-left transition-all border-2 flex flex-col h-full ${
+                      localControl === 'full' 
+                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]' 
+                        : 'bg-[var(--color-canvas-soft)] border-[var(--color-hairline)] hover:border-[var(--color-primary)]/50'
+                    }`}
+                  >
+                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><span>👑</span> Full Control</div>
+                    <div className="text-[10px] text-[var(--color-mute)] font-medium leading-tight">Manage playing XI manually before every match.</div>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="mt-auto pt-6 flex gap-3">
+              <motion.button 
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onSimulate(localControl)} 
+                className="flex-1 relative overflow-hidden rounded-2xl p-[2px] group shadow-lg"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)] via-yellow-400 to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
+                <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover:bg-transparent h-full">
+                  <Play size={20} className="text-[var(--color-primary)] group-hover:text-black transition-colors" />
+                  <span className="font-bold text-lg text-[var(--color-ink)] group-hover:text-black transition-colors tracking-tight">SIMULATE SEASON</span>
+                </div>
+              </motion.button>
+              
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={onRestart} 
+                className="w-16 h-[64px] rounded-2xl bg-[var(--color-canvas-soft-2)] text-[var(--color-mute)] hover:text-red-500 hover:bg-red-500/10 transition-colors border border-[var(--color-hairline)] flex items-center justify-center shadow-sm"
+                title="Restart Draft"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              </motion.button>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
@@ -2085,156 +2182,210 @@ function ResultsScreen({
   const [showShare, setShowShare] = useState(false);
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden">
+      <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-yellow-500 opacity-5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/4" />
+      
+      <div className="max-w-[1400px] mx-auto relative z-10 space-y-6 md:space-y-8">
+        
+        {/* Header section w/ Actions */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-4">
+            <button onClick={onRestart} className="btn-secondary py-2 px-6 flex items-center gap-2">
+              <span>↻</span> Start New Season
+            </button>
+            <button onClick={onViewLeaderboard} className="btn-secondary py-2 px-6">
+              View Leaderboard
+            </button>
+          </div>
+        </div>
+
         {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          className={`text-center py-10 md:py-16 rounded-[2rem] border border-[var(--color-hairline)] shadow-2xl relative overflow-hidden ${
+            isChampion 
+              ? 'bg-gradient-to-br from-yellow-500/10 to-yellow-900/10 border-yellow-500/30' 
+              : 'bg-[var(--color-canvas)]/60 backdrop-blur-md'
+          }`}
         >
-          {isChampion ? (
-            <>
-              <div className="text-6xl mb-2">🏆</div>
-              <div className="text-4xl font-semibold tracking-tight text-yellow-400">
-                {userTeam?.lost === 0 ? '16-0 ACHIEVED!' : 'CHAMPIONS!'}
-              </div>
-              <div className="text-[var(--color-mute)] mt-2">Your XI are IPL Champions!</div>
-            </>
-          ) : (
-            <>
-              <div className="text-5xl font-semibold tracking-tight text-[var(--color-ink)] mb-2">Season Over</div>
-              {finalPos > 4 ? (
-                <div className="text-xl font-bold text-red-400">
-                  Finished {finalPos}{['st','nd','rd'][finalPos-1]||'th'}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-1 mt-2">
-                  <div className="text-2xl font-bold text-green-400">
-                    Playoffs
-                  </div>
-                  {playoffSubText && (
-                    <div className="text-lg font-bold text-red-400">
-                      {playoffSubText}
-                    </div>
-                  )}
-                </div>
-              )}
-            </>
+          {isChampion && (
+            <div className="absolute inset-0 bg-yellow-500/5 mix-blend-overlay pointer-events-none" />
           )}
+          <div className="relative z-10">
+            {isChampion ? (
+              <>
+                <div className="text-7xl mb-4 md:mb-6 animate-bounce drop-shadow-[0_0_25px_rgba(234,179,8,0.4)]">🏆</div>
+                <div className="text-4xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-sm mb-3">
+                  {userTeam?.lost === 0 ? '16-0 ACHIEVED!' : 'CHAMPIONS!'}
+                </div>
+                <div className="text-[var(--color-mute)] text-lg md:text-xl font-medium tracking-tight">Your XI etched their name in history.</div>
+              </>
+            ) : (
+              <>
+                <div className="text-6xl font-black tracking-tighter text-[var(--color-ink)] mb-4">Season Over</div>
+                {finalPos > 4 ? (
+                  <div className="text-2xl font-bold text-red-500 uppercase tracking-widest bg-red-500/10 inline-block px-4 py-2 rounded-xl border border-red-500/20">
+                    Finished {finalPos}<span className="text-xl">{['st','nd','rd'][finalPos-1]||'th'}</span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-2 mt-4">
+                    <div className="text-2xl md:text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">
+                      PLAYOFFS REACHED
+                    </div>
+                    {playoffSubText && (
+                      <div className="text-lg font-bold text-red-400 bg-red-400/10 px-4 py-1.5 rounded-lg border border-red-400/20 uppercase tracking-widest mt-2">
+                        {playoffSubText}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+            
+            {/* Submit Score Form */}
+            {!submitted ? (
+               <div className="mt-10 flex flex-col md:flex-row items-center justify-center gap-3">
+                 <input 
+                   type="text" 
+                   value={handle} 
+                   onChange={e => setHandle(e.target.value)} 
+                   placeholder="Enter your name..."
+                   className="input-field w-full max-w-[300px] text-center text-lg py-3 rounded-xl border-2 border-[var(--color-hairline)] focus:border-yellow-500"
+                   onKeyDown={e => e.key === 'Enter' && handleSubmitLeaderboard()}
+                 />
+                 <button onClick={handleSubmitLeaderboard} disabled={!handle.trim()} className="btn-primary py-3 px-8 text-lg rounded-xl whitespace-nowrap">
+                   Submit Score
+                 </button>
+               </div>
+            ) : (
+               <div className="mt-8 text-green-400 font-bold uppercase tracking-widest bg-green-500/10 inline-block px-6 py-3 rounded-xl border border-green-500/20">
+                 ✓ Score Submitted
+               </div>
+            )}
+          </div>
         </motion.div>
 
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {[
             { label: 'Final Position', val: finalPosText, color: '#f5c842' },
             { label: 'Projected Position', val: `${projectedPos}${['st','nd','rd'][projectedPos-1]||'th'}`, color: '#6b7280' },
-            { label: 'Points', val: userTeam?.points ?? 0, color: '#22c55e' },
-          ].map(({ label, val, color }) => (
-            <div key={label} className="card p-4 text-center">
-              <div className="text-xs text-[var(--color-mute)] mb-1">{label}</div>
-              <div className={`${String(val).length > 6 ? 'text-2xl' : 'text-3xl'} font-semibold tracking-tight`} style={{ color }}>{val}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-4 gap-3 mb-6">
-          {[
-            { label: 'Wins', val: userTeam?.won ?? 0, color: '#22c55e' },
-            { label: 'Losses', val: userTeam?.lost ?? 0, color: '#ef4444' },
-            { label: 'NRR', val: userTeam?.nrr.toFixed(2) ?? '0.00', color: '#f5c842' },
+            { label: 'Wins - Losses', val: `${userTeam?.won ?? 0} - ${userTeam?.lost ?? 0}`, color: '#22c55e' },
             { label: 'Overall Rating', val: strength.overall, color: '#7c3aed' },
           ].map(({ label, val, color }) => (
-            <div key={label} className="card p-3 text-center">
-              <div className="text-xs text-[var(--color-mute)] mb-1">{label}</div>
-              <div className="text-2xl font-semibold tracking-tight" style={{ color }}>{val}</div>
+            <div key={label} className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:border-[var(--color-primary)]/30 transition-colors">
+              <div className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-mute)]">{label}</div>
+              <div className="text-3xl md:text-4xl font-black tracking-tighter" style={{ color }}>{val}</div>
             </div>
           ))}
         </div>
 
-        {/* Story */}
-        <div className="card p-5 mb-6">
-          <div className="text-xs text-[var(--color-mute)] uppercase tracking-wider mb-4">Season Story</div>
-          <div className="space-y-4">
-            {story.map((item) => (
-              <div key={item.id} className="flex gap-3 items-start border-b border-[var(--color-hairline)]/50 pb-4 last:border-0 last:pb-0">
-                <div className="text-2xl mt-1 shrink-0">
-                  {item.type === 'news' ? '📰' : item.type === 'expert' ? '🎙️' : item.type === 'player' ? '🏏' : '💬'}
-                </div>
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-[var(--color-ink)] text-sm">{item.author}</span>
-                    <span className="text-[10px] text-[var(--color-mute)] uppercase tracking-wider bg-[var(--color-canvas)] px-1.5 py-0.5 rounded">{item.type}</span>
-                  </div>
-                  <div className="text-sm text-[var(--color-mute)] leading-relaxed italic">"{item.text}"</div>
-                </div>
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8">
+          {/* Main Content Area */}
+          <div className="xl:col-span-8 flex flex-col gap-6 md:gap-8">
+            {/* Story */}
+            <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm">
+              <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold mb-6 flex items-center gap-3">
+                <span className="w-1.5 h-6 rounded-full bg-[var(--color-primary)]" />
+                Season Story
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 2-Column Split: Table & Awards */}
-        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6 mb-6">
-          {/* Left: League Table */}
-          <div className="card overflow-hidden">
-            <div className="p-4 font-bold text-[var(--color-mute)] bg-[var(--color-canvas)] border-b border-[var(--color-hairline)] flex justify-between items-center">
-              <span className="text-sm uppercase tracking-wider">Final League Table</span>
+              <div className="space-y-5">
+                {story.map((item) => (
+                  <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 rounded-xl hover:bg-[var(--color-canvas-soft-2)] transition-colors border border-transparent hover:border-[var(--color-hairline)]">
+                    <div className="text-2xl md:text-3xl mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
+                      {item.type === 'news' ? '📰' : item.type === 'expert' ? '🎙️' : item.type === 'player' ? '🏏' : '💬'}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2.5 mb-1.5">
+                        <span className="font-bold text-[var(--color-ink)]">{item.author}</span>
+                        <span className="text-[9px] text-[var(--color-mute)] uppercase tracking-widest font-bold border border-[var(--color-hairline)] px-2 py-0.5 rounded-full bg-[var(--color-canvas)] shadow-sm">{item.type}</span>
+                      </div>
+                      <div className="text-sm md:text-base text-[var(--color-mute)] leading-relaxed italic font-medium">"{item.text}"</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-[var(--color-canvas-soft-2)] overflow-x-auto">
-              <table className="w-full text-[11px] text-left">
-                <thead>
-                  <tr className="text-[var(--color-mute)] border-b border-[var(--color-hairline)]">
-                    <th className="p-3 font-bold uppercase tracking-wider w-8">#</th>
-                    <th className="p-3 font-bold uppercase tracking-wider">Team</th>
-                    <th className="p-3 font-bold uppercase tracking-wider text-center">P</th>
-                    <th className="p-3 font-bold uppercase tracking-wider text-center">W</th>
-                    <th className="p-3 font-bold uppercase tracking-wider text-center">L</th>
-                    <th className="p-3 font-bold uppercase tracking-wider text-center">Pts</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {teams.map((t, i) => (
-                    <tr key={t.short} className={`hover:bg-white/5 transition-colors ${t.short === 'YOUR XI' ? 'bg-yellow-500/10' : ''} ${i === 3 ? 'border-b-[3px] border-green-600/50' : 'border-b border-[var(--color-hairline)]/50'}`}>
-                      <td className="p-3 font-bold text-[var(--color-mute)]">{i + 1}</td>
-                      <td className={`p-3 font-bold ${t.short === 'YOUR XI' ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>{t.name}</td>
-                      <td className="p-3 text-center text-[var(--color-mute)]">14</td>
-                      <td className="p-3 text-center text-green-400">{t.won}</td>
-                      <td className="p-3 text-center text-red-400">{t.lost}</td>
-                      <td className="p-3 text-center font-bold text-[var(--color-ink)]">{t.points}</td>
+
+            {/* League Table */}
+            <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm">
+              <div className="p-5 font-bold text-[var(--color-ink)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex justify-between items-center text-sm tracking-tight">
+                <span>Final League Table</span>
+              </div>
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)]">
+                      <th className="py-4 pl-5 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] w-12">#</th>
+                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)]">Team</th>
+                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">P</th>
+                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">W</th>
+                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">L</th>
+                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">Pts</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {teams.map((t, i) => (
+                      <tr key={t.short} className={`transition-colors border-b border-[var(--color-hairline)]/50 last:border-0 ${t.short === 'YOUR XI' ? 'bg-yellow-500/10' : 'hover:bg-[var(--color-canvas-soft-2)]'} ${i === 3 ? 'border-b-[var(--color-success)] border-b-2' : ''}`}>
+                        <td className="py-3 pl-5 text-[var(--color-mute)] font-mono font-bold text-sm">{i + 1}</td>
+                        <td className={`py-3 px-3 font-bold tracking-tight text-sm ${t.short === 'YOUR XI' ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                          <div className="flex items-center gap-3">
+                            <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: teamColor(t.short) }}>
+                              <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
+                            </div>
+                            {t.name}
+                          </div>
+                        </td>
+                        <td className="py-3 px-3 text-center text-[var(--color-mute)] font-mono font-medium">14</td>
+                        <td className="py-3 px-3 text-center text-[var(--color-success)] font-mono font-bold">{t.won}</td>
+                        <td className="py-3 px-3 text-center text-[var(--color-error)] font-mono font-bold">{t.lost}</td>
+                        <td className={`py-3 px-3 text-center font-black tracking-tight font-mono text-base ${t.short === 'YOUR XI' ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>{t.points}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
+            
+            {/* Playoff Bracket */}
+            {playoffMatches && playoffMatches.length > 0 && (
+              <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm overflow-hidden">
+                <div className="text-xs text-[var(--color-mute)] uppercase tracking-[0.15em] mb-8 text-center font-bold">Playoffs Bracket</div>
+                <PlayoffBracket matches={playoffMatches} />
+              </div>
+            )}
           </div>
 
-          {/* Right: Awards */}
-          <div className="card overflow-hidden flex flex-col h-full">
-            <div className="p-4 font-bold text-[var(--color-mute)] bg-[var(--color-canvas)] border-b border-[var(--color-hairline)]">
-              <span className="text-sm uppercase tracking-wider">Season Awards</span>
-            </div>
-            <div className="p-4 bg-[var(--color-canvas-soft-2)] grid grid-cols-1 gap-4 flex-1 content-start">
-              {Object.entries(awards).map(([awardName, info]) => (
-                <div key={awardName} className="bg-[var(--color-canvas)] p-4 rounded-xl border border-[var(--color-hairline)]">
-                  <div className={`text-xs uppercase tracking-widest font-bold mb-1 ${
-                    awardName.includes('Orange') ? 'text-orange-400' :
-                    awardName.includes('Purple') ? 'text-purple-400' :
-                    awardName.includes('MVP') ? 'text-yellow-400' : 'text-blue-400'
-                  }`}>{awardName}</div>
-                  <div className="text-lg font-bold text-[var(--color-ink)]">{info.player}</div>
-                  <div className="text-xs text-[var(--color-mute)] mt-1">{info.team}</div>
-                </div>
-              ))}
+          {/* Sidebar */}
+          <div className="xl:col-span-4 flex flex-col gap-6 md:gap-8">
+            {/* Awards */}
+            <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm flex flex-col">
+              <div className="p-5 font-bold text-[var(--color-ink)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight flex items-center gap-2">
+                <span>Season Awards</span>
+              </div>
+              <div className="p-5 grid grid-cols-1 gap-4 flex-1">
+                {Object.entries(awards).map(([awardName, info]) => (
+                  <div key={awardName} className="bg-[var(--color-canvas-soft)] p-5 rounded-xl border border-[var(--color-hairline)] flex flex-col justify-center relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-colors">
+                    <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-[40px] pointer-events-none opacity-20 ${
+                      awardName.includes('Orange') ? 'bg-orange-500' :
+                      awardName.includes('Purple') ? 'bg-purple-500' :
+                      awardName.includes('MVP') ? 'bg-yellow-500' : 'bg-blue-500'
+                    }`} />
+                    <div className={`text-[10px] uppercase tracking-widest font-bold mb-1.5 z-10 ${
+                      awardName.includes('Orange') ? 'text-orange-400' :
+                      awardName.includes('Purple') ? 'text-purple-400' :
+                      awardName.includes('MVP') ? 'text-yellow-400' : 'text-blue-400'
+                    }`}>{awardName}</div>
+                    <div className="text-xl font-black tracking-tight text-[var(--color-ink)] z-10 truncate">{info.player}</div>
+                    <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest mt-1 z-10">{info.team}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Playoff Bracket */}
-        {playoffMatches && playoffMatches.length > 0 && (
-          <div className="card p-5 mb-6 overflow-hidden">
-            <div className="text-xs text-[var(--color-mute)] uppercase tracking-wider mb-4 text-center">Playoffs Bracket</div>
-            <PlayoffBracket matches={playoffMatches} />
-          </div>
-        )}
 
         {/* Tournament Leaders Panel at end of season */}
         <div className="mb-6 h-[400px]">
@@ -3072,20 +3223,23 @@ function WatchModeScreen({
   const sortedLive = [...liveTeams].sort((a, b) => b.points - a.points || b.nrr - a.nrr);
 
   return (
-    <div className="min-h-screen p-4 max-w-7xl mx-auto">
+    <div className="min-h-screen p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[var(--color-canvas)]/60 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)]">
         <div>
-          <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold">Watch Mode</div>
-          <div className="text-2xl font-semibold tracking-tight text-[var(--color-ink)] mt-1">
+          <div className="text-xs text-[var(--color-primary)] uppercase tracking-widest font-bold flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" /> Watch Mode
+          </div>
+          <div className="text-3xl font-black tracking-tighter text-[var(--color-ink)] mt-1">
             Match <span className="text-yellow-400">{Math.min(currentMatchIdx, total)}</span>
-            <span className="text-gray-600"> / {total}</span>
+            <span className="text-[var(--color-mute)] text-xl font-medium tracking-tight"> / {total}</span>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="w-48 h-2 bg-[var(--color-canvas)] rounded-full overflow-hidden hidden md:block">
+        
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <div className="w-full md:w-64 h-3 bg-[var(--color-canvas-soft-2)] rounded-full overflow-hidden border border-[var(--color-hairline)] shadow-inner">
             <motion.div
-              className="h-full bg-yellow-500 rounded-full"
+              className="h-full bg-gradient-to-r from-yellow-500 to-[var(--color-primary)] rounded-full"
               animate={{ width: `${(currentMatchIdx / total) * 100}%` }}
               transition={{ duration: 0.5 }}
             />
@@ -3093,13 +3247,13 @@ function WatchModeScreen({
           
           <button
             onClick={() => setIsPaused(!isPaused)}
-            className={`flex items-center gap-2 text-xs font-bold px-4 py-2 rounded-lg border transition-colors ${
+            className={`flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl border transition-all shadow-sm shrink-0 ${
               isPaused 
-                ? 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50 hover:bg-yellow-500/30' 
-                : 'bg-[var(--color-canvas)]/50 text-[var(--color-mute)] border-[var(--color-hairline)] hover:bg-gray-700'
+                ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/50 hover:bg-yellow-500/20' 
+                : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft-2)]'
             }`}
           >
-            {isPaused ? <><Play size={14} /> Resume</> : <><Pause size={14} /> Pause</>}
+            {isPaused ? <><Play size={16} /> Resume</> : <><Pause size={16} /> Pause</>}
           </button>
 
           <button
@@ -3107,7 +3261,7 @@ function WatchModeScreen({
               if (timerRef.current) clearTimeout(timerRef.current);
               onSkip();
             }}
-            className="text-xs font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)] hover:border-gray-500 px-4 py-2 rounded-lg transition-colors"
+            className="text-sm font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)] hover:border-gray-500 px-5 py-2.5 rounded-xl transition-all bg-[var(--color-canvas)] shrink-0 shadow-sm"
           >
             ⏭ Skip to End
           </button>
@@ -3281,20 +3435,21 @@ function WatchModeScreen({
         </div>
 
         {/* Middle: Live Table (Span 4) */}
-        <div className="lg:col-span-4 card overflow-hidden flex flex-col">
-          <div className="p-3 font-bold text-[var(--color-mute)] bg-[var(--color-canvas)] border-b border-[var(--color-hairline)] text-xs uppercase tracking-wider shrink-0">
-            Live Standings
+        <div className="lg:col-span-4 bg-[var(--color-canvas)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] flex flex-col h-full">
+          <div className="p-5 font-bold text-[var(--color-ink)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight shrink-0 flex items-center justify-between">
+            <span>Live Standings</span>
+            <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--color-mute)]">{total - currentMatchIdx} Matches Left</span>
           </div>
-          <div className="overflow-x-auto flex-1">
+          <div className="overflow-x-auto flex-1 custom-scrollbar">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)]">
-                  <th className="py-2 pl-3 text-[10px] font-bold text-[var(--color-mute)] uppercase">Team</th>
-                  <th className="py-2 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center">P</th>
-                  <th className="py-2 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center">W</th>
-                  <th className="py-2 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center">L</th>
-                  <th className="py-2 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center">Pts</th>
-                  <th className="py-2 pr-3 text-[10px] font-bold text-[var(--color-mute)] uppercase text-right">NRR</th>
+                <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)]">
+                  <th className="py-3 pl-4 text-[10px] font-bold text-[var(--color-mute)] uppercase tracking-widest">Team</th>
+                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">P</th>
+                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">W</th>
+                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">L</th>
+                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">Pts</th>
+                  <th className="py-3 pr-4 text-[10px] font-bold text-[var(--color-mute)] uppercase text-right tracking-widest">NRR</th>
                 </tr>
               </thead>
               <tbody>
@@ -3303,28 +3458,29 @@ function WatchModeScreen({
                   const isUser = t.short === 'YOUR XI';
                   return (
                     <tr key={t.short} className={`
-                      border-b border-[var(--color-hairline)]/50 last:border-0
-                      ${isUser ? 'bg-yellow-900/10' : ''}
-                      ${isTop4 && !isUser ? 'bg-green-900/5' : ''}
+                      border-b border-[var(--color-hairline)]/50 transition-colors
+                      ${isUser ? 'bg-yellow-500/5 hover:bg-yellow-500/10' : 'hover:bg-[var(--color-canvas-soft-2)]'}
+                      ${isTop4 && !isUser ? 'bg-green-500/5 hover:bg-green-500/10' : ''}
+                      ${idx === 3 ? 'border-b-[var(--color-primary)] border-b-2' : ''}
                     `}>
-                      <td className="py-2 pl-3">
-                        <div className="flex items-center gap-2">
-                          <div className={`w-1.5 h-6 rounded-full ${isTop4 ? 'bg-green-500/50' : 'bg-[var(--color-canvas)]'}`} />
-                          <div className="w-4 h-4 rounded-sm flex items-center justify-center shrink-0" style={{ background: teamColor(t.short) }}>
-                            <span className="text-[8px] font-semibold tracking-tight text-[var(--color-ink)]">{t.short.slice(0, 1)}</span>
+                      <td className="py-2.5 pl-4">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-1 h-8 rounded-full ${isTop4 ? 'bg-[var(--color-success)]' : 'bg-transparent'}`} />
+                          <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: teamColor(t.short) }}>
+                            <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
                           </div>
-                          <span className={`text-xs font-bold ${isUser ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>
+                          <span className={`text-sm font-bold tracking-tight ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
                             {t.short}
                           </span>
                         </div>
                       </td>
-                      <td className="py-2 px-2 text-center text-xs font-mono text-[var(--color-mute)]">{t.played}</td>
-                      <td className="py-2 px-2 text-center text-xs font-mono text-green-400">{t.won}</td>
-                      <td className="py-2 px-2 text-center text-xs font-mono text-red-400">{t.lost}</td>
-                      <td className={`py-2 px-2 text-center text-xs font-semibold tracking-tight font-mono ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                      <td className="py-2.5 px-2 text-center text-xs font-mono font-medium text-[var(--color-mute)]">{t.played}</td>
+                      <td className="py-2.5 px-2 text-center text-xs font-mono font-bold text-[var(--color-success)]">{t.won}</td>
+                      <td className="py-2.5 px-2 text-center text-xs font-mono font-bold text-[var(--color-error)]">{t.lost}</td>
+                      <td className={`py-2.5 px-2 text-center text-sm font-black tracking-tight font-mono ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
                         {t.points}
                       </td>
-                      <td className={`py-2 pr-3 text-right text-[10px] font-mono ${t.nrr >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                      <td className={`py-2.5 pr-4 text-right text-[11px] font-mono font-bold tracking-tighter ${t.nrr >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
                         {t.nrr > 0 ? '+' : ''}{t.nrr.toFixed(3)}
                       </td>
                     </tr>
@@ -3477,43 +3633,58 @@ function PlayoffsWatchScreen({
   };
 
   return (
-    <div className="min-h-screen p-4 max-w-7xl mx-auto flex flex-col gap-6">
-       <div className="text-center mb-2 mt-8">
-         <div className="text-3xl font-semibold tracking-tight text-[var(--color-ink)]">IPL PLAYOFFS</div>
-         <div className="text-sm text-yellow-500 tracking-widest uppercase font-bold mt-1">The Road to the Trophy</div>
+    <div className="min-h-screen p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-hidden">
+       {/* Background effect */}
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-[var(--color-primary)] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
+       
+       <div className="text-center mb-4 mt-6 z-10 relative">
+         <div className="text-4xl md:text-5xl font-black tracking-tighter text-[var(--color-ink)] drop-shadow-sm">
+           IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-[var(--color-primary)]">PLAYOFFS</span>
+         </div>
+         <div className="text-sm md:text-base text-yellow-500 tracking-[0.2em] uppercase font-bold mt-2">The Road to the Trophy</div>
        </div>
 
-       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
-         <div className="lg:col-span-3 flex flex-col gap-4">
-           <div className="card overflow-hidden shadow-2xl border border-[var(--color-hairline)]">
-             <div className="p-3 bg-[var(--color-canvas)] border-b border-[var(--color-hairline)] text-[10px] uppercase font-bold text-[var(--color-mute)] tracking-wider">
-               Final Standings (Top 4)
+       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 z-10">
+         <div className="lg:col-span-3 flex flex-col gap-6">
+           <div className="bg-[var(--color-canvas)]/60 backdrop-blur-xl rounded-2xl overflow-hidden shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] border border-[var(--color-hairline)]">
+             <div className="p-4 bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-xs uppercase font-bold text-[var(--color-ink)] tracking-widest flex items-center justify-between">
+               <span>Final Standings</span>
+               <span className="text-[10px] text-[var(--color-mute)] bg-[var(--color-canvas)] px-2 py-0.5 rounded border border-[var(--color-hairline)]">TOP 4</span>
              </div>
-             <table className="w-full text-left text-xs bg-[var(--color-canvas-soft-2)]">
+             <table className="w-full text-left text-sm">
                <tbody>
-                 {top4.map((t, i) => (
-                   <tr key={t.short} className={`border-b border-[var(--color-hairline)]/50 last:border-0 ${t.short === 'YOUR XI' ? 'bg-yellow-900/20 text-yellow-400 font-bold' : 'text-[var(--color-mute)]'}`}>
-                     <td className="p-3 w-6 text-[var(--color-mute)] font-bold">{i+1}</td>
-                     <td className="p-3 truncate">{t.short}</td>
-                     <td className="p-3 text-right">{t.points} pts</td>
-                   </tr>
-                 ))}
+                 {top4.map((t, i) => {
+                   const isUser = t.short === 'YOUR XI';
+                   return (
+                     <tr key={t.short} className={`border-b border-[var(--color-hairline)]/50 last:border-0 transition-colors ${isUser ? 'bg-yellow-500/10' : 'hover:bg-[var(--color-canvas-soft-2)]'}`}>
+                       <td className="p-4 w-12 text-center text-[var(--color-mute)] font-mono font-bold">{i+1}</td>
+                       <td className={`p-4 truncate font-bold tracking-tight ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                         <div className="flex items-center gap-2">
+                           <div className="w-3 h-3 rounded-sm flex items-center justify-center shrink-0" style={{ background: teamColor(t.short) }} />
+                           {t.short}
+                         </div>
+                       </td>
+                       <td className={`p-4 text-right font-mono font-black ${isUser ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>{t.points}</td>
+                     </tr>
+                   );
+                 })}
                </tbody>
              </table>
            </div>
 
            {isFastForward && (
-             <div className="card p-6 border border-red-900/50 bg-red-950/20 flex flex-col items-center justify-center text-center shadow-xl">
-               <div className="text-4xl mb-3">💔</div>
-               <div className="text-sm font-semibold tracking-tight text-red-400 tracking-widest uppercase mb-1">ELIMINATED</div>
-               <div className="text-[10px] text-[var(--color-mute)] mt-1 uppercase tracking-widest">Simulating remaining matches...</div>
+             <div className="bg-red-500/10 backdrop-blur-md rounded-2xl p-6 border border-red-500/20 flex flex-col items-center justify-center text-center shadow-lg">
+               <div className="text-4xl mb-4 animate-bounce">💔</div>
+               <div className="text-lg font-black tracking-tight text-red-500 tracking-widest uppercase mb-2">Eliminated</div>
+               <div className="text-xs text-[var(--color-mute)] font-medium">Simulating remaining matches...</div>
              </div>
            )}
          </div>
 
-         <div className="lg:col-span-9 flex flex-col gap-4">
-            <div className="card p-5 bg-[var(--color-canvas-soft-2)] overflow-hidden flex-shrink-0 shadow-2xl border border-[var(--color-hairline)]">
-               <div className="text-xs text-[var(--color-mute)] uppercase tracking-wider mb-4 text-center font-bold">Playoffs Bracket</div>
+         <div className="lg:col-span-9 flex flex-col gap-6">
+            <div className="bg-[var(--color-canvas)]/60 backdrop-blur-xl rounded-2xl p-6 md:p-8 flex-shrink-0 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] border border-[var(--color-hairline)] relative overflow-hidden">
+               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-yellow-500 to-[var(--color-primary)] opacity-50" />
+               <div className="text-sm text-[var(--color-mute)] uppercase tracking-[0.15em] mb-8 text-center font-bold">Playoffs Bracket</div>
                <PlayoffBracket matches={[
                   matches[0] || { name: 'Qualifier 1', team1: top4[0].short, team2: top4[1].short, team1Score: '-', team2Score: '-', winner: '', result: 'Pending' },
                   matches[1] || { name: 'Eliminator', team1: top4[2].short, team2: top4[3].short, team1Score: '-', team2Score: '-', winner: '', result: 'Pending' },
@@ -3522,40 +3693,53 @@ function PlayoffsWatchScreen({
                ] as PlayoffMatch[]} />
             </div>
 
-            <div className="flex-1 flex flex-col justify-center items-center py-8">
+            <div className="flex-1 flex flex-col justify-center items-center py-4 md:py-8 min-h-[300px]">
                <AnimatePresence mode="wait">
                   {showBuilder ? (
-                    <motion.div key="builder" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="w-full max-w-2xl">
+                    <motion.div key="builder" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="w-full max-w-3xl">
                        {/* @ts-ignore */}
                        <SimpleSquadBuilder squad={localSquad} onSubmit={handleSquadSubmit} settings={settings} />
                     </motion.div>
                   ) : lastResult ? (
-                    <motion.div key="result" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className={`card p-8 border-2 w-full max-w-lg shadow-2xl ${lastResult.userWon ? 'border-green-600/60 bg-green-950/20' : 'border-red-600/60 bg-red-950/20'}`}>
-                       <div className="text-center text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest mb-6">
-                         {currentMatchConfig?.name} Result
-                       </div>
-                       <div className="flex items-center gap-4 mb-8">
-                         <div className="flex-1 text-right">
-                           <div className={`text-2xl font-semibold tracking-tight ${lastResult.winner === lastResult.homeTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{lastResult.homeTeam}</div>
-                           <div className="text-xl font-mono text-[var(--color-mute)] mt-1">{lastResult.homeScore}</div>
+                    <motion.div key="result" initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="w-full max-w-2xl relative group">
+                       <div className={`absolute -inset-1 rounded-[2rem] blur-xl opacity-30 group-hover:opacity-50 transition duration-1000 ${lastResult.userWon ? 'bg-green-500' : 'bg-red-500'}`} />
+                       <div className={`relative bg-[var(--color-canvas)] p-8 md:p-10 rounded-3xl border border-[var(--color-hairline)] shadow-2xl overflow-hidden`}>
+                         <div className={`absolute top-0 inset-x-0 h-2 ${lastResult.userWon ? 'bg-[var(--color-success)]' : 'bg-[var(--color-error)]'}`} />
+                         
+                         <div className="text-center text-sm font-bold text-[var(--color-mute)] uppercase tracking-widest mb-8">
+                           {currentMatchConfig?.name} Result
                          </div>
-                         <div className="text-gray-600 font-bold px-2 text-xl">VS</div>
-                         <div className="flex-1 text-left">
-                           <div className={`text-2xl font-semibold tracking-tight ${lastResult.winner === lastResult.awayTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{lastResult.awayTeam}</div>
-                           <div className="text-xl font-mono text-[var(--color-mute)] mt-1">{lastResult.awayScore}</div>
+                         <div className="flex items-center gap-4 md:gap-8 mb-10">
+                           <div className="flex-1 text-right flex flex-col items-end gap-1">
+                             <div className={`text-3xl md:text-4xl font-black tracking-tighter ${lastResult.winner === lastResult.homeTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{lastResult.homeTeam}</div>
+                             <div className="text-xl md:text-2xl font-mono font-bold text-[var(--color-mute)]">{lastResult.homeScore}</div>
+                           </div>
+                           <div className="text-[var(--color-mute)] font-black text-2xl md:text-3xl opacity-50">VS</div>
+                           <div className="flex-1 text-left flex flex-col items-start gap-1">
+                             <div className={`text-3xl md:text-4xl font-black tracking-tighter ${lastResult.winner === lastResult.awayTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{lastResult.awayTeam}</div>
+                             <div className="text-xl md:text-2xl font-mono font-bold text-[var(--color-mute)]">{lastResult.awayScore}</div>
+                           </div>
                          </div>
+                         <div className="text-center font-black tracking-tight text-xl md:text-2xl text-[var(--color-primary)] mb-10">
+                           {lastResult.winner} won {lastResult.margin}
+                         </div>
+                         <button onClick={() => { setLastResult(null); setStep(s => s + 1); }} className="w-full relative overflow-hidden rounded-2xl p-[2px] group/btn">
+                           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)] via-yellow-400 to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
+                           <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover/btn:bg-transparent">
+                             <span className="font-bold text-lg text-[var(--color-ink)] group-hover/btn:text-black transition-colors tracking-widest uppercase">CONTINUE ▶</span>
+                           </div>
+                         </button>
                        </div>
-                       <div className="text-center font-semibold tracking-tight text-lg text-yellow-400 mb-8 tracking-wide">
-                         {lastResult.winner} won {lastResult.margin}
-                       </div>
-                       <button onClick={() => { setLastResult(null); setStep(s => s + 1); }} className="btn-primary w-full py-4 text-lg">
-                         CONTINUE ▶
-                       </button>
                     </motion.div>
                   ) : (
-                    <motion.div key="simulating" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center text-[var(--color-mute)] gap-4 mt-8">
-                       <div className="w-10 h-10 rounded-full border-t-2 border-yellow-500 animate-spin" />
-                       <div className="text-xs font-mono uppercase tracking-widest font-bold">Simulating {currentMatchConfig?.name || '...'}</div>
+                    <motion.div key="simulating" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center gap-6 mt-12">
+                       <div className="relative">
+                         <div className="w-16 h-16 rounded-full border-4 border-yellow-500/20" />
+                         <div className="absolute top-0 left-0 w-16 h-16 rounded-full border-4 border-t-yellow-500 animate-spin" />
+                       </div>
+                       <div className="text-sm font-mono uppercase tracking-[0.2em] font-bold text-[var(--color-mute)] bg-[var(--color-canvas-soft-2)] px-4 py-2 rounded-lg border border-[var(--color-hairline)] shadow-inner">
+                         Simulating {currentMatchConfig?.name || '...'}
+                       </div>
                     </motion.div>
                   )}
                </AnimatePresence>
