@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+
+interface Props {
+    error: unknown
+}
+
+const { error } = Astro.props
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>500 - Server Error | 16-0 Play</title>
+    <meta name="description" content="An unexpected error occurred on 16-0play." />
+  </head>
+  <body class="min-h-screen bg-[#0a0a0a] text-white selection:bg-yellow-500/30 flex items-center justify-center">
+    <div class="max-w-4xl mx-auto px-6 py-16 text-center">
+      <h1 class="text-9xl font-bold mb-4 text-red-500">500</h1>
+      <h2 class="text-3xl font-semibold mb-6 text-white">Server Error</h2>
+      <p class="text-gray-300 mb-8 max-w-lg mx-auto leading-relaxed">
+        Something went wrong on our end. We are working to fix it. Please try again later.
+      </p>
+      <div>
+        <a href="/" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-black bg-yellow-500 hover:bg-yellow-400 transition-colors shadow-lg shadow-yellow-500/20">
+          Return to Home
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
