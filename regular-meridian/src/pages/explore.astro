@@ -10,6 +10,16 @@ import ExplorePage from '../components/Explore.tsx';
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>Explore Player Database - 16-0 Play</title>
     <meta name="description" content="Explore the ultimate IPL player database, view optimal playing XIs, and learn team building strategies." />
+  
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DC032Y6PFZ');
+    </script>
   </head>
   <body class="bg-[#fafafa]">
     <ExplorePage client:load />
