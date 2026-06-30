@@ -1,4 +1,4 @@
-name = "16-0play"
+name = "regular-meridian"
 pages_build_output_dir = "dist"
 
 [[d1_databases]]

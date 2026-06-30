@@ -394,13 +394,19 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   const [filterDiff, setFilterDiff] = useState('All difficulties');
   const [filterRatings, setFilterRatings] = useState('Any ratings');
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    try {
-      const data = JSON.parse(localStorage.getItem('ipl-leaderboard') || '[]');
-      setLeaderboard(data);
-    } catch (e) {
-      console.error(e);
-    }
+    fetch('/api/leaderboard')
+      .then(res => res.json())
+      .then(data => {
+        setLeaderboard(Array.isArray(data) ? data : []);
+        setLoading(false);
+      })
+      .catch(e => {
+        console.error(e);
+        setLoading(false);
+      });
   }, []);
 
   const filteredLeaderboard = useMemo(() => {
@@ -454,7 +460,9 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
         </div>
         
         {/* Table */}
-        {filteredLeaderboard.length === 0 ? (
+        {loading ? (
+          <div className="text-center text-[var(--color-mute)] py-20 font-medium bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-2)]">Loading leaderboard...</div>
+        ) : filteredLeaderboard.length === 0 ? (
           <div className="text-center text-[var(--color-mute)] py-20 font-medium bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-2)]">No records yet. Go play a season!</div>
         ) : (
           <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] overflow-hidden shadow-[var(--shadow-vercel-3)] mb-12">
@@ -2147,7 +2155,7 @@ function ResultsScreen({
     finalPosText = 'Champions';
   }
 
-  const handleSubmitLeaderboard = () => {
+  const handleSubmitLeaderboard = async () => {
     if (!handle.trim()) return;
     try {
       const entry = {
@@ -2166,15 +2174,17 @@ function ResultsScreen({
         difficulty: settings?.difficulty || 'normal',
         showRatings: settings?.showRatings || 'on'
       };
-      const existing = JSON.parse(localStorage.getItem('ipl-leaderboard') || '[]');
-      existing.push(entry);
-      existing.sort((a: any, b: any) => {
-         if (a.champion && !b.champion) return -1;
-         if (!a.champion && b.champion) return 1;
-         if (a.wins !== b.wins) return b.wins - a.wins;
-         return b.nrr - a.nrr;
+      
+      const res = await fetch('/api/leaderboard', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
       });
-      localStorage.setItem('ipl-leaderboard', JSON.stringify(existing.slice(0, 50)));
+
+      if (!res.ok) {
+        throw new Error('Failed to submit leaderboard entry');
+      }
+
       setSubmitted(true);
       onViewLeaderboard();
     } catch (e) {
@@ -3843,7 +3853,7 @@ function MainAppContent() {
   } | null>(null);
 
   useEffect(() => {
-    fetch('/players.json').then(r => r.json()).then(setPlayersPool);
+    fetch('/players.json').then(r => r.json()).then(data => setPlayersPool(data as Player[]));
   }, []);
 
   const handleStart = () => {
