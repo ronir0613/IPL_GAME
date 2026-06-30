@@ -2257,26 +2257,6 @@ function ResultsScreen({
               </>
             )}
             
-            {/* Submit Score Form */}
-            {!submitted ? (
-               <div className="mt-10 flex flex-col md:flex-row items-center justify-center gap-3">
-                 <input 
-                   type="text" 
-                   value={handle} 
-                   onChange={e => setHandle(e.target.value)} 
-                   placeholder="Enter your name..."
-                   className="input-field w-full max-w-[300px] text-center text-lg py-3 rounded-xl border-2 border-[var(--color-hairline)] focus:border-yellow-500"
-                   onKeyDown={e => e.key === 'Enter' && handleSubmitLeaderboard()}
-                 />
-                 <button onClick={handleSubmitLeaderboard} disabled={!handle.trim()} className="btn-primary py-3 px-8 text-lg rounded-xl whitespace-nowrap">
-                   Submit Score
-                 </button>
-               </div>
-            ) : (
-               <div className="mt-8 text-green-400 font-bold uppercase tracking-widest bg-green-500/10 inline-block px-6 py-3 rounded-xl border border-green-500/20">
-                 ✓ Score Submitted
-               </div>
-            )}
           </div>
         </motion.div>
 
