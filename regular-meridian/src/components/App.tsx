@@ -1977,119 +1977,278 @@ function MatchPrepScreen({
 }
 
 // ─── Share Modal ──────────────────────────────────────────────
-import html2canvas from 'html2canvas';
+import { toBlob } from 'html-to-image';
 
-function ShareModal({
-  squad,
-  results,
-  strength,
-  onClose
-}: {
-  squad: SquadSlot[];
-  results: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  strength: TeamStrength;
-  onClose: () => void;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
+// ─── Share Card Components ──────────────────────────────────────────────
+export function getCardTier(results: any, isChampion: boolean) {
+  const wins = results.userTeam.won;
+  const losses = results.userTeam.lost;
   
-  const handleDownload = async () => {
-    if (!cardRef.current) return;
+  if (wins === 16 && losses === 0) return { tier: 'PLATINUM', name: 'THE IMMORTAL', style: 'mesh-gradient-multi text-white border-transparent shadow-vercel-4', badge: 'bg-white/20 text-white border border-white/30' };
+  if (wins === 15 && losses === 1 && isChampion) return { tier: 'DIAMOND', name: 'THE CHAMPION', style: 'bg-[var(--color-primary)] text-[var(--color-on-primary)] border-[var(--color-gradient-develop-start)] shadow-vercel-4', badge: 'bg-blue-500/20 text-blue-400 border border-blue-500/30', gradientText: 'mesh-gradient-develop text-transparent-bg' };
+  if (isChampion) return { tier: 'GOLD', name: 'THE CHAMPION', style: 'bg-[var(--color-primary)] text-[var(--color-warning)] border-[var(--color-warning)] shadow-vercel-4', badge: 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30' };
+  
+  const madePlayoffs = results.finalPos <= 4;
+  if (madePlayoffs) {
+    return { tier: 'SILVER', name: wins >= 12 ? 'THE CONTENDER' : wins >= 10 ? 'THE CHALLENGER' : 'THE SURVIVOR', style: 'bg-[var(--color-canvas-soft-2)] text-[var(--color-ink)] border-[var(--color-hairline-strong)] shadow-vercel-3', badge: 'bg-gray-500/20 text-gray-700 border border-gray-500/30' };
+  }
+  
+  const title = wins >= 8 ? 'THE SURVIVOR' : wins >= 4 ? 'THE COLLAPSE' : 'THE DISGRACE';
+  return { tier: 'STANDARD', name: title, style: 'bg-[var(--color-canvas-soft)] text-[var(--color-ink)] border-[var(--color-hairline)] shadow-vercel-2', badge: 'bg-[var(--color-hairline)] text-[var(--color-mute)] border border-[var(--color-hairline-strong)]' };
+}
+
+function ShareCardNode({ squad, results, strength, isFlipped, isChampion, staticRender = false }: any) {
+  const tierInfo = getCardTier(results, isChampion);
+  const teamType = "FRANCHISE XI"; 
+
+  const FrontContent = (
+    <>
+      <div className="flex flex-col items-center text-center mt-2">
+        <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${tierInfo.badge} mb-4`}>
+           {tierInfo.tier} TIER
+        </div>
+        <div className={`text-8xl font-black tracking-tighter leading-none mb-1 ${tierInfo.gradientText || ''}`}>
+           {results.userTeam.won}-{results.userTeam.lost}
+        </div>
+        <div className="text-2xl font-black uppercase tracking-widest opacity-90">
+           {tierInfo.name}
+        </div>
+      </div>
+
+      <div className="flex-1 flex items-center justify-center py-4">
+        <Trophy size={64} className="opacity-20" />
+      </div>
+
+      <div className="w-full">
+         <div className="flex justify-between items-start mb-4 gap-2">
+           <div className="flex-1 text-left">
+             <div className="text-[9px] font-bold uppercase tracking-widest opacity-60 mb-1 leading-tight">Top Run Scorer</div>
+             <div className="font-bold text-sm leading-tight">{results.awards['Orange Cap']?.player || '—'}</div>
+           </div>
+           <div className="flex-1 text-right">
+             <div className="text-[9px] font-bold uppercase tracking-widest opacity-60 mb-1 leading-tight">Top Wicket Taker</div>
+             <div className="font-bold text-sm leading-tight">{results.awards['Purple Cap']?.player || '—'}</div>
+           </div>
+         </div>
+         <div className="text-center text-[10px] font-bold uppercase tracking-widest opacity-50 border-t border-current/20 pt-3">
+           16-0.app
+         </div>
+      </div>
+    </>
+  );
+
+  const BackContent = (
+    <>
+      <div className="text-center mb-4 mt-2">
+        <div className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">MY XI</div>
+        <div className="text-xl font-black uppercase tracking-widest">{teamType}</div>
+      </div>
+
+      <div className="flex-1 flex flex-col justify-center space-y-1.5 px-2">
+         {squad.filter((s: any) => s.player).slice(0,11).map((s: any, idx: number) => (
+           <div key={idx} className="flex justify-between items-center text-xs">
+             <div className="font-mono opacity-50 w-5">{idx + 1}.</div>
+             <div className="flex-1 font-bold truncate">{s.player.name} {idx === 0 && <span className="text-[9px] ml-1 opacity-70">(C)</span>}</div>
+             <div className="font-mono font-bold opacity-80">{s.player.overall}</div>
+           </div>
+         ))}
+      </div>
+
+      <div className="border-t border-current/20 pt-3 mt-4 flex justify-between items-center px-2">
+         <div className="text-xs font-bold uppercase tracking-widest opacity-60">Team Overall</div>
+         <div className="text-2xl font-black">{strength.overall}</div>
+      </div>
+    </>
+  );
+
+  if (staticRender) {
+    return (
+      <div className={`relative w-full h-full rounded-[2rem] p-6 flex flex-col ${isFlipped ? 'border ' + (tierInfo.tier === 'PLATINUM' ? 'bg-[#0a0a0a] text-white border-[var(--color-hairline-strong)]' : tierInfo.style) : `justify-between border ${tierInfo.style}`}`}>
+        {isFlipped ? BackContent : FrontContent}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative w-full aspect-[5/7] preserve-3d transition-transform duration-500" style={{ transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+      {/* FRONT */}
+      <div className={`absolute inset-0 backface-hidden rounded-[2rem] p-6 flex flex-col justify-between border ${tierInfo.style}`}>
+        {FrontContent}
+      </div>
+
+      {/* BACK */}
+      <div className={`absolute inset-0 backface-hidden rounded-[2rem] p-6 flex flex-col border rotate-y-180 ${tierInfo.tier === 'PLATINUM' ? 'bg-[#0a0a0a] text-white border-[var(--color-hairline-strong)]' : tierInfo.style}`}>
+        {BackContent}
+      </div>
+    </div>
+  );
+}
+
+function ShareModal({ squad, results, strength, onClose }: any) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  
+  const isChampion = results.champion?.toUpperCase() === 'YOUR XI';
+
+  const generateBlob = async () => {
+    // Wait for layout to flush
+    await new Promise(resolve => setTimeout(resolve, 50));
+    
+    const options = { 
+      backgroundColor: '#111', 
+      pixelRatio: 2,
+      cacheBust: true,
+      style: {
+        opacity: '1',
+        transform: 'none'
+      }
+    };
+    
+    // Quick dummy render hack to force html-to-image to compute styles correctly
+    await toBlob(cardRef.current!, { width: 10, height: 10, ...options });
+    
+    return await toBlob(cardRef.current!, options);
+  };
+
+  const downloadBlob = (blob: Blob) => {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = '16-0_share_card.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleShare = async () => {
+    if (!cardRef.current || isSharing) return;
+    setIsSharing(true);
     try {
-      const canvas = await html2canvas(cardRef.current, { backgroundColor: '#0a0a0a', scale: 2 });
-      const url = canvas.toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'my_ipl_squad.png';
-      a.click();
+      const blob = await generateBlob();
+      
+      if (!blob) {
+        setIsSharing(false);
+        alert("Could not generate image.");
+        return;
+      }
+      
+      const file = new File([blob], '16-0_share_card.png', { type: 'image/png' });
+      const shareData = {
+        title: '16-0play',
+        text: `I just went ${results.userTeam.won}-${results.userTeam.lost} on 16-0.app! Can you beat my record?`,
+        files: [file]
+      };
+
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        try {
+          await navigator.share(shareData);
+        } catch (e) {
+          console.error('Error sharing:', e);
+        }
+      } else {
+        downloadBlob(blob);
+        alert("Image downloaded! Your browser doesn't support direct app sharing, so you can manually attach this image to Twitter or WhatsApp.");
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Share error:", err);
+      alert("Something went wrong while generating the share image. Check the console for details.");
+    } finally {
+      setIsSharing(false);
+    }
+  };
+
+  const handleDownloadOnly = async () => {
+    if (!cardRef.current || isSharing) return;
+    setIsSharing(true);
+    try {
+      const blob = await generateBlob();
+      
+      if (!blob) {
+        setIsSharing(false);
+        alert("Could not generate image.");
+        return;
+      }
+      
+      downloadBlob(blob);
+    } catch (err) {
+      console.error("Download error:", err);
+      alert("Something went wrong while downloading the image.");
+    } finally {
+      setIsSharing(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-primary)]/80 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-primary)]/80 backdrop-blur-sm p-4 perspective-1000">
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
-        className="w-full max-w-lg bg-[#0a0a0a] border border-[var(--color-hairline)] rounded-2xl overflow-hidden shadow-2xl flex flex-col items-center"
+        className="w-full max-w-lg bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-2xl overflow-hidden shadow-vercel-4 flex flex-col items-center"
       >
         <div className="flex justify-between items-center w-full p-4 border-b border-[var(--color-hairline)]">
           <h2 className="text-lg font-bold text-[var(--color-ink)]">Share Your Result</h2>
           <button onClick={onClose} className="text-[var(--color-mute)] hover:text-[var(--color-ink)]">✕</button>
         </div>
         
-        {/* Clickable Card for sharing */}
+        {/* Interactive Flipping Card */}
         <div 
-          onClick={handleDownload} 
-          className="p-6 bg-[#0a0a0a] cursor-pointer group relative w-full flex justify-center"
-          title="Click to download"
+          onClick={() => setIsFlipped(!isFlipped)} 
+          className="p-8 bg-[var(--color-canvas-soft)] cursor-pointer group relative w-full flex justify-center"
+          title="Click to flip"
+          style={{ perspective: '1000px' }}
         >
-          <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors z-20 flex items-center justify-center pointer-events-none">
-            <span className="bg-[var(--color-primary)]/80 text-[var(--color-ink)] font-bold py-2 px-4 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-              Click to Download Image
+          <div className="absolute top-4 right-4 z-20 pointer-events-none">
+            <span className="bg-[var(--color-canvas)] text-[var(--color-ink)] text-xs font-bold py-1.5 px-3 rounded-full border border-[var(--color-hairline)] shadow-vercel-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              Click to Flip ↺
             </span>
           </div>
           
-          <div ref={cardRef} className="bg-[#0a0a0a] rounded-[2rem] overflow-hidden relative" style={{ width: '400px', padding: '40px' }}>
-            {/* Big background circle */}
-            <div className="absolute -top-20 -left-20 w-80 h-80 bg-[var(--color-canvas)] rounded-full z-0" />
-            
-            <div className="relative z-10">
-              {/* Top row */}
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <div className="text-7xl font-semibold tracking-tight text-[var(--color-ink)] flex items-center tracking-tighter">
-                    {results.userTeam.won}<span className="text-gray-600 mx-1">-</span>{results.userTeam.lost}
-                  </div>
-                  <div className="text-green-500 font-medium text-lg mt-2">
-                    {results.finalPos}{['st','nd','rd'][results.finalPos-1]||'th'} Place · {results.userTeam.points} pts
-                  </div>
-                </div>
-                <div className="text-right pt-2">
-                  <div className="text-3xl font-semibold tracking-tight text-[#f5c842]">16-0</div>
-                  <div className="text-[10px] font-bold text-[var(--color-mute)] tracking-widest mt-1">OVR {strength.overall}</div>
-                </div>
-              </div>
-
-              {/* Players list */}
-              <div className="text-[var(--color-mute)] font-semibold text-[15px] leading-relaxed mb-10">
-                {squad.filter((s) => s.player).map((s) => s.player!.name).join(' • ')}
-              </div>
-
-              {/* Caps */}
-              <div className="flex justify-between mb-12">
-                <div>
-                  <div className="text-[10px] font-bold text-[#f5c842] uppercase tracking-widest mb-1">Orange Cap</div>
-                  <div className="text-[var(--color-ink)] font-bold text-lg">{results.awards['Orange Cap']?.player || '—'}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] font-bold text-[#a855f7] uppercase tracking-widest mb-1">Purple Cap</div>
-                  <div className="text-[var(--color-ink)] font-bold text-lg">{results.awards['Purple Cap']?.player || '—'}</div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="border-t border-gray-600/50 pt-4 flex justify-between items-center">
-                <div className="text-[var(--color-mute)] text-sm">Think you can beat this?</div>
-                <div className="text-[var(--color-ink)] font-semibold tracking-tight text-lg">16-0.app</div>
-              </div>
-            </div>
+          <div className="w-[320px]">
+             <ShareCardNode squad={squad} results={results} strength={strength} isFlipped={isFlipped} isChampion={isChampion} />
           </div>
         </div>
         
-        <div className="p-4 border-t border-[var(--color-hairline)] flex gap-3 bg-[var(--color-canvas-soft-2)] w-full">
+        {/* Hidden Export Container (Rendered side-by-side for html-to-image without 3D transforms) */}
+        <div 
+          ref={cardRef} 
+          className="absolute left-0 top-0 bg-[#111] p-12 flex gap-12 items-center justify-center pointer-events-none dark" 
+          style={{ width: '1200px', height: '675px', opacity: 0.001, zIndex: -10 }}
+        >
+           <div style={{ width: '400px', height: '560px' }}>
+             <ShareCardNode squad={squad} results={results} strength={strength} isFlipped={false} isChampion={isChampion} staticRender={true} />
+           </div>
+           <div style={{ width: '400px', height: '560px' }}>
+             <ShareCardNode squad={squad} results={results} strength={strength} isFlipped={true} isChampion={isChampion} staticRender={true} />
+           </div>
+           
+           <div className="absolute bottom-8 right-12 text-white/40 font-mono text-sm tracking-widest">
+             16-0play
+           </div>
+        </div>
+        
+        <div className="p-4 border-t border-[var(--color-hairline)] flex gap-2 bg-[var(--color-canvas-soft-2)] w-full">
           <button 
-            onClick={handleDownload}
-            className="btn-primary flex-1 py-3"
+            onClick={(e) => { e.stopPropagation(); handleShare(); }}
+            disabled={isSharing}
+            className="btn-primary flex-1 py-3 font-bold flex items-center justify-center gap-2 px-2 text-sm"
           >
-            ↓ Download Image
+            {isSharing ? 'Generating...' : '🔗 Share'}
+          </button>
+          <button 
+            onClick={(e) => { e.stopPropagation(); handleDownloadOnly(); }}
+            disabled={isSharing}
+            className="flex-1 py-3 font-bold bg-[var(--color-canvas)] text-[var(--color-ink)] border border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft)] rounded-[100px] flex items-center justify-center gap-2 px-2 text-sm transition-all"
+          >
+            {isSharing ? '...' : '↓ Download'}
           </button>
           <button 
             onClick={onClose}
-            className="px-6 py-3 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)]"
+            className="px-6 py-3 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-transparent hover:bg-[var(--color-canvas-soft)]"
           >
-            Cancel
+            Done
           </button>
         </div>
       </motion.div>
