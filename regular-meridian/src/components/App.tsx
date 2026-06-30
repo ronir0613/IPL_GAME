@@ -2948,35 +2948,44 @@ function LiveStatsPanel({ stats, isFinal }: { stats: Record<number, PlayerStats>
   const purpleCap = [...players].sort((a, b) => (b.wickets || 0) - (a.wickets || 0)).slice(0, 3);
   const mvp = [...players].sort((a, b) => (b.mvpScore || 0) - (a.mvpScore || 0)).slice(0, 3);
 
-  const StatRow = ({ title, icon, color, data, valKey }: any) => (
-    <div className="mb-6 last:mb-0">
-      <div className="flex items-center gap-2 mb-3">
-        <span className={`text-${color}-400`}>{icon}</span>
-        <h4 className={`text-sm font-semibold tracking-tight text-${color}-400 uppercase tracking-widest`}>{title}</h4>
-      </div>
-      <div className="space-y-2">
-        {data.map((p: any, i: number) => (
-          <div key={i} className={`flex items-center justify-between p-2 rounded-lg border ${p.isUserTeam ? `bg-${color}-900/20 border-${color}-700/50` : 'bg-[var(--color-canvas)]/50 border-[var(--color-hairline)]/50'}`}>
-            <div className="flex items-center gap-3">
-              <span className={`text-xs font-semibold tracking-tight ${i === 0 ? `text-${color}-400` : 'text-[var(--color-mute)]'}`}>#{i + 1}</span>
-              <div>
-                <div className={`text-xs font-bold ${p.isUserTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{p.name}</div>
-                <div className="text-[9px] text-[var(--color-mute)] uppercase flex items-center gap-1 mt-0.5">
-                  {p.team}
-                  {p.isUserTeam && <span className="text-[#f5c842] tracking-wider font-bold border border-[#f5c842]/30 bg-[#f5c842]/10 px-1 py-[1px] rounded leading-none text-[8px]">YOUR XI</span>}
+  const THEMES = {
+    orange: { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/30" },
+    purple: { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30" },
+    yellow: { text: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/30" }
+  };
+
+  const StatRow = ({ title, icon, color, data, valKey }: any) => {
+    const theme = THEMES[color as keyof typeof THEMES];
+    return (
+      <div className="mb-6 last:mb-0">
+        <div className="flex items-center gap-2 mb-3">
+          <span className={theme.text}>{icon}</span>
+          <h4 className={`text-sm font-semibold tracking-tight uppercase tracking-widest ${theme.text}`}>{title}</h4>
+        </div>
+        <div className="space-y-2">
+          {data.map((p: any, i: number) => (
+            <div key={i} className={`flex items-center justify-between p-2 rounded-lg border ${p.isUserTeam ? `${theme.bg} ${theme.border}` : 'bg-[var(--color-canvas)] border-[var(--color-hairline)]'}`}>
+              <div className="flex items-center gap-3">
+                <span className={`text-xs font-semibold tracking-tight ${i === 0 ? theme.text : 'text-[var(--color-mute)]'}`}>#{i + 1}</span>
+                <div>
+                  <div className={`text-xs font-bold text-[var(--color-ink)]`}>{p.name}</div>
+                  <div className="text-[9px] text-[var(--color-mute)] uppercase flex items-center gap-1 mt-0.5 font-bold">
+                    {p.team}
+                    {p.isUserTeam && <span className="text-[var(--color-primary)] tracking-wider font-bold border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 px-1 py-[1px] rounded leading-none text-[8px]">YOUR XI</span>}
+                  </div>
                 </div>
               </div>
+              <div className={`text-sm font-semibold tracking-tight ${theme.text}`}>{valKey === 'strikeRate' ? p[valKey].toFixed(1) : p[valKey]}</div>
             </div>
-            <div className={`text-sm font-semibold tracking-tight text-${color}-400`}>{valKey === 'strikeRate' ? p[valKey].toFixed(1) : p[valKey]}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
-    <div className="card p-4 border-2 border-yellow-900/30 bg-gradient-to-br from-gray-900 to-black h-full overflow-y-auto custom-scrollbar">
-      <div className="text-xs text-yellow-500 font-bold uppercase tracking-widest mb-4 border-b border-[var(--color-hairline)] pb-2">
+    <div className="card p-5 border border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] h-full overflow-y-auto custom-scrollbar shadow-sm">
+      <div className="text-xs text-[var(--color-mute)] font-bold uppercase tracking-widest mb-4 border-b border-[var(--color-hairline)] pb-3">
         {isFinal ? 'Final Season Leaders' : 'Live Tournament Leaders'}
       </div>
       {orangeCap.length > 0 ? (
