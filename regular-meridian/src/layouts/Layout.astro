@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="en">
 	<head>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-DC032Y6PFZ');
+    </script>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -27,16 +36,6 @@
 				document.documentElement.classList.remove('dark');
 			}
 			window.localStorage.setItem('theme', theme);
-		</script>
-
-		<!-- Google tag (gtag.js) -->
-		<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
-		<script is:inline>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-
-			gtag('config', 'G-DC032Y6PFZ');
 		</script>
 	</head>
 	<body>
