@@ -1,0 +1,7 @@
+name = "16-0play"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ipl-leaderboard"
+database_id = "76c29edd-4219-4cd6-9c74-3d7b8ed44fc9"

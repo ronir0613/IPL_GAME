@@ -2414,18 +2414,18 @@ function ResultsScreen({
                     <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-white/5 transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
                       <div className="w-8 text-[var(--color-mute)] font-mono text-xs pl-2">#{i + 1}</div>
                       <div className="flex-1 flex flex-col items-end gap-0.5 text-xs">
-                        <span className={`font-bold ${isHomeWinner && !isAbandoned ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>{m.homeTeam}</span>
-                        {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-yellow-500/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                        <span className={`font-bold ${isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.homeTeam}</span>
+                        {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
                       </div>
                       <div className="px-3 text-gray-600 font-bold tracking-widest text-[10px]">
                         {m.rainEvent ? '🌧' : 'VS'}
                       </div>
                       <div className="flex-1 flex flex-col items-start gap-0.5 text-xs">
-                        <span className={`font-bold ${!isHomeWinner && !isAbandoned ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>{m.awayTeam}</span>
-                        {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-yellow-500/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                        <span className={`font-bold ${!isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.awayTeam}</span>
+                        {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
                       </div>
                     </summary>
-                    <div className="p-4 bg-[#0a0a0a] border-t border-[var(--color-hairline)]/50">
+                    <div className="p-4 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]/50">
                       {isAbandoned ? (
                         <div className="flex items-center gap-3 justify-center py-2 bg-blue-950/30 rounded-lg border border-blue-800/30">
                           <span className="text-2xl">🌧</span>
@@ -2438,17 +2438,17 @@ function ResultsScreen({
                         <>
                           <div className="flex justify-between items-center mb-5 text-sm font-bold bg-[var(--color-canvas-soft-2)] p-3 rounded-lg border border-[var(--color-hairline)]">
                             <div className="flex-1 text-right text-[var(--color-mute)]">{m.homeScore}</div>
-                            <div className="px-4 text-green-500 text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center">
+                            <div className="px-4 text-[var(--color-win)] text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center">
                               <div>{m.winner} WON</div>
                               <div className="text-[var(--color-mute)] mt-0.5">{m.margin}</div>
-                              {m.rainEvent && <div className="text-teal-400 mt-0.5">🌧 DLS</div>}
+                              {m.rainEvent && <div className="text-[var(--color-link)] mt-0.5">🌧 DLS</div>}
                             </div>
                             <div className="flex-1 text-left text-[var(--color-mute)]">{m.awayScore}</div>
                           </div>
 
                           {m.destinyTriggered && (
                             <div className="mb-4 flex justify-center text-center">
-                              <span className="text-xs font-bold px-3 py-1 bg-yellow-500 text-black rounded-full shadow-[0_0_15px_rgba(234,179,8,0.5)]">
+                              <span className="text-xs font-bold px-3 py-1 bg-[var(--color-gold)] text-[var(--color-on-primary)] rounded-full shadow-[0_0_15px_rgba(245,200,66,0.5)]">
                                 ⭐ THE UNTHINKABLE! Perfect Season Destiny Saved!
                               </span>
                             </div>
@@ -2470,14 +2470,14 @@ function ResultsScreen({
                           )}
                           
                           {m.motm && (
-                            <div className="flex items-center gap-4 bg-gradient-to-r from-yellow-900/20 to-transparent p-3 rounded-xl border border-yellow-900/30">
-                              <div className="w-12 h-12 bg-[var(--color-canvas)] border-2 border-yellow-700/50 rounded-full flex items-center justify-center text-xl font-bold text-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.15)] shrink-0">
+                            <div className="flex items-center gap-4 bg-[var(--color-canvas-soft)] p-3 rounded-xl border border-[var(--color-gold)]/30">
+                              <div className="w-12 h-12 bg-[var(--color-canvas)] border-2 border-[var(--color-gold)]/50 rounded-full flex items-center justify-center text-xl font-bold text-[var(--color-gold)] shadow-[0_0_15px_rgba(245,200,66,0.15)] shrink-0">
                                 {initials(m.motm.player.name)}
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-yellow-400 font-semibold tracking-tight tracking-wide truncate">{m.motm.player.name}</span>
-                                  <span className="text-[9px] uppercase tracking-wider font-bold bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded shrink-0">MotM</span>
+                                  <span className="text-[var(--color-gold)] font-semibold tracking-tight tracking-wide truncate">{m.motm.player.name}</span>
+                                  <span className="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-gold)]/20 text-[var(--color-gold)] px-1.5 py-0.5 rounded shrink-0">MotM</span>
                                 </div>
                                 <div className="text-[var(--color-mute)] text-sm font-semibold truncate">{m.motm.summary}</div>
                               </div>
@@ -2514,13 +2514,13 @@ function ResultsScreen({
                    value={handle} 
                    onChange={(e) => setHandle(e.target.value)} 
                    placeholder="Choose a handle"
-                   className="flex-1 bg-black/40 border border-[var(--color-hairline)] rounded-xl px-4 py-3 text-sm text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-green-500/50 transition-colors"
+                   className="flex-1 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl px-4 py-3 text-sm text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-link)] transition-colors"
                  />
                  <motion.button
                    whileHover={{ scale: 1.02 }}
                    whileTap={{ scale: 0.97 }}
                    onClick={handleSubmitLeaderboard}
-                   className="bg-green-500 hover:bg-green-400 text-black font-semibold tracking-tight uppercase tracking-widest px-8 rounded-xl transition-colors shadow-lg"
+                   className="bg-[var(--color-primary)] hover:opacity-90 text-[var(--color-on-primary)] font-semibold tracking-tight uppercase tracking-widest px-8 rounded-xl transition-colors shadow-lg"
                  >
                    Submit
                  </motion.button>
@@ -2619,9 +2619,9 @@ function MatchCard({ match, delay, isFinal = false }: { match: PlayoffMatch, del
       initial={{ opacity: 0, scale: 0.9, y: 15 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`absolute w-[220px] rounded-xl overflow-hidden backdrop-blur-md shadow-xl border ${isFinal ? 'border-yellow-500/60 shadow-[0_0_25px_rgba(234,179,8,0.25)] bg-gradient-to-br from-yellow-900/30 to-black' : 'border-[var(--color-hairline)]/60 bg-[var(--color-canvas-soft-2)]/90 hover:bg-[#161616]'}`}
+      className={`absolute w-[220px] rounded-xl overflow-hidden backdrop-blur-md shadow-xl border ${isFinal ? 'border-[var(--color-gold)]/60 shadow-[0_0_25px_rgba(245,200,66,0.25)] bg-gradient-to-br from-[var(--color-warning-deep)]/30 to-[var(--color-canvas)]' : 'border-[var(--color-hairline)]/60 bg-[var(--color-canvas-soft-2)]/90 hover:bg-[var(--color-canvas)]'}`}
     >
-      <div className={`text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center py-1.5 ${isFinal ? 'bg-gradient-to-r from-yellow-600 to-yellow-400 text-black shadow-md' : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-b border-[var(--color-hairline)]'}`}>
+      <div className={`text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center py-1.5 ${isFinal ? 'bg-gradient-to-r from-[var(--color-gold-dim)] to-[var(--color-gold)] text-black shadow-md' : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-b border-[var(--color-hairline)]'}`}>
         {match.name}
       </div>
       <div className="p-3">
@@ -2646,8 +2646,8 @@ function MatchCard({ match, delay, isFinal = false }: { match: PlayoffMatch, del
         <div className="border-t border-[var(--color-hairline)]/60 pt-2 flex flex-col gap-1.5">
           <div className="text-[9px] font-semibold tracking-tight text-green-400 uppercase text-center tracking-wider">{match.result}</div>
           {match.motm && (
-            <div className="text-[9px] text-[var(--color-mute)] font-medium text-center flex items-center justify-center gap-1 bg-black/40 py-1 rounded">
-              <span className="text-yellow-500 text-[10px]">⭐</span> {match.motm.player.name.split(' ').pop()} {match.motm.summary}
+            <div className="text-[9px] text-[var(--color-mute)] font-medium text-center flex items-center justify-center gap-1 bg-[var(--color-canvas-soft)] py-1 rounded">
+              <span className="text-[var(--color-gold)] text-[10px]">⭐</span> {match.motm.player.name.split(' ').pop()} {match.motm.summary}
             </div>
           )}
         </div>
@@ -2666,7 +2666,7 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
   
   return (
     <div className="relative w-full overflow-x-auto custom-scrollbar">
-      <div className="relative min-w-[820px] h-[400px] my-4 bg-gradient-to-b from-[#0a0a0a] to-[#111] rounded-2xl border border-[var(--color-hairline)]/50 overflow-hidden">
+      <div className="relative min-w-[820px] h-[400px] my-4 bg-[var(--color-canvas-soft-2)] rounded-2xl border border-[var(--color-hairline)]/50 overflow-hidden">
         
         {/* Background Decorative Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -2676,12 +2676,12 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
         <svg className="absolute inset-0 pointer-events-none w-full h-full" style={{ zIndex: 0 }}>
           <defs>
             <linearGradient id="q1ToFinal" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#374151" />
-              <stop offset="100%" stopColor="#eab308" />
+              <stop offset="0%" stopColor="var(--color-hairline-strong)" />
+              <stop offset="100%" stopColor="var(--color-gold)" />
             </linearGradient>
             <linearGradient id="q2ToFinal" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#374151" />
-              <stop offset="100%" stopColor="#eab308" />
+              <stop offset="0%" stopColor="var(--color-hairline-strong)" />
+              <stop offset="100%" stopColor="var(--color-gold)" />
             </linearGradient>
           </defs>
 
@@ -2691,7 +2691,7 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
             d="M 240 90 L 270 90 L 270 250 L 300 250" 
-            fill="none" stroke="#374151" strokeWidth="2" strokeDasharray="4 4" 
+            fill="none" stroke="var(--color-hairline-strong)" strokeWidth="2" strokeDasharray="4 4" 
           />
           {/* Elim to Q2 (Winner) */}
           <motion.path 
@@ -2699,7 +2699,7 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
             d="M 240 310 L 270 310 L 270 250" 
-            fill="none" stroke="#374151" strokeWidth="2" 
+            fill="none" stroke="var(--color-hairline-strong)" strokeWidth="2" 
           />
           {/* Q2 to Final (Winner) */}
           <motion.path 
@@ -2763,32 +2763,32 @@ function PlayerStatsTable({ squad, stats, playerForms }: {
           <span className="text-xl group-open:rotate-180 transition-transform text-[var(--color-mute)]">▾</span>
         </summary>
         <div className="border-t border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)]">
-          <div className="divide-y divide-gray-800/40">
+          <div className="divide-y divide-[var(--color-hairline)]">
             {players.map(p => {
               const st = stats[p.id];
               const form = playerForms?.[p.id];
               const isBatter = p.role === 'BAT' || p.role === 'WK' || p.role === 'BAT_AR';
               const isBowler = p.role === 'BOWL' || p.role === 'BOWL_AR';
               return (
-                <div key={p.id} className="px-4 py-3 hover:bg-white/3 transition-colors">
+                <div key={p.id} className="px-4 py-3 hover:bg-[var(--color-canvas)] transition-colors">
                   <div className="flex items-start gap-3">
                     {/* Stats summary */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[9px] text-[var(--color-mute)] font-bold uppercase shrink-0">{p.role}</span>
-                        <span className="text-sm font-bold text-gray-200 truncate">{p.name}</span>
+                        <span className="text-sm font-bold text-[var(--color-ink)] truncate">{p.name}</span>
                       </div>
                       {/* Stat pills */}
                       <div className="flex flex-wrap gap-2 mb-1">
                         {(isBatter || p.role === 'AR' || p.role === 'BAT_AR' || p.role === 'BOWL_AR') && (
                           <>
-                            <span className="text-[10px] font-mono bg-yellow-500/10 text-yellow-400 px-2 py-0.5 rounded">{st.runs} runs</span>
+                            <span className="text-[10px] font-mono bg-[var(--color-gold)]/10 text-[var(--color-gold-dim)] px-2 py-0.5 rounded">{st.runs} runs</span>
                             <span className="text-[10px] font-mono bg-[var(--color-canvas)] text-[var(--color-mute)] px-2 py-0.5 rounded">SR {st.strikeRate}</span>
                           </>
                         )}
                         {(isBowler || p.role === 'AR' || p.role === 'BAT_AR' || p.role === 'BOWL_AR') && st.wickets > 0 && (
                           <>
-                            <span className="text-[10px] font-mono bg-green-500/10 text-green-400 px-2 py-0.5 rounded">{st.wickets} wkts</span>
+                            <span className="text-[10px] font-mono bg-[var(--color-win)]/10 text-[var(--color-win)] px-2 py-0.5 rounded">{st.wickets} wkts</span>
                             {st.economy > 0 && <span className="text-[10px] font-mono bg-[var(--color-canvas)] text-[var(--color-mute)] px-2 py-0.5 rounded">Eco {st.economy}</span>}
                           </>
                         )}
