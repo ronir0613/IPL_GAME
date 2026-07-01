@@ -493,8 +493,13 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                             {entry.champion && <span className="text-[#0070f3] font-bold" title="Champion">✓</span>}
                             <span className="bg-[var(--color-canvas-soft)] text-[var(--color-mute)] border border-[var(--color-hairline)] font-mono text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">{entry.mode}</span>
                           </div>
-                          <div className="text-[14px] text-[var(--color-body)] mt-1">
-                            {entry.overall ? `${entry.overall} rated` : 'Unknown rating'} · {entry.mode === 'gamble' ? 'Gamble' : 'Normal'}
+                          <div className="text-[14px] text-[var(--color-body)] mt-1 flex items-center gap-2">
+                            <span>{entry.overall ? `${entry.overall} rated` : 'Unknown rating'} · {entry.mode === 'gamble' ? 'Gamble' : 'Normal'}</span>
+                            {entry.username && (
+                              <span className="text-[12px] font-mono text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">
+                                @{entry.username}
+                              </span>
+                            )}
                           </div>
                        </td>
                        <td className="px-6 py-4 text-right">

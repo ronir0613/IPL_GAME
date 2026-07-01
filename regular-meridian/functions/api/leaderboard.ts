@@ -43,9 +43,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     const offset = (page - 1) * limit;
 
     const { results } = await context.env.DB.prepare(`
-      SELECT *, 
-             RANK() OVER (ORDER BY champion DESC, wins DESC, nrr DESC) as rank
-      FROM leaderboard
+      SELECT l.*, u.handle as username,
+             RANK() OVER (ORDER BY l.champion DESC, l.wins DESC, l.nrr DESC) as rank
+      FROM leaderboard l
+      LEFT JOIN users u ON l.user_id = u.id
       ORDER BY rank ASC
       LIMIT ? OFFSET ?
     `).bind(limit, offset).all();
