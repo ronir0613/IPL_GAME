@@ -2287,8 +2287,8 @@ function ResultsScreen({
 }) {
   const { teams, userTeam, finalPos, projectedPos, awards, story, champion, playoffMatches, playerStats, playerForms, matches } = results;
   const isChampion = champion?.toUpperCase() === 'YOUR XI';
-  const [handle, setHandle] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const strength = calcSquadStrength(squad);
   const userPlayoffMatches = playoffMatches?.filter(m => m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') || [];
@@ -2315,7 +2315,7 @@ function ResultsScreen({
   }
 
   const handleSubmitLeaderboard = async () => {
-    if (!handle.trim()) return;
+    setSubmitError('');
     try {
       const entry = {
         id: Date.now().toString(),
@@ -2327,7 +2327,6 @@ function ResultsScreen({
         nrr: userTeam?.nrr || 0,
         position: finalPos,
         champion: isChampion,
-        handle: handle.trim(),
         overall: strength.overall,
         finish: finalPosText,
         difficulty: settings?.difficulty || 'normal',
@@ -2341,13 +2340,15 @@ function ResultsScreen({
       });
 
       if (!res.ok) {
-        throw new Error('Failed to submit leaderboard entry');
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to submit leaderboard entry');
       }
 
       setSubmitted(true);
       onViewLeaderboard();
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
+      setSubmitError(e.message || 'An error occurred.');
     }
   };
 
@@ -2653,26 +2654,26 @@ function ResultsScreen({
            <div className="relative z-10 flex flex-col gap-4">
              <div>
                <h3 className="text-xl font-semibold tracking-tight text-[var(--color-ink)] tracking-widest uppercase mb-1">Add this run to the leaderboard</h3>
-               <p className="text-sm font-medium text-[var(--color-mute)]">Pick a handle and compare your XI against everyone else.</p>
+               <p className="text-sm font-medium text-[var(--color-mute)]">Your unique username will be automatically generated.</p>
              </div>
              
              {!submitted ? (
-               <div className="flex gap-3">
-                 <input 
-                   type="text" 
-                   value={handle} 
-                   onChange={(e) => setHandle(e.target.value)} 
-                   placeholder="Choose a handle"
-                   className="flex-1 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl px-4 py-3 text-sm text-[var(--color-ink)] placeholder-[var(--color-mute)] focus:outline-none focus:border-[var(--color-link)] transition-colors"
-                 />
-                 <motion.button
-                   whileHover={{ scale: 1.02 }}
-                   whileTap={{ scale: 0.97 }}
-                   onClick={handleSubmitLeaderboard}
-                   className="bg-[var(--color-primary)] hover:opacity-90 text-[var(--color-on-primary)] font-semibold tracking-tight uppercase tracking-widest px-8 rounded-xl transition-colors shadow-lg"
-                 >
-                   Submit
-                 </motion.button>
+               <div className="flex flex-col gap-3">
+                 <div className="flex gap-3">
+                   <motion.button
+                     whileHover={{ scale: 1.02 }}
+                     whileTap={{ scale: 0.97 }}
+                     onClick={handleSubmitLeaderboard}
+                     className="w-full bg-[var(--color-primary)] hover:opacity-90 text-[var(--color-on-primary)] font-semibold tracking-tight uppercase tracking-widest px-8 py-3 rounded-xl transition-colors shadow-lg"
+                   >
+                     Add to Leaderboard
+                   </motion.button>
+                 </div>
+                 {submitError && (
+                   <div className="text-red-500 text-sm font-semibold tracking-wide bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
+                     ⚠️ {submitError}
+                   </div>
+                 )}
                </div>
              ) : (
                <div className="flex items-center gap-2 text-green-400 font-bold uppercase tracking-widest text-sm bg-green-500/10 p-4 rounded-xl border border-green-500/20">
