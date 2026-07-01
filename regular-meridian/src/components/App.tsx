@@ -2352,7 +2352,8 @@ function ResultsScreen({
     try {
       const profileData = getProfileData();
       const entry = {
-        id: profileData.playerId,
+        id: crypto.randomUUID(),
+        userId: profileData.playerId,
         date: new Date().toISOString(),
         mode: settings?.mode || 'classic',
         wins: totalWins,

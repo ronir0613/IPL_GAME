@@ -86,10 +86,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
     
     await context.env.DB.prepare(`
-      INSERT INTO leaderboard (id, date, mode, wins, losses, points, nrr, position, champion, handle, overall, finish, difficulty, showRatings) 
-      VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)
+      INSERT OR IGNORE INTO users (id, handle) VALUES (?1, ?2)
+    `).bind(data.userId, finalHandle).run();
+
+    await context.env.DB.prepare(`
+      INSERT INTO leaderboard (id, user_id, date, mode, wins, losses, points, nrr, position, champion, handle, overall, finish, difficulty, showRatings) 
+      VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)
     `).bind(
       data.id, 
+      data.userId,
       data.date, 
       data.mode, 
       data.wins, 
