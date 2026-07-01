@@ -2410,7 +2410,6 @@ function ResultsScreen({
       }
 
       setSubmitted(true);
-      onViewLeaderboard();
     } catch (e: any) {
       console.error(e);
       setSubmitError(e.message || 'An error occurred.');
