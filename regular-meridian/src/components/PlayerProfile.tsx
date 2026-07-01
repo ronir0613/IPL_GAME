@@ -25,9 +25,28 @@ function DummyShareCard({ tier, count, isPreview = false }: { tier: CardTier, co
   const opacityClass = isLocked ? 'opacity-30 grayscale cursor-not-allowed' : '';
   const paddingClass = isPreview ? 'p-6 min-h-[300px]' : 'p-3 aspect-[3/4] min-w-[100px] hover:-translate-y-1';
   
+  // Dynamic glow based on tier
+  const glowClass = !isLocked && tier === 'Platinum' ? 'shadow-[0_0_25px_rgba(168,85,247,0.6)]' :
+                    !isLocked && tier === 'Gold' ? 'shadow-[0_0_20px_rgba(250,204,21,0.5)]' :
+                    !isLocked && tier === 'Silver' ? 'shadow-[0_0_15px_rgba(156,163,175,0.4)]' :
+                    !isLocked && tier === 'Bronze' ? 'shadow-[0_0_10px_rgba(217,119,6,0.3)]' :
+                    'shadow-sm';
+
+  // Dynamic shine overlay opacity based on tier
+  const shineClass = tier === 'Platinum' ? 'via-white/80' :
+                     tier === 'Gold' ? 'via-white/50' :
+                     tier === 'Silver' ? 'via-white/30' :
+                     tier === 'Bronze' ? 'via-white/10' :
+                     'via-transparent';
+
   return (
-    <div className={`rounded-xl border flex flex-col items-center justify-between shadow-sm transition-transform ${getTierColor(tier)} ${opacityClass} ${paddingClass} relative overflow-hidden group`}>
+    <div className={`rounded-xl border flex flex-col items-center justify-between transition-transform ${getTierColor(tier)} ${glowClass} ${opacityClass} ${paddingClass} relative overflow-hidden group`}>
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+      
+      {/* Shine effect that sweeps on hover */}
+      {!isLocked && tier !== 'Standard' && (
+        <div className={`absolute top-0 -left-[150%] h-full w-[150%] z-0 block transform -skew-x-12 bg-gradient-to-r from-transparent ${shineClass} to-transparent group-hover:translate-x-[200%] transition-transform duration-1000 ease-in-out pointer-events-none`} />
+      )}
       
       <div className="w-full text-center relative z-10">
         <div className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">{tier}</div>

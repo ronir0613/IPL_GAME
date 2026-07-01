@@ -3,12 +3,12 @@ import { ArrowLeft, Gamepad2, Building2, Coins, ShieldCheck, Scale, Target, User
 
 export default function ExplorePage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#171717] font-sans selection:bg-[#171717] selection:text-[#f2f2f2] overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] font-sans selection:bg-yellow-500/30 overflow-x-hidden">
       
       {/* Top Nav */}
       <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center relative z-10">
         <a href="/">
-          <motion.div whileHover={{ x: -2 }} className="inline-flex items-center gap-2 text-[#4d4d4d] hover:text-[#171717] transition-colors cursor-pointer text-[14px] font-medium tracking-tight">
+          <motion.div whileHover={{ x: -2 }} className="inline-flex items-center gap-2 text-[var(--color-body)] hover:text-[var(--color-ink)] transition-colors cursor-pointer text-[14px] font-medium tracking-tight">
             <ArrowLeft size={16} /> Back to Home
           </motion.div>
         </a>
@@ -20,7 +20,7 @@ export default function ExplorePage() {
         <motion.section 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center relative py-[160px] px-6 overflow-hidden rounded-[16px] bg-white mx-4 mt-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[#ebebeb]"
+          className="text-center relative py-[160px] px-6 overflow-hidden rounded-[16px] bg-[var(--color-canvas)] mx-4 mt-4 shadow-sm border border-[var(--color-hairline)]"
         >
           {/* Dynamic background gradient */}
           <div className="absolute top-0 left-0 w-full h-full opacity-[0.12] pointer-events-none -z-10"
@@ -30,15 +30,15 @@ export default function ExplorePage() {
                }}
           />
           
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#f8fafc] text-[#475569] text-[13px] font-semibold mb-8 border border-[#e2e8f0] shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-canvas-soft-2)] text-[var(--color-body)] text-[13px] font-semibold mb-8 border border-[var(--color-hairline)] shadow-sm">
             <Trophy size={14} className="text-[#f59e0b]" />
             Engine Architecture
           </div>
-          <h1 className="text-[48px] md:text-[72px] font-bold mb-6 tracking-tight text-[#0f172a] leading-[1.1]">
+          <h1 className="text-[48px] md:text-[72px] font-bold mb-6 tracking-tight text-[var(--color-ink)] leading-[1.1]">
             Understand the Game. <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0ea5e9] to-[#10b981]">Master The Mechanics.</span>
           </h1>
-          <p className="text-[18px] md:text-[20px] text-[#475569] max-w-2xl mx-auto leading-relaxed">
+          <p className="text-[18px] md:text-[20px] text-[var(--color-body)] max-w-2xl mx-auto leading-relaxed">
             The 16-0 engine powers a deterministic cricket simulation where your drafting choices dictate every boundary, wicket, and championship run. Explore the mechanics below.
           </p>
         </motion.section>
@@ -46,40 +46,40 @@ export default function ExplorePage() {
         {/* THE MODES SECTION */}
         <section className="mt-[160px] px-6">
           <div className="text-center mb-16">
-             <div className="font-mono text-[12px] uppercase tracking-widest text-[#64748b] mb-4">Gameplay</div>
-             <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight text-[#0f172a]">The Modes.</h2>
+             <div className="font-mono text-[12px] uppercase tracking-widest text-[var(--color-mute)] mb-4">Gameplay</div>
+             <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight text-[var(--color-ink)]">The Modes.</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Classic */}
-            <motion.div whileHover={{ y: -4 }} className="bg-white border border-[#e2e8f0] rounded-[20px] p-8 shadow-sm hover:shadow-md transition-all flex flex-col items-start">
-              <div className="bg-blue-50 w-16 h-16 rounded-2xl mb-6 flex items-center justify-center border border-blue-100">
-                <Gamepad2 className="text-blue-600" size={32} />
+            <motion.div whileHover={{ y: -4 }} className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[20px] p-8 shadow-sm hover:shadow-md transition-all flex flex-col items-start">
+              <div className="bg-blue-50 dark:bg-blue-900/30 w-16 h-16 rounded-2xl mb-6 flex items-center justify-center border border-blue-100 dark:border-blue-900/50">
+                <Gamepad2 className="text-blue-600 dark:text-blue-400" size={32} />
               </div>
-              <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[#0f172a]">Classic</h3>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[var(--color-ink)]">Classic</h3>
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 The quintessential 16-0 experience. Build your all-time IPL XI, simulate a full season against powerful AI franchises, and attempt to achieve the elusive perfect undefeated run.
               </p>
             </motion.div>
 
             {/* Franchise */}
-            <motion.div whileHover={{ y: -4 }} className="bg-white border border-[#e2e8f0] rounded-[20px] p-8 shadow-sm hover:shadow-md transition-all flex flex-col items-start">
-              <div className="bg-purple-50 w-16 h-16 rounded-2xl mb-6 flex items-center justify-center border border-purple-100">
-                <Building2 className="text-purple-600" size={32} />
+            <motion.div whileHover={{ y: -4 }} className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[20px] p-8 shadow-sm hover:shadow-md transition-all flex flex-col items-start">
+              <div className="bg-purple-50 dark:bg-purple-900/30 w-16 h-16 rounded-2xl mb-6 flex items-center justify-center border border-purple-100 dark:border-purple-900/50">
+                <Building2 className="text-purple-600 dark:text-purple-400" size={32} />
               </div>
-              <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[#0f172a]">Franchise</h3>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[var(--color-ink)]">Franchise</h3>
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 Take long-term control. Manage budgets, negotiate contracts, and navigate player aging across multiple seasons to establish an unstoppable historic dynasty.
               </p>
             </motion.div>
 
             {/* Gamble */}
-            <motion.div whileHover={{ y: -4 }} className="bg-white border border-[#e2e8f0] rounded-[20px] p-8 shadow-sm hover:shadow-md transition-all flex flex-col items-start">
-              <div className="bg-red-50 w-16 h-16 rounded-2xl mb-6 flex items-center justify-center border border-red-100">
-                <Coins className="text-red-500" size={32} />
+            <motion.div whileHover={{ y: -4 }} className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[20px] p-8 shadow-sm hover:shadow-md transition-all flex flex-col items-start">
+              <div className="bg-red-50 dark:bg-red-900/30 w-16 h-16 rounded-2xl mb-6 flex items-center justify-center border border-red-100 dark:border-red-900/50">
+                <Coins className="text-red-500 dark:text-red-400" size={32} />
               </div>
-              <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[#0f172a]">Gamble</h3>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[var(--color-ink)]">Gamble</h3>
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 High stakes, high rewards. Wager your built-up currency on specific match outcomes, player milestones, and playoff brackets to multiply your resources.
               </p>
             </motion.div>
@@ -138,54 +138,54 @@ export default function ExplorePage() {
         {/* TEAM BUILDING GUIDE */}
         <section className="mt-[160px] px-6">
           <div className="text-center mb-16">
-             <div className="font-mono text-[12px] uppercase tracking-widest text-[#64748b] mb-4">Strategy</div>
-             <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight text-[#0f172a]">Team Building Guide.</h2>
-             <p className="text-[16px] md:text-[18px] text-[#64748b] max-w-2xl mx-auto mt-4 leading-relaxed">
+             <div className="font-mono text-[12px] uppercase tracking-widest text-[var(--color-mute)] mb-4">Strategy</div>
+             <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight text-[var(--color-ink)]">Team Building Guide.</h2>
+             <p className="text-[16px] md:text-[18px] text-[var(--color-mute)] max-w-2xl mx-auto mt-4 leading-relaxed">
                Raw rating averages do not guarantee success. The engine rewards synergistic, balanced teams that adhere to real-world franchise constraints.
              </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {/* Rule 1 */}
-            <div className="bg-white border border-[#e2e8f0] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-4">
                 <ShieldCheck className="text-[#0ea5e9]" size={28} />
-                <h3 className="text-[22px] font-bold tracking-tight text-[#0f172a]">The Overseas Rule</h3>
+                <h3 className="text-[22px] font-bold tracking-tight text-[var(--color-ink)]">The Overseas Rule</h3>
               </div>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 Like real life, your Playing XI is strictly limited to a maximum of 4 overseas players. Fielding 5 or more overseas players breaks regulations and immediately invalidates your lineup. You must balance domestic strength with international firepower.
               </p>
             </div>
 
             {/* Rule 2 */}
-            <div className="bg-white border border-[#e2e8f0] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-4">
                 <Scale className="text-[#0ea5e9]" size={28} />
-                <h3 className="text-[22px] font-bold tracking-tight text-[#0f172a]">Role Balance</h3>
+                <h3 className="text-[22px] font-bold tracking-tight text-[var(--color-ink)]">Role Balance</h3>
               </div>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 A team of 11 pure batters will collapse under engine pressure. The simulation checks for structural integrity: having at least 7 batting options, 5 bowling options, and versatile all-rounders drastically improves your win probabilities.
               </p>
             </div>
 
             {/* Rule 3 */}
-            <div className="bg-white border border-[#e2e8f0] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-4">
                 <Target className="text-[#0ea5e9]" size={28} />
-                <h3 className="text-[22px] font-bold tracking-tight text-[#0f172a]">Franchise Cores</h3>
+                <h3 className="text-[22px] font-bold tracking-tight text-[var(--color-ink)]">Franchise Cores</h3>
               </div>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 Selecting a disjointed set of all-stars from 10 different franchises lowers team cohesion. Drafting a solid "core" of 3 to 5 players from the same historic IPL franchise (e.g., a CSK core or MI core) grants significant identity boosts during simulation.
               </p>
             </div>
 
             {/* Rule 4 */}
-            <div className="bg-white border border-[#e2e8f0] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+            <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-8 rounded-[20px] shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
               <div className="flex items-center gap-3 mb-4">
                 <Users className="text-[#0ea5e9]" size={28} />
-                <h3 className="text-[22px] font-bold tracking-tight text-[#0f172a]">Diminishing Returns</h3>
+                <h3 className="text-[22px] font-bold tracking-tight text-[var(--color-ink)]">Diminishing Returns</h3>
               </div>
-              <p className="text-[16px] text-[#475569] leading-relaxed">
+              <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
                 Attempting to stack an XI entirely composed of 95+ rated legends will trigger heavy diminishing returns. The engine enforces realism; stars need role-players to support them. A balanced 89-rated synergistic team often outperforms a broken 93-rated team.
               </p>
             </div>

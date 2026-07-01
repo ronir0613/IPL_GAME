@@ -3976,43 +3976,7 @@ function PlayoffsWatchScreen({
   );
 }
 
-function NavBar({ currentPhase, onNavigate }: { currentPhase: GamePhase, onNavigate: (p: GamePhase) => void }) {
-  return (
-    <nav className="fixed top-0 left-0 right-0 z-50 h-16 bg-[var(--color-canvas)]/80 backdrop-blur-md border-b border-[var(--color-hairline)] px-4 sm:px-6 flex items-center justify-between shadow-sm">
-      <div className="flex items-center gap-6">
-        <button onClick={() => onNavigate('home')} className="text-[var(--color-ink)] font-semibold tracking-tight text-xl tracking-tighter hover:opacity-80 transition-opacity">
-          16-0
-        </button>
-        <div className="hidden sm:flex items-center gap-1">
-          <button 
-            onClick={() => onNavigate('home')}
-            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'home' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
-          >
-            Home
-          </button>
-          <button 
-            onClick={() => onNavigate('mode-select')}
-            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'mode-select' || currentPhase === 'draft' || currentPhase === 'watching' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
-          >
-            Play
-          </button>
-          <button 
-            onClick={() => onNavigate('leaderboard')}
-            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'leaderboard' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
-          >
-            Leaderboard
-          </button>
-          <button 
-            onClick={() => onNavigate('profile')}
-            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'profile' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
-          >
-            Profile
-          </button>
-        </div>
-      </div>
-    </nav>
-  );
-}
+import NavBar from './NavBar';
 
 function MainAppContent() {
   const [phase, setPhaseState] = useState<GamePhase>('home');
@@ -4325,39 +4289,11 @@ function MainAppContent() {
   );
 }
 
-function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
 
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
-
-  const toggle = () => {
-    const nextTheme = !isDark ? 'dark' : 'light';
-    setIsDark(!isDark);
-    if (nextTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('theme', nextTheme);
-  };
-
-  return (
-    <button 
-      onClick={toggle} 
-      className="fixed top-4 right-4 z-50 p-2 bg-[var(--color-card-bg)] border border-[var(--color-card-border)] rounded-full shadow-md text-[var(--color-text-primary)] hover:scale-105 transition-transform"
-      aria-label="Toggle dark mode"
-    >
-      {isDark ? <Sun size={20} /> : <Moon size={20} />}
-    </button>
-  );
-}
 
 export default function MainApp() {
   return (
     <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Loading...</div>}>
-      <ThemeToggle />
       <MainAppContent />
     </Suspense>
   );

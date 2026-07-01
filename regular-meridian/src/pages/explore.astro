@@ -1,10 +1,30 @@
 ---
+import NavBar from '../components/NavBar';
 import '../styles/global.css';
 import ExplorePage from '../components/Explore.tsx';
 ---
 <!doctype html>
 <html lang="en">
   <head>
+
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      window.localStorage.setItem('theme', theme);
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
     <script is:inline>
@@ -20,7 +40,10 @@ import ExplorePage from '../components/Explore.tsx';
     <title>Explore Player Database - 16-0 Play</title>
     <meta name="description" content="Explore the ultimate IPL player database, view optimal playing XIs, and learn team building strategies." />
   </head>
-  <body class="bg-[#fafafa]">
+  <body class="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] selection:bg-yellow-500/30">
+    <NavBar client:load />
+    <div class="pt-16">
     <ExplorePage client:load />
+      </div>
   </body>
 </html>

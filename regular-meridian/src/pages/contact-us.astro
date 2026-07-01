@@ -1,9 +1,29 @@
 ---
+import NavBar from '../components/NavBar';
 import '../styles/global.css';
 ---
 <!doctype html>
 <html lang="en">
   <head>
+
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      window.localStorage.setItem('theme', theme);
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
     <script is:inline>
@@ -20,6 +40,8 @@ import '../styles/global.css';
     <meta name="description" content="Contact the 16-0play team. Reach out for support, feedback, or inquiries regarding our cricket simulator." />
   </head>
   <body class="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] selection:bg-yellow-500/30">
+    <NavBar client:load />
+    <div class="pt-16">
     <div class="max-w-4xl mx-auto px-6 py-16">
       <h1 class="text-4xl font-bold mb-8 text-[var(--color-ink)]">Contact Us</h1>
       <div class="space-y-6 text-[var(--color-body)] leading-relaxed">
@@ -64,5 +86,6 @@ import '../styles/global.css';
         </a>
       </div>
     </div>
+      </div>
   </body>
 </html>
