@@ -1,5 +1,4 @@
 /// <reference types="@cloudflare/workers-types" />
-import Filter from 'bad-words';
 
 export interface Env {
   DB: D1Database;
@@ -34,8 +33,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (data.handle) {
       // 1. Basic Profanity Filter (fast, catches common English bad words)
       try {
-        const filter = new Filter();
-        if (filter.isProfane(data.handle)) {
+        const badWords = ["fuck", "ass", "shit", "bitch", "cunt", "dick", "pussy", "whore", "slut", "fag", "nigger", "nigga", "bastard", "crap"];
+        const lowerHandle = data.handle.toLowerCase();
+        
+        // Use a simple word boundary regex to check for exact matches of bad words
+        const isProfane = badWords.some(word => {
+          const regex = new RegExp(`\\b${word}\\b`, 'i');
+          return regex.test(lowerHandle);
+        });
+
+        if (isProfane) {
           return Response.json({ error: "Inappropriate name detected." }, { status: 400 });
         }
       } catch (e) {
