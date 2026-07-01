@@ -436,7 +436,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
            <h2 className="text-4xl md:text-[48px] leading-tight font-semibold tracking-[-2.4px] text-[var(--color-ink)] mb-4 text-center">
              16-0 Global Leaderboard.
            </h2>
-           <p className="text-[var(--color-body)] text-[18px] text-center max-w-2xl mx-auto">Best all-time top-flight XIs, ranked by points.</p>
+           <p className="text-[var(--color-body)] text-[18px] text-center max-w-2xl mx-auto">All-time greatest XIs.</p>
         </div>
 
         {/* Filters */}
