@@ -2,6 +2,7 @@
 
 export interface Env {
   DB: D1Database;
+  AI: any;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -28,6 +29,22 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const data = await context.request.json() as any;
+    
+    if (data.handle) {
+      try {
+        const prompt = `Analyze the following display name: "${data.handle}". Is it inappropriate, political, discriminative, offensive, or hateful in any language? Answer strictly with YES or NO.`;
+        const aiResponse = await context.env.AI.run('@cf/meta/llama-3-8b-instruct', {
+          messages: [{ role: 'user', content: prompt }]
+        });
+        const answer = (aiResponse.response || "").trim().toUpperCase();
+        if (answer.includes("YES") || answer.startsWith("YES")) {
+          return Response.json({ error: "Inappropriate name detected." }, { status: 400 });
+        }
+      } catch (err) {
+        console.error("AI moderation error:", err);
+        // Proceed if AI fails, rather than blocking the user
+      }
+    }
     
     await context.env.DB.prepare(`
       INSERT INTO leaderboard (id, date, mode, wins, losses, points, nrr, position, champion, handle, overall, finish, difficulty, showRatings) 
