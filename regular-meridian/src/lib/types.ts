@@ -146,6 +146,7 @@ export interface PlayoffMatch {
 
 export type GamePhase = 
   | 'home'
+  | 'profile'
   | 'mode-select'
   | 'mode-settings'
   | 'gamble-drafting'

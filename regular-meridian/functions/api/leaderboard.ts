@@ -60,30 +60,30 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const data = await context.request.json() as any;
     
-    // Generate a unique automatic username
-    let generatedHandle = "";
-    let isUnique = false;
-    let attempts = 0;
-    const maxAttempts = 10;
-    
-    while (!isUnique && attempts < maxAttempts) {
-      const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
-      const term = CRICKET_TERMS[Math.floor(Math.random() * CRICKET_TERMS.length)];
-      const num = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-      generatedHandle = `${adj}${term}${num}`;
+    let finalHandle = data.handle;
+    if (!finalHandle) {
+      let isUnique = false;
+      let attempts = 0;
+      const maxAttempts = 10;
       
-      const { results } = await context.env.DB.prepare('SELECT id FROM leaderboard WHERE handle = ? LIMIT 1').bind(generatedHandle).all();
-      if (results.length === 0) {
-        isUnique = true;
+      while (!isUnique && attempts < maxAttempts) {
+        const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+        const term = CRICKET_TERMS[Math.floor(Math.random() * CRICKET_TERMS.length)];
+        const num = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        finalHandle = `${adj}${term}${num}`;
+        
+        const { results } = await context.env.DB.prepare('SELECT id FROM leaderboard WHERE handle = ? LIMIT 1').bind(finalHandle).all();
+        if (results.length === 0) {
+          isUnique = true;
+        }
+        attempts++;
       }
-      attempts++;
+      
+      if (!isUnique) {
+        // Fallback just in case of extreme bad luck
+        finalHandle = `Player${Math.floor(Math.random() * 1000000)}`;
+      }
     }
-    
-    if (!isUnique) {
-      // Fallback just in case of extreme bad luck
-      generatedHandle = `Player${Math.floor(Math.random() * 1000000)}`;
-    }
-    data.handle = generatedHandle;
     
     await context.env.DB.prepare(`
       INSERT INTO leaderboard (id, date, mode, wins, losses, points, nrr, position, champion, handle, overall, finish, difficulty, showRatings) 
@@ -98,7 +98,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       data.nrr, 
       data.position, 
       data.champion ? 1 : 0, 
-      data.handle, 
+      finalHandle, 
       data.overall, 
       data.finish, 
       data.difficulty, 
@@ -115,7 +115,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const rank = results.length > 0 ? results[0].rank : null;
 
-    return Response.json({ success: true, rank });
+    return Response.json({ success: true, rank, handle: finalHandle });
   } catch (e: any) {
     return Response.json({ error: e.message }, { status: 500 });
   }

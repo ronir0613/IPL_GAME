@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun } from 'lucide-react';
+import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PlayerProfile from './PlayerProfile';
+import { saveRunToProfile, setProfileHandle, getProfileData } from '@/lib/profile';
 
 import { generateGambleTeam } from '@/lib/gamble';
 import type { GambleResult } from '@/lib/gamble';
@@ -522,7 +524,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   );
 }
 
-function HomeScreen({ onPlay, onLeaderboard, hasActiveGame, onContinue }: { onPlay: () => void, onLeaderboard: () => void, hasActiveGame?: boolean, onContinue?: () => void }) {
+function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinue }: { onPlay: () => void, onLeaderboard: () => void, onProfile: () => void, hasActiveGame?: boolean, onContinue?: () => void }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 space-y-12 py-12">
       <motion.div
@@ -574,6 +576,16 @@ function HomeScreen({ onPlay, onLeaderboard, hasActiveGame, onContinue }: { onPl
           >
             <Trophy size={20} className="text-yellow-500" />
             Leaderboard
+          </motion.button>
+          
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onProfile}
+            className="btn-secondary text-lg font-bold px-12 py-3 w-full max-w-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl"
+          >
+            <Star size={20} className="text-yellow-500" />
+            My Profile
           </motion.button>
           
           <a href="/explore">
@@ -1986,17 +1998,18 @@ export function getCardTier(results: any, isChampion: boolean) {
   const wins = results.userTeam.won + playoffWins;
   const losses = results.userTeam.lost + playoffLosses;
   
-  if (wins === 16 && losses === 0) return { tier: 'PLATINUM', name: 'THE IMMORTAL', style: 'mesh-gradient-multi text-white border-transparent shadow-vercel-4', badge: 'bg-white/20 text-white border border-white/30' };
-  if (wins === 15 && losses === 1 && isChampion) return { tier: 'DIAMOND', name: 'THE CHAMPION', style: 'bg-[var(--color-primary)] text-[var(--color-on-primary)] border-[var(--color-gradient-develop-start)] shadow-vercel-4', badge: 'bg-blue-500/20 text-blue-400 border border-blue-500/30', gradientText: 'mesh-gradient-develop text-transparent-bg' };
-  if (isChampion) return { tier: 'GOLD', name: 'THE CHAMPION', style: 'bg-[var(--color-primary)] text-[var(--color-warning)] border-[var(--color-warning)] shadow-vercel-4', badge: 'bg-yellow-500/20 text-yellow-500 border border-yellow-500/30' };
-  
   const madePlayoffs = results.finalPos <= 4;
-  if (madePlayoffs) {
-    return { tier: 'SILVER', name: wins >= 12 ? 'THE CONTENDER' : wins >= 10 ? 'THE CHALLENGER' : 'THE SURVIVOR', style: 'bg-[var(--color-canvas-soft-2)] text-[var(--color-ink)] border-[var(--color-hairline-strong)] shadow-vercel-3', badge: 'bg-gray-500/20 text-gray-700 border border-gray-500/30' };
-  }
+  const userPlayoffMatches = (results.playoffMatches || []).filter((m: any) => m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI');
+  const lastMatch = userPlayoffMatches[userPlayoffMatches.length - 1];
+  const lostInFinals = madePlayoffs && !isChampion && lastMatch?.name === 'Final';
+  
+  if (wins === 16 && losses === 0) return { tier: 'Platinum', name: 'THE IMMORTAL', style: 'mesh-gradient-multi text-white border-transparent shadow-vercel-4', badge: 'bg-white/20 text-white border border-white/30' };
+  if (isChampion) return { tier: 'Gold', name: 'THE CHAMPION', style: 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 text-yellow-950 border-yellow-400 shadow-vercel-4', badge: 'bg-yellow-900/20 text-yellow-900 border border-yellow-900/30' };
+  if (lostInFinals) return { tier: 'Silver', name: 'THE RUNNER UP', style: 'bg-gradient-to-br from-gray-200 via-gray-300 to-gray-500 text-gray-900 border-gray-300 shadow-vercel-3', badge: 'bg-gray-900/10 text-gray-900 border border-gray-900/20' };
+  if (madePlayoffs) return { tier: 'Bronze', name: 'THE CONTENDER', style: 'bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-amber-100 border-amber-600 shadow-vercel-3', badge: 'bg-amber-100/20 text-amber-100 border border-amber-100/30' };
   
   const title = wins >= 8 ? 'THE SURVIVOR' : wins >= 4 ? 'THE COLLAPSE' : 'THE DISGRACE';
-  return { tier: 'STANDARD', name: title, style: 'bg-[var(--color-canvas-soft)] text-[var(--color-ink)] border-[var(--color-hairline)] shadow-vercel-2', badge: 'bg-[var(--color-hairline)] text-[var(--color-mute)] border border-[var(--color-hairline-strong)]' };
+  return { tier: 'Standard', name: title, style: 'bg-[var(--color-canvas-soft)] text-[var(--color-ink)] border-[var(--color-hairline)] shadow-vercel-2', badge: 'bg-[var(--color-hairline)] text-[var(--color-mute)] border border-[var(--color-hairline-strong)]' };
 }
 
 function ShareCardNode({ squad, results, strength, isFlipped, isChampion, staticRender = false }: any) {
@@ -2324,11 +2337,22 @@ function ResultsScreen({
     finalPosText = 'Champions';
   }
 
+  const hasSavedRun = useRef(false);
+  useEffect(() => {
+    if (!hasSavedRun.current) {
+      hasSavedRun.current = true;
+      const playingXI = squad.filter(s => s.player).map(s => s.player!);
+      const tierInfo = getCardTier(results, isChampion);
+      saveRunToProfile(totalWins, totalLosses, finalPos, isChampion, playingXI, settings?.mode || 'classic', settings?.difficulty || 'normal', tierInfo.tier as any);
+    }
+  }, [totalWins, totalLosses, finalPos, isChampion, squad, settings, results]);
+
   const handleSubmitLeaderboard = async () => {
     setSubmitError('');
     try {
+      const profileData = getProfileData();
       const entry = {
-        id: Date.now().toString(),
+        id: profileData.playerId,
         date: new Date().toISOString(),
         mode: settings?.mode || 'classic',
         wins: totalWins,
@@ -2340,7 +2364,8 @@ function ResultsScreen({
         overall: strength.overall,
         finish: finalPosText,
         difficulty: settings?.difficulty || 'normal',
-        showRatings: settings?.showRatings || 'on'
+        showRatings: settings?.showRatings || 'on',
+        handle: profileData.handle || undefined
       };
       
       const res = await fetch('/api/leaderboard', {
@@ -2352,6 +2377,11 @@ function ResultsScreen({
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         throw new Error(errData.error || 'Failed to submit leaderboard entry');
+      }
+
+      const resData = await res.json();
+      if (resData.handle && resData.handle !== profileData.handle) {
+        setProfileHandle(resData.handle);
       }
 
       setSubmitted(true);
@@ -3948,6 +3978,12 @@ function NavBar({ currentPhase, onNavigate }: { currentPhase: GamePhase, onNavig
           >
             Leaderboard
           </button>
+          <button 
+            onClick={() => onNavigate('profile')}
+            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'profile' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
+          >
+            Profile
+          </button>
         </div>
       </div>
     </nav>
@@ -3959,11 +3995,16 @@ function MainAppContent() {
   const [lastActivePhase, setLastActivePhase] = useState<GamePhase | null>(null);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const p = params.get('phase') as GamePhase;
-    if (p) {
-      setPhaseState(p);
-    }
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const p = params.get('phase') as GamePhase;
+      setPhaseState(p || 'home');
+    };
+    
+    handlePopState();
+    
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   useEffect(() => {
@@ -4131,7 +4172,8 @@ function MainAppContent() {
   };
 
   const renderScreen = () => {
-    if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} hasActiveGame={squad.length > 0 && !results} onContinue={() => setPhase(lastActivePhase || 'mode-select')} />;
+    if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} onProfile={() => setPhase('profile')} hasActiveGame={squad.length > 0 && !results} onContinue={() => setPhase(lastActivePhase || 'mode-select')} />;
+    if (phase === 'profile') return <PlayerProfile onBack={() => setPhase('home')} />;
     if (phase === 'leaderboard') return <LeaderboardScreen onBack={() => setPhase('home')} />;
     if (phase === 'mode-select') return <ModeSelectScreen onSelectMode={(m) => {
       setSettings(prev => ({ ...prev, mode: m }));
