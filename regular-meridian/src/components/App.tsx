@@ -395,6 +395,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   const [filterMode, setFilterMode] = useState('All modes');
   const [filterDiff, setFilterDiff] = useState('All difficulties');
   const [filterRatings, setFilterRatings] = useState('Any ratings');
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
@@ -467,7 +468,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
         ) : filteredLeaderboard.length === 0 ? (
           <div className="text-center text-[var(--color-mute)] py-20 font-medium bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-2)]">No records yet. Go play a season!</div>
         ) : (
-          <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] overflow-hidden shadow-[var(--shadow-vercel-3)] mb-12">
+          <div className={`bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-3)] mb-12 relative transition-all duration-500 ease-in-out ${isExpanded ? 'overflow-y-auto max-h-[800px]' : 'overflow-hidden max-h-[400px]'}`}>
              <table className="w-full text-left border-collapse">
                <thead>
                  <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] text-[var(--color-mute)] text-[12px] font-mono uppercase tracking-widest">
@@ -522,6 +523,16 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                  })}
                </tbody>
              </table>
+             {!isExpanded && filteredLeaderboard.length > 5 && (
+               <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[var(--color-canvas)] via-[var(--color-canvas)]/80 to-transparent flex items-end justify-center pb-6 pointer-events-none">
+                 <button 
+                   onClick={() => setIsExpanded(true)}
+                   className="pointer-events-auto px-8 py-2.5 bg-[var(--color-ink)] text-[var(--color-canvas)] rounded-full text-sm font-bold shadow-lg hover:scale-105 transition-transform uppercase tracking-widest cursor-pointer"
+                 >
+                   Show More
+                 </button>
+               </div>
+             )}
           </div>
         )}
       </motion.div>
@@ -1997,7 +2008,15 @@ function MatchPrepScreen({
 import { toBlob } from 'html-to-image';
 
 // ─── Share Card Components ──────────────────────────────────────────────
-export function getCardTier(results: any, isChampion: boolean) {
+export interface TierInfo {
+  tier: string;
+  name: string;
+  style: string;
+  badge: string;
+  gradientText?: string;
+}
+
+export function getCardTier(results: any, isChampion: boolean): TierInfo {
   const playoffWins = (results.playoffMatches || []).filter((m: any) => m.winner?.toUpperCase() === 'YOUR XI').length;
   const playoffLosses = (results.playoffMatches || []).filter((m: any) => (m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') && m.winner?.toUpperCase() !== 'YOUR XI').length;
   const wins = results.userTeam.won + playoffWins;
@@ -2381,11 +2400,11 @@ function ResultsScreen({
       });
 
       if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || 'Failed to submit leaderboard entry');
+        const errData = (await res.json().catch(() => ({}))) as any;
+        throw new Error(errData?.error || 'Failed to submit leaderboard entry');
       }
 
-      const resData = await res.json();
+      const resData = (await res.json()) as { handle?: string };
       if (resData.handle && resData.handle !== profileData.handle) {
         setProfileHandle(resData.handle);
       }
