@@ -148,7 +148,7 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-24 animate-fade-in pt-8">
+    <div className="max-w-4xl mx-auto pb-24 animate-fade-in pt-8 px-4 sm:px-6">
       
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
@@ -179,7 +179,7 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
               <Info size={14} /> Overview
             </h2>
             
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
               <div className="bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
                 <div className="text-2xl font-bold text-[var(--color-ink)]">{totalSeasons}</div>
                 <div className="text-[10px] text-[var(--color-mute)] uppercase tracking-wider font-bold">Seasons</div>

@@ -20,7 +20,7 @@ export default function ExplorePage() {
         <motion.section 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center relative py-[160px] px-6 overflow-hidden rounded-[16px] bg-[var(--color-canvas)] mx-4 mt-4 shadow-sm border border-[var(--color-hairline)]"
+          className="text-center relative py-20 md:py-[160px] px-6 overflow-hidden rounded-[16px] bg-[var(--color-canvas)] mx-4 mt-4 shadow-sm border border-[var(--color-hairline)]"
         >
           {/* Dynamic background gradient */}
           <div className="absolute top-0 left-0 w-full h-full opacity-[0.12] pointer-events-none -z-10"
@@ -44,7 +44,7 @@ export default function ExplorePage() {
         </motion.section>
 
         {/* THE MODES SECTION */}
-        <section className="mt-[160px] px-6">
+        <section className="mt-24 md:mt-[160px] px-6">
           <div className="text-center mb-16">
              <div className="font-mono text-[12px] uppercase tracking-widest text-[var(--color-mute)] mb-4">Gameplay</div>
              <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight text-[var(--color-ink)]">The Modes.</h2>
@@ -87,8 +87,8 @@ export default function ExplorePage() {
         </section>
 
         {/* PLAYER RATINGS DISTRIBUTION */}
-        <section className="mt-[160px] px-6">
-          <div className="bg-[#0f172a] rounded-[24px] p-12 md:p-[64px] text-[#ffffff] shadow-2xl relative overflow-hidden">
+        <section className="mt-24 md:mt-[160px] px-6">
+          <div className="bg-[#0f172a] rounded-[24px] p-6 md:p-[64px] text-[#ffffff] shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none"
                  style={{
                    background: 'radial-gradient(circle at 100% 0%, #3b82f6, transparent 70%)'
@@ -136,7 +136,7 @@ export default function ExplorePage() {
         </section>
 
         {/* TEAM BUILDING GUIDE */}
-        <section className="mt-[160px] px-6">
+        <section className="mt-24 md:mt-[160px] px-6">
           <div className="text-center mb-16">
              <div className="font-mono text-[12px] uppercase tracking-widest text-[var(--color-mute)] mb-4">Strategy</div>
              <h2 className="text-[32px] md:text-[40px] font-bold tracking-tight text-[var(--color-ink)]">Team Building Guide.</h2>

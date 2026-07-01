@@ -250,12 +250,12 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
   selectedSlot?: number | null;
 }) {
   return (
-    <div className="rounded-2xl flex flex-col items-center justify-center h-[380px] w-full relative overflow-hidden bg-[var(--color-canvas)] border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-3)] p-4">
+    <div className="rounded-2xl flex flex-col items-center justify-center min-h-[350px] sm:min-h-[380px] w-full relative overflow-hidden bg-[var(--color-canvas)] border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-3)] p-2 sm:p-4">
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div className="w-[340px] h-[340px] rounded-full bg-[var(--color-primary)] opacity-5 blur-2xl" />
+        <div className="w-full max-w-[340px] aspect-square rounded-full bg-[var(--color-primary)] opacity-5 blur-2xl" />
       </div>
       
-      <div className="w-[320px] h-[320px] relative rounded-full overflow-hidden shadow-2xl border-4 border-[var(--color-canvas-soft)] bg-[var(--color-canvas-soft-2)] ring-4 ring-[var(--color-hairline)]">
+      <div className="w-full max-w-[320px] aspect-square relative rounded-full overflow-hidden shadow-2xl border-4 border-[var(--color-canvas-soft)] bg-[var(--color-canvas-soft-2)] ring-4 ring-[var(--color-hairline)]">
         {squad.map((slot, idx) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
@@ -347,7 +347,7 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
           {benchSlots.filter(x => x.s.player).length} / 14 Filled
         </div>
       </div>
-      <div className="grid grid-cols-5 gap-2 justify-center">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 justify-center">
         {benchSlots.map(({ s: slot, i: idx }) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
@@ -639,7 +639,7 @@ function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => 
           PLAY
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full h-[500px]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full min-h-[300px] md:h-[500px]">
           
           {/* Classic */}
           <motion.button
@@ -709,7 +709,7 @@ function ModeSettingsScreen({ settings, setSettings, onStart, mode }: { settings
           
           <div>
             <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 font-bold">Difficulty</div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               {(['easy', 'normal', 'hard'] as Difficulty[]).map(d => (
                 <button
                   key={d}
@@ -729,7 +729,7 @@ function ModeSettingsScreen({ settings, setSettings, onStart, mode }: { settings
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 font-bold">Show Ratings</div>
               <div className="flex flex-col gap-2">
@@ -1484,7 +1484,7 @@ function DraftScreen({
             {!isSpinning && currentSpin && (
               <div className="flex-1 min-h-0 flex flex-col">
                 <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest mb-3 font-bold px-1">Select one player for your XI</div>
-                <div className="grid grid-cols-2 gap-3 overflow-y-auto pr-2 custom-scrollbar pb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-2 custom-scrollbar pb-6">
                   {currentSpin.players.slice().sort((a, b) => {
                   const aDisabled = isPlayerDisabled(a);
                   const bDisabled = isPlayerDisabled(b);
@@ -1766,7 +1766,7 @@ function SquadCompleteScreen({
             {settings.mode === 'franchise' && (
               <div className="bg-[var(--color-canvas)] p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm mb-6 flex flex-col gap-4">
                 <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold">Franchise Control Mode</div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button
                     onClick={() => setLocalControl('ai')}
                     className={`p-4 rounded-xl text-left transition-all border-2 flex flex-col h-full ${
@@ -1984,7 +1984,7 @@ function MatchPrepScreen({
 
         <div className="card p-4 overflow-y-auto flex-1 custom-scrollbar">
            <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold mb-3 border-b border-[var(--color-hairline)] pb-2">Your Squad Form</div>
-           <div className="grid grid-cols-2 gap-3">
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
              {localSquad.filter(s => s.player).map(slot => (
                <div key={slot.player!.id} className={`bg-[var(--color-canvas)] border rounded-lg p-3 ${slot.position === 'BENCH' ? 'border-[var(--color-hairline)] opacity-60' : 'border-[var(--color-hairline)]'}`}>
                  <div className="flex items-center gap-2 mb-2">
@@ -3285,7 +3285,7 @@ function SimpleSquadBuilder({
       
       <div className="flex-1 overflow-y-auto custom-scrollbar mb-4">
         <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold mb-2">Available Players</div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {allPlayers.map(p => {
             const inXI = playingXI.find(x => x.id === p.id);
             const inBench = impactBench.find(x => x.id === p.id);

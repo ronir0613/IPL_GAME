@@ -12,11 +12,11 @@ export default function NavBar({ currentPhase, onNavigate }: { currentPhase?: st
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[60] h-16 bg-[var(--color-canvas)]/80 backdrop-blur-md border-b border-[var(--color-hairline)] px-4 sm:px-6 flex items-center justify-between shadow-sm">
-      <div className="flex items-center gap-6">
-        <button onClick={() => handleNavigate('home')} className="text-[var(--color-ink)] font-semibold tracking-tight text-xl tracking-tighter hover:opacity-80 transition-opacity">
+      <div className="flex items-center gap-4 sm:gap-6 flex-1 overflow-x-auto no-scrollbar mr-4">
+        <button onClick={() => handleNavigate('home')} className="text-[var(--color-ink)] font-semibold tracking-tight text-xl tracking-tighter hover:opacity-80 transition-opacity shrink-0">
           16-0
         </button>
-        <div className="hidden sm:flex items-center gap-1">
+        <div className="flex items-center gap-1 shrink-0">
           <button 
             onClick={() => handleNavigate('home')}
             className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'home' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
