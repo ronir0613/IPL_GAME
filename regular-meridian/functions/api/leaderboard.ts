@@ -1,4 +1,5 @@
 /// <reference types="@cloudflare/workers-types" />
+import Filter from 'bad-words';
 
 export interface Env {
   DB: D1Database;
@@ -31,14 +32,27 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const data = await context.request.json() as any;
     
     if (data.handle) {
+      // 1. Basic Profanity Filter (fast, catches common English bad words)
       try {
-        const prompt = `Analyze the following display name: "${data.handle}". Is it inappropriate, political, discriminative, offensive, or hateful in any language? Answer strictly with YES or NO.`;
-        const aiResponse = await context.env.AI.run('@cf/meta/llama-3-8b-instruct', {
-          messages: [{ role: 'user', content: prompt }]
-        });
-        const answer = (aiResponse.response || "").trim().toUpperCase();
-        if (answer.includes("YES") || answer.startsWith("YES")) {
+        const filter = new Filter();
+        if (filter.isProfane(data.handle)) {
           return Response.json({ error: "Inappropriate name detected." }, { status: 400 });
+        }
+      } catch (e) {
+        console.error("Filter error:", e);
+      }
+
+      // 2. AI Moderation (for multilingual, political, complex hate)
+      try {
+        if (context.env.AI) {
+          const prompt = `Analyze the following display name: "${data.handle}". Is it inappropriate, political, discriminative, offensive, or hateful in any language? Answer strictly with YES or NO.`;
+          const aiResponse = await context.env.AI.run('@cf/meta/llama-3-8b-instruct', {
+            messages: [{ role: 'user', content: prompt }]
+          });
+          const answer = (aiResponse.response || "").trim().toUpperCase();
+          if (answer.includes("YES") || answer.startsWith("YES")) {
+            return Response.json({ error: "Inappropriate name detected." }, { status: 400 });
+          }
         }
       } catch (err) {
         console.error("AI moderation error:", err);
