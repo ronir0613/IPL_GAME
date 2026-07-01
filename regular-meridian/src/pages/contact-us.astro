@@ -19,34 +19,34 @@ import '../styles/global.css';
     <title>Contact Us - 16-0 Play</title>
     <meta name="description" content="Contact the 16-0play team. Reach out for support, feedback, or inquiries regarding our cricket simulator." />
   </head>
-  <body class="min-h-screen bg-[#0a0a0a] text-white selection:bg-yellow-500/30">
+  <body class="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] selection:bg-yellow-500/30">
     <div class="max-w-4xl mx-auto px-6 py-16">
-      <h1 class="text-4xl font-bold mb-8 text-yellow-500">Contact Us</h1>
-      <div class="space-y-6 text-gray-300 leading-relaxed">
+      <h1 class="text-4xl font-bold mb-8 text-[var(--color-ink)]">Contact Us</h1>
+      <div class="space-y-6 text-[var(--color-body)] leading-relaxed">
         <p>We'd love to hear from you! Whether you have a question about the game, feedback to improve the simulation, or just want to share your perfect 16-0 season with us, feel free to reach out.</p>
         
-        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800/50 mt-8">
-          <h2 class="text-2xl font-bold text-white mb-4">Get In Touch</h2>
+        <div class="bg-[var(--color-canvas)] p-6 rounded-lg border border-[var(--color-hairline)] mt-8">
+          <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Get In Touch</h2>
           <p class="mb-4">You can contact us via email for support, business inquiries, or general questions:</p>
-          <a href="mailto:curatedclass13@gmail.com" class="text-yellow-500 hover:text-yellow-400 font-semibold text-lg transition-colors">
+          <a href="mailto:curatedclass13@gmail.com" class="text-[var(--color-ink)] hover:text-yellow-600 font-semibold text-lg transition-colors">
             curatedclass13@gmail.com
           </a>
         </div>
         
-        <div class="bg-gray-900/50 p-6 rounded-lg border border-gray-800/50 mt-8">
-          <h2 class="text-2xl font-bold text-white mb-4">Send us Feedback</h2>
+        <div class="bg-[var(--color-canvas)] p-6 rounded-lg border border-[var(--color-hairline)] mt-8">
+          <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Send us Feedback</h2>
           <form action="mailto:curatedclass13@gmail.com" method="post" enctype="text/plain" class="space-y-4">
             <div>
-              <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
-              <input type="text" id="name" name="name" required class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors" placeholder="Your Name" />
+              <label for="name" class="block text-sm font-medium text-[var(--color-body)] mb-1">Name</label>
+              <input type="text" id="name" name="name" required class="w-full bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-md px-4 py-2 text-[var(--color-ink)] focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors" placeholder="Your Name" />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
-              <input type="email" id="email" name="email" required class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors" placeholder="your@email.com" />
+              <label for="email" class="block text-sm font-medium text-[var(--color-body)] mb-1">Email</label>
+              <input type="email" id="email" name="email" required class="w-full bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-md px-4 py-2 text-[var(--color-ink)] focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors" placeholder="your@email.com" />
             </div>
             <div>
-              <label for="message" class="block text-sm font-medium text-gray-300 mb-1">Message</label>
-              <textarea id="message" name="message" rows="4" required class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 text-white focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors" placeholder="Your feedback..."></textarea>
+              <label for="message" class="block text-sm font-medium text-[var(--color-body)] mb-1">Message</label>
+              <textarea id="message" name="message" rows="4" required class="w-full bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-md px-4 py-2 text-[var(--color-ink)] focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition-colors" placeholder="Your feedback..."></textarea>
             </div>
             <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-6 rounded-md transition-colors w-full sm:w-auto">
               Submit Feedback
@@ -54,12 +54,12 @@ import '../styles/global.css';
           </form>
         </div>
         
-        <h2 class="text-2xl font-bold text-white mt-8">Follow Us</h2>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mt-8">Follow Us</h2>
         <p>Stay updated with the latest news, updates, and leaderboard highlights by following us on social media.</p>
         <p>(Social links coming soon!)</p>
       </div>
       <div class="mt-12">
-        <a href="/" class="inline-flex items-center text-yellow-500 hover:text-yellow-400 font-semibold transition-colors">
+        <a href="/" class="inline-flex items-center text-[var(--color-ink)] hover:text-yellow-600 font-semibold transition-colors">
           &larr; Back to Home
         </a>
       </div>
