@@ -60,34 +60,36 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     const data = await context.request.json() as any;
     
-    let finalHandle = data.handle;
-    if (!finalHandle) {
-      let isUnique = false;
-      let attempts = 0;
-      const maxAttempts = 10;
+    // Always generate a random handle for the submission
+    let isUnique = false;
+    let attempts = 0;
+    const maxAttempts = 10;
+    let submissionHandle = "";
+    
+    while (!isUnique && attempts < maxAttempts) {
+      const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
+      const term = CRICKET_TERMS[Math.floor(Math.random() * CRICKET_TERMS.length)];
+      const num = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      submissionHandle = `${adj}${term}${num}`;
       
-      while (!isUnique && attempts < maxAttempts) {
-        const adj = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
-        const term = CRICKET_TERMS[Math.floor(Math.random() * CRICKET_TERMS.length)];
-        const num = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-        finalHandle = `${adj}${term}${num}`;
-        
-        const { results } = await context.env.DB.prepare('SELECT id FROM leaderboard WHERE handle = ? LIMIT 1').bind(finalHandle).all();
-        if (results.length === 0) {
-          isUnique = true;
-        }
-        attempts++;
+      const { results } = await context.env.DB.prepare('SELECT id FROM leaderboard WHERE handle = ? LIMIT 1').bind(submissionHandle).all();
+      if (results.length === 0) {
+        isUnique = true;
       }
-      
-      if (!isUnique) {
-        // Fallback just in case of extreme bad luck
-        finalHandle = `Player${Math.floor(Math.random() * 1000000)}`;
-      }
+      attempts++;
     }
+    
+    if (!isUnique) {
+      // Fallback just in case of extreme bad luck
+      submissionHandle = `Player${Math.floor(Math.random() * 1000000)}`;
+    }
+
+    // The user's permanent handle (if they don't have one, this becomes their permanent one too)
+    const permanentHandle = data.handle || submissionHandle;
     
     await context.env.DB.prepare(`
       INSERT OR IGNORE INTO users (id, handle) VALUES (?1, ?2)
-    `).bind(data.userId, finalHandle).run();
+    `).bind(data.userId, permanentHandle).run();
 
     await context.env.DB.prepare(`
       INSERT INTO leaderboard (id, user_id, date, mode, wins, losses, points, nrr, position, champion, handle, overall, finish, difficulty, showRatings) 
@@ -103,7 +105,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       data.nrr, 
       data.position, 
       data.champion ? 1 : 0, 
-      finalHandle, 
+      submissionHandle, 
       data.overall, 
       data.finish, 
       data.difficulty, 
@@ -120,7 +122,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const rank = results.length > 0 ? results[0].rank : null;
 
-    return Response.json({ success: true, rank, handle: finalHandle });
+    return Response.json({ success: true, rank, handle: permanentHandle });
   } catch (e: any) {
     return Response.json({ error: e.message }, { status: 500 });
   }
