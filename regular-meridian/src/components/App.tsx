@@ -487,7 +487,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                        <td className="px-6 py-4 font-mono font-medium text-[var(--color-ink)] text-center text-[14px]">{rankDisplay}</td>
                        <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-[var(--color-ink)] text-[16px]">{entry.handle || 'Anonymous'}</span>
+                            <span className={`font-semibold text-[16px] ${entry.wins === 16 && entry.losses === 0 ? 'text-[#facc15] drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]' : 'text-[var(--color-ink)]'}`}>{entry.handle || 'Anonymous'}</span>
                             {entry.champion && <span className="text-[#0070f3] font-bold" title="Champion">✓</span>}
                             <span className="bg-[var(--color-canvas-soft)] text-[var(--color-mute)] border border-[var(--color-hairline)] font-mono text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">{entry.mode}</span>
                           </div>
@@ -1981,8 +1981,10 @@ import { toBlob } from 'html-to-image';
 
 // ─── Share Card Components ──────────────────────────────────────────────
 export function getCardTier(results: any, isChampion: boolean) {
-  const wins = results.userTeam.won;
-  const losses = results.userTeam.lost;
+  const playoffWins = (results.playoffMatches || []).filter((m: any) => m.winner?.toUpperCase() === 'YOUR XI').length;
+  const playoffLosses = (results.playoffMatches || []).filter((m: any) => (m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') && m.winner?.toUpperCase() !== 'YOUR XI').length;
+  const wins = results.userTeam.won + playoffWins;
+  const losses = results.userTeam.lost + playoffLosses;
   
   if (wins === 16 && losses === 0) return { tier: 'PLATINUM', name: 'THE IMMORTAL', style: 'mesh-gradient-multi text-white border-transparent shadow-vercel-4', badge: 'bg-white/20 text-white border border-white/30' };
   if (wins === 15 && losses === 1 && isChampion) return { tier: 'DIAMOND', name: 'THE CHAMPION', style: 'bg-[var(--color-primary)] text-[var(--color-on-primary)] border-[var(--color-gradient-develop-start)] shadow-vercel-4', badge: 'bg-blue-500/20 text-blue-400 border border-blue-500/30', gradientText: 'mesh-gradient-develop text-transparent-bg' };
@@ -2000,6 +2002,10 @@ export function getCardTier(results: any, isChampion: boolean) {
 function ShareCardNode({ squad, results, strength, isFlipped, isChampion, staticRender = false }: any) {
   const tierInfo = getCardTier(results, isChampion);
   const teamType = "FRANCHISE XI"; 
+  const playoffWins = (results.playoffMatches || []).filter((m: any) => m.winner?.toUpperCase() === 'YOUR XI').length;
+  const playoffLosses = (results.playoffMatches || []).filter((m: any) => (m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') && m.winner?.toUpperCase() !== 'YOUR XI').length;
+  const totalWins = results.userTeam.won + playoffWins;
+  const totalLosses = results.userTeam.lost + playoffLosses;
 
   const FrontContent = (
     <>
@@ -2008,7 +2014,7 @@ function ShareCardNode({ squad, results, strength, isFlipped, isChampion, static
            {tierInfo.tier} TIER
         </div>
         <div className={`text-8xl font-black tracking-tighter leading-none mb-1 ${tierInfo.gradientText || ''}`}>
-           {results.userTeam.won}-{results.userTeam.lost}
+           {totalWins}-{totalLosses}
         </div>
         <div className="text-2xl font-black uppercase tracking-widest opacity-90">
            {tierInfo.name}
@@ -2031,7 +2037,7 @@ function ShareCardNode({ squad, results, strength, isFlipped, isChampion, static
            </div>
          </div>
          <div className="text-center text-[10px] font-bold uppercase tracking-widest opacity-50 border-t border-current/20 pt-3">
-           16-0.app
+           16-0play.com
          </div>
       </div>
     </>
@@ -2225,7 +2231,7 @@ function ShareModal({ squad, results, strength, onClose }: any) {
            </div>
            
            <div className="absolute bottom-8 right-12 text-white/40 font-mono text-sm tracking-widest">
-             16-0play
+             16-0play.com
            </div>
         </div>
         
@@ -2292,6 +2298,10 @@ function ResultsScreen({
 
   const strength = calcSquadStrength(squad);
   const userPlayoffMatches = playoffMatches?.filter(m => m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') || [];
+  const playoffWins = userPlayoffMatches.filter(m => m.winner?.toUpperCase() === 'YOUR XI').length;
+  const playoffLosses = userPlayoffMatches.filter(m => m.winner?.toUpperCase() !== 'YOUR XI').length;
+  const totalWins = (userTeam?.won || 0) + playoffWins;
+  const totalLosses = (userTeam?.lost || 0) + playoffLosses;
   const lastMatch = userPlayoffMatches[userPlayoffMatches.length - 1];
   let playoffSubText = '';
   let finalPosText = `${finalPos}${['st','nd','rd'][finalPos-1]||'th'}`;
@@ -2321,8 +2331,8 @@ function ResultsScreen({
         id: Date.now().toString(),
         date: new Date().toISOString(),
         mode: settings?.mode || 'classic',
-        wins: userTeam?.won || 0,
-        losses: userTeam?.lost || 0,
+        wins: totalWins,
+        losses: totalLosses,
         points: userTeam?.points || 0,
         nrr: userTeam?.nrr || 0,
         position: finalPos,
@@ -2391,7 +2401,7 @@ function ResultsScreen({
               <>
                 <div className="text-7xl mb-4 md:mb-6 animate-bounce drop-shadow-[0_0_25px_rgba(234,179,8,0.4)]">🏆</div>
                 <div className="text-4xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-sm mb-3">
-                  {userTeam?.lost === 0 ? '16-0 ACHIEVED!' : 'CHAMPIONS!'}
+                  {totalLosses === 0 ? '16-0 ACHIEVED!' : 'CHAMPIONS!'}
                 </div>
                 <div className="text-[var(--color-mute)] text-lg md:text-xl font-medium tracking-tight">Your XI etched their name in history.</div>
               </>
@@ -2425,7 +2435,7 @@ function ResultsScreen({
           {[
             { label: 'Final Position', val: finalPosText, color: '#f5c842' },
             { label: 'Projected Position', val: `${projectedPos}${['st','nd','rd'][projectedPos-1]||'th'}`, color: '#6b7280' },
-            { label: 'Wins - Losses', val: `${userTeam?.won ?? 0} - ${userTeam?.lost ?? 0}`, color: '#22c55e' },
+            { label: 'Wins - Losses', val: `${totalWins} - ${totalLosses}`, color: '#22c55e' },
             { label: 'Overall Rating', val: strength.overall, color: '#7c3aed' },
           ].map(({ label, val, color }) => (
             <div key={label} className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:border-[var(--color-primary)]/30 transition-colors">
