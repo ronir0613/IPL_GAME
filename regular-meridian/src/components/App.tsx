@@ -2134,6 +2134,11 @@ function ShareModal({ squad, results, strength, onClose }: any) {
   
   const isChampion = results.champion?.toUpperCase() === 'YOUR XI';
 
+  const playoffWins = (results.playoffMatches || []).filter((m: any) => m.winner?.toUpperCase() === 'YOUR XI').length;
+  const playoffLosses = (results.playoffMatches || []).filter((m: any) => (m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') && m.winner?.toUpperCase() !== 'YOUR XI').length;
+  const totalWins = results.userTeam.won + playoffWins;
+  const totalLosses = results.userTeam.lost + playoffLosses;
+
   const generateBlob = async () => {
     // Wait for layout to flush
     await new Promise(resolve => setTimeout(resolve, 50));
@@ -2180,7 +2185,7 @@ function ShareModal({ squad, results, strength, onClose }: any) {
       const file = new File([blob], '16-0_share_card.png', { type: 'image/png' });
       const shareData = {
         title: '16-0play',
-        text: `I just went ${results.userTeam.won}-${results.userTeam.lost} on 16-0.app! Can you beat my record?`,
+        text: `I just went ${totalWins}-${totalLosses} on 16-0play.com! Can you beat my record?`,
         files: [file]
       };
 
