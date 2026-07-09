@@ -2017,13 +2017,13 @@ export interface TierInfo {
 }
 
 export function getCardTier(results: any, isChampion: boolean): TierInfo {
-  const playoffWins = (results.playoffMatches || []).filter((m: any) => m.winner?.toUpperCase() === 'YOUR XI').length;
-  const playoffLosses = (results.playoffMatches || []).filter((m: any) => (m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI') && m.winner?.toUpperCase() !== 'YOUR XI').length;
-  const wins = results.userTeam.won + playoffWins;
-  const losses = results.userTeam.lost + playoffLosses;
+  const userPlayoffMatches = (results.playoffMatches || []).filter((m: any) => m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI');
+  const playoffWins = userPlayoffMatches.filter((m: any) => m.winner?.toUpperCase() === 'YOUR XI').length;
+  const playoffLosses = userPlayoffMatches.filter((m: any) => m.winner?.toUpperCase() !== 'YOUR XI').length;
+  const wins = (results.userTeam?.won || 0) + playoffWins;
+  const losses = (results.userTeam?.lost || 0) + playoffLosses;
   
   const madePlayoffs = results.finalPos <= 4;
-  const userPlayoffMatches = (results.playoffMatches || []).filter((m: any) => m.team1?.toUpperCase() === 'YOUR XI' || m.team2?.toUpperCase() === 'YOUR XI');
   const lastMatch = userPlayoffMatches[userPlayoffMatches.length - 1];
   const lostInFinals = madePlayoffs && !isChampion && lastMatch?.name === 'Final';
   
