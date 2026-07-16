@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "routePath": "/api/leaderboard",
+      "mountPath": "/api",
+      "method": "GET",
+      "module": [
+        "api/leaderboard.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/api/leaderboard",
+      "mountPath": "/api",
+      "method": "POST",
+      "module": [
+        "api/leaderboard.ts:onRequestPost"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}
