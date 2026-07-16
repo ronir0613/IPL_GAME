@@ -281,7 +281,7 @@ var onRequestPost = /* @__PURE__ */ __name(async (context) => {
   }
 }, "onRequestPost");
 
-// ../.wrangler/tmp/pages-tJz8o3/functionsRoutes-0.9494398729854776.mjs
+// ../.wrangler/tmp/pages-3Iafgx/functionsRoutes-0.3031644803757243.mjs
 var routes = [
   {
     routePath: "/api/leaderboard",
