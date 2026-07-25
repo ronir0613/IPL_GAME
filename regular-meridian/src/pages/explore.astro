@@ -2,6 +2,22 @@
 import NavBar from '../components/NavBar';
 import '../styles/global.css';
 import ExplorePage from '../components/Explore.tsx';
+import playersData from '../../public/players.json';
+
+interface Player {
+  id: number;
+  name: string;
+  team: string;
+  season: number;
+  role: string;
+  overall: number;
+  is_overseas?: boolean;
+}
+
+// Sort players by overall rating descending and slice the top 50
+const topPlayers = (playersData as Player[])
+  .sort((a, b) => b.overall - a.overall)
+  .slice(0, 50);
 ---
 <!doctype html>
 <html lang="en">
@@ -38,6 +54,7 @@ import ExplorePage from '../components/Explore.tsx';
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <title>Explore Player Database - 16-0 Play</title>
+    <link rel="canonical" href="https://16-0play.com/explore/" />
     <meta name="description" content="Explore the ultimate IPL player database, view optimal playing XIs, and learn team building strategies." />
   
     <!-- Google AdSense -->
@@ -46,7 +63,39 @@ import ExplorePage from '../components/Explore.tsx';
   <body class="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] selection:bg-yellow-500/30">
     <NavBar client:load />
     <div class="pt-16">
-    <ExplorePage client:load />
+      <ExplorePage client:load />
+
+      <!-- Crawlable Player Database Section for Search Engines & AdSense Reviewers -->
+      <div class="bg-[var(--color-canvas)] border-t border-[var(--color-hairline)] py-16">
+        <div class="max-w-4xl mx-auto px-6">
+          <h2 class="text-3xl font-bold tracking-tight text-[var(--color-ink)] mb-4">Top Players Database</h2>
+          <p class="text-[var(--color-body)] mb-8">
+            Below is a preview of the highest-rated cricket players in the 16-0 database, sorted by their overall peak performance rating for that season.
+          </p>
+          <div class="overflow-x-auto rounded-xl border border-[var(--color-hairline)] shadow-sm">
+            <table class="w-full text-left border-collapse bg-[var(--color-canvas-soft)]">
+              <thead>
+                <tr class="border-b border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] text-xs uppercase tracking-wider font-bold text-[var(--color-mute)]">
+                  <th class="px-6 py-4">Player</th>
+                  <th class="px-6 py-4">Team</th>
+                  <th class="px-6 py-4">Season</th>
+                  <th class="px-6 py-4 text-right">Rating</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-[var(--color-hairline)] text-sm text-[var(--color-body)]">
+                {topPlayers.map((player) => (
+                  <tr class="hover:bg-[var(--color-canvas)] transition-colors">
+                    <td class="px-6 py-4 font-semibold text-[var(--color-ink)]">{player.name}</td>
+                    <td class="px-6 py-4">{player.team}</td>
+                    <td class="px-6 py-4">{player.season}</td>
+                    <td class="px-6 py-4 text-right font-mono font-bold text-yellow-600">{player.overall}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+    </div>
   </body>
 </html>
