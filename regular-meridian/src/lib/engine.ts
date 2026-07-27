@@ -290,9 +290,11 @@ export function generateLeague(userOverall: number): SeasonTeam[] {
   return teams; // exactly 10 teams
 }
 
-function generateMotm(winner: SeasonTeam, playersPool: Player[], userSquad: SquadSlot[]): MotmStats | undefined {
+function generateMotm(winner: SeasonTeam, playersPool: Player[], userSquad: SquadSlot[], winnerRoster?: Player[]): MotmStats | undefined {
   let candidates: Player[] = [];
-  if (winner.short === 'YOUR XI') {
+  if (winnerRoster && winnerRoster.length > 0) {
+    candidates = winnerRoster;
+  } else if (winner.short === 'YOUR XI') {
     candidates = userSquad.filter(s => s.player).map(s => s.player!);
   } else {
     candidates = playersPool.filter(p => p.team === winner.short);
@@ -347,11 +349,15 @@ function generateHighlights(
   marginStr: string,
   motm: MotmStats | undefined,
   playersPool: Player[],
-  userSquad: SquadSlot[]
+  userSquad: SquadSlot[],
+  winnerRoster?: Player[],
+  loserRoster?: Player[]
 ): MatchHighlight[] {
   const highlights: MatchHighlight[] = [];
 
   const getPlayers = (team: SeasonTeam) => {
+    if (team === winner && winnerRoster && winnerRoster.length > 0) return winnerRoster;
+    if (team === loser && loserRoster && loserRoster.length > 0) return loserRoster;
     if (team.short === 'YOUR XI') return userSquad.filter(s => s.player).map(s => s.player!);
     return playersPool.filter(p => p.team === team.short).sort((a, b) => b.overall - a.overall).slice(0, 15);
   };
@@ -432,7 +438,7 @@ function generateHighlights(
 // --- Simulate one T20 match ---
 import type { MatchPrepConfig, RainEvent } from './types';
 
-export function simulateMatch(teamA: SeasonTeam, teamB: SeasonTeam, playersPool: Player[], userSquad: SquadSlot[], playerForms?: Record<number, PlayerForm>, matchPrep?: MatchPrepConfig): MatchResult {
+export function simulateMatch(teamA: SeasonTeam, teamB: SeasonTeam, playersPool: Player[], userSquad: SquadSlot[], playerForms?: Record<number, PlayerForm>, matchPrep?: MatchPrepConfig, rosterA?: Player[], rosterB?: Player[]): MatchResult {
   // ── Rain / DLS check (very rare: ~3% chance) ──────────────────
   const rainRoll = rng();
   let rainEvent: RainEvent | undefined;
@@ -664,8 +670,18 @@ export function simulateMatch(teamA: SeasonTeam, teamB: SeasonTeam, playersPool:
     }
   }
 
-  const motm = generateMotm(winner, playersPool, overrideSquad);
-  const highlights = generateHighlights(winner, loser, marginStr, motm, playersPool, overrideSquad);
+  const teamAPlayers = rosterA && rosterA.length > 0 
+    ? rosterA 
+    : (teamA.short === 'YOUR XI' ? overrideSquad.filter(s => s.player).map(s => s.player!) : playersPool.filter(p => p.team === teamA.short));
+  const teamBPlayers = rosterB && rosterB.length > 0 
+    ? rosterB 
+    : (teamB.short === 'YOUR XI' ? overrideSquad.filter(s => s.player).map(s => s.player!) : playersPool.filter(p => p.team === teamB.short));
+
+  const winnerRoster = winner === teamA ? teamAPlayers : teamBPlayers;
+  const loserRoster = winner === teamA ? teamBPlayers : teamAPlayers;
+
+  const motm = generateMotm(winner, playersPool, overrideSquad, winnerRoster);
+  const highlights = generateHighlights(winner, loser, marginStr, motm, playersPool, overrideSquad, winnerRoster, loserRoster);
 
   const parseScore = (scoreStr: string) => {
     if (scoreStr === 'N/A') return { runs: 0, wickets: 0 };
@@ -677,9 +693,6 @@ export function simulateMatch(teamA: SeasonTeam, teamB: SeasonTeam, playersPool:
   };
   const homeStats = parseScore(homeScore);
   const awayStats = parseScore(awayScore);
-
-  const teamAPlayers = teamA.short === 'YOUR XI' ? overrideSquad.filter(s => s.player).map(s => s.player!) : playersPool.filter(p => p.team === teamA.short);
-  const teamBPlayers = teamB.short === 'YOUR XI' ? overrideSquad.filter(s => s.player).map(s => s.player!) : playersPool.filter(p => p.team === teamB.short);
 
   const matchStats: Record<number, PlayerStats> = {};
   
@@ -953,14 +966,16 @@ function generatePlayoffScore(winnerShort: string, loserShort: string) {
 }
 
 // --- Playoffs ---
-export function simulatePlayoffs(top4: SeasonTeam[], playersPool: Player[], userSquad: SquadSlot[]): { matches: PlayoffMatch[]; champion: string } {
+export function simulatePlayoffs(top4: SeasonTeam[], playersPool: Player[], userSquad: SquadSlot[], rostersMap?: Record<string, Player[]>): { matches: PlayoffMatch[]; champion: string } {
   const [t1, t2, t3, t4] = top4;
 
   // Q1: 1st vs 2nd
   const q1WinProb = 0.5 + (t1.overall - t2.overall) * 0.02 + (rng() - 0.5) * 0.3;
   const q1Winner = q1WinProb > 0.5 ? t1 : t2;
   const q1Loser = q1WinProb > 0.5 ? t2 : t1;
-  const q1Motm = generateMotm(q1Winner, playersPool, userSquad);
+  const q1WinnerRoster = rostersMap ? rostersMap[q1Winner.short] : undefined;
+  const q1LoserRoster = rostersMap ? rostersMap[q1Loser.short] : undefined;
+  const q1Motm = generateMotm(q1Winner, playersPool, userSquad, q1WinnerRoster);
   const q1Score = generatePlayoffScore(q1Winner.short, q1Loser.short);
 
   const q1: PlayoffMatch = {
@@ -972,14 +987,16 @@ export function simulatePlayoffs(top4: SeasonTeam[], playersPool: Player[], user
     winner: q1Winner.short,
     result: q1Score.result,
     motm: q1Motm,
-    highlights: generateHighlights(q1Winner, q1Loser, 'by a narrow margin', q1Motm, playersPool, userSquad),
+    highlights: generateHighlights(q1Winner, q1Loser, 'by a narrow margin', q1Motm, playersPool, userSquad, q1WinnerRoster, q1LoserRoster),
   };
 
   // Elim: 3rd vs 4th
   const elimWinProb = 0.5 + (t3.overall - t4.overall) * 0.02 + (rng() - 0.5) * 0.3;
   const elimWinner = elimWinProb > 0.5 ? t3 : t4;
   const elimLoser = elimWinProb > 0.5 ? t4 : t3;
-  const elimMotm = generateMotm(elimWinner, playersPool, userSquad);
+  const elimWinnerRoster = rostersMap ? rostersMap[elimWinner.short] : undefined;
+  const elimLoserRoster = rostersMap ? rostersMap[elimLoser.short] : undefined;
+  const elimMotm = generateMotm(elimWinner, playersPool, userSquad, elimWinnerRoster);
   const elimScore = generatePlayoffScore(elimWinner.short, elimLoser.short);
 
   const elim: PlayoffMatch = {
@@ -991,14 +1008,16 @@ export function simulatePlayoffs(top4: SeasonTeam[], playersPool: Player[], user
     winner: elimWinner.short,
     result: elimScore.result,
     motm: elimMotm,
-    highlights: generateHighlights(elimWinner, elimLoser, 'by a commanding margin', elimMotm, playersPool, userSquad),
+    highlights: generateHighlights(elimWinner, elimLoser, 'by a commanding margin', elimMotm, playersPool, userSquad, elimWinnerRoster, elimLoserRoster),
   };
 
   // Q2: Q1 loser vs Elim winner
   const q2WinProb = 0.5 + (q1Loser.overall - elimWinner.overall) * 0.02 + (rng() - 0.5) * 0.3;
   const q2Winner = q2WinProb > 0.5 ? q1Loser : elimWinner;
   const q2Loser = q2WinProb > 0.5 ? elimWinner : q1Loser;
-  const q2Motm = generateMotm(q2Winner, playersPool, userSquad);
+  const q2WinnerRoster = rostersMap ? rostersMap[q2Winner.short] : undefined;
+  const q2LoserRoster = rostersMap ? rostersMap[q2Loser.short] : undefined;
+  const q2Motm = generateMotm(q2Winner, playersPool, userSquad, q2WinnerRoster);
   const q2Score = generatePlayoffScore(q2Winner.short, q2Loser.short);
 
   const q2: PlayoffMatch = {
@@ -1010,14 +1029,16 @@ export function simulatePlayoffs(top4: SeasonTeam[], playersPool: Player[], user
     winner: q2Winner.short,
     result: q2Score.result,
     motm: q2Motm,
-    highlights: generateHighlights(q2Winner, q2Loser, 'in a thriller', q2Motm, playersPool, userSquad),
+    highlights: generateHighlights(q2Winner, q2Loser, 'in a thriller', q2Motm, playersPool, userSquad, q2WinnerRoster, q2LoserRoster),
   };
 
   // Final: Q1 winner vs Q2 winner
   const finalWinProb = 0.5 + (q1Winner.overall - q2Winner.overall) * 0.02 + (rng() - 0.5) * 0.3;
   const champion = finalWinProb > 0.5 ? q1Winner : q2Winner;
   const finalLoser = finalWinProb > 0.5 ? q2Winner : q1Winner;
-  const finalMotm = generateMotm(champion, playersPool, userSquad);
+  const championRoster = rostersMap ? rostersMap[champion.short] : undefined;
+  const finalLoserRoster = rostersMap ? rostersMap[finalLoser.short] : undefined;
+  const finalMotm = generateMotm(champion, playersPool, userSquad, championRoster);
   const finalScore = generatePlayoffScore(champion.short, finalLoser.short);
 
   const final: PlayoffMatch = {
@@ -1029,7 +1050,7 @@ export function simulatePlayoffs(top4: SeasonTeam[], playersPool: Player[], user
     winner: champion.short,
     result: finalScore.result,
     motm: finalMotm,
-    highlights: generateHighlights(champion, finalLoser, 'in the grand final', finalMotm, playersPool, userSquad),
+    highlights: generateHighlights(champion, finalLoser, 'in the grand final', finalMotm, playersPool, userSquad, championRoster, finalLoserRoster),
   };
 
   return {

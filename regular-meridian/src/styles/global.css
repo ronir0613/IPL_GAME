@@ -210,6 +210,17 @@ body {
   -webkit-background-clip: text;
 }
 
+@keyframes rgb-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-rgb-strip {
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #f43f5e, #3b82f6);
+  background-size: 200% 100%;
+  animation: rgb-shift 6s linear infinite;
+}
+
 @layer base {
   .dark {
     --color-canvas: #121212;

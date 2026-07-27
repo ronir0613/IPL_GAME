@@ -6,7 +6,7 @@ export type Role = 'WK' | 'BAT' | 'AR' | 'BOWL' | 'BAT_AR' | 'BOWL_AR';
 export type Difficulty = 'easy' | 'normal' | 'hard';
 export type ShowRatings = 'on' | 'off';
 export type SimSpeed = 'fast' | 'full';
-export type GameMode = 'classic' | 'franchise' | 'gamble';
+export type GameMode = 'classic' | 'franchise' | 'gamble' | 'multiplayer';
 
 export interface GameSettings {
   difficulty: Difficulty;
@@ -26,6 +26,8 @@ export interface Player {
   allowedRoles?: Role[];
   overall: number;
   is_overseas?: boolean;
+  category?: string;
+  set_name?: string;
 }
 
 export interface PlayerStats {
@@ -159,7 +161,12 @@ export type GamePhase =
   | 'full-control-season'
   | 'playoffs_prep'
   | 'results'
-  | 'leaderboard';
+  | 'leaderboard'
+  | 'mp-lobby'
+  | 'mp-draft'
+  | 'mp-match-prep'
+  | 'mp-watching'
+  | 'mp-results';
 
 export interface MatchPrepConfig {
   playingXI: Player[];
@@ -230,3 +237,53 @@ export type GambleSpecialEvent =
   | 'THE GOD SQUAD'
   | 'THE MEME SQUAD'
   | 'THE UNDERDOGS';
+
+export interface MpPlayer {
+  peerId: string;
+  name: string;
+  franchise: string; // short code like RCB, CSK, MI, etc.
+  isReady: boolean;
+  isHost: boolean;
+}
+
+export interface MpSettings {
+  rounds: number; // e.g. 11 or 15
+  turnTimer: number; // in seconds, e.g. 30
+  maxOverseas: number; // e.g. 4
+  aiCount: number; // e.g. number of AI teams to fill 10 franchises
+}
+
+export interface MpState {
+  roomId: string;
+  isHost: boolean;
+  players: MpPlayer[];
+  settings: MpSettings;
+  draftOrder: string[]; // array of identifiers (peerId or 'AI_1', etc.)
+  activePickIndex: number;
+  roundNumber: number;
+  isDraftComplete: boolean;
+  rosters: Record<string, Player[]>; // key: peerId/AI_id -> list of drafted players
+  pickedIds: number[]; // global list of drafted player IDs
+  activeTimer: number; // countdown remaining
+  // Bidding/Auction States:
+  activeAuctionPlayer: Player | null;
+  currentBid: number; // in Lakhs
+  highestBidder: string | null; // peerId or AI_code
+  bidTimer: number; // countdown remaining for the active bid
+  purses: Record<string, number>; // peerId/AI_code -> remaining purse in Lakhs
+  auctionLogs: string[]; // history of sold/unsold events for UI
+  currentSetIndex: number; // index inside SET_ORDER array
+  unsoldPlayerIds: number[]; // list of players to bring back in accelerated round
+  isAcceleratedRound: boolean;
+  // Pre-match and season tracking
+  activeMatches: MatchResult[];
+  readyCount: number;
+  currentMatchPrep?: MatchPrepConfig;
+  skippedPeers: string[];
+  chatMessages?: { sender: string; text: string; timestamp: string; color?: string }[];
+  precomputedPlayoffs?: {
+    matches: PlayoffMatch[];
+    champion: string;
+  };
+}
+

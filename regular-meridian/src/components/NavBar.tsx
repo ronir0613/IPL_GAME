@@ -25,7 +25,7 @@ export default function NavBar({ currentPhase, onNavigate }: { currentPhase?: st
           </button>
           <button 
             onClick={() => handleNavigate('mode-select')}
-            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'mode-select' || currentPhase === 'draft' || currentPhase === 'watching' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
+            className={`px-3 py-1.5 rounded-full text-sm transition-colors ${currentPhase === 'mode-select' || currentPhase === 'draft' || currentPhase === 'watching' || currentPhase === 'mp-lobby' || currentPhase === 'mp-draft' || currentPhase === 'mp-match-prep' || currentPhase === 'mp-watching' || currentPhase === 'mp-results' ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-bold' : 'text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium'}`}
           >
             Play
           </button>

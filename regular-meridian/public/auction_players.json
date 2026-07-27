@@ -1,0 +1,3002 @@
+[
+  {
+    "id": 1,
+    "name": "MS Dhoni",
+    "overall": 97,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 2,
+    "name": "AB de Villiers",
+    "overall": 97,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 3,
+    "name": "Chris Gayle",
+    "overall": 97,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 4,
+    "name": "Virat Kohli",
+    "overall": 97,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 5,
+    "name": "Andre Russell",
+    "overall": 96,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 6,
+    "name": "Jasprit Bumrah",
+    "overall": 96,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 7,
+    "name": "Jos Buttler",
+    "overall": 96,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 8,
+    "name": "Suresh Raina",
+    "overall": 95,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 9,
+    "name": "Rohit Sharma",
+    "overall": 95,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 10,
+    "name": "David Warner",
+    "overall": 95,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 11,
+    "name": "Sunil Narine",
+    "overall": 95,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 12,
+    "name": "Lasith Malinga",
+    "overall": 94,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Marquee Set"
+  },
+  {
+    "id": 13,
+    "name": "Gautam Gambhir",
+    "overall": 92,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 14,
+    "name": "Virender Sehwag",
+    "overall": 92,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 15,
+    "name": "Ravindra Jadeja",
+    "overall": 92,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 16,
+    "name": "Yuzvendra Chahal",
+    "overall": 92,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 17,
+    "name": "Yusuf Pathan",
+    "overall": 91,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 18,
+    "name": "Bhuvneshwar Kumar",
+    "overall": 91,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 19,
+    "name": "Ravichandran Ashwin",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 20,
+    "name": "Shikhar Dhawan",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 21,
+    "name": "Yuvraj Singh",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 22,
+    "name": "Rahul Dravid",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 23,
+    "name": "Mohammed Shami",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 24,
+    "name": "Suryakumar Yadav",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 25,
+    "name": "Sanju Samson",
+    "overall": 90,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 26,
+    "name": "KL Rahul",
+    "overall": 90,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 27,
+    "name": "Hardik Pandya",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 28,
+    "name": "Krunal Pandya",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 29,
+    "name": "Mohammed Siraj",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 30,
+    "name": "Abhishek Sharma",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 31,
+    "name": "Shubman Gill",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 32,
+    "name": "Ruturaj Gaikwad",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 33,
+    "name": "Shivam Dube",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 34,
+    "name": "Yashasvi Jaiswal",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 35,
+    "name": "Venkatesh Iyer",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 36,
+    "name": "Sai Sudharsan",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "GT",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 37,
+    "name": "Dinesh Karthik",
+    "overall": 89,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 38,
+    "name": "Robin Uthappa",
+    "overall": 89,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 39,
+    "name": "Harbhajan Singh",
+    "overall": 89,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 40,
+    "name": "Irfan Pathan",
+    "overall": 89,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 41,
+    "name": "Piyush Chawla",
+    "overall": 89,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 42,
+    "name": "Ambati Rayudu",
+    "overall": 89,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 43,
+    "name": "Pragyan Ojha",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Deccan Chargers",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 44,
+    "name": "RP Singh",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Deccan Chargers",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 45,
+    "name": "Amit Mishra",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 46,
+    "name": "Wriddhiman Saha",
+    "overall": 88,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 47,
+    "name": "Ajinkya Rahane",
+    "overall": 88,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 48,
+    "name": "Manish Pandey",
+    "overall": 88,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 49,
+    "name": "Zaheer Khan",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 50,
+    "name": "Murali Vijay",
+    "overall": 88,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 51,
+    "name": "Umesh Yadav",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 52,
+    "name": "Deepak Chahar",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 53,
+    "name": "Kuldeep Yadav",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 54,
+    "name": "Harshal Patel",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 55,
+    "name": "Axar Patel",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 56,
+    "name": "Ishan Kishan",
+    "overall": 88,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 57,
+    "name": "T Natarajan",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 58,
+    "name": "Avesh Khan",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 59,
+    "name": "Arshdeep Singh",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "PBKS",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 60,
+    "name": "Varun Chakravarthy",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 61,
+    "name": "Ravi Bishnoi",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 62,
+    "name": "Tilak Varma",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 63,
+    "name": "Parthiv Patel",
+    "overall": 87,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 64,
+    "name": "Manoj Tiwary",
+    "overall": 87,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 65,
+    "name": "Rajat Bhatia",
+    "overall": 87,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 66,
+    "name": "Ishant Sharma",
+    "overall": 87,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 67,
+    "name": "Sreesanth",
+    "overall": 87,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 68,
+    "name": "Vinay Kumar",
+    "overall": 87,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 69,
+    "name": "Mayank Agarwal",
+    "overall": 87,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 70,
+    "name": "Sandeep Sharma",
+    "overall": 87,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 71,
+    "name": "Nitish Rana",
+    "overall": 87,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 72,
+    "name": "Rahul Tripathi",
+    "overall": 87,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 73,
+    "name": "Saurabh Tiwary",
+    "overall": 86,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 74,
+    "name": "Dhawal Kulkarni",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 75,
+    "name": "Karn Sharma",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 76,
+    "name": "Shahbaz Nadeem",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 77,
+    "name": "Jaydev Unadkat",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 78,
+    "name": "Karun Nair",
+    "overall": 86,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 79,
+    "name": "Shreyas Gopal",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 80,
+    "name": "Shreyas Iyer",
+    "overall": 86,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 81,
+    "name": "Rishabh Pant",
+    "overall": 86,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 82,
+    "name": "Khaleel Ahmed",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 83,
+    "name": "Navdeep Saini",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 84,
+    "name": "Rinku Singh",
+    "overall": 86,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 85,
+    "name": "Mohsin Khan",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 86,
+    "name": "Tushar Deshpande",
+    "overall": 86,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 87,
+    "name": "Ashok Dinda",
+    "overall": 85,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 88,
+    "name": "Ashish Nehra",
+    "overall": 85,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 89,
+    "name": "Varun Aaron",
+    "overall": 85,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 90,
+    "name": "Shardul Thakur",
+    "overall": 85,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 91,
+    "name": "Sarfaraz Khan",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 92,
+    "name": "Rahul Chahar",
+    "overall": 85,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 93,
+    "name": "Riyan Parag",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 94,
+    "name": "Rajat Patidar",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 95,
+    "name": "Ayush Badoni",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 96,
+    "name": "Ramandeep Singh",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 97,
+    "name": "Mukesh Kumar",
+    "overall": 85,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 98,
+    "name": "Nehal Wadhera",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped Batters"
+  },
+  {
+    "id": 99,
+    "name": "Mithun Manhas",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 100,
+    "name": "Iqbal Abdulla",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 101,
+    "name": "Laxmi Shukla",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 102,
+    "name": "Abhishek Nayar",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 103,
+    "name": "Rishi Dhawan",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 104,
+    "name": "Praveen Kumar",
+    "overall": 84,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 105,
+    "name": "Manvinder Bisla",
+    "overall": 84,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 106,
+    "name": "Bipul Sharma",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 107,
+    "name": "Stuart Binny",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 108,
+    "name": "Vijay Shankar",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 109,
+    "name": "Mohit Sharma",
+    "overall": 84,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Capped",
+    "set_name": "Capped Bowlers"
+  },
+  {
+    "id": 110,
+    "name": "Rahul Tewatia",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 111,
+    "name": "Jitesh Sharma",
+    "overall": 84,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "PBKS",
+    "category": "Capped",
+    "set_name": "Capped Wicketkeepers"
+  },
+  {
+    "id": 112,
+    "name": "Krishnappa Gowtham",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Capped",
+    "set_name": "Capped All-Rounders"
+  },
+  {
+    "id": 113,
+    "name": "Kieron Pollard",
+    "overall": 93,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 114,
+    "name": "Dwayne Bravo",
+    "overall": 92,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 115,
+    "name": "Shane Watson",
+    "overall": 92,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 116,
+    "name": "Rashid Khan",
+    "overall": 92,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 117,
+    "name": "Shane Warne",
+    "overall": 91,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 118,
+    "name": "Michael Hussey",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 119,
+    "name": "Adam Gilchrist",
+    "overall": 90,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "Deccan Chargers",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 120,
+    "name": "Jacques Kallis",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 121,
+    "name": "Dale Steyn",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 122,
+    "name": "Steven Smith",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 123,
+    "name": "Faf du Plessis",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 124,
+    "name": "Glenn Maxwell",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 125,
+    "name": "David Miller",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 126,
+    "name": "Quinton de Kock",
+    "overall": 90,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 127,
+    "name": "Pat Cummins",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 128,
+    "name": "Mitchell Starc",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 129,
+    "name": "Travis Head",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 130,
+    "name": "Marcus Stoinis",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 131,
+    "name": "Kane Williamson",
+    "overall": 90,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 132,
+    "name": "Trent Boult",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 133,
+    "name": "Kagiso Rabada",
+    "overall": 90,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 134,
+    "name": "Nicholas Pooran",
+    "overall": 90,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "LSG",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 135,
+    "name": "Heinrich Klaasen",
+    "overall": 90,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 136,
+    "name": "Sam Curran",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 137,
+    "name": "Liam Livingstone",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "PBKS",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 138,
+    "name": "Cameron Green",
+    "overall": 90,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 139,
+    "name": "Albie Morkel",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 140,
+    "name": "Brendon McCullum",
+    "overall": 88,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 141,
+    "name": "Dwayne Smith",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 142,
+    "name": "Shaun Marsh",
+    "overall": 88,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 143,
+    "name": "Morne Morkel",
+    "overall": 88,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 144,
+    "name": "Kevin Pietersen",
+    "overall": 88,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 145,
+    "name": "Mitchell Marsh",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Pune Warriors India",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 146,
+    "name": "Brad Hogg",
+    "overall": 88,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 147,
+    "name": "Jonny Bairstow",
+    "overall": 88,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 148,
+    "name": "Moises Henriques",
+    "overall": 87,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 149,
+    "name": "Shakib Al Hasan",
+    "overall": 87,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 150,
+    "name": "Nathan Coulter-Nile",
+    "overall": 87,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 151,
+    "name": "Tim David",
+    "overall": 86,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 152,
+    "name": "Phil Salt",
+    "overall": 86,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 153,
+    "name": "Aaron Finch",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 154,
+    "name": "Chris Lynn",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 155,
+    "name": "Aiden Markram",
+    "overall": 85,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 156,
+    "name": "David Hussey",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 157,
+    "name": "Angelo Mathews",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Pune Warriors India",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 158,
+    "name": "Johan Botha",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 159,
+    "name": "Thisara Perera",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 160,
+    "name": "Jean-Paul Duminy",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 161,
+    "name": "Dan Christian",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Deccan Chargers",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 162,
+    "name": "James Faulkner",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 163,
+    "name": "Ben Cutting",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 164,
+    "name": "Chris Morris",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 165,
+    "name": "Jason Holder",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 166,
+    "name": "Ben Stokes",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 167,
+    "name": "Mohammad Nabi",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 168,
+    "name": "Mitchell Santner",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 169,
+    "name": "Moeen Ali",
+    "overall": 84,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 170,
+    "name": "Eoin Morgan",
+    "overall": 83,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 171,
+    "name": "James Neesham",
+    "overall": 83,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 172,
+    "name": "Imran Tahir",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 173,
+    "name": "Josh Hazlewood",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 174,
+    "name": "Tim Southee",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 175,
+    "name": "Andrew Tye",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "Gujarat Lions",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 176,
+    "name": "Adam Milne",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 177,
+    "name": "Sam Billings",
+    "overall": 83,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 178,
+    "name": "Adam Zampa",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 179,
+    "name": "Mustafizur Rahman",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "DC",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 180,
+    "name": "Chris Woakes",
+    "overall": 83,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "DC",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 181,
+    "name": "Lockie Ferguson",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 182,
+    "name": "David Willey",
+    "overall": 83,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 183,
+    "name": "Lungi Ngidi",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 184,
+    "name": "Anrich Nortje",
+    "overall": 83,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "DC",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 185,
+    "name": "Marco Jansen",
+    "overall": 83,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 186,
+    "name": "Glenn Phillips",
+    "overall": 83,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 187,
+    "name": "Jacob Oram",
+    "overall": 82,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 188,
+    "name": "Muthiah Muralidaran",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 189,
+    "name": "Daniel Vettori",
+    "overall": 82,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 190,
+    "name": "Tillakaratne Dilshan",
+    "overall": 82,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "Delhi Capitals",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 191,
+    "name": "Brad Hodge",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 192,
+    "name": "Kumar Sangakkara",
+    "overall": 82,
+    "role": "WK",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas Wicketkeepers"
+  },
+  {
+    "id": 193,
+    "name": "Ross Taylor",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 194,
+    "name": "Dimitri Mascarenhas",
+    "overall": 82,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 195,
+    "name": "Sohail Tanvir",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 196,
+    "name": "George Bailey",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 197,
+    "name": "Shaun Tait",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 198,
+    "name": "Wayne Parnell",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "Pune Warriors India",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 199,
+    "name": "Ben Hilfenhaus",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "CSK",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 200,
+    "name": "Rilee Rossouw",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 201,
+    "name": "Mitchell Johnson",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 202,
+    "name": "Kane Richardson",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RCB",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 203,
+    "name": "Chris Jordan",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "SRH",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 204,
+    "name": "Jason Roy",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 205,
+    "name": "Rovman Powell",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 206,
+    "name": "Tom Curran",
+    "overall": 82,
+    "role": "AR",
+    "is_overseas": true,
+    "team": "KKR",
+    "category": "Overseas",
+    "set_name": "Overseas All-Rounders"
+  },
+  {
+    "id": 207,
+    "name": "Jason Behrendorff",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 208,
+    "name": "Mujeeb Ur Rahman",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "Punjab Kings",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 209,
+    "name": "Dushmantha Chameera",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "DC",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 210,
+    "name": "Jofra Archer",
+    "overall": 82,
+    "role": "BOWL",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Bowlers"
+  },
+  {
+    "id": 211,
+    "name": "Sherfane Rutherford",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "MI",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 212,
+    "name": "Shimron Hetmyer",
+    "overall": 82,
+    "role": "BAT",
+    "is_overseas": true,
+    "team": "RR",
+    "category": "Overseas",
+    "set_name": "Overseas Batters"
+  },
+  {
+    "id": 213,
+    "name": "Joginder Sharma",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 214,
+    "name": "Arjun Yadav",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Deccan Chargers",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 215,
+    "name": "Pradeep Sangwan",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 216,
+    "name": "Pinal Shah",
+    "overall": 79,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 217,
+    "name": "Sunny Sohal",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Deccan Chargers",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 218,
+    "name": "Tanmay Srivastava",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 219,
+    "name": "Mahesh Rawat",
+    "overall": 79,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 220,
+    "name": "Mohammad Kaif",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 221,
+    "name": "Abhishek Raut",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 222,
+    "name": "Aditya Tare",
+    "overall": 79,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 223,
+    "name": "Amit Paunikar",
+    "overall": 79,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 224,
+    "name": "Shrikant Wagh",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Pune Warriors India",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 225,
+    "name": "Apoorv Wankhade",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 226,
+    "name": "Manan Vohra",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 227,
+    "name": "Pardeep Sahu",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 228,
+    "name": "Barinder Sran",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 229,
+    "name": "Saurabh Kumar",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Rising Pune Supergiant",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 230,
+    "name": "Mayank Dagar",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 231,
+    "name": "Prithvi Raj",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 232,
+    "name": "Himmat Singh",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 233,
+    "name": "Simarjeet Singh",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 234,
+    "name": "Yudhvir Singh",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 235,
+    "name": "Suyash Prabhudessai",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 236,
+    "name": "Chetan Sakariya",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 237,
+    "name": "Kuldip Yadav",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 238,
+    "name": "Rajvardhan Hangargekar",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 239,
+    "name": "Mukesh Choudhary",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 240,
+    "name": "Abhinav Manohar",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "GT",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 241,
+    "name": "Yash Dayal",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 242,
+    "name": "Aman Khan",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 243,
+    "name": "Harshit Rana",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 244,
+    "name": "Mayank Yadav",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 245,
+    "name": "Arshad Khan",
+    "overall": 79,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 246,
+    "name": "M Shahrukh Khan",
+    "overall": 79,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "GT",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 247,
+    "name": "Atharva Taide",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "PBKS",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 248,
+    "name": "Ajay Mandal",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 249,
+    "name": "Nishant Sindhu",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 250,
+    "name": "Nitish Kumar Reddy",
+    "overall": 79,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 251,
+    "name": "Abhinav Mukund",
+    "overall": 78,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 252,
+    "name": "Tejashwi Yadav",
+    "overall": 78,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 253,
+    "name": "Sourav Ganguly",
+    "overall": 78,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 254,
+    "name": "Shreevats Goswami",
+    "overall": 78,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 255,
+    "name": "Raju Bhatkal",
+    "overall": 78,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 256,
+    "name": "Raiphi Gomez",
+    "overall": 78,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 257,
+    "name": "Rahul Shukla",
+    "overall": 78,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 258,
+    "name": "Sushant Marathe",
+    "overall": 78,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 259,
+    "name": "Gurkeerat Singh Mann",
+    "overall": 78,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 260,
+    "name": "Aniket Choudhary",
+    "overall": 78,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 261,
+    "name": "Pratham Singh",
+    "overall": 78,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Gujarat Lions",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 262,
+    "name": "Tejas Baroka",
+    "overall": 78,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Gujarat Lions",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 263,
+    "name": "Pavan Deshpande",
+    "overall": 78,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 264,
+    "name": "Shams Mulani",
+    "overall": 78,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 265,
+    "name": "Prashant Solanki",
+    "overall": 78,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 266,
+    "name": "Vicky Ostwal",
+    "overall": 78,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 267,
+    "name": "Luvnith Sisodia",
+    "overall": 78,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 268,
+    "name": "Abishek Porel",
+    "overall": 78,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "DC",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 269,
+    "name": "Vaibhav Sooryavanshi",
+    "overall": 78,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 270,
+    "name": "VVS Laxman",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Deccan Chargers",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 271,
+    "name": "Aakash Chopra",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 272,
+    "name": "Yashpal Singh",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 273,
+    "name": "Ankeet Chavan",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 274,
+    "name": "Karan Goel",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 275,
+    "name": "Balachandra Akhil",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RCB",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 276,
+    "name": "Swapnil Asnodkar",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 277,
+    "name": "Aavishkar Salvi",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Delhi Capitals",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 278,
+    "name": "Paul Valthaty",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 279,
+    "name": "Amit Singh",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 280,
+    "name": "Kamran Khan",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 281,
+    "name": "Ali Murtaza",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 282,
+    "name": "Ajit Chandila",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 283,
+    "name": "Padmanabhan Prasanth",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "Kochi Tuskers Kerala",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 284,
+    "name": "Rahul Sharma",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Pune Warriors India",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 285,
+    "name": "Sachin Rana",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Pune Warriors India",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 286,
+    "name": "Ashok Menaria",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "RR",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 287,
+    "name": "Parvinder Awana",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "Punjab Kings",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 288,
+    "name": "Ishwar Pandey",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 289,
+    "name": "Parvez Rasool",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 290,
+    "name": "Akshdeep Nath",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "Gujarat Lions",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 291,
+    "name": "Monu Kumar",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 292,
+    "name": "Tajinder Singh",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 293,
+    "name": "Priyam Garg",
+    "overall": 77,
+    "role": "BAT",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped Batters"
+  },
+  {
+    "id": 294,
+    "name": "Bhagath Varma",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 295,
+    "name": "Ashok Sharma",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "KKR",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 296,
+    "name": "Aryan Juyal",
+    "overall": 77,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "MI",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  },
+  {
+    "id": 297,
+    "name": "Prerak Mankad",
+    "overall": 77,
+    "role": "AR",
+    "is_overseas": false,
+    "team": "LSG",
+    "category": "Uncapped",
+    "set_name": "Uncapped All-Rounders"
+  },
+  {
+    "id": 298,
+    "name": "Saurabh Dubey",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 299,
+    "name": "Sushant Mishra",
+    "overall": 77,
+    "role": "BOWL",
+    "is_overseas": false,
+    "team": "SRH",
+    "category": "Uncapped",
+    "set_name": "Uncapped Bowlers"
+  },
+  {
+    "id": 300,
+    "name": "Urvil Patel",
+    "overall": 77,
+    "role": "WK",
+    "is_overseas": false,
+    "team": "CSK",
+    "category": "Uncapped",
+    "set_name": "Uncapped Wicketkeepers"
+  }
+]

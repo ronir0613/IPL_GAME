@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun, Star } from 'lucide-react';
+import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun, Star, Users, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PlayerProfile from './PlayerProfile';
 import { saveRunToProfile, setProfileHandle, getProfileData } from '@/lib/profile';
+import { MpLobbyScreen, MpDraftScreen, MpMatchCenterScreen, MpConnectionSetupScreen, MpChatBox } from './MpScreens';
+import { MultiplayerManager, getBestAiPick, generateRoomCode, type MpMessage, getPlayerBasePrice, getBidIncrement, getAiValuation } from '@/lib/multiplayer';
 
 import { generateGambleTeam } from '@/lib/gamble';
 import type { GambleResult } from '@/lib/gamble';
@@ -10,8 +12,10 @@ import type { GambleResult } from '@/lib/gamble';
 import type {
   Player, Role, SquadSlot, SeasonTeam, MatchResult, PlayoffMatch, MatchHighlight,
   GamePhase, GameSettings, Difficulty, ShowRatings, SimSpeed, GameMode, MatchPrepConfig,
-  TeamStrength, PlayerStats, RainEvent, StoryItem
+  TeamStrength, PlayerStats, RainEvent, StoryItem,
+  MpPlayer, MpSettings, MpState
 } from '@/lib/types';
+import { IPL_TEAMS } from '@/lib/types';
 
 import {
   calcSquadStrength, calcOdds, generateLeague, generateFixtures,
@@ -449,7 +453,8 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
               { label: 'All modes' },
               { label: 'Classic' },
               { label: 'Franchise' },
-              { label: 'Gamble' }
+              { label: 'Gamble' },
+              { label: 'Multiplayer' }
             ].map(f => (
               <button 
                 key={f.label}
@@ -540,7 +545,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   );
 }
 
-function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinue }: { onPlay: () => void, onLeaderboard: () => void, onProfile: () => void, hasActiveGame?: boolean, onContinue?: () => void }) {
+function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinue, continueLabel = "CONTINUE DRAFTING" }: { onPlay: () => void, onLeaderboard: () => void, onProfile: () => void, hasActiveGame?: boolean, onContinue?: () => void, continueLabel?: string }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 space-y-12 py-12">
       <motion.div
@@ -562,7 +567,7 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
                 onClick={onContinue}
                 className="btn-primary text-xl font-black px-16 py-4 w-full max-w-md uppercase tracking-widest shadow-xl pulse-gold"
               >
-                CONTINUE DRAFTING
+                {continueLabel}
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.04 }}
@@ -639,45 +644,58 @@ function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => 
           PLAY
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full min-h-[300px] md:h-[500px]">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 w-full min-h-[300px] md:h-[500px]">
           
           {/* Classic */}
           <motion.button
             onClick={() => onSelectMode('classic')}
             whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-8 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]"
+            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-8xl font-black text-[var(--text-primary)]/5 mb-6 group-hover:text-blue-500/20 transition-colors">C</div>
-            <Swords size={48} className="text-[var(--text-muted)] mb-6 group-hover:text-blue-400 transition-colors" />
-            <h2 className="text-3xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Classic</h2>
-            <p className="text-[var(--text-muted)] text-sm font-medium">Build the greatest XI.</p>
+            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-blue-500/20 transition-colors">C</div>
+            <Swords size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-blue-400 transition-colors" />
+            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Classic</h2>
+            <p className="text-[var(--text-muted)] text-xs font-medium">Build the greatest XI.</p>
           </motion.button>
 
           {/* Franchise */}
           <motion.button
             onClick={() => onSelectMode('franchise')}
             whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-8 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-yellow-500 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)]"
+            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-yellow-500 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)]"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-8xl font-black text-[var(--text-primary)]/5 mb-6 group-hover:text-yellow-500/20 transition-colors">F</div>
-            <ClipboardList size={48} className="text-[var(--text-muted)] mb-6 group-hover:text-yellow-400 transition-colors" />
-            <h2 className="text-3xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Franchise</h2>
-            <p className="text-[var(--text-muted)] text-sm font-medium">Master the Impact Player rule.</p>
+            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-yellow-500/20 transition-colors">F</div>
+            <ClipboardList size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-yellow-400 transition-colors" />
+            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Franchise</h2>
+            <p className="text-[var(--text-muted)] text-xs font-medium">Impact player rules.</p>
           </motion.button>
 
           {/* Gamble */}
           <motion.button
             onClick={() => onSelectMode('gamble')}
             whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-8 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-purple-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
+            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-purple-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
           >
             <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-8xl font-black text-[var(--text-primary)]/5 mb-6 group-hover:text-purple-500/20 transition-colors">G</div>
-            <Dices size={48} className="text-[var(--text-muted)] mb-6 group-hover:text-purple-400 transition-colors" />
-            <h2 className="text-3xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Gamble</h2>
-            <p className="text-[var(--text-muted)] text-sm font-medium">Let fate decide.</p>
+            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-purple-500/20 transition-colors">G</div>
+            <Dices size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-purple-400 transition-colors" />
+            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Gamble</h2>
+            <p className="text-[var(--text-muted)] text-xs font-medium">Let fate decide.</p>
+          </motion.button>
+
+          {/* Multiplayer */}
+          <motion.button
+            onClick={() => onSelectMode('multiplayer')}
+            whileHover={{ scale: 1.05 }}
+            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-green-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]"
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-green-500/20 transition-colors">M</div>
+            <Users size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-green-400 transition-colors" />
+            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Multiplayer</h2>
+            <p className="text-[var(--text-muted)] text-xs font-medium">P2P Auction Room.</p>
           </motion.button>
 
         </div>
@@ -3350,6 +3368,10 @@ function WatchModeScreen({
   onSkip,
   control = 'ai',
   settings,
+  initialState,
+  onStateChange,
+  preSimulatedResults,
+  userFranchise,
 }: {
   fixtures: [number, number][];
   teams: SeasonTeam[];
@@ -3360,28 +3382,66 @@ function WatchModeScreen({
   onSkip: () => void;
   control?: 'ai' | 'full';
   settings?: GameSettings;
+  initialState?: any;
+  onStateChange?: (state: any) => void;
+  preSimulatedResults?: MatchResult[];
+  userFranchise?: string;
 }) {
-  const [currentMatchIdx, setCurrentMatchIdx] = useState(0);
-  const [completedMatches, setCompletedMatches] = useState<MatchResult[]>([]);
-  const [liveTeams, setLiveTeams] = useState<SeasonTeam[]>(() => JSON.parse(JSON.stringify(teams)));
-  const [currentResult, setCurrentResult] = useState<MatchResult | null>(null);
-  const [isDone, setIsDone] = useState(false);
+  const [currentMatchIdx, setCurrentMatchIdx] = useState(initialState?.currentMatchIdx ?? 0);
+  const [completedMatches, setCompletedMatches] = useState<MatchResult[]>(initialState?.completedMatches ?? []);
+  const [liveTeams, setLiveTeams] = useState<SeasonTeam[]>(() => initialState?.liveTeams ?? JSON.parse(JSON.stringify(teams)));
+  const [currentResult, setCurrentResult] = useState<MatchResult | null>(initialState?.currentResult ?? null);
+  const [isDone, setIsDone] = useState(initialState?.isDone ?? false);
   
-  const [isPaused, setIsPaused] = useState(control === 'full');
-  const [showSquadBuilder, setShowSquadBuilder] = useState(control === 'full');
-  const [actionDoneForMatch, setActionDoneForMatch] = useState<number>(-1);
-  const [localSquad, setLocalSquad] = useState<SquadSlot[]>(() => JSON.parse(JSON.stringify(squad)));
-  const [playingXI, setPlayingXI] = useState<Player[]>([]);
-  const [impactBench, setImpactBench] = useState<Player[]>([]);
+  const [isPaused, setIsPaused] = useState(initialState?.isPaused ?? (control === 'full'));
+  const [showSquadBuilder, setShowSquadBuilder] = useState(initialState?.showSquadBuilder ?? (control === 'full'));
+  const [actionDoneForMatch, setActionDoneForMatch] = useState<number>(initialState?.actionDoneForMatch ?? -1);
+  const [localSquad, setLocalSquad] = useState<SquadSlot[]>(() => initialState?.localSquad ?? JSON.parse(JSON.stringify(squad)));
+  const [playingXI, setPlayingXI] = useState<Player[]>(initialState?.playingXI ?? []);
+  const [impactBench, setImpactBench] = useState<Player[]>(initialState?.impactBench ?? []);
   
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const teamsRef = useRef<SeasonTeam[]>(JSON.parse(JSON.stringify(teams)));
-  const historyRef = useRef<MatchResult[]>([]);
-  const formsRef = useRef<Record<number, PlayerForm>>(initialForms);
-  const seasonStatsRef = useRef<Record<number, PlayerStats>>({});
+  const teamsRef = useRef<SeasonTeam[]>(initialState?.liveTeams ? JSON.parse(JSON.stringify(initialState.liveTeams)) : JSON.parse(JSON.stringify(teams)));
+  const historyRef = useRef<MatchResult[]>(initialState?.historyRefValue ?? []);
+  const formsRef = useRef<Record<number, PlayerForm>>(initialState?.formsRefValue ?? initialForms);
+  const seasonStatsRef = useRef<Record<number, PlayerStats>>(initialState?.seasonStatsRefValue ?? {});
   
-  const [liveForms, setLiveForms] = useState<Record<number, PlayerForm>>(initialForms);
-  const [liveSeasonStats, setLiveSeasonStats] = useState<Record<number, PlayerStats>>({});
+  const [liveForms, setLiveForms] = useState<Record<number, PlayerForm>>(initialState?.formsRefValue ?? initialForms);
+  const [liveSeasonStats, setLiveSeasonStats] = useState<Record<number, PlayerStats>>(initialState?.seasonStatsRefValue ?? {});
+
+  useEffect(() => {
+    if (onStateChange) {
+      onStateChange({
+        currentMatchIdx,
+        completedMatches,
+        liveTeams,
+        currentResult,
+        isDone,
+        isPaused,
+        showSquadBuilder,
+        actionDoneForMatch,
+        localSquad,
+        playingXI,
+        impactBench,
+        historyRefValue: historyRef.current,
+        seasonStatsRefValue: seasonStatsRef.current,
+        formsRefValue: formsRef.current,
+      });
+    }
+  }, [
+    currentMatchIdx,
+    completedMatches,
+    liveTeams,
+    currentResult,
+    isDone,
+    isPaused,
+    showSquadBuilder,
+    actionDoneForMatch,
+    localSquad,
+    playingXI,
+    impactBench,
+    onStateChange
+  ]);
 
   const total = fixtures.length;
 
@@ -3402,7 +3462,8 @@ function WatchModeScreen({
       return;
     }
     const [a, b] = fixtures[idx];
-    const isUserMatch = teamsRef.current[a].short === 'YOUR XI' || teamsRef.current[b].short === 'YOUR XI';
+    const myFranchise = userFranchise || 'YOUR XI';
+    const isUserMatch = teamsRef.current[a].short === myFranchise || teamsRef.current[b].short === myFranchise;
 
     if (control === 'full' && isUserMatch && actionDoneForMatch !== idx) {
       setIsPaused(true);
@@ -3414,10 +3475,22 @@ function WatchModeScreen({
       matchPrepConfig = { playingXI, impactBench };
     }
 
-    const res = simulateMatch(teamsRef.current[a], teamsRef.current[b], playersPool, localSquad, formsRef.current, matchPrepConfig);
-    applyResult(teamsRef.current, a, b, res);
+    let res: MatchResult;
+    if (preSimulatedResults && preSimulatedResults[idx]) {
+      res = { ...preSimulatedResults[idx] };
+      res.isUserMatch = isUserMatch;
+      if (isUserMatch) {
+        const myTeamName = teamsRef.current[a].short === myFranchise ? teamsRef.current[a].name : teamsRef.current[b].name;
+        res.userWon = res.winner === myTeamName;
+      }
+      applyResult(teamsRef.current, a, b, res);
+      accumulateStats(seasonStatsRef.current, res.matchStats);
+    } else {
+      res = simulateMatch(teamsRef.current[a], teamsRef.current[b], playersPool, localSquad, formsRef.current, matchPrepConfig);
+      applyResult(teamsRef.current, a, b, res);
+      accumulateStats(seasonStatsRef.current, res.matchStats);
+    }
     
-    accumulateStats(seasonStatsRef.current, res.matchStats);
     setLiveSeasonStats({ ...seasonStatsRef.current });
 
     historyRef.current = [...historyRef.current, res];
@@ -3433,10 +3506,10 @@ function WatchModeScreen({
       setCurrentResult(null);
     }
     setCurrentMatchIdx(idx + 1);
-  }, [currentMatchIdx, fixtures, playersPool, localSquad, onComplete, control, actionDoneForMatch, playingXI, impactBench]);
+  }, [currentMatchIdx, fixtures, playersPool, localSquad, onComplete, control, actionDoneForMatch, playingXI, impactBench, preSimulatedResults, userFranchise]);
 
   useEffect(() => {
-    if (isPaused || isDone || currentMatchIdx >= total) return;
+    if (isPaused || isDone || currentMatchIdx > total) return;
     
     const lastMatchUser = currentMatchIdx > 0 && historyRef.current[currentMatchIdx - 1]?.isUserMatch;
     const delay = currentMatchIdx === 0 ? 400 : (lastMatchUser ? 1200 : 150);
@@ -3447,8 +3520,9 @@ function WatchModeScreen({
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
   }, [currentMatchIdx, isPaused, isDone, advanceMatch, total]);
 
+  const myFranchise = userFranchise || 'YOUR XI';
   const isWaitingForUser = isPaused && control === 'full' && currentMatchIdx < total && 
-     (liveTeams[fixtures[currentMatchIdx][0]].short === 'YOUR XI' || liveTeams[fixtures[currentMatchIdx][1]].short === 'YOUR XI') && 
+     (liveTeams[fixtures[currentMatchIdx][0]].short === myFranchise || liveTeams[fixtures[currentMatchIdx][1]].short === myFranchise) && 
      actionDoneForMatch !== currentMatchIdx;
 
   const sortedLive = [...liveTeams].sort((a, b) => b.points - a.points || b.nrr - a.nrr);
@@ -3476,26 +3550,30 @@ function WatchModeScreen({
             />
           </div>
           
-          <button
-            onClick={() => setIsPaused(!isPaused)}
-            className={`flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl border transition-all shadow-sm shrink-0 ${
-              isPaused 
-                ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/50 hover:bg-yellow-500/20' 
-                : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft-2)]'
-            }`}
-          >
-            {isPaused ? <><Play size={16} /> Resume</> : <><Pause size={16} /> Pause</>}
-          </button>
+          {settings?.mode !== 'multiplayer' && (
+            <>
+              <button
+                onClick={() => setIsPaused(!isPaused)}
+                className={`flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl border transition-all shadow-sm shrink-0 ${
+                  isPaused 
+                    ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/50 hover:bg-yellow-500/20' 
+                    : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft-2)]'
+                }`}
+              >
+                {isPaused ? <><Play size={16} /> Resume</> : <><Pause size={16} /> Pause</>}
+              </button>
 
-          <button
-            onClick={() => {
-              if (timerRef.current) clearTimeout(timerRef.current);
-              onSkip();
-            }}
-            className="text-sm font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)] hover:border-gray-500 px-5 py-2.5 rounded-xl transition-all bg-[var(--color-canvas)] shrink-0 shadow-sm"
-          >
-            ⏭ Skip to End
-          </button>
+              <button
+                onClick={() => {
+                  if (timerRef.current) clearTimeout(timerRef.current);
+                  onSkip();
+                }}
+                className="text-sm font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)] hover:border-gray-500 px-5 py-2.5 rounded-xl transition-all bg-[var(--color-canvas)] shrink-0 shadow-sm"
+              >
+                ⏭ Skip to End
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -3741,6 +3819,8 @@ function PlayoffsWatchScreen({
   seasonStats,
   onComplete,
   settings,
+  initialState,
+  onStateChange,
 }: {
   top4: SeasonTeam[];
   teams: SeasonTeam[];
@@ -3750,20 +3830,53 @@ function PlayoffsWatchScreen({
   seasonStats: Record<number, PlayerStats>;
   onComplete: (playoffMatches: PlayoffMatch[], champion: string, finalSquad: SquadSlot[], finalForms: Record<number, PlayerForm>, finalStats: Record<number, PlayerStats>) => void;
   settings: GameSettings;
+  initialState?: any;
+  onStateChange?: (state: any) => void;
 }) {
-  const [matches, setMatches] = useState<PlayoffMatch[]>([]);
-  const [step, setStep] = useState(0); // 0: Q1, 1: Elim, 2: Q2, 3: Final, 4: Done
-  const [localSquad, setLocalSquad] = useState<SquadSlot[]>(() => JSON.parse(JSON.stringify(squad)));
-  const [forms, setForms] = useState<Record<number, PlayerForm>>(initialForms);
-  const [stats, setStats] = useState<Record<number, PlayerStats>>(seasonStats);
+  const [matches, setMatches] = useState<PlayoffMatch[]>(initialState?.matches ?? []);
+  const [step, setStep] = useState<number>(initialState?.step ?? 0); // 0: Q1, 1: Elim, 2: Q2, 3: Final, 4: Done
+  const [localSquad, setLocalSquad] = useState<SquadSlot[]>(() => initialState?.localSquad ?? JSON.parse(JSON.stringify(squad)));
+  const [forms, setForms] = useState<Record<number, PlayerForm>>(initialState?.forms ?? initialForms);
+  const [stats, setStats] = useState<Record<number, PlayerStats>>(initialState?.stats ?? seasonStats);
 
-  const [q1Result, setQ1Result] = useState<{ winner: SeasonTeam, loser: SeasonTeam } | null>(null);
-  const [elimResult, setElimResult] = useState<{ winner: SeasonTeam } | null>(null);
-  const [q2Result, setQ2Result] = useState<{ winner: SeasonTeam } | null>(null);
+  const [q1Result, setQ1Result] = useState<{ winner: SeasonTeam, loser: SeasonTeam } | null>(initialState?.q1Result ?? null);
+  const [elimResult, setElimResult] = useState<{ winner: SeasonTeam } | null>(initialState?.elimResult ?? null);
+  const [q2Result, setQ2Result] = useState<{ winner: SeasonTeam } | null>(initialState?.q2Result ?? null);
 
-  const [isFastForward, setIsFastForward] = useState(false);
-  const [showBuilder, setShowBuilder] = useState(false);
-  const [lastResult, setLastResult] = useState<MatchResult | null>(null);
+  const [isFastForward, setIsFastForward] = useState(initialState?.isFastForward ?? false);
+  const [showBuilder, setShowBuilder] = useState(initialState?.showBuilder ?? false);
+  const [lastResult, setLastResult] = useState<MatchResult | null>(initialState?.lastResult ?? null);
+
+  useEffect(() => {
+    if (onStateChange) {
+      onStateChange({
+        matches,
+        step,
+        localSquad,
+        forms,
+        stats,
+        q1Result,
+        elimResult,
+        q2Result,
+        lastResult,
+        isFastForward,
+        showBuilder
+      });
+    }
+  }, [
+    matches,
+    step,
+    localSquad,
+    forms,
+    stats,
+    q1Result,
+    elimResult,
+    q2Result,
+    lastResult,
+    isFastForward,
+    showBuilder,
+    onStateChange
+  ]);
 
   const currentMatchConfig = useMemo(() => {
     if (step === 0) return { name: 'Qualifier 1', t1: top4[0], t2: top4[1] };
@@ -3983,6 +4096,22 @@ function PlayoffsWatchScreen({
 
 import NavBar from './NavBar';
 
+const SET_ORDER = [
+  'Marquee Set',
+  'Capped Wicketkeepers',
+  'Capped Batters',
+  'Capped All-Rounders',
+  'Capped Bowlers',
+  'Overseas Wicketkeepers',
+  'Overseas Batters',
+  'Overseas All-Rounders',
+  'Overseas Bowlers',
+  'Uncapped Wicketkeepers',
+  'Uncapped Batters',
+  'Uncapped All-Rounders',
+  'Uncapped Bowlers'
+];
+
 function MainAppContent() {
   const [phase, setPhaseState] = useState<GamePhase>('home');
   const [lastActivePhase, setLastActivePhase] = useState<GamePhase | null>(null);
@@ -4027,6 +4156,17 @@ function MainAppContent() {
   const [playersPool, setPlayersPool] = useState<Player[]>([]);
   const [results, setResults] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [playerForms, setPlayerForms] = useState<Record<number, PlayerForm>>({});
+
+  const [watchModeState, setWatchModeState] = useState<any>(null);
+  const [playoffsState, setPlayoffsState] = useState<any>(null);
+
+  const [watchData, setWatchData] = useState<{
+    fixtures: [number, number][];
+    teams: SeasonTeam[];
+    squad: SquadSlot[];
+    strength: ReturnType<typeof calcSquadStrength>;
+  } | null>(null);
+
   const [playoffsData, setPlayoffsData] = useState<{
     top4: SeasonTeam[];
     teams: SeasonTeam[];
@@ -4036,9 +4176,1308 @@ function MainAppContent() {
     squad: SquadSlot[];
   } | null>(null);
 
+  // Load active game state on mount
   useEffect(() => {
-    fetch('/players.json').then(r => r.json()).then(data => setPlayersPool(data as Player[]));
+    try {
+      const raw = localStorage.getItem('160play_active_game');
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (saved && saved.phase) {
+          if (!saved.phase.startsWith('mp-')) {
+            setSquad(saved.squad || []);
+            setRerolls(saved.rerolls !== undefined ? saved.rerolls : 1);
+            setPickedNames(new Set((saved.pickedNames || []).map((n: string) => n.toLowerCase().trim())));
+            setSettings(saved.settings || { difficulty: 'normal', showRatings: 'on', simSpeed: 'fast', mode: 'classic' });
+            setPlayerForms(saved.playerForms || {});
+            setWatchData(saved.watchData || null);
+            setPlayoffsData(saved.playoffsData || null);
+            setResults(saved.results || null);
+            setWatchModeState(saved.watchModeState || null);
+            setPlayoffsState(saved.playoffsState || null);
+            setLastActivePhase(saved.lastActivePhase || null);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load active game state from localStorage', e);
+    }
   }, []);
+
+  // Save game state to localStorage
+  useEffect(() => {
+    const activePhases: GamePhase[] = [
+      'draft',
+      'gamble-drafting',
+      'squad-complete',
+      'watching',
+      'simulating',
+      'playoffs-watch',
+      'playoffs_prep',
+      'match-prep'
+    ];
+    if (activePhases.includes(phase)) {
+      const stateToSave = {
+        phase,
+        lastActivePhase: lastActivePhase || phase,
+        squad,
+        rerolls,
+        pickedNames: Array.from(pickedNames),
+        settings,
+        playerForms,
+        watchData,
+        playoffsData,
+        results,
+        watchModeState,
+        playoffsState
+      };
+      localStorage.setItem('160play_active_game', JSON.stringify(stateToSave));
+    } else if (phase === 'home' && squad.length === 0 && !results) {
+      localStorage.removeItem('160play_active_game');
+    }
+  }, [
+    phase,
+    lastActivePhase,
+    squad,
+    rerolls,
+    pickedNames,
+    settings,
+    playerForms,
+    watchData,
+    playoffsData,
+    results,
+    watchModeState,
+    playoffsState
+  ]);
+
+  const handleStartNewGame = () => {
+    setSquad([]);
+    setPickedNames(new Set());
+    setPlayerForms({});
+    setWatchData(null);
+    setPlayoffsData(null);
+    setWatchModeState(null);
+    setPlayoffsState(null);
+    setResults(null);
+    setLastActivePhase(null);
+    localStorage.removeItem('160play_active_game');
+    setPhase('mode-select');
+  };
+
+  // ─── Multiplayer State & Refs ──────────────────────────────────────
+  const [mpState, setMpState] = useState<MpState | null>(null);
+  const [mpUserName, setMpUserName] = useState<string>('');
+  const [mpFranchise, setMpFranchise] = useState<string>('');
+  const [inputRoomId, setInputRoomId] = useState<string>('');
+  const [mpError, setMpError] = useState<string>('');
+  const [isConnecting, setIsConnecting] = useState<boolean>(false);
+  const mpManagerRef = useRef<MultiplayerManager | null>(null);
+  const mpTacticsRef = useRef<Record<string, { playingXI: Player[], impactBench: Player[], captainName: string }>>({});
+  const timerRef = useRef<any>(null);
+  const handleMpMessageRef = useRef<(msg: MpMessage) => void>(() => {});
+
+  // Tournament State for Multiplayer
+  const [mpTeams, setMpTeams] = useState<SeasonTeam[]>([]);
+  const [mpFixtures, setMpFixtures] = useState<[number, number][]>([]);
+  const [mpRoundIdx, setMpRoundIdx] = useState<number>(0);
+  const [mpSeasonStats, setMpSeasonStats] = useState<Record<number, PlayerStats>>({});
+  const [mpForms, setMpForms] = useState<Record<number, PlayerForm>>({});
+  const [mpSeasonResults, setMpSeasonResults] = useState<MatchResult[]>([]);
+
+  // Keep mpFranchise in sync with mpState players
+  useEffect(() => {
+    if (!mpState || !mpManagerRef.current) return;
+    const myId = mpManagerRef.current.peerId;
+    const me = mpState.players.find(p => p.peerId === myId);
+    if (me && me.franchise !== 'TBD' && me.franchise !== mpFranchise) {
+      setMpFranchise(me.franchise);
+    }
+  }, [mpState, mpFranchise]);
+
+  // ─── Multiplayer Auction Bidding Loops & Helpers ───────────────────
+  const nominateNextPlayer = (stateToUse: MpState, pool: Player[]): MpState => {
+    let currentSetIdx = stateToUse.currentSetIndex;
+    let isAcc = stateToUse.isAcceleratedRound;
+    let unsoldIds = [...stateToUse.unsoldPlayerIds];
+    let nextPlayer: Player | null = null;
+
+    if (isAcc) {
+      // Accelerated round: nominate first available unsold player
+      const nextUnsoldId = unsoldIds.find(id => !stateToUse.pickedIds.includes(id));
+      if (nextUnsoldId) {
+        nextPlayer = pool.find(p => p.id === nextUnsoldId) || null;
+        unsoldIds = unsoldIds.filter(id => id !== nextUnsoldId);
+      }
+    } else {
+      // Normal sets round
+      while (currentSetIdx < SET_ORDER.length && !nextPlayer) {
+        const activeSetName = SET_ORDER[currentSetIdx];
+        const setPlayers = pool.filter(p => p.set_name === activeSetName && !stateToUse.pickedIds.includes(p.id) && !stateToUse.unsoldPlayerIds.includes(p.id));
+        
+        if (setPlayers.length > 0) {
+          // Choose a random player from the set
+          nextPlayer = setPlayers[Math.floor(Math.random() * setPlayers.length)];
+        } else {
+          currentSetIdx++;
+        }
+      }
+      
+      // If we finished all sets, check if we need to enter accelerated round
+      if (!nextPlayer && unsoldIds.some(id => !stateToUse.pickedIds.includes(id))) {
+        isAcc = true;
+        const nextUnsoldId = unsoldIds.find(id => !stateToUse.pickedIds.includes(id));
+        if (nextUnsoldId) {
+          nextPlayer = pool.find(p => p.id === nextUnsoldId) || null;
+          unsoldIds = unsoldIds.filter(id => id !== nextUnsoldId);
+        }
+      }
+    }
+
+    if (nextPlayer) {
+      const isMarqueeSet = nextPlayer.set_name === 'Marquee Set';
+      const baseInfo = getPlayerBasePrice(
+        nextPlayer.overall,
+        nextPlayer.category || 'Uncapped',
+        nextPlayer.is_overseas || false,
+        isMarqueeSet
+      );
+
+      return {
+        ...stateToUse,
+        activeAuctionPlayer: nextPlayer,
+        currentBid: baseInfo.numeric,
+        highestBidder: null,
+        bidTimer: 10,
+        skippedPeers: [],
+        currentSetIndex: currentSetIdx,
+        isAcceleratedRound: isAcc,
+        unsoldPlayerIds: unsoldIds
+      };
+    } else {
+      // No more players available to nominate. Auction is complete.
+      return {
+        ...stateToUse,
+        activeAuctionPlayer: null,
+        currentBid: 0,
+        highestBidder: null,
+        bidTimer: 0,
+        skippedPeers: [],
+        isDraftComplete: true
+      };
+    }
+  };
+
+  // Host Bidding Auction loop
+  useEffect(() => {
+    if (phase !== 'mp-draft' || !mpState || !mpState.isHost || mpState.isDraftComplete || !mpState.activeAuctionPlayer) {
+      if (timerRef.current) clearInterval(timerRef.current);
+      return;
+    }
+
+    timerRef.current = setInterval(() => {
+      setMpState(prev => {
+        if (!prev || !prev.activeAuctionPlayer) return prev;
+
+        // 1. Tick bid timer down
+        const nextTimer = prev.bidTimer - 1;
+
+        if (nextTimer <= 0) {
+          // Gavel falls (SOLD or UNSOLD)
+          let updatedRosters = { ...prev.rosters };
+          let updatedPurses = { ...prev.purses };
+          let updatedPickedIds = [...prev.pickedIds];
+          let updatedUnsoldIds = [...prev.unsoldPlayerIds];
+          let updatedLogs = [...prev.auctionLogs];
+          
+          const player = prev.activeAuctionPlayer;
+          const buyerId = prev.highestBidder;
+          const finalPrice = prev.currentBid;
+
+          if (buyerId) {
+            // SOLD
+            updatedRosters[buyerId] = [...(updatedRosters[buyerId] || []), player];
+            updatedPurses[buyerId] = updatedPurses[buyerId] - finalPrice;
+            updatedPickedIds.push(player.id);
+
+            let buyerName = 'Host';
+            if (buyerId.startsWith('AI_')) {
+              const teamCode = buyerId.split('_')[1];
+              buyerName = `AI - ${teamCode}`;
+            } else {
+              const clientPlayer = prev.players.find(p => p.peerId === buyerId);
+              buyerName = clientPlayer ? clientPlayer.name : 'Client';
+            }
+            updatedLogs.unshift(`🔨 ${player.name} SOLD to ${buyerName} for ₹${(finalPrice / 100).toFixed(2)} Cr!`);
+          } else {
+            // UNSOLD
+            if (!prev.isAcceleratedRound) {
+              if (!updatedUnsoldIds.includes(player.id)) {
+                updatedUnsoldIds.push(player.id);
+              }
+            }
+            updatedLogs.unshift(`❌ ${player.name} went UNSOLD at ₹${(finalPrice < 100 ? finalPrice + ' L' : (finalPrice / 100).toFixed(2) + ' Cr')}.`);
+          }
+
+          const stateBeforeNomination: MpState = {
+            ...prev,
+            rosters: updatedRosters,
+            purses: updatedPurses,
+            pickedIds: updatedPickedIds,
+            unsoldPlayerIds: updatedUnsoldIds,
+            auctionLogs: updatedLogs,
+            roundNumber: prev.roundNumber + 1
+          };
+
+          const nextState = nominateNextPlayer(stateBeforeNomination, playersPool);
+          
+          if (nextState.isDraftComplete) {
+            if (timerRef.current) clearInterval(timerRef.current);
+            mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+            setPhase('mp-match-prep');
+            return nextState;
+          }
+
+          mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+          return nextState;
+        }
+
+        // Standard tick
+        const updatedState = { ...prev, bidTimer: nextTimer };
+        mpManagerRef.current?.send('DRAFT_UPDATE', updatedState);
+        return updatedState;
+      });
+    }, 1000);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [phase, mpState?.isHost, mpState?.isDraftComplete, mpState?.activeAuctionPlayer, playersPool]);
+
+  // Client local countdown ticking
+  useEffect(() => {
+    if (phase !== 'mp-draft' || !mpState || mpState.isHost || mpState.isDraftComplete) {
+      return;
+    }
+    
+    const clientTimer = setInterval(() => {
+      setMpState(prev => {
+        if (!prev || prev.bidTimer <= 0) return prev;
+        return {
+          ...prev,
+          bidTimer: prev.bidTimer - 1
+        };
+      });
+    }, 1000);
+    
+    return () => clearInterval(clientTimer);
+  }, [phase, mpState?.isHost, mpState?.isDraftComplete, mpState?.activeAuctionPlayer]);
+
+  const handleMpPlaceBid = (proposedBid: number) => {
+    if (!mpState || mpState.isDraftComplete) return;
+
+    if (mpState.isHost) {
+      setMpState(prev => {
+        if (!prev) return prev;
+        const myId = mpManagerRef.current!.peerId;
+        
+        if (prev.highestBidder === myId) return prev;
+        const myPurse = prev.purses[myId] || 0;
+        const myRoster = prev.rosters[myId] || [];
+        const minReserve = (prev.settings.rounds - myRoster.length - 1) * 20;
+
+        if (myPurse - proposedBid < minReserve || myRoster.length >= prev.settings.rounds) {
+          return prev;
+        }
+
+        const activePeers = prev.players.filter(p => p.franchise !== 'TBD').map(p => p.peerId);
+        const skipped = prev.skippedPeers || [];
+
+        const nextState = {
+          ...prev,
+          currentBid: proposedBid,
+          highestBidder: myId,
+          bidTimer: 10
+        };
+
+        // Check if everyone else has skipped/dropped
+        if (skipped.length >= activePeers.length - 1) {
+          const player = prev.activeAuctionPlayer;
+          if (player) {
+            let updatedRosters = { ...prev.rosters };
+            let updatedPurses = { ...prev.purses };
+            let updatedPickedIds = [...prev.pickedIds];
+            let updatedLogs = [...prev.auctionLogs];
+
+            updatedRosters[myId] = [...(updatedRosters[myId] || []), player];
+            updatedPurses[myId] = updatedPurses[myId] - proposedBid;
+            updatedPickedIds.push(player.id);
+
+            const clientPlayer = prev.players.find(p => p.peerId === myId);
+            const buyerName = clientPlayer ? clientPlayer.name : 'Host';
+            updatedLogs.unshift(`🔨 ${player.name} SOLD to ${buyerName} for ₹${(proposedBid / 100).toFixed(2)} Cr!`);
+
+            const stateBeforeNomination: MpState = {
+              ...prev,
+              skippedPeers: [],
+              rosters: updatedRosters,
+              purses: updatedPurses,
+              pickedIds: updatedPickedIds,
+              auctionLogs: updatedLogs,
+              roundNumber: prev.roundNumber + 1
+            };
+            const nextStateNominated = nominateNextPlayer(stateBeforeNomination, playersPool);
+
+            if (nextStateNominated.isDraftComplete) {
+              if (timerRef.current) clearInterval(timerRef.current);
+              mpManagerRef.current?.send('DRAFT_UPDATE', nextStateNominated);
+              setPhase('mp-match-prep');
+              return nextStateNominated;
+            }
+
+            mpManagerRef.current?.send('DRAFT_UPDATE', nextStateNominated);
+            return nextStateNominated;
+          }
+        }
+
+        mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+        return nextState;
+      });
+    } else {
+      mpManagerRef.current?.send('PLACE_BID', { bid: proposedBid });
+    }
+  };
+
+  const startSeason = (stateToStart: MpState) => {
+    const updatedRosters = { ...stateToStart.rosters };
+    const updatedPurses = { ...stateToStart.purses };
+    const updatedPickedIds = [...stateToStart.pickedIds];
+    
+    let availablePlayers = playersPool.filter(p => !updatedPickedIds.includes(p.id));
+
+    // 1. Fill human players' rosters to 15 if they are short
+    const humanTeamIds = stateToStart.players.filter(p => p.franchise !== 'TBD').map(p => p.peerId);
+    humanTeamIds.forEach(teamId => {
+      const roster = updatedRosters[teamId] || [];
+      const needed = 15 - roster.length;
+      for (let i = 0; i < needed; i++) {
+        if (availablePlayers.length === 0) break;
+        availablePlayers.sort((a, b) => b.overall - a.overall);
+        
+        // Ensure role balance (WK)
+        const currentRosterList = updatedRosters[teamId] || [];
+        const hasWK = currentRosterList.some(p => p.role === 'WK');
+        let pickedIndex = 0;
+        if (i >= needed - 3 && !hasWK) {
+          const wkIdx = availablePlayers.findIndex(p => p.role === 'WK');
+          if (wkIdx !== -1) pickedIndex = wkIdx;
+        }
+
+        const pickedPlayer = availablePlayers[pickedIndex];
+        updatedRosters[teamId] = [...(updatedRosters[teamId] || []), pickedPlayer];
+        updatedPurses[teamId] = (updatedPurses[teamId] || 12000) - (getPlayerBasePrice(pickedPlayer.overall, pickedPlayer.category || 'Uncapped', pickedPlayer.is_overseas || false, pickedPlayer.set_name === 'Marquee Set').numeric);
+        updatedPickedIds.push(pickedPlayer.id);
+        availablePlayers.splice(pickedIndex, 1);
+      }
+    });
+
+    // 2. Spread remaining players balanced among the CPU teams
+    const aiTeamIds = stateToStart.draftOrder.filter(id => id.startsWith('AI_'));
+    
+    // Sort remaining players by overall descending
+    availablePlayers.sort((a, b) => b.overall - a.overall);
+
+    // Distribute 15 players to each AI team in snake order
+    for (let round = 0; round < 15; round++) {
+      const orderedAiTeams = (round % 2 === 0) ? [...aiTeamIds] : [...aiTeamIds].reverse();
+      for (const teamId of orderedAiTeams) {
+        if (availablePlayers.length === 0) break;
+        
+        // Ensure role balance (WK)
+        const teamRoster = updatedRosters[teamId] || [];
+        const hasWK = teamRoster.some(p => p.role === 'WK');
+        
+        let pickedIndex = 0;
+        if (round >= 10 && !hasWK) {
+          const wkIdx = availablePlayers.findIndex(p => p.role === 'WK');
+          if (wkIdx !== -1) pickedIndex = wkIdx;
+        }
+
+        const pickedPlayer = availablePlayers[pickedIndex];
+        updatedRosters[teamId] = [...(updatedRosters[teamId] || []), pickedPlayer];
+        updatedPurses[teamId] = (updatedPurses[teamId] || 12000) - (getPlayerBasePrice(pickedPlayer.overall, pickedPlayer.category || 'Uncapped', pickedPlayer.is_overseas || false, pickedPlayer.set_name === 'Marquee Set').numeric);
+        updatedPickedIds.push(pickedPlayer.id);
+        availablePlayers.splice(pickedIndex, 1);
+      }
+    }
+
+    const teams: SeasonTeam[] = [];
+    const allFranchises = [
+      ...stateToStart.players.filter(p => p.franchise !== 'TBD').map(p => ({ id: p.peerId, franchise: p.franchise, name: p.name })),
+      ...stateToStart.draftOrder.filter(id => id.startsWith('AI_')).map(aiId => {
+        const franchise = aiId.split('_')[1];
+        return { id: aiId, franchise, name: `AI - ${franchise}` };
+      })
+    ];
+    
+    allFranchises.forEach(f => {
+      const roster = updatedRosters[f.id] || [];
+      const slots: SquadSlot[] = roster.map(p => ({ player: p } as SquadSlot));
+      const strength = calcSquadStrength(slots);
+      
+      teams.push({
+        name: f.name,
+        short: f.franchise,
+        batting: strength.batting,
+        bowling: strength.bowling,
+        overall: strength.overall,
+        played: 0,
+        won: 0,
+        lost: 0,
+        points: 0,
+        nrr: 0,
+        streak: 0,
+        hasDestinyUsed: false,
+      });
+    });
+
+    const fixtures = generateFixtures(teams);
+
+    const simulatedMatches: MatchResult[] = [];
+    const tempTeams = JSON.parse(JSON.stringify(teams));
+    const slotsForInit: SquadSlot[] = playersPool.map(p => ({ player: p } as SquadSlot));
+    const tempForms = initPlayerForms(slotsForInit);
+
+    fixtures.forEach(([a, b]) => {
+      let teamA = { ...tempTeams[a] };
+      let teamB = { ...tempTeams[b] };
+
+      const franchiseA = allFranchises.find(f => f.franchise === teamA.short);
+      const franchiseB = allFranchises.find(f => f.franchise === teamB.short);
+
+      const isHomeUser = franchiseA && !franchiseA.id.startsWith('AI_');
+      const isAwayUser = franchiseB && !franchiseB.id.startsWith('AI_');
+
+      const rosterA = franchiseA ? (updatedRosters[franchiseA.id] || []) : [];
+      const rosterB = franchiseB ? (updatedRosters[franchiseB.id] || []) : [];
+
+      const sortedA = [...rosterA].sort((x, y) => y.overall - x.overall);
+      const sortedB = [...rosterB].sort((x, y) => y.overall - x.overall);
+
+      let xiA = sortedA.slice(0, 11);
+      let xiB = sortedB.slice(0, 11);
+
+      let squadToUse = xiA.map(p => ({ player: p } as SquadSlot));
+      let prepToUse: MatchPrepConfig | undefined = { playingXI: xiA, impactBench: sortedA.slice(11) };
+
+      if (isHomeUser && franchiseA) {
+        const tactics = mpTacticsRef.current[franchiseA.id];
+        if (tactics) {
+          squadToUse = tactics.playingXI.map(p => ({ player: p } as SquadSlot));
+          prepToUse = { playingXI: tactics.playingXI, impactBench: tactics.impactBench };
+        }
+        teamA.short = 'YOUR XI';
+        teamA.name = 'Your XI';
+      } else if (isAwayUser && franchiseB) {
+        const tactics = mpTacticsRef.current[franchiseB.id];
+        if (tactics) {
+          squadToUse = tactics.playingXI.map(p => ({ player: p } as SquadSlot));
+          prepToUse = { playingXI: tactics.playingXI, impactBench: tactics.impactBench };
+        }
+        teamB.short = 'YOUR XI';
+        teamB.name = 'Your XI';
+      }
+
+      const res = simulateMatch(
+        teamA,
+        teamB,
+        playersPool,
+        squadToUse,
+        tempForms,
+        prepToUse,
+        rosterA,
+        rosterB
+      );
+
+      applyResult(tempTeams, a, b, res);
+      simulatedMatches.push(res);
+    });
+
+    const sortedTemp = sortTable(tempTeams);
+    const top4 = sortedTemp.slice(0, 4);
+
+    const rostersMap: Record<string, Player[]> = {};
+    allFranchises.forEach(f => {
+      rostersMap[f.franchise] = updatedRosters[f.id] || [];
+    });
+
+    const hostPeerId = stateToStart.players[0]?.peerId || '';
+    const myRoster = updatedRosters[hostPeerId] || [];
+    const mySlots = myRoster.map(p => ({ player: p } as SquadSlot));
+
+    const playoffs = simulatePlayoffs(top4, playersPool, mySlots, rostersMap);
+
+    setMpTeams(teams);
+    setMpFixtures(fixtures);
+    setMpRoundIdx(0);
+    setMpSeasonStats({});
+    setMpForms({});
+    setMpSeasonResults([]);
+
+    const finalState: MpState = {
+      ...stateToStart,
+      rosters: updatedRosters,
+      purses: updatedPurses,
+      pickedIds: updatedPickedIds,
+      isDraftComplete: true,
+      activeMatches: simulatedMatches,
+      precomputedPlayoffs: playoffs
+    };
+
+    setMpState(finalState);
+    setPhase('mp-watching');
+
+    mpManagerRef.current?.send('FORCE_START_SEASON', { state: finalState, teams, fixtures });
+  };
+
+  const handleForceStartSeason = () => {
+    if (!mpState || !mpState.isHost) return;
+
+    const humanTeamIds = mpState.players.filter(p => p.franchise !== 'TBD').map(p => p.peerId);
+    const isAnyHumanShort = humanTeamIds.some(id => (mpState.rosters[id] || []).length < 11);
+    
+    if (isAnyHumanShort) {
+      alert('Cannot start season. All human teams must have drafted at least 11 players.');
+      return;
+    }
+
+    setMpState(prev => {
+      if (!prev) return prev;
+      const nextState = {
+        ...prev,
+        isDraftComplete: true
+      };
+      mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+      setPhase('mp-match-prep');
+      return nextState;
+    });
+  };
+
+  const handleMpSkip = () => {
+    if (!mpState || mpState.isDraftComplete) return;
+
+    if (mpState.isHost) {
+      setMpState(prev => {
+        if (!prev) return prev;
+        const myId = mpManagerRef.current!.peerId;
+        const activePeers = prev.players.filter(p => p.franchise !== 'TBD').map(p => p.peerId);
+        
+        const skipped = prev.skippedPeers || [];
+        if (skipped.includes(myId)) return prev;
+
+        const updatedSkipped = [...skipped, myId];
+        
+        let nextState = {
+          ...prev,
+          skippedPeers: updatedSkipped
+        };
+
+        const player = prev.activeAuctionPlayer;
+        if (!player) return prev;
+
+        // Check if all skipped
+        if (updatedSkipped.length === activePeers.length) {
+          // UNSOLD
+          let updatedUnsoldIds = [...prev.unsoldPlayerIds];
+          if (!prev.isAcceleratedRound) {
+            if (!updatedUnsoldIds.includes(player.id)) {
+              updatedUnsoldIds.push(player.id);
+            }
+          }
+          let updatedLogs = [...prev.auctionLogs];
+          updatedLogs.unshift(`❌ ${player.name} went UNSOLD (All players skipped).`);
+
+          const stateBeforeNomination: MpState = {
+            ...prev,
+            skippedPeers: [],
+            unsoldPlayerIds: updatedUnsoldIds,
+            auctionLogs: updatedLogs,
+            roundNumber: prev.roundNumber + 1
+          };
+          nextState = nominateNextPlayer(stateBeforeNomination, playersPool);
+        } else if (prev.highestBidder && updatedSkipped.length >= activePeers.length - 1) {
+          // SOLD
+          const buyerId = prev.highestBidder;
+          const finalPrice = prev.currentBid;
+          let updatedRosters = { ...prev.rosters };
+          let updatedPurses = { ...prev.purses };
+          let updatedPickedIds = [...prev.pickedIds];
+          let updatedLogs = [...prev.auctionLogs];
+
+          updatedRosters[buyerId] = [...(updatedRosters[buyerId] || []), player];
+          updatedPurses[buyerId] = updatedPurses[buyerId] - finalPrice;
+          updatedPickedIds.push(player.id);
+
+          const clientPlayer = prev.players.find(p => p.peerId === buyerId);
+          const buyerName = clientPlayer ? clientPlayer.name : 'Host';
+          updatedLogs.unshift(`🔨 ${player.name} SOLD to ${buyerName} for ₹${(finalPrice / 100).toFixed(2)} Cr!`);
+
+          const stateBeforeNomination: MpState = {
+            ...prev,
+            skippedPeers: [],
+            rosters: updatedRosters,
+            purses: updatedPurses,
+            pickedIds: updatedPickedIds,
+            auctionLogs: updatedLogs,
+            roundNumber: prev.roundNumber + 1
+          };
+          nextState = nominateNextPlayer(stateBeforeNomination, playersPool);
+        }
+
+        if (nextState.isDraftComplete) {
+          if (timerRef.current) clearInterval(timerRef.current);
+          mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+          setPhase('mp-match-prep');
+          return nextState;
+        }
+
+        mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+        return nextState;
+      });
+    } else {
+      mpManagerRef.current?.send('SKIP_PLAYER', {});
+    }
+  };
+
+  const handleSendChat = (text: string) => {
+    if (!mpState) return;
+    if (mpState.isHost) {
+      setMpState(prev => {
+        if (!prev) return prev;
+        const myId = mpManagerRef.current!.peerId;
+        const myFranchise = prev.players.find(p => p.peerId === myId)?.franchise;
+        const franchiseData = IPL_TEAMS.find(t => t.short === myFranchise);
+        const updatedChat = [...(prev.chatMessages || []), {
+          sender: mpUserName || 'Host',
+          text,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          color: franchiseData?.color || '#3b82f6'
+        }];
+        const nextState = {
+          ...prev,
+          chatMessages: updatedChat
+        };
+        const updateType = phase === 'mp-lobby' ? 'LOBBY_UPDATE' : 'DRAFT_UPDATE';
+        mpManagerRef.current?.send(updateType, nextState);
+        return nextState;
+      });
+    } else {
+      mpManagerRef.current?.send('SEND_CHAT', { text }, mpUserName);
+    }
+  };
+
+  const handleMpMessage = useCallback((msg: MpMessage) => {
+    const { type, senderPeerId, senderName, payload } = msg;
+
+    switch (type) {
+      case 'CLIENT_JOIN':
+        if (!mpState?.isHost) return;
+
+        setMpState(prev => {
+          if (!prev) return prev;
+          const newPlayer: MpPlayer = {
+            peerId: senderPeerId,
+            name: payload.name,
+            franchise: 'TBD',
+            isReady: false,
+            isHost: false
+          };
+          const nextState = {
+            ...prev,
+            players: [...prev.players, newPlayer]
+          };
+          mpManagerRef.current?.send('LOBBY_UPDATE', nextState);
+          return nextState;
+        });
+        break;
+
+      case 'SELECT_FRANCHISE':
+        if (!mpState?.isHost) return;
+        
+        // Verify if franchise is already taken
+        const isFranchiseAlreadyTaken = mpState.players.some(
+          p => p.peerId !== senderPeerId && p.franchise === payload.franchise
+        );
+        if (isFranchiseAlreadyTaken) return;
+
+        setMpState(prev => {
+          if (!prev) return prev;
+          const updatedPlayers = prev.players.map(p => 
+            p.peerId === senderPeerId ? { ...p, franchise: payload.franchise } : p
+          );
+          const nextState = {
+            ...prev,
+            players: updatedPlayers
+          };
+          mpManagerRef.current?.send('LOBBY_UPDATE', nextState);
+          return nextState;
+        });
+        break;
+
+      case 'LOBBY_UPDATE':
+        setMpState({ ...payload, isHost: false });
+        setPhase('mp-lobby');
+        break;
+
+      case 'DRAFT_UPDATE':
+        setMpState({ ...payload, isHost: false });
+        if (payload.isDraftComplete) {
+          setPhase('mp-match-prep');
+        } else {
+          setPhase('mp-draft');
+        }
+        break;
+
+      case 'PLACE_BID':
+        if (!mpState?.isHost) return;
+        
+        const clientBid = payload.bid;
+        
+        setMpState(prev => {
+          if (!prev) return prev;
+
+          const isBiddingActive = prev.highestBidder !== null;
+          const minAllowedBid = isBiddingActive 
+            ? prev.currentBid + getBidIncrement(prev.currentBid)
+            : prev.currentBid;
+
+          if (clientBid < minAllowedBid) return prev; // stale bid
+
+          const bidderId = senderPeerId;
+          const bidderPurse = prev.purses[bidderId] || 0;
+          const bidderRoster = prev.rosters[bidderId] || [];
+          const minReserve = (prev.settings.rounds - bidderRoster.length - 1) * 20;
+
+          if (bidderPurse - clientBid < minReserve || bidderRoster.length >= prev.settings.rounds) {
+            return prev; // insufficient budget or roster full
+          }
+
+          const activePeers = prev.players.filter(p => p.franchise !== 'TBD').map(p => p.peerId);
+          const skipped = prev.skippedPeers || [];
+
+          const nextState = {
+            ...prev,
+            currentBid: clientBid,
+            highestBidder: bidderId,
+            bidTimer: 10
+          };
+
+          // Check if everyone else has skipped/dropped
+          if (skipped.length >= activePeers.length - 1) {
+            // SOLD immediately!
+            const player = prev.activeAuctionPlayer;
+            if (player) {
+              let updatedRosters = { ...prev.rosters };
+              let updatedPurses = { ...prev.purses };
+              let updatedPickedIds = [...prev.pickedIds];
+              let updatedLogs = [...prev.auctionLogs];
+
+              updatedRosters[bidderId] = [...(updatedRosters[bidderId] || []), player];
+              updatedPurses[bidderId] = updatedPurses[bidderId] - clientBid;
+              updatedPickedIds.push(player.id);
+
+              const clientPlayer = prev.players.find(p => p.peerId === bidderId);
+              const buyerName = clientPlayer ? clientPlayer.name : 'Client';
+              updatedLogs.unshift(`🔨 ${player.name} SOLD to ${buyerName} for ₹${(clientBid / 100).toFixed(2)} Cr!`);
+
+              const stateBeforeNomination: MpState = {
+                ...prev,
+                skippedPeers: [],
+                rosters: updatedRosters,
+                purses: updatedPurses,
+                pickedIds: updatedPickedIds,
+                auctionLogs: updatedLogs,
+                roundNumber: prev.roundNumber + 1
+              };
+              const nextStateNominated = nominateNextPlayer(stateBeforeNomination, playersPool);
+
+              if (nextStateNominated.isDraftComplete) {
+                if (timerRef.current) clearInterval(timerRef.current);
+                mpManagerRef.current?.send('DRAFT_UPDATE', nextStateNominated);
+                setPhase('mp-match-prep');
+                return nextStateNominated;
+              }
+
+              mpManagerRef.current?.send('DRAFT_UPDATE', nextStateNominated);
+              return nextStateNominated;
+            }
+          }
+
+          mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+          return nextState;
+        });
+        break;
+
+      case 'SKIP_PLAYER':
+        if (!mpState?.isHost) return;
+        setMpState(prev => {
+          if (!prev) return prev;
+          const bidderId = senderPeerId;
+          const activePeers = prev.players.filter(p => p.franchise !== 'TBD').map(p => p.peerId);
+          
+          const skipped = prev.skippedPeers || [];
+          if (skipped.includes(bidderId)) return prev;
+
+          const updatedSkipped = [...skipped, bidderId];
+          
+          let nextState = {
+            ...prev,
+            skippedPeers: updatedSkipped
+          };
+
+          const player = prev.activeAuctionPlayer;
+          if (!player) return prev;
+
+          // Check if all skipped
+          if (updatedSkipped.length === activePeers.length) {
+            // UNSOLD
+            let updatedUnsoldIds = [...prev.unsoldPlayerIds];
+            if (!prev.isAcceleratedRound) {
+              if (!updatedUnsoldIds.includes(player.id)) {
+                updatedUnsoldIds.push(player.id);
+              }
+            }
+            let updatedLogs = [...prev.auctionLogs];
+            updatedLogs.unshift(`❌ ${player.name} went UNSOLD (All players skipped).`);
+
+            const stateBeforeNomination: MpState = {
+              ...prev,
+              skippedPeers: [],
+              unsoldPlayerIds: updatedUnsoldIds,
+              auctionLogs: updatedLogs,
+              roundNumber: prev.roundNumber + 1
+            };
+            nextState = nominateNextPlayer(stateBeforeNomination, playersPool);
+          } else if (prev.highestBidder && updatedSkipped.length >= activePeers.length - 1) {
+            // SOLD
+            const buyerId = prev.highestBidder;
+            const finalPrice = prev.currentBid;
+            let updatedRosters = { ...prev.rosters };
+            let updatedPurses = { ...prev.purses };
+            let updatedPickedIds = [...prev.pickedIds];
+            let updatedLogs = [...prev.auctionLogs];
+
+            updatedRosters[buyerId] = [...(updatedRosters[buyerId] || []), player];
+            updatedPurses[buyerId] = updatedPurses[buyerId] - finalPrice;
+            updatedPickedIds.push(player.id);
+
+            const clientPlayer = prev.players.find(p => p.peerId === buyerId);
+            const buyerName = clientPlayer ? clientPlayer.name : 'Client';
+            updatedLogs.unshift(`🔨 ${player.name} SOLD to ${buyerName} for ₹${(finalPrice / 100).toFixed(2)} Cr!`);
+
+            const stateBeforeNomination: MpState = {
+              ...prev,
+              skippedPeers: [],
+              rosters: updatedRosters,
+              purses: updatedPurses,
+              pickedIds: updatedPickedIds,
+              auctionLogs: updatedLogs,
+              roundNumber: prev.roundNumber + 1
+            };
+            nextState = nominateNextPlayer(stateBeforeNomination, playersPool);
+          }
+
+          if (nextState.isDraftComplete) {
+            if (timerRef.current) clearInterval(timerRef.current);
+            mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+            setPhase('mp-match-prep');
+            return nextState;
+          }
+
+          mpManagerRef.current?.send('DRAFT_UPDATE', nextState);
+          return nextState;
+        });
+        break;
+
+      case 'SEND_CHAT':
+        if (!mpState?.isHost) return;
+        setMpState(prev => {
+          if (!prev) return prev;
+          const bidderId = senderPeerId;
+          const myFranchise = prev.players.find(p => p.peerId === bidderId)?.franchise;
+          const franchiseData = IPL_TEAMS.find(t => t.short === myFranchise);
+          const updatedChat = [...(prev.chatMessages || []), {
+            sender: senderName || 'Player',
+            text: payload.text,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            color: franchiseData?.color || '#3b82f6'
+          }];
+          const nextState = {
+            ...prev,
+            chatMessages: updatedChat
+          };
+          const updateType = phase === 'mp-lobby' ? 'LOBBY_UPDATE' : 'DRAFT_UPDATE';
+          mpManagerRef.current?.send(updateType, nextState);
+          return nextState;
+        });
+        break;
+
+      case 'FORCE_START_SEASON':
+        setMpState({ ...payload.state, isHost: false });
+        setMpTeams(payload.teams);
+        setMpFixtures(payload.fixtures);
+        setMpRoundIdx(0);
+        setMpSeasonStats({});
+        setMpForms({});
+        setMpSeasonResults([]);
+        setPhase('mp-watching');
+        break;
+
+      case 'SUBMIT_TACTICS':
+        if (!mpState?.isHost) return;
+        mpTacticsRef.current[senderPeerId] = payload;
+        
+        setMpState(prev => {
+          if (!prev) return prev;
+          const updatedPlayers = prev.players.map(p => 
+            p.peerId === senderPeerId ? { ...p, isReady: true } : p
+          );
+          const nextState = {
+            ...prev,
+            players: updatedPlayers,
+            readyCount: updatedPlayers.filter(p => p.isReady).length
+          };
+          mpManagerRef.current?.send('TACTICS_UPDATE', nextState);
+          return nextState;
+        });
+        break;
+
+      case 'TACTICS_UPDATE':
+        setMpState({ ...payload, isHost: false });
+        break;
+
+      case 'MATCH_RESULTS':
+        setMpState(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            activeMatches: payload.roundMatches,
+            players: prev.players.map(p => ({ ...p, isReady: false })),
+            readyCount: 0
+          };
+        });
+        setMpTeams(payload.teams);
+        setMpRoundIdx(payload.roundIdx);
+        setPhase('mp-watching');
+        break;
+
+      case 'LEAVE_ROOM':
+        if (mpState?.isHost) {
+          setMpState(prev => {
+            if (!prev) return prev;
+            const updated = prev.players.filter(p => p.peerId !== payload);
+            const nextState = { ...prev, players: updated };
+            mpManagerRef.current?.send('LOBBY_UPDATE', nextState);
+            return nextState;
+          });
+        } else {
+          if (phase === 'mp-results') {
+            break;
+          }
+          alert('Disconnected from multiplayer host.');
+          handleLeaveMp();
+        }
+        break;
+    }
+  }, [mpState, playersPool, phase]);
+
+  handleMpMessageRef.current = handleMpMessage;
+
+  const handleCreateMpRoom = async (name: string) => {
+    setIsConnecting(true);
+    setMpError('');
+    try {
+      const manager = new MultiplayerManager();
+      mpManagerRef.current = manager;
+      manager.subscribeToMessages((msg) => handleMpMessageRef.current(msg));
+      
+      const code = generateRoomCode();
+      const peerId = await manager.init(`160p-${code}`);
+      
+      setMpUserName(name);
+      setMpFranchise('TBD');
+
+      const playerSelf: MpPlayer = {
+        peerId,
+        name,
+        franchise: 'TBD',
+        isReady: false,
+        isHost: true
+      };
+
+      const initialState: MpState = {
+        roomId: code,
+        isHost: true,
+        players: [playerSelf],
+        settings: {
+          rounds: 15, // default to 15 slots
+          turnTimer: 30,
+          maxOverseas: 4,
+          aiCount: 9
+        },
+        draftOrder: [],
+        activePickIndex: 0,
+        roundNumber: 1,
+        isDraftComplete: false,
+        rosters: {},
+        pickedIds: [],
+        activeTimer: 30,
+        activeMatches: [],
+        readyCount: 0,
+        // Default auction states:
+        activeAuctionPlayer: null,
+        currentBid: 0,
+        highestBidder: null,
+        bidTimer: 10,
+        skippedPeers: [],
+        purses: {},
+        auctionLogs: [],
+        currentSetIndex: 0,
+        unsoldPlayerIds: [],
+        isAcceleratedRound: false
+      };
+
+      manager.startHosting(code, initialState);
+      setMpState(initialState);
+      setPhase('mp-lobby');
+    } catch (err: any) {
+      console.error(err);
+      setMpError('Failed to host multiplayer room. Try again.');
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
+  const handleJoinMpRoom = async (name: string, code: string) => {
+    setIsConnecting(true);
+    setMpError('');
+    try {
+      const manager = new MultiplayerManager();
+      mpManagerRef.current = manager;
+      manager.subscribeToMessages((msg) => handleMpMessageRef.current(msg));
+      
+      await manager.init(); // randomized peer id for client
+      await manager.joinRoom(`160p-${code}`);
+      
+      setMpUserName(name);
+      setMpFranchise('TBD');
+      
+      // Send join message
+      manager.send('CLIENT_JOIN', { name });
+    } catch (err: any) {
+      console.error(err);
+      setMpError('Failed to join room. Verify room code or connectivity.');
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
+  const handleMpSelectFranchise = (franchise: string) => {
+    if (!mpState) return;
+
+    if (mpState.isHost) {
+      setMpState(prev => {
+        if (!prev) return prev;
+        const updatedPlayers = prev.players.map(p => 
+          p.peerId === mpManagerRef.current!.peerId ? { ...p, franchise } : p
+        );
+        const nextState = {
+          ...prev,
+          players: updatedPlayers
+        };
+        mpManagerRef.current?.send('LOBBY_UPDATE', nextState);
+        return nextState;
+      });
+    } else {
+      mpManagerRef.current?.send('SELECT_FRANCHISE', { franchise });
+    }
+  };
+
+  const handleLeaveMp = () => {
+    if (mpManagerRef.current) {
+      mpManagerRef.current.disconnect();
+      mpManagerRef.current = null;
+    }
+    if (timerRef.current) clearInterval(timerRef.current);
+    setMpState(null);
+    setPhase('home');
+  };
+
+  const handleStartMpDraft = () => {
+    if (!mpState || !mpState.isHost) return;
+
+    // Build 10 teams total. Fill remaining slots with AI
+    const neededAi = 10 - mpState.players.length;
+    const takenFranchises = mpState.players.map(p => p.franchise);
+    const availableFranchises = IPL_TEAMS.map(t => t.short).filter(f => !takenFranchises.includes(f));
+    
+    const draftOrder: string[] = [...mpState.players.map(p => p.peerId)];
+    
+    // Add AI team codes
+    const aiIds: string[] = [];
+    for (let i = 0; i < neededAi; i++) {
+      const code = availableFranchises[i] || `AI${i}`;
+      aiIds.push(`AI_${code}`);
+      draftOrder.push(`AI_${code}`);
+    }
+
+    // Shuffle draft order to be fair
+    draftOrder.sort(() => Math.random() - 0.5);
+
+    const initialRosters: Record<string, Player[]> = {};
+    const initialPurses: Record<string, number> = {};
+    draftOrder.forEach(id => {
+      initialRosters[id] = [];
+      initialPurses[id] = 12000; // ₹120.00 Cr in Lakhs
+    });
+
+    const nextState: MpState = {
+      ...mpState,
+      draftOrder,
+      rosters: initialRosters,
+      pickedIds: [],
+      activePickIndex: 0,
+      roundNumber: 1,
+      isDraftComplete: false,
+      activeTimer: 10,
+      settings: {
+        ...mpState.settings,
+        rounds: 15, // Default squad size to 15
+        aiCount: neededAi
+      },
+      // Auction states:
+      activeAuctionPlayer: null,
+      currentBid: 0,
+      highestBidder: null,
+      bidTimer: 10,
+      skippedPeers: [],
+      purses: initialPurses,
+      auctionLogs: [],
+      currentSetIndex: 0,
+      unsoldPlayerIds: [],
+      isAcceleratedRound: false
+    };
+
+    // Nominate the first player
+    const stateWithPlayer = nominateNextPlayer(nextState, playersPool);
+
+    setMpState(stateWithPlayer);
+    setPhase('mp-draft');
+    
+    // Broadcast start draft
+    mpManagerRef.current?.send('DRAFT_UPDATE', stateWithPlayer);
+  };
+
+  const handleMpSelectLineup = (playingXI: Player[], impactBench: Player[], captainName: string) => {
+    if (mpState?.isHost) {
+      mpTacticsRef.current[mpManagerRef.current!.peerId] = { playingXI, impactBench, captainName };
+      
+      setMpState(prev => {
+        if (!prev) return prev;
+        const updatedPlayers = prev.players.map(p => 
+          p.peerId === mpManagerRef.current!.peerId ? { ...p, isReady: true } : p
+        );
+        const nextState = {
+          ...prev,
+          players: updatedPlayers,
+          readyCount: updatedPlayers.filter(p => p.isReady).length
+        };
+        mpManagerRef.current?.send('TACTICS_UPDATE', nextState);
+        return nextState;
+      });
+    } else {
+      mpManagerRef.current?.send('SUBMIT_TACTICS', { playingXI, impactBench, captainName });
+    }
+  };
+
+  const handleMpSimulateRound = () => {
+    if (!mpState || !mpState.isHost) return;
+    startSeason(mpState);
+  };
+
+  const handleMpGoToResults = () => {
+    // End of 9 round-robin matches. Pick Top 4 and run Playoffs!
+    const sorted = sortTable(mpTeams);
+    const top4 = sorted.slice(0, 4);
+
+    // Run playoffs
+    const myFranchiseCode = mpFranchise;
+    const myRoster = mpState?.rosters[mpManagerRef.current!.peerId] || [];
+    const mySlots = myRoster.map(p => ({ player: p } as SquadSlot));
+    const playoffs = mpState?.precomputedPlayoffs || simulatePlayoffs(top4, playersPool, mySlots);
+
+    // Format final results for the results page
+    const userTeam = sorted.find(t => t.short === myFranchiseCode) || sorted[0];
+    const finalPos = sorted.findIndex(t => t.short === myFranchiseCode) + 1;
+
+    const awards = generateAwards(mySlots, {});
+    const story = generateStory(mySlots, userTeam, finalPos, 5, playoffs.champion, userTeam.won, userTeam.lost, {});
+
+    setResults({
+      teams: sorted,
+      userTeam,
+      finalPos,
+      projectedPos: 5,
+      awards,
+      story,
+      champion: playoffs.champion,
+      playoffMatches: playoffs.matches,
+      playerStats: {},
+      playerForms: {},
+      matches: mpSeasonResults
+    });
+
+    setPhase('mp-results');
+  };
+
+  const handleMpLeagueComplete = (
+    finalTeams: SeasonTeam[],
+    matchResults: MatchResult[],
+    finalForms: Record<number, PlayerForm>,
+    finalSeasonStats: Record<number, PlayerStats>
+  ) => {
+    const sorted = sortTable(finalTeams);
+    const top4 = sorted.slice(0, 4);
+
+    const myFranchiseCode = mpFranchise;
+    const myRoster = mpState?.rosters[mpManagerRef.current?.peerId || ''] || [];
+    const mySlots = myRoster.map(p => ({ player: p } as SquadSlot));
+    const playoffs = mpState?.precomputedPlayoffs || simulatePlayoffs(top4, playersPool, mySlots);
+
+    const userTeam = sorted.find(t => t.short === myFranchiseCode) || sorted[0];
+    const finalPos = sorted.findIndex(t => t.short === myFranchiseCode) + 1;
+
+    const awards = generateAwards(mySlots, finalSeasonStats);
+    const story = generateStory(mySlots, userTeam, finalPos, 5, playoffs.champion, userTeam.won, userTeam.lost, finalSeasonStats);
+
+    setResults({
+      teams: sorted,
+      userTeam,
+      finalPos,
+      projectedPos: 5,
+      awards,
+      story,
+      champion: playoffs.champion,
+      playoffMatches: playoffs.matches,
+      playerStats: finalSeasonStats,
+      playerForms: finalForms,
+      matches: matchResults
+    });
+    setPhase('mp-results');
+  };
+
+  useEffect(() => {
+    const url = phase.startsWith('mp-') ? '/auction_players.json' : '/players.json';
+    fetch(url).then(r => r.json()).then(data => setPlayersPool(data as Player[]));
+  }, [phase]);
 
   const handleStart = () => {
     setPhase('draft');
@@ -4109,13 +5548,6 @@ function MainAppContent() {
 
   };
 
-  const [watchData, setWatchData] = useState<{
-    fixtures: [number, number][];
-    teams: SeasonTeam[];
-    squad: SquadSlot[];
-    strength: ReturnType<typeof calcSquadStrength>;
-  } | null>(null);
-
   const runSimulation = (control?: 'full' | 'ai') => {
     if (control) {
       setSettings(prev => ({ ...prev, franchiseControl: control }));
@@ -4164,8 +5596,447 @@ function MainAppContent() {
     }
   };
 
+  function MpResultsScreen({
+    results,
+    state,
+    peerId,
+    onExit,
+  }: {
+    results: SimResults;
+    state: MpState;
+    peerId: string;
+    onExit: () => void;
+  }) {
+    const { teams, userTeam, finalPos, projectedPos, awards, story, champion, playoffMatches, playerStats, playerForms, matches } = results;
+    const championTeam = IPL_TEAMS.find(t => t.short === champion) || { name: champion, color: '#fbbf24' };
+    const userSquad = useMemo(() => {
+      const roster = state.rosters[peerId] || [];
+      return roster.map(p => ({ player: p } as SquadSlot));
+    }, [state.rosters, peerId]);
+
+    const strength = useMemo(() => calcSquadStrength(userSquad), [userSquad]);
+
+    const userPlayoffMatches = playoffMatches?.filter(m => m.team1?.toUpperCase() === userTeam?.short?.toUpperCase() || m.team2?.toUpperCase() === userTeam?.short?.toUpperCase()) || [];
+    const playoffWins = userPlayoffMatches.filter(m => m.winner?.toUpperCase() === userTeam?.name?.toUpperCase()).length;
+    const playoffLosses = userPlayoffMatches.filter(m => m.winner?.toUpperCase() !== userTeam?.name?.toUpperCase()).length;
+    const totalWins = (userTeam?.won || 0) + playoffWins;
+    const totalLosses = (userTeam?.lost || 0) + playoffLosses;
+
+    const isChampion = champion?.toUpperCase() === userTeam?.short?.toUpperCase();
+
+    let finalPosText = `${finalPos}${['st','nd','rd'][finalPos-1]||'th'}`;
+    if (isChampion) {
+      finalPosText = 'Champions';
+    }
+
+    const [submitted, setSubmitted] = useState(false);
+    const [submitError, setSubmitError] = useState('');
+
+    const hasSavedRun = useRef(false);
+    useEffect(() => {
+      if (!hasSavedRun.current) {
+        hasSavedRun.current = true;
+        const playingXI = userSquad.filter(s => s.player).map(s => s.player!);
+        const tierInfo = getCardTier(results, isChampion);
+        saveRunToProfile(totalWins, totalLosses, finalPos, isChampion, playingXI, 'multiplayer', 'normal', tierInfo.tier as any);
+      }
+    }, [totalWins, totalLosses, finalPos, isChampion, userSquad, results]);
+
+    const handleSubmitLeaderboard = async () => {
+      setSubmitError('');
+      try {
+        const profileData = getProfileData();
+        const entry = {
+          id: crypto.randomUUID(),
+          userId: profileData.playerId,
+          date: new Date().toISOString(),
+          mode: 'multiplayer',
+          wins: totalWins,
+          losses: totalLosses,
+          points: userTeam?.points || 0,
+          nrr: userTeam?.nrr || 0,
+          position: finalPos,
+          champion: isChampion,
+          overall: strength.overall,
+          finish: finalPosText,
+          difficulty: 'normal',
+          showRatings: 'on',
+          handle: profileData.handle || undefined
+        };
+        
+        const res = await fetch('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(entry)
+        });
+
+        if (!res.ok) {
+          const errData = (await res.json().catch(() => ({}))) as any;
+          throw new Error(errData?.error || 'Failed to submit leaderboard entry');
+        }
+
+        const resData = (await res.json()) as { handle?: string };
+        if (resData.handle && resData.handle !== profileData.handle) {
+          setProfileHandle(resData.handle);
+        }
+
+        setSubmitted(true);
+      } catch (e: any) {
+        console.error(e);
+        setSubmitError(e.message || 'An error occurred.');
+      }
+    };
+
+    return (
+      <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden text-white">
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
+        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-yellow-500 opacity-5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/4" />
+
+        <div className="max-w-[1400px] mx-auto relative z-10 space-y-6 md:space-y-8 font-sans">
+          
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-center bg-[var(--color-canvas)]/60 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-xl gap-4">
+            <div>
+              <h1 className="text-3xl font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 flex items-center gap-2">
+                🏆 Multiplayer Championship
+              </h1>
+              <p className="text-[var(--color-mute)] text-sm">Final standings, awards, and playoff brackets</p>
+            </div>
+            <button
+              onClick={onExit}
+              className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold uppercase rounded-xl shadow-lg transition-all text-xs border-none cursor-pointer"
+            >
+              <LogOut size={16} /> Exit Room
+            </button>
+          </div>
+
+          {/* Champion Celebration Banner */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative overflow-hidden p-8 rounded-[2rem] border text-center shadow-2xl flex flex-col items-center justify-center gap-2"
+            style={{
+              background: `linear-gradient(135deg, ${championTeam.color}20, ${championTeam.color}40)`,
+              borderColor: championTeam.color,
+            }}
+          >
+            <div className="absolute inset-0 bg-white/5 mix-blend-overlay pointer-events-none" />
+            <span className="text-6xl animate-bounce">🏆</span>
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+              {championTeam.name} ARE THE CHAMPIONS!
+            </h2>
+            <p className="text-yellow-400 font-bold uppercase tracking-widest text-xs">
+              Multiplayer League Tournament Trophy Winner
+            </p>
+          </motion.div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {[
+              { label: 'Final Position', val: finalPosText, color: '#f5c842' },
+              { label: 'Projected Position', val: `${projectedPos}${['st','nd','rd'][projectedPos-1]||'th'}`, color: '#6b7280' },
+              { label: 'Wins - Losses', val: `${totalWins} - ${totalLosses}`, color: '#22c55e' },
+              { label: 'Overall Rating', val: strength.overall, color: '#7c3aed' },
+            ].map(({ label, val, color }) => (
+              <div key={label} className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:border-[var(--color-primary)]/30 transition-colors">
+                <div className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-mute)]">{label}</div>
+                <div className="text-3xl md:text-4xl font-black tracking-tighter" style={{ color }}>{val}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8">
+            {/* Main Content Area */}
+            <div className="xl:col-span-8 flex flex-col gap-6 md:gap-8">
+              {/* Story */}
+              {story && story.length > 0 && (
+                <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm">
+                  <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold mb-6 flex items-center gap-3">
+                    <span className="w-1.5 h-6 rounded-full bg-[var(--color-primary)]" />
+                    Season Story
+                  </div>
+                  <div className="space-y-5">
+                    {story.map((item) => (
+                      <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 rounded-xl hover:bg-[var(--color-canvas-soft-2)] transition-colors border border-transparent hover:border-[var(--color-hairline)]">
+                        <div className="text-2xl md:text-3xl mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
+                          {item.type === 'news' ? '📰' : item.type === 'expert' ? '🎙️' : item.type === 'player' ? '🏏' : '💬'}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2.5 mb-1.5">
+                            <span className="font-bold text-white">{item.author}</span>
+                            <span className="text-[9px] text-[var(--color-mute)] uppercase tracking-widest font-bold border border-[var(--color-hairline)] px-2 py-0.5 rounded-full bg-[var(--color-canvas)] shadow-sm">{item.type}</span>
+                          </div>
+                          <div className="text-sm md:text-base text-[var(--color-mute)] leading-relaxed italic font-medium">"{item.text}"</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* League Table */}
+              <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm">
+                <div className="p-5 font-bold text-white bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex justify-between items-center text-sm tracking-tight">
+                  <span>Final League Standings</span>
+                </div>
+                <div className="overflow-x-auto custom-scrollbar">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] text-[var(--color-mute)]">
+                        <th className="py-4 pl-5 font-bold uppercase tracking-widest text-[10px] w-12">#</th>
+                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px]">Team</th>
+                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">P</th>
+                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">W</th>
+                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">L</th>
+                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">Pts</th>
+                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-right">NRR</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {teams.map((t, i) => {
+                        const matchedFranchise = IPL_TEAMS.find(f => f.short === t.short);
+                        const humanPlayer = state.players.find(p => p.franchise === t.short);
+                        const isLocal = humanPlayer?.peerId === peerId;
+
+                        return (
+                          <tr key={t.short} className={`transition-colors border-b border-[var(--color-hairline)]/50 last:border-0 ${humanPlayer ? 'bg-blue-500/5' : 'hover:bg-[var(--color-canvas-soft-2)]'} ${i === 3 ? 'border-b-[var(--color-success)] border-b-2' : ''}`}>
+                            <td className="py-3 pl-5 text-[var(--color-mute)] font-mono font-bold text-sm">{i + 1}</td>
+                            <td className="py-3 px-3 font-bold tracking-tight text-sm text-white">
+                              <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: matchedFranchise?.color || '#555' }}>
+                                  <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
+                                </div>
+                                <span>{t.name}</span>
+                                {humanPlayer && (
+                                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase font-black tracking-wider flex items-center gap-1">
+                                    👤 {humanPlayer.name} {isLocal ? '(You)' : ''}
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                            <td className="py-3 px-3 text-center text-[var(--color-mute)] font-mono font-medium">{t.played || 14}</td>
+                            <td className="py-3 px-3 text-center text-[var(--color-success)] font-mono font-bold">{t.won}</td>
+                            <td className="py-3 px-3 text-center text-[var(--color-error)] font-mono font-bold">{t.lost}</td>
+                            <td className={`py-3 px-3 text-center font-black tracking-tight font-mono text-base ${isLocal ? 'text-yellow-400' : 'text-white'}`}>{t.points}</td>
+                            <td className={`py-3 px-3 text-right font-mono font-semibold text-sm ${t.nrr >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
+                              {t.nrr >= 0 ? `+${t.nrr.toFixed(3)}` : t.nrr.toFixed(3)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              {/* Playoff Bracket */}
+              {playoffMatches && playoffMatches.length > 0 && (
+                <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm overflow-hidden">
+                  <div className="text-xs text-[var(--color-mute)] uppercase tracking-[0.15em] mb-8 text-center font-bold">Playoffs Bracket</div>
+                  <PlayoffBracket matches={playoffMatches} />
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="xl:col-span-4 flex flex-col gap-6 md:gap-8">
+              {/* Awards */}
+              <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm flex flex-col">
+                <div className="p-5 font-bold text-white bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight flex items-center gap-2">
+                  <span>Season Awards</span>
+                </div>
+                <div className="p-5 grid grid-cols-1 gap-4 flex-1">
+                  {Object.entries(awards).map(([awardName, info]) => {
+                    const typedInfo = info as { player: string; team: string };
+                    return (
+                      <div key={awardName} className="bg-[var(--color-canvas-soft)] p-5 rounded-xl border border-[var(--color-hairline)] flex flex-col justify-center relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-colors">
+                        <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-[40px] pointer-events-none opacity-20 ${
+                          awardName.includes('Orange') ? 'bg-orange-500' :
+                          awardName.includes('Purple') ? 'bg-purple-500' :
+                          awardName.includes('MVP') ? 'bg-yellow-500' : 'bg-blue-500'
+                        }`} />
+                        <div className={`text-[10px] uppercase tracking-widest font-bold mb-1.5 z-10 ${
+                          awardName.includes('Orange') ? 'text-orange-400' :
+                          awardName.includes('Purple') ? 'text-purple-400' :
+                          awardName.includes('MVP') ? 'text-yellow-400' : 'text-blue-400'
+                        }`}>{awardName}</div>
+                        <div className="text-xl font-black tracking-tight text-white z-10 truncate">{typedInfo.player}</div>
+                        <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest mt-1 z-10">{typedInfo.team}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Tournament Leaders Panel */}
+          {playerStats && Object.keys(playerStats).length > 0 && (
+            <div className="mb-6 h-[400px]">
+              <LiveStatsPanel stats={playerStats} isFinal />
+            </div>
+          )}
+
+          {/* Player Stats Table */}
+          {playerStats && Object.keys(playerStats).length > 0 && (
+            <PlayerStatsTable squad={userSquad} stats={playerStats} playerForms={playerForms} />
+          )}
+
+          {/* Season Fixtures */}
+          <div className="card mb-6 overflow-hidden">
+            <details className="group">
+              <summary className="p-4 cursor-pointer font-bold text-[var(--color-mute)] hover:text-white flex justify-between items-center bg-[var(--color-canvas)] select-none">
+                <span className="text-sm uppercase tracking-wider">All Season Fixtures</span>
+                <span className="text-xl group-open:rotate-180 transition-transform text-[var(--color-mute)]">▾</span>
+              </summary>
+              <div className="p-4 border-t border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] max-h-96 overflow-y-auto custom-scrollbar">
+                {matches && matches.map((m: MatchResult, i: number) => {
+                  const isHomeWinner = m.winner === m.homeTeam;
+                  const isAbandoned = m.rainEvent?.type === 'abandoned';
+                  return (
+                    <details key={i} className="group border-b border-[var(--color-hairline)]/50 last:border-0 text-white">
+                      <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-white/5 transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
+                        <div className="w-8 text-[var(--color-mute)] font-mono text-xs pl-2">#{i + 1}</div>
+                        <div className="flex-1 flex flex-col items-end gap-0.5 text-xs">
+                          <span className={`font-bold ${isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.homeTeam}</span>
+                          {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                        </div>
+                        <div className="px-3 text-gray-600 font-bold tracking-widest text-[10px]">
+                          {m.rainEvent ? '🌧' : 'VS'}
+                        </div>
+                        <div className="flex-1 flex flex-col items-start gap-0.5 text-xs">
+                          <span className={`font-bold ${!isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.awayTeam}</span>
+                          {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                        </div>
+                      </summary>
+                      <div className="p-4 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]/50">
+                        {isAbandoned ? (
+                          <div className="flex items-center gap-3 justify-center py-2 bg-blue-950/30 rounded-lg border border-blue-800/30">
+                            <span className="text-2xl">🌧</span>
+                            <div>
+                              <div className="text-blue-300 font-bold text-sm">Match Abandoned</div>
+                              <div className="text-blue-400/70 text-xs">No result — 1 point each</div>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="flex justify-between items-center mb-5 text-sm font-bold bg-[var(--color-canvas-soft-2)] p-3 rounded-lg border border-[var(--color-hairline)]">
+                              <div className="flex-1 text-right text-[var(--color-mute)]">{m.homeScore}</div>
+                              <div className="px-4 text-[var(--color-win)] text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center">
+                                <div>{m.winner} WON</div>
+                                <div className="text-[var(--color-mute)] mt-0.5">{m.margin}</div>
+                                {m.rainEvent && <div className="text-[var(--color-link)] mt-0.5">🌧 DLS</div>}
+                              </div>
+                              <div className="flex-1 text-left text-[var(--color-mute)]">{m.awayScore}</div>
+                            </div>
+
+                            {m.destinyTriggered && (
+                              <div className="mb-4 flex justify-center text-center">
+                                <span className="text-xs font-bold px-3 py-1 bg-[var(--color-gold)] text-[var(--color-on-primary)] rounded-full shadow-[0_0_15px_rgba(245,200,66,0.5)]">
+                                  ⭐ THE UNTHINKABLE! Perfect Season Destiny Saved!
+                                </span>
+                              </div>
+                            )}
+
+                            {m.clutchTriggered && (
+                              <div className="mb-4 flex justify-center text-center">
+                                <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest">
+                                  ⚡ {m.clutchTriggered} Delivers Under Pressure!
+                                </span>
+                              </div>
+                            )}
+                            
+                            {(m.momentumStateA || m.momentumStateB) && (
+                              <div className="mb-4 flex flex-col gap-1 items-center">
+                                {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {m.homeTeam}: {m.momentumStateA}</span>}
+                                {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {m.awayTeam}: {m.momentumStateB}</span>}
+                              </div>
+                            )}
+                            
+                            {m.motm && (
+                              <div className="flex items-center gap-4 bg-[var(--color-canvas-soft)] p-3 rounded-xl border border-[var(--color-gold)]/30">
+                                <div className="w-12 h-12 bg-[var(--color-canvas)] border-2 border-[var(--color-gold)]/50 rounded-full flex items-center justify-center text-xl font-bold text-[var(--color-gold)] shadow-[0_0_15px_rgba(245,200,66,0.15)] shrink-0">
+                                  {initials(m.motm.player.name)}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-[var(--color-gold)] font-semibold tracking-tight tracking-wide truncate">{m.motm.player.name}</span>
+                                    <span className="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-gold)]/20 text-[var(--color-gold)] px-1.5 py-0.5 rounded shrink-0">MotM</span>
+                                  </div>
+                                  <div className="text-[var(--color-mute)] text-sm font-semibold truncate">{m.motm.summary}</div>
+                                </div>
+                                <div className="text-right shrink-0">
+                                  <div className="text-[9px] uppercase tracking-widest text-[var(--color-mute)] mb-0.5">Rating</div>
+                                  <div className="text-lg font-semibold tracking-tight text-white">{m.motm.rating.toFixed(1)}</div>
+                                </div>
+                              </div>
+                            )}
+                            
+                            <MatchHighlightsList highlights={m.highlights} />
+                          </>
+                        )}
+                      </div>
+                    </details>
+                  );
+                })}
+              </div>
+            </details>
+          </div>
+
+          {/* Leaderboard Card */}
+          <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-6 rounded-2xl mb-6 shadow-xl relative overflow-hidden group">
+             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+             <div className="relative z-10 flex flex-col gap-4">
+               <div>
+                 <h3 className="text-xl font-semibold tracking-tight text-white tracking-widest uppercase mb-1">Add this multiplayer run to the leaderboard</h3>
+                 <p className="text-sm font-medium text-[var(--color-mute)]">Your unique username will be automatically generated.</p>
+               </div>
+               
+               {!submitted ? (
+                 <div className="flex flex-col gap-3">
+                   <div className="flex gap-3">
+                     <motion.button
+                       whileHover={{ scale: 1.02 }}
+                       whileTap={{ scale: 0.97 }}
+                       onClick={handleSubmitLeaderboard}
+                       className="w-full bg-[var(--color-primary)] hover:opacity-90 text-[var(--color-on-primary)] font-semibold tracking-tight uppercase tracking-widest px-8 py-3 rounded-xl transition-colors shadow-lg cursor-pointer"
+                     >
+                       Add to Leaderboard
+                     </motion.button>
+                   </div>
+                   {submitError && (
+                     <div className="text-red-500 text-sm font-semibold tracking-wide bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
+                       ⚠️ {submitError}
+                     </div>
+                   )}
+                 </div>
+               ) : (
+                 <div className="flex items-center gap-2 text-green-400 font-bold uppercase tracking-widest text-sm bg-green-500/10 p-4 rounded-xl border border-green-500/20">
+                   <span>✓</span> Submitted to Leaderboard
+                 </div>
+               )}
+             </div>
+          </div>
+
+          {/* Exit Button */}
+          <div className="flex gap-3 pt-4">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={onExit}
+              className="btn-primary flex-1 text-lg py-3 rounded-xl cursor-pointer"
+            >
+              ↺ Exit Room — Start New Game
+            </motion.button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const renderScreen = () => {
-    if (phase === 'home') return <HomeScreen onPlay={() => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} onProfile={() => setPhase('profile')} hasActiveGame={squad.length > 0 && !results} onContinue={() => setPhase(lastActivePhase || 'mode-select')} />;
+    if (phase === 'home') return <HomeScreen onPlay={squad.length > 0 && !results ? handleStartNewGame : () => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} onProfile={() => setPhase('profile')} hasActiveGame={squad.length > 0 && !results} onContinue={() => setPhase(lastActivePhase || 'mode-select')} continueLabel={lastActivePhase && ['watching', 'playoffs-watch', 'match-prep', 'playoffs_prep'].includes(lastActivePhase) ? "CONTINUE SEASON" : "CONTINUE DRAFTING"} />;
     if (phase === 'profile') return <PlayerProfile onBack={() => setPhase('home')} />;
     if (phase === 'leaderboard') return <LeaderboardScreen onBack={() => setPhase('home')} />;
     if (phase === 'mode-select') return <ModeSelectScreen onSelectMode={(m) => {
@@ -4176,7 +6047,104 @@ function MainAppContent() {
         setPhase('mode-settings');
       }
     }} />;
-    if (phase === 'mode-settings') return <ModeSettingsScreen settings={settings} setSettings={setSettings} onStart={handleStart} mode={settings.mode} />;
+    if (phase === 'mode-settings') {
+      if (settings.mode === 'multiplayer') {
+        return (
+          <MpConnectionSetupScreen
+            onBack={() => setPhase('mode-select')}
+            onCreateRoom={handleCreateMpRoom}
+            onJoinRoom={handleJoinMpRoom}
+            isConnecting={isConnecting}
+            errorMsg={mpError}
+          />
+        );
+      }
+      return <ModeSettingsScreen settings={settings} setSettings={setSettings} onStart={handleStart} mode={settings.mode} />;
+    }
+    if (phase === 'mp-lobby') {
+      if (!mpState) return <div className="min-h-screen flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Connecting to Lobby...</div>;
+      return (
+        <MpLobbyScreen
+          state={mpState}
+          peerId={mpManagerRef.current?.peerId || ''}
+          onUpdateSettings={(updatedSettings) => {
+            setMpState(prev => {
+              if (!prev) return prev;
+              const nextState = { ...prev, settings: updatedSettings };
+              mpManagerRef.current?.send('LOBBY_UPDATE', nextState);
+              return nextState;
+            });
+          }}
+          onSelectFranchise={handleMpSelectFranchise}
+          onStartDraft={handleStartMpDraft}
+          onLeave={handleLeaveMp}
+        />
+      );
+    }
+    if (phase === 'mp-draft') {
+      if (!mpState) return null;
+      return (
+        <MpDraftScreen
+          state={mpState}
+          players={playersPool}
+          peerId={mpManagerRef.current?.peerId || ''}
+          onPlaceBid={handleMpPlaceBid}
+          onForceStartSeason={handleForceStartSeason}
+          onSkipPlayer={handleMpSkip}
+        />
+      );
+    }
+    if (phase === 'mp-match-prep') {
+      if (!mpState) return null;
+      return (
+        <MpMatchCenterScreen
+          state={mpState}
+          peerId={mpManagerRef.current?.peerId || ''}
+          onSelectLineup={handleMpSelectLineup}
+          onSimulateRound={handleMpSimulateRound}
+          onGoToResults={handleMpGoToResults}
+        />
+      );
+    }
+    if (phase === 'mp-watching') {
+      if (!mpState) return null;
+      const myRoster = mpState.rosters[mpManagerRef.current?.peerId || ''] || [];
+      const mySlots = myRoster.map(p => ({ player: p } as SquadSlot));
+      return (
+        <WatchModeScreen
+          fixtures={mpFixtures}
+          teams={mpTeams}
+          squad={mySlots}
+          playersPool={playersPool}
+          initialForms={playerForms}
+          control="ai"
+          settings={settings}
+          userFranchise={mpFranchise}
+          preSimulatedResults={mpState.activeMatches}
+          onComplete={(finalTeams, matchResults, finalForms, finalSeasonStats) => {
+            setMpTeams(finalTeams);
+            setMpSeasonResults(matchResults);
+            handleMpLeagueComplete(finalTeams, matchResults, finalForms, finalSeasonStats);
+          }}
+          onSkip={() => {
+            handleMpLeagueComplete(mpTeams, mpState.activeMatches || [], playerForms, {});
+          }}
+          initialState={watchModeState}
+          onStateChange={setWatchModeState}
+        />
+      );
+    }
+    if (phase === 'mp-results') {
+      if (!mpState || !results) return null;
+      return (
+        <MpResultsScreen
+          results={results}
+          state={mpState}
+          peerId={mpManagerRef.current?.peerId || ''}
+          onExit={handleLeaveMp}
+        />
+      );
+    }
     if (phase === 'gamble-drafting') return <GambleDraftScreen playersPool={playersPool} onComplete={(gambleSquad) => {
       setSquad(gambleSquad);
       const filledSlots = gambleSquad.filter(s => s.player !== null);
@@ -4196,6 +6164,8 @@ function MainAppContent() {
         initialForms={playerForms}
         control={settings.mode === 'franchise' && settings.franchiseControl === 'full' ? 'full' : 'ai'}
         settings={settings}
+        initialState={watchModeState}
+        onStateChange={setWatchModeState}
         onComplete={(teams, matchResults, finalForms, finalSeasonStats, finalSquad) => {
           setPlayerForms(finalForms);
           const finalWatchSquad = finalSquad || watchData.squad;
@@ -4261,6 +6231,8 @@ function MainAppContent() {
         initialForms={playoffsData.forms}
         seasonStats={playoffsData.stats}
         settings={settings}
+        initialState={playoffsState}
+        onStateChange={setPlayoffsState}
         onComplete={(playoffMatches, champion, finalSquad, finalForms, finalStats) => {
           finishSimulation(playoffsData.teams, playoffsData.leagueMatches, finalSquad, calcSquadStrength(finalSquad), finalForms, finalStats, { matches: playoffMatches, champion });
           setPhase('results');
@@ -4271,6 +6243,9 @@ function MainAppContent() {
       setSquad([]);
       setResults(null);
       setLastActivePhase(null);
+      setWatchModeState(null);
+      setPlayoffsState(null);
+      localStorage.removeItem('160play_active_game');
       setPhase('home');
     }} onViewLeaderboard={() => setPhase('leaderboard')} />;
     
@@ -4290,6 +6265,13 @@ function MainAppContent() {
       <div className="pt-16">
         {renderScreen()}
       </div>
+      {phase.startsWith('mp-') && mpState && (
+        <MpChatBox
+          chatMessages={mpState.chatMessages || []}
+          onSendMessage={handleSendChat}
+          currentUser={mpUserName}
+        />
+      )}
     </>
   );
 }
