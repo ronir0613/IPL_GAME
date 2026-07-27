@@ -1021,7 +1021,7 @@ function GambleDraftScreen({
             onClick={() => onComplete(gambleResult.squad)}
             className="w-full relative overflow-hidden rounded-2xl p-[2px] z-10 group shadow-xl"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)] via-yellow-400 to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 dark:from-[var(--color-primary)] dark:via-yellow-400 dark:to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
             <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover:bg-transparent">
                <span className="font-bold text-lg text-[var(--color-ink)] group-hover:text-black transition-colors tracking-tight">Accept Fate & Start Season</span>
                <Play size={20} className="text-[var(--color-primary)] group-hover:text-black transition-colors" />
@@ -1818,7 +1818,7 @@ function SquadCompleteScreen({
                 onClick={() => onSimulate(localControl)} 
                 className="flex-1 relative overflow-hidden rounded-2xl p-[2px] group shadow-lg"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)] via-yellow-400 to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 dark:from-[var(--color-primary)] dark:via-yellow-400 dark:to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
                 <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover:bg-transparent h-full">
                   <Play size={20} className="text-[var(--color-primary)] group-hover:text-black transition-colors" />
                   <span className="font-bold text-lg text-[var(--color-ink)] group-hover:text-black transition-colors tracking-tight">SIMULATE SEASON</span>
@@ -4068,7 +4068,7 @@ function PlayoffsWatchScreen({
                            {lastResult.winner} won {lastResult.margin}
                          </div>
                          <button onClick={() => { setLastResult(null); setStep(s => s + 1); }} className="w-full relative overflow-hidden rounded-2xl p-[2px] group/btn">
-                           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-primary)] via-yellow-400 to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
+                           <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 dark:from-[var(--color-primary)] dark:via-yellow-400 dark:to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
                            <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover/btn:bg-transparent">
                              <span className="font-bold text-lg text-[var(--color-ink)] group-hover/btn:text-black transition-colors tracking-widest uppercase">CONTINUE ▶</span>
                            </div>
@@ -4226,13 +4226,20 @@ function MainAppContent() {
         playerForms,
         watchData,
         playoffsData,
-        results,
         watchModeState,
         playoffsState
       };
-      localStorage.setItem('160play_active_game', JSON.stringify(stateToSave));
+      try {
+        localStorage.setItem('160play_active_game', JSON.stringify(stateToSave));
+      } catch (err) {
+        console.warn('Unable to save game state to localStorage:', err);
+      }
     } else if (phase === 'home' && squad.length === 0 && !results) {
-      localStorage.removeItem('160play_active_game');
+      try {
+        localStorage.removeItem('160play_active_game');
+      } catch (err) {
+        console.warn('Unable to remove game state from localStorage:', err);
+      }
     }
   }, [
     phase,
@@ -4282,6 +4289,48 @@ function MainAppContent() {
   const [mpSeasonStats, setMpSeasonStats] = useState<Record<number, PlayerStats>>({});
   const [mpForms, setMpForms] = useState<Record<number, PlayerForm>>({});
   const [mpSeasonResults, setMpSeasonResults] = useState<MatchResult[]>([]);
+
+  const hasActiveGame = useMemo(() => {
+    if (settings.mode === 'multiplayer') {
+      return mpState !== null && mpManagerRef.current !== null && !results;
+    }
+    return squad.length > 0 && !results;
+  }, [settings.mode, mpState, squad, results]);
+
+  const continueLabel = useMemo(() => {
+    if (!lastActivePhase) return "CONTINUE";
+    if (settings.mode === 'multiplayer') {
+      if (lastActivePhase === 'mp-lobby') return "CONTINUE LOBBY";
+      if (lastActivePhase === 'mp-draft') return "CONTINUE AUCTION";
+      if (lastActivePhase === 'mp-match-prep') return "CONTINUE MATCH PREP";
+      if (lastActivePhase === 'mp-watching') return "CONTINUE SEASON";
+      return "CONTINUE GAME";
+    }
+    return ['watching', 'playoffs-watch', 'match-prep', 'playoffs_prep'].includes(lastActivePhase)
+      ? "CONTINUE SEASON"
+      : "CONTINUE DRAFTING";
+  }, [lastActivePhase, settings.mode]);
+
+  // Redirect safeguard: if season is complete (results !== null), block going back to drafting/simulation/home phases.
+  useEffect(() => {
+    if (results) {
+      if (settings.mode === 'multiplayer') {
+        if (['home', 'mp-draft', 'mp-match-prep', 'mp-watching'].includes(phase)) {
+          setPhaseState('mp-results');
+          const url = new URL(window.location.href);
+          url.searchParams.set('phase', 'mp-results');
+          window.history.replaceState({}, '', url);
+        }
+      } else {
+        if (['home', 'draft', 'gamble-drafting', 'squad-complete', 'watching', 'playoffs-watch'].includes(phase)) {
+          setPhaseState('results');
+          const url = new URL(window.location.href);
+          url.searchParams.set('phase', 'results');
+          window.history.replaceState({}, '', url);
+        }
+      }
+    }
+  }, [phase, results, settings.mode]);
 
   // Keep mpFranchise in sync with mpState players
   useEffect(() => {
@@ -5308,6 +5357,8 @@ function MainAppContent() {
     }
     if (timerRef.current) clearInterval(timerRef.current);
     setMpState(null);
+    setResults(null);
+    setLastActivePhase(null);
     setPhase('home');
   };
 
@@ -6036,7 +6087,7 @@ function MainAppContent() {
   }
 
   const renderScreen = () => {
-    if (phase === 'home') return <HomeScreen onPlay={squad.length > 0 && !results ? handleStartNewGame : () => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} onProfile={() => setPhase('profile')} hasActiveGame={squad.length > 0 && !results} onContinue={() => setPhase(lastActivePhase || 'mode-select')} continueLabel={lastActivePhase && ['watching', 'playoffs-watch', 'match-prep', 'playoffs_prep'].includes(lastActivePhase) ? "CONTINUE SEASON" : "CONTINUE DRAFTING"} />;
+    if (phase === 'home') return <HomeScreen onPlay={hasActiveGame ? handleStartNewGame : () => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} onProfile={() => setPhase('profile')} hasActiveGame={hasActiveGame} onContinue={() => setPhase(lastActivePhase || 'mode-select')} continueLabel={continueLabel} />;
     if (phase === 'profile') return <PlayerProfile onBack={() => setPhase('home')} />;
     if (phase === 'leaderboard') return <LeaderboardScreen onBack={() => setPhase('home')} />;
     if (phase === 'mode-select') return <ModeSelectScreen onSelectMode={(m) => {
