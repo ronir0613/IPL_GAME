@@ -95,11 +95,17 @@ export class MultiplayerManager {
             { urls: 'stun:openrelay.metered.ca:80' },
             // Public Open Relay Project TURN servers (provides NAT traversal fallback)
             {
-              urls: [
-                'turn:openrelay.metered.ca:80',
-                'turn:openrelay.metered.ca:443',
-                'turn:openrelay.metered.ca:443?transport=tcp'
-              ],
+              urls: 'turn:openrelay.metered.ca:80',
+              username: 'openrelayproject',
+              credential: 'openrelayproject'
+            },
+            {
+              urls: 'turn:openrelay.metered.ca:443',
+              username: 'openrelayproject',
+              credential: 'openrelayproject'
+            },
+            {
+              urls: 'turns:openrelay.metered.ca:443?transport=tcp',
               username: 'openrelayproject',
               credential: 'openrelayproject'
             }
@@ -245,7 +251,7 @@ export class MultiplayerManager {
       this.peer.on('error', peerErrorHandler);
 
       this.clientConnection = this.peer.connect(hostRoomId, {
-        reliable: true
+        serialization: 'json'
       });
 
       this.clientConnection.on('open', () => {
