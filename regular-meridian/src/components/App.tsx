@@ -5339,7 +5339,10 @@ function MainAppContent() {
         mpManagerRef.current.disconnect();
         mpManagerRef.current = null;
       }
-      setMpError(err.message || 'Failed to host multiplayer room. Try again.');
+      const userMessage = err.message?.includes('timed out') 
+        ? 'Hosting connection timed out. Check your internet or firewall settings.'
+        : (err.message || 'Failed to host multiplayer room. Try again.');
+      setMpError(userMessage);
     } finally {
       setIsConnecting(false);
     }
@@ -5367,7 +5370,10 @@ function MainAppContent() {
         mpManagerRef.current.disconnect();
         mpManagerRef.current = null;
       }
-      setMpError(err.message || 'Failed to join room. Verify room code or connectivity.');
+      const userMessage = err.message?.includes('timed out')
+        ? 'Connection timed out. Check your internet or firewall settings.'
+        : (err.message || 'Failed to join room. Verify room code or connectivity.');
+      setMpError(userMessage);
     } finally {
       setIsConnecting(false);
     }

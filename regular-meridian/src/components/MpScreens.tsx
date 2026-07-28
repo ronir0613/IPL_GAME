@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Users, Settings, Play, ArrowRight, User, Shield, Swords, RefreshCw, Volume2, ShieldAlert, MessageSquare, X, Send, Trophy, LogOut, ClipboardList, Gavel } from 'lucide-react';
+import { Copy, Check, Users, Settings, Play, ArrowRight, User, Shield, Swords, RefreshCw, Volume2, ShieldAlert, MessageSquare, X, Send, Trophy, LogOut, ClipboardList, Gavel, ChevronDown, HelpCircle } from 'lucide-react';
 import type { Player, MpPlayer, MpSettings, MpState, MatchResult, MatchPrepConfig } from '@/lib/types';
 import { IPL_TEAMS } from '@/lib/types';
 import { ratingColor, initials } from '@/lib/engine';
@@ -1000,6 +1000,82 @@ interface MpConnectionSetupScreenProps {
   errorMsg: string;
 }
 
+function TroubleshootingTips() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="mt-3 border border-[var(--card-border)]/60 rounded-xl overflow-hidden bg-black/10 transition-all duration-300">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-4 py-2.5 flex items-center justify-between text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-black/5 text-xs font-bold uppercase tracking-wider transition-all"
+      >
+        <span className="flex items-center gap-2 text-blue-400">
+          <HelpCircle size={15} />
+          Troubleshooting Tips
+        </span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+        >
+          <ChevronDown size={14} className="text-blue-400" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-4 pt-1.5 text-xs text-[var(--text-muted)] space-y-3 border-t border-[var(--card-border)]/30 font-medium leading-relaxed">
+              <div className="space-y-1">
+                <h4 className="font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                  1. Check Host Status
+                </h4>
+                <p className="pl-3 text-[var(--text-muted)]/80">
+                  Ensure the host player has created the room and is waiting on the lobby screen. A client cannot connect before the host is ready.
+                </p>
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                  2. Verify Room Code
+                </h4>
+                <p className="pl-3 text-[var(--text-muted)]/80">
+                  Double check the 5-letter Room Code. It must match the host's room code exactly.
+                </p>
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                  3. Network & VPN Blocks
+                </h4>
+                <p className="pl-3 text-[var(--text-muted)]/80">
+                  Corporate firewalls, public Wi-Fi (like school or coffee shops), or active VPNs frequently block WebRTC connections. Try disconnecting from your VPN or switching to a mobile hotspot.
+                </p>
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                  4. Browser Extensions
+                </h4>
+                <p className="pl-3 text-[var(--text-muted)]/80">
+                  Some adblockers or privacy extensions block WebRTC/PeerJS. Try accessing the page in an Incognito/Private window.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function MpConnectionSetupScreen({ onBack, onCreateRoom, onJoinRoom, isConnecting, errorMsg }: MpConnectionSetupScreenProps) {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -1034,8 +1110,12 @@ export function MpConnectionSetupScreen({ onBack, onCreateRoom, onJoinRoom, isCo
         </h2>
 
         {errorMsg && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-lg text-xs font-bold mb-4 flex items-center gap-2">
-            <ShieldAlert size={16} /> {errorMsg}
+          <div className="mb-4 space-y-2">
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-lg text-xs font-bold flex items-center gap-2">
+              <ShieldAlert size={16} className="shrink-0" /> 
+              <span>{errorMsg}</span>
+            </div>
+            <TroubleshootingTips />
           </div>
         )}
 

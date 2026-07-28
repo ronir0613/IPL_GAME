@@ -57,10 +57,24 @@ export class MultiplayerManager {
     const { Peer } = await import('peerjs');
 
     return new Promise((resolve, reject) => {
+      let resolvedOrRejected = false;
+
       // If we already have a peer running, destroy it first
       if (this.peer) {
         this.peer.destroy();
       }
+
+      // 10-second timeout for matchmaking/signaling server connection
+      const initTimeout = setTimeout(() => {
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          if (this.peer) {
+            this.peer.destroy();
+            this.peer = null;
+          }
+          reject(new Error('Failed to connect to matchmaking server. The server may be offline, or your firewall/VPN blocks the connection.'));
+        }
+      }, 10000);
 
       const peerOptions = {
         debug: 1, // Only print warnings and errors
@@ -95,8 +109,12 @@ export class MultiplayerManager {
       this.peer = customPeerId ? new Peer(customPeerId, peerOptions) : new Peer(peerOptions);
 
       this.peer.on('open', (id: string) => {
-        this.peerId = id;
-        resolve(id);
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          clearTimeout(initTimeout);
+          this.peerId = id;
+          resolve(id);
+        }
       });
 
       this.peer.on('disconnected', () => {
@@ -108,7 +126,11 @@ export class MultiplayerManager {
 
       this.peer.on('error', (err: any) => {
         console.error('PeerJS error:', err);
-        reject(err);
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          clearTimeout(initTimeout);
+          reject(err);
+        }
       });
 
       this.peer.on('close', () => {
