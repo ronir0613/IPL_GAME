@@ -71,11 +71,24 @@ export class MultiplayerManager {
         key: 'peerjs',
         config: {
           iceServers: [
+            // Public Google STUN servers
             { urls: 'stun:stun.l.google.com:19302' },
             { urls: 'stun:stun1.l.google.com:19302' },
             { urls: 'stun:stun2.l.google.com:19302' },
             { urls: 'stun:stun3.l.google.com:19302' },
-            { urls: 'stun:stun4.l.google.com:19302' }
+            { urls: 'stun:stun4.l.google.com:19302' },
+            // Public Metered STUN Server
+            { urls: 'stun:openrelay.metered.ca:80' },
+            // Public Open Relay Project TURN servers (provides NAT traversal fallback)
+            {
+              urls: [
+                'turn:openrelay.metered.ca:80',
+                'turn:openrelay.metered.ca:443',
+                'turn:openrelay.metered.ca:443?transport=tcp'
+              ],
+              username: 'openrelayproject',
+              credential: 'openrelayproject'
+            }
           ]
         }
       };
@@ -84,6 +97,13 @@ export class MultiplayerManager {
       this.peer.on('open', (id: string) => {
         this.peerId = id;
         resolve(id);
+      });
+
+      this.peer.on('disconnected', () => {
+        console.log('PeerJS disconnected from signaling server. Reconnecting...');
+        if (this.peer && !this.peer.destroyed) {
+          this.peer.reconnect();
+        }
       });
 
       this.peer.on('error', (err: any) => {
