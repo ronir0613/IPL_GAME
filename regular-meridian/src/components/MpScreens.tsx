@@ -454,7 +454,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
             </button>
           ) : (
             <div className="text-right text-xs">
-              <div className="font-bold text-[var(--text-primary)]">Roster: {myRoster.length}/15</div>
+              <div className="font-bold text-[var(--text-primary)]">Roster: {myRoster.length}/{state.settings.rounds}</div>
               <div className="text-green-400 font-extrabold mt-0.5">Purse: ₹{(myPurse / 100).toFixed(2)} Cr</div>
             </div>
           )}
@@ -503,7 +503,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                         {isMe && <span className="text-[8px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1 rounded uppercase font-bold">YOU</span>}
                       </div>
                       <div className="text-[9px] text-[var(--text-muted)] mt-0.5">
-                        Roster: {roster.length}/15 (OS: {osCount}/4)
+                        Roster: {roster.length}/{state.settings.rounds} (OS: {osCount}/{state.settings.maxOverseas})
                       </div>
                     </div>
                   </div>
@@ -513,7 +513,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                       ₹{(purse / 100).toFixed(2)} Cr
                     </div>
                     <div className="text-[9px] text-[var(--text-muted)] mt-0.5 font-mono">
-                      Avg: ₹{(roster.length === 15 ? 0 : purse / (15 - roster.length)).toFixed(1)} L
+                      Avg: ₹{(roster.length === state.settings.rounds ? 0 : purse / (state.settings.rounds - roster.length)).toFixed(1)} L
                     </div>
                   </div>
                 </div>
@@ -632,7 +632,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
               activeInspector.startsWith('AI_') 
                 ? `AI - ${activeInspector.split('_')[1]}` 
                 : (state.players.find(p => p.peerId === activeInspector)?.name || 'Franchise')
-            } ({(state.rosters[activeInspector] || []).length}/15)
+            } ({(state.rosters[activeInspector] || []).length}/{state.settings.rounds})
           </h3>
           
           <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">

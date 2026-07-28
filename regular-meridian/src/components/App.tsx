@@ -4527,7 +4527,8 @@ function MainAppContent() {
 
         // Standard tick
         const updatedState = { ...prev, bidTimer: nextTimer };
-        mpManagerRef.current?.send('DRAFT_UPDATE', updatedState);
+        // We do NOT send DRAFT_UPDATE on standard countdown ticks to prevent network flooding and Pusher rate-limit drops.
+        // Client peers will tick down their own timers locally, and will re-sync on any active game event (bid, skip, sold, etc.).
         return updatedState;
       });
     }, 1000);
@@ -4945,7 +4946,7 @@ function MainAppContent() {
           text,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           color: franchiseData?.color || '#3b82f6'
-        }];
+        }].slice(-30);
         const nextState = {
           ...prev,
           chatMessages: updatedChat
@@ -5194,7 +5195,7 @@ function MainAppContent() {
             text: payload.text,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             color: franchiseData?.color || '#3b82f6'
-          }];
+          }].slice(-30);
           const nextState = {
             ...prev,
             chatMessages: updatedChat

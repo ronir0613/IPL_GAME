@@ -236,7 +236,10 @@ export class PusherManager {
       const total = Math.ceil(msgString.length / CHUNK_SIZE);
       console.log(`Payload size ${msgString.length} exceeds limit. Chunking into ${total} parts with ID: ${chunkId}`);
       
-      for (let i = 0; i < total; i++) {
+      const sendChunk = (i: number) => {
+        if (i >= total) return;
+        if (!this.channel) return;
+        
         const start = i * CHUNK_SIZE;
         const end = Math.min(start + CHUNK_SIZE, msgString.length);
         const chunkData = msgString.substring(start, end);
@@ -254,7 +257,13 @@ export class PusherManager {
         };
         
         this.channel.trigger('client-game-msg', chunkMsg);
-      }
+        
+        if (i + 1 < total) {
+          setTimeout(() => sendChunk(i + 1), 30);
+        }
+      };
+      
+      sendChunk(0);
     } else {
       this.channel.trigger('client-game-msg', msg);
     }
