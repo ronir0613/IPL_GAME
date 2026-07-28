@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PlayerProfile from './PlayerProfile';
 import { saveRunToProfile, setProfileHandle, getProfileData } from '@/lib/profile';
 import { MpLobbyScreen, MpDraftScreen, MpMatchCenterScreen, MpConnectionSetupScreen, MpChatBox } from './MpScreens';
-import { MultiplayerManager, getBestAiPick, generateRoomCode, type MpMessage, getPlayerBasePrice, getBidIncrement, getAiValuation } from '@/lib/multiplayer';
+import { getBestAiPick, generateRoomCode, type MpMessage, getPlayerBasePrice, getBidIncrement, getAiValuation } from '@/lib/multiplayer';
+import { PusherManager } from '@/lib/pusher';
 
 import { generateGambleTeam } from '@/lib/gamble';
 import type { GambleResult } from '@/lib/gamble';
@@ -4312,7 +4313,7 @@ function MainAppContent() {
   const [inputRoomId, setInputRoomId] = useState<string>('');
   const [mpError, setMpError] = useState<string>('');
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
-  const mpManagerRef = useRef<MultiplayerManager | null>(null);
+  const mpManagerRef = useRef<PusherManager | null>(null);
   const mpTacticsRef = useRef<Record<string, { playingXI: Player[], impactBench: Player[], captainName: string }>>({});
   const timerRef = useRef<any>(null);
   const handleMpMessageRef = useRef<(msg: MpMessage) => void>(() => {});
@@ -5279,12 +5280,12 @@ function MainAppContent() {
     setIsConnecting(true);
     setMpError('');
     try {
-      const manager = new MultiplayerManager();
+      const manager = new PusherManager();
       mpManagerRef.current = manager;
       manager.subscribeToMessages((msg) => handleMpMessageRef.current(msg));
       
       const code = generateRoomCode();
-      const peerId = await manager.init(`160p-${code}`);
+      const peerId = await manager.init(`160p-${code}`, name);
       
       setMpUserName(name);
       setMpFranchise('TBD');
@@ -5352,11 +5353,11 @@ function MainAppContent() {
     setIsConnecting(true);
     setMpError('');
     try {
-      const manager = new MultiplayerManager();
+      const manager = new PusherManager();
       mpManagerRef.current = manager;
       manager.subscribeToMessages((msg) => handleMpMessageRef.current(msg));
       
-      await manager.init(); // randomized peer id for client
+      await manager.init(undefined, name); // randomized peer id for client
       await manager.joinRoom(`160p-${code}`);
       
       setMpUserName(name);
