@@ -66,7 +66,18 @@ export class MultiplayerManager {
         debug: 1, // Only print warnings and errors
         host: '0.peerjs.com',
         secure: true,
-        port: 443
+        port: 443,
+        path: '/',
+        key: 'peerjs',
+        config: {
+          iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:stun2.l.google.com:19302' },
+            { urls: 'stun:stun3.l.google.com:19302' },
+            { urls: 'stun:stun4.l.google.com:19302' }
+          ]
+        }
       };
       this.peer = customPeerId ? new Peer(customPeerId, peerOptions) : new Peer(peerOptions);
 
@@ -148,13 +159,60 @@ export class MultiplayerManager {
     if (!this.peer) return Promise.reject(new Error('Peer not initialized'));
 
     return new Promise((resolve, reject) => {
+      let resolvedOrRejected = false;
+
+      // Timeout of 12 seconds
+      const timeoutId = setTimeout(() => {
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          cleanup();
+          if (this.clientConnection) {
+            this.clientConnection.close();
+            this.clientConnection = null;
+          }
+          reject(new Error('Connection timed out. The host may be offline or you may have a firewall issue.'));
+        }
+      }, 12000);
+
+      // Handle peer errors during connection
+      const peerErrorHandler = (err: any) => {
+        console.error('Peer error during connect:', err);
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          cleanup();
+          if (this.clientConnection) {
+            this.clientConnection.close();
+            this.clientConnection = null;
+          }
+          if (err.type === 'peer-unavailable') {
+            reject(new Error('Room not found. Verify the room code and ensure the host has started the lobby.'));
+          } else {
+            reject(new Error(`Failed to connect: ${err.message || err.type || 'Unknown peer error'}`));
+          }
+        }
+      };
+
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        if (this.peer) {
+          this.peer.off('error', peerErrorHandler);
+        }
+      };
+
+      // Listen for peer errors
+      this.peer.on('error', peerErrorHandler);
+
       this.clientConnection = this.peer.connect(hostRoomId, {
         reliable: true
       });
 
       this.clientConnection.on('open', () => {
         console.log('Client connected to host successfully:', hostRoomId);
-        resolve();
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          cleanup();
+          resolve();
+        }
       });
 
       this.clientConnection.on('data', (data: MpMessage) => {
@@ -165,6 +223,7 @@ export class MultiplayerManager {
       this.clientConnection.on('close', () => {
         console.log('Disconnected from host room');
         this.clientConnection = null;
+        cleanup();
         // Trigger a fake leave message to reset client state
         this.onMessageCallback({
           type: 'LEAVE_ROOM',
@@ -176,7 +235,11 @@ export class MultiplayerManager {
 
       this.clientConnection.on('error', (err: any) => {
         console.error('Client connection error:', err);
-        reject(err);
+        if (!resolvedOrRejected) {
+          resolvedOrRejected = true;
+          cleanup();
+          reject(new Error(`Connection error: ${err.message || 'Unknown connection error'}`));
+        }
       });
     });
   }

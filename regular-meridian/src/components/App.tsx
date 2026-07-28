@@ -5335,7 +5335,7 @@ function MainAppContent() {
       setPhase('mp-lobby');
     } catch (err: any) {
       console.error(err);
-      setMpError('Failed to host multiplayer room. Try again.');
+      setMpError(err.message || 'Failed to host multiplayer room. Try again.');
     } finally {
       setIsConnecting(false);
     }
@@ -5359,7 +5359,7 @@ function MainAppContent() {
       manager.send('CLIENT_JOIN', { name });
     } catch (err: any) {
       console.error(err);
-      setMpError('Failed to join room. Verify room code or connectivity.');
+      setMpError(err.message || 'Failed to join room. Verify room code or connectivity.');
     } finally {
       setIsConnecting(false);
     }
