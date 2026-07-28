@@ -52,16 +52,19 @@ To ensure strategic depth and prevent simple "star hoarding," the simulator runs
 ## 📂 Project Structure
 
 ```text
-/
-├── public/                 # Static assets (images, icons, manifest)
-├── src/
-│   ├── components/         # React Components (App.tsx, MpScreens.tsx, etc.)
-│   ├── lib/                # Logic & Engine (engine.ts, multiplayer.ts, types.ts)
-│   ├── pages/              # Astro pages (index.astro)
-│   └── styles/             # Global CSS and Tailwind variables
-├── wrangler.toml           # Cloudflare Pages / Wrangler configuration
-├── astro.config.mjs        # Astro project settings
-└── package.json            # Node dependencies and scripts
+IPL_GAME/
+├── .agents/                    # Custom AI developer instructions and rules
+├── regular-meridian/           # Primary Astro + React codebase
+│   ├── public/                 # Static assets (images, icons, manifest)
+│   ├── src/
+│   │   ├── components/         # React Components (App.tsx, MpScreens.tsx, etc.)
+│   │   ├── lib/                # Logic & Engine (engine.ts, multiplayer.ts, types.ts)
+│   │   ├── pages/              # Astro pages (index.astro)
+│   │   └── styles/             # Global CSS and Tailwind variables
+│   ├── wrangler.toml           # Cloudflare Pages / Wrangler configuration
+│   ├── astro.config.mjs        # Astro project settings
+│   └── package.json            # Node dependencies and scripts
+└── README.md                   # This documentation file
 ```
 
 ---
@@ -74,17 +77,22 @@ Follow these steps to run the project locally on your machine.
 Make sure you have [Node.js](https://nodejs.org/) installed (version `>= 22.12.0` is recommended).
 
 ### Steps
-1. Install the dependencies:
+1. Navigate to the project folder:
+   ```sh
+   cd regular-meridian
+   ```
+
+2. Install the dependencies:
    ```sh
    npm install
    ```
 
-2. Run the development server in background mode (per CLI recommendation):
+3. Run the development server in background mode (per CLI recommendation):
    ```sh
    npm run dev
    ```
 
-3. Open your browser and navigate to:
+4. Open your browser and navigate to:
    ```text
    http://localhost:4321
    ```
