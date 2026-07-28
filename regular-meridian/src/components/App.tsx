@@ -4431,7 +4431,7 @@ function MainAppContent() {
         activeAuctionPlayer: nextPlayer,
         currentBid: baseInfo.numeric,
         highestBidder: null,
-        bidTimer: 10,
+        bidTimer: stateToUse.settings.turnTimer,
         skippedPeers: [],
         currentSetIndex: currentSetIdx,
         isAcceleratedRound: isAcc,
@@ -4580,7 +4580,7 @@ function MainAppContent() {
           ...prev,
           currentBid: proposedBid,
           highestBidder: myId,
-          bidTimer: 10
+          bidTimer: prev.settings.turnTimer
         };
 
         // Check if everyone else has skipped/dropped
@@ -5052,7 +5052,7 @@ function MainAppContent() {
             ...prev,
             currentBid: clientBid,
             highestBidder: bidderId,
-            bidTimer: 10
+            bidTimer: prev.settings.turnTimer
           };
 
           // Check if everyone else has skipped/dropped
@@ -5256,10 +5256,15 @@ function MainAppContent() {
 
       case 'LEAVE_ROOM':
         if (mpState?.isHost) {
+          const updatedPlayers = mpState.players.filter(p => p.peerId !== payload);
+          if (updatedPlayers.length < 2 && ['mp-draft', 'mp-match-prep', 'mp-watching'].includes(phase)) {
+            alert('All other players have left. The multiplayer session is closing.');
+            handleLeaveMp();
+            break;
+          }
           setMpState(prev => {
             if (!prev) return prev;
-            const updated = prev.players.filter(p => p.peerId !== payload);
-            const nextState = { ...prev, players: updated };
+            const nextState = { ...prev, players: updatedPlayers };
             mpManagerRef.current?.send('LOBBY_UPDATE', nextState);
             return nextState;
           });
@@ -5306,8 +5311,8 @@ function MainAppContent() {
         isHost: true,
         players: [playerSelf],
         settings: {
-          rounds: 15, // default to 15 slots
-          turnTimer: 30,
+          rounds: 15,
+          turnTimer: 10,
           maxOverseas: 4,
           aiCount: 9,
           auctionFormat: 'short'
@@ -5318,7 +5323,7 @@ function MainAppContent() {
         isDraftComplete: false,
         rosters: {},
         pickedIds: [],
-        activeTimer: 30,
+        activeTimer: 10,
         activeMatches: [],
         readyCount: 0,
         // Default auction states:
@@ -5455,7 +5460,7 @@ function MainAppContent() {
       activePickIndex: 0,
       roundNumber: 1,
       isDraftComplete: false,
-      activeTimer: 10,
+      activeTimer: mpState.settings.turnTimer,
       settings: {
         ...mpState.settings,
         rounds: mpState.settings.rounds,
@@ -5465,7 +5470,7 @@ function MainAppContent() {
       activeAuctionPlayer: null,
       currentBid: 0,
       highestBidder: null,
-      bidTimer: 10,
+      bidTimer: mpState.settings.turnTimer,
       skippedPeers: [],
       purses: initialPurses,
       auctionLogs: [],

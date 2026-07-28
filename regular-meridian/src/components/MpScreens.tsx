@@ -181,9 +181,9 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
                         onChange={(e) => handleSettingChange('turnTimer', parseInt(e.target.value))}
                         className="w-full px-2 py-1 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md text-[var(--text-primary)] font-bold text-[10px] focus:outline-none"
                       >
-                        <option value={20} className="bg-white text-neutral-900">20 Seconds</option>
-                        <option value={30} className="bg-white text-neutral-900">30 Seconds</option>
-                        <option value={45} className="bg-white text-neutral-900">45 Seconds</option>
+                        <option value={5} className="bg-white text-neutral-900">5 Seconds</option>
+                        <option value={10} className="bg-white text-neutral-900">10 Seconds</option>
+                        <option value={15} className="bg-white text-neutral-900">15 Seconds</option>
                       </select>
                     ) : (
                       <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
