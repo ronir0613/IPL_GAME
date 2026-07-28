@@ -5335,6 +5335,10 @@ function MainAppContent() {
       setPhase('mp-lobby');
     } catch (err: any) {
       console.error(err);
+      if (mpManagerRef.current) {
+        mpManagerRef.current.disconnect();
+        mpManagerRef.current = null;
+      }
       setMpError(err.message || 'Failed to host multiplayer room. Try again.');
     } finally {
       setIsConnecting(false);
@@ -5359,6 +5363,10 @@ function MainAppContent() {
       manager.send('CLIENT_JOIN', { name });
     } catch (err: any) {
       console.error(err);
+      if (mpManagerRef.current) {
+        mpManagerRef.current.disconnect();
+        mpManagerRef.current = null;
+      }
       setMpError(err.message || 'Failed to join room. Verify room code or connectivity.');
     } finally {
       setIsConnecting(false);
