@@ -5280,6 +5280,9 @@ function MainAppContent() {
     setIsConnecting(true);
     setMpError('');
     try {
+      if (mpManagerRef.current) {
+        mpManagerRef.current.disconnect();
+      }
       const manager = new PusherManager();
       mpManagerRef.current = manager;
       manager.subscribeToMessages((msg) => handleMpMessageRef.current(msg));
@@ -5353,6 +5356,9 @@ function MainAppContent() {
     setIsConnecting(true);
     setMpError('');
     try {
+      if (mpManagerRef.current) {
+        mpManagerRef.current.disconnect();
+      }
       const manager = new PusherManager();
       mpManagerRef.current = manager;
       manager.subscribeToMessages((msg) => handleMpMessageRef.current(msg));
