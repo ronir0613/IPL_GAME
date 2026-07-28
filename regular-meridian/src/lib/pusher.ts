@@ -1,5 +1,6 @@
 import Pusher from 'pusher-js';
-import type { MpState, MpMessage, MpMessageType } from './types';
+import type { MpState } from './types';
+import type { MpMessage, MpMessageType } from './multiplayer';
 
 export class PusherManager {
   private pusher: Pusher | null = null;
@@ -26,7 +27,14 @@ export class PusherManager {
     // Initialize Pusher client pointing to our Cloudflare auth endpoint
     this.pusher = new Pusher('92d0689e4c171f0709c0', {
       cluster: 'ap2',
-      authEndpoint: '/api/pusher-auth',
+      channelAuthorization: {
+        endpoint: '/api/pusher-auth',
+        transport: 'ajax',
+        params: {
+          name: this.userName,
+          peerId: this.peerId,
+        },
+      },
     });
 
     return this.peerId;
@@ -49,13 +57,7 @@ export class PusherManager {
 
     // Clean subscribe to channel
     const channelName = `presence-160p-${roomId}`;
-    this.channel = this.pusher.subscribe(channelName, {
-      auth: {
-        params: {
-          name: this.userName
-        }
-      }
-    });
+    this.channel = this.pusher.subscribe(channelName);
 
     this.channel.bind('pusher:subscription_succeeded', () => {
       console.log('Host successfully created and subscribed to Pusher channel:', channelName);
@@ -99,16 +101,24 @@ export class PusherManager {
 
       // Subscribe to the channel. Note: hostRoomId has format "160p-CODE"
       const channelName = `presence-${hostRoomId}`;
-      this.channel = this.pusher!.subscribe(channelName, {
-        auth: {
-          params: {
-            name: this.userName
-          }
-        }
-      });
+      this.channel = this.pusher!.subscribe(channelName);
 
-      this.channel.bind('pusher:subscription_succeeded', () => {
+      this.channel.bind('pusher:subscription_succeeded', (members: any) => {
         console.log('Client connected to Pusher channel successfully:', channelName);
+        
+        // Verify if the host is in the presence channel members
+        const hostExists = !!members.get(hostRoomId);
+        if (!hostExists) {
+          console.warn('Host is not present in this room:', hostRoomId);
+          if (!resolvedOrRejected) {
+            resolvedOrRejected = true;
+            clearTimeout(timeoutId);
+            this.disconnect();
+            reject(new Error('Room not found or host is offline. Make sure the code is correct.'));
+          }
+          return;
+        }
+
         if (!resolvedOrRejected) {
           resolvedOrRejected = true;
           clearTimeout(timeoutId);

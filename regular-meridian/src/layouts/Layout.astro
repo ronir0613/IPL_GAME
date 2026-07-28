@@ -37,6 +37,36 @@
 			}
 			window.localStorage.setItem('theme', theme);
 		</script>
+		
+		<script is:inline>
+			// Handle chunk loading and dynamic import errors due to redeployments
+			window.addEventListener('unhandledrejection', (event) => {
+				if (
+					event.reason &&
+					(event.reason.message?.includes('Failed to fetch dynamically imported module') ||
+					 event.reason.name === 'ChunkLoadError')
+				) {
+					console.warn('Dynamic import failed, reloading page to get latest version...', event.reason);
+					window.location.reload();
+				}
+			});
+
+			window.addEventListener('vite:preloadError', (event) => {
+				console.warn('Vite preload error detected, reloading page to get latest version...', event);
+				window.location.reload();
+			});
+
+			window.addEventListener('error', (event) => {
+				// If a script resource fails to load, check if it's in the _astro assets directory
+				if (event.target && event.target.tagName === 'SCRIPT') {
+					const src = event.target.src || '';
+					if (src.includes('/_astro/')) {
+						console.warn('Failed to load asset script, reloading page to get latest version...', src);
+						window.location.reload();
+					}
+				}
+			}, true); // Use capture phase to catch script element loading errors
+		</script>
 	
     <!-- Google AdSense -->
     <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3180090639225904" crossorigin="anonymous"></script>

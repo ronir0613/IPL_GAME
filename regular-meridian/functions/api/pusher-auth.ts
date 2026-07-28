@@ -41,6 +41,7 @@ export async function onRequestPost(context: { request: Request; env: any }) {
     const socketId = formData.get('socket_id') as string;
     const channelName = formData.get('channel_name') as string;
     const name = formData.get('name') as string || 'Anonymous';
+    const peerId = formData.get('peerId') as string || socketId;
 
     if (!socketId || !channelName) {
       return new Response(
@@ -51,7 +52,7 @@ export async function onRequestPost(context: { request: Request; env: any }) {
 
     // Prepare channel data for Pusher Presence Channel
     const channelData = JSON.stringify({
-      user_id: socketId,
+      user_id: peerId,
       user_info: { name }
     });
 
