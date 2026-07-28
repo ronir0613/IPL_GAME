@@ -1197,12 +1197,17 @@ export function generateStory(
   pStats: Record<number, PlayerStats>
 ): StoryItem[] {
   const players = squad.filter(s => s.player).map(s => s.player!);
-  const topBatter = [...players].sort((a, b) => pStats[b.id].runs - pStats[a.id].runs)[0];
-  const topBowler = [...players].sort((a, b) => pStats[b.id].wickets - pStats[a.id].wickets)[0];
+  
+  // Safe stats lookup to prevent crashes when stats are empty (e.g. in multiplayer fallbacks)
+  const getRuns = (id: number) => pStats[id]?.runs || 0;
+  const getWickets = (id: number) => pStats[id]?.wickets || 0;
+
+  const topBatter = [...players].sort((a, b) => getRuns(b.id) - getRuns(a.id))[0];
+  const topBowler = [...players].sort((a, b) => getWickets(b.id) - getWickets(a.id))[0];
 
   const overperformed = finalPos < projectedPos;
   const underperformed = finalPos > projectedPos;
-  const isChampion = champion === 'YOUR XI';
+  const isChampion = champion?.toUpperCase() === userTeam.short?.toUpperCase();
 
   const story: StoryItem[] = [];
   let id = 1;
@@ -1210,48 +1215,168 @@ export function generateStory(
     story.push({ id: `st_${Date.now()}_${id++}`, type, author, text });
   };
 
-  // Headline News
-  const newsAuthor = 'CricInsider';
+  // 1. Headline News
+  const newsAuthor = pick([
+    'CricInsider',
+    'The Daily Yorker',
+    'Wisden India',
+    'Sky Sports Cricket',
+    'Fox Cricket',
+    'SuperSport Cricket'
+  ]);
+
   if (isChampion) {
-    add('news', newsAuthor, `BREAKING: "Your XI" defy the odds to lift the IPL Trophy! A spectacular 16-0 dream run completed in historic fashion.`);
+    const templates = [
+      `BREAKING: "${userTeam.name}" defy the odds to lift the IPL Trophy! A spectacular dream run completed in historic fashion.`,
+      `HISTORY MADE: "${userTeam.name}" crowned IPL Champions after a masterclass season! Fans erupt in celebration.`,
+      `🏆 CHAMPIONS! "${userTeam.name}" conquer the league to claim the ultimate prize in an unforgettable final.`
+    ];
+    add('news', newsAuthor, pick(templates));
   } else if (finalPos <= 4) {
-    add('news', newsAuthor, `Valiant effort from "Your XI" comes to an end in the playoffs. They fought hard but missed the ultimate prize.`);
+    const templates = [
+      `Valiant effort from "${userTeam.name}" comes to an end in the playoffs. They fought hard but missed the ultimate prize.`,
+      `Heartbreak in the playoffs as "${userTeam.name}" fall just short of the finals after a spirited campaign.`,
+      `Playoff run ends for "${userTeam.name}". A stellar season that promises great things for the future.`
+    ];
+    add('news', newsAuthor, pick(templates));
   } else if (underperformed) {
-    add('news', newsAuthor, `A season to forget for "Your XI". Despite a projected ${projectedPos} finish, they crumbled to ${finalPos}. Changes needed?`);
+    const templates = [
+      `A season to forget for "${userTeam.name}". Despite a projected ${ordinal(projectedPos)} finish, they crumbled to ${ordinal(finalPos)}. Changes needed?`,
+      `Questions raised after "${userTeam.name}" finish ${ordinal(finalPos)} despite a projected top-tier finish of ${ordinal(projectedPos)}.`,
+      `Campaign autopsy begins for "${userTeam.name}" as they slip to ${ordinal(finalPos)} in a disappointing run.`
+    ];
+    add('news', newsAuthor, pick(templates));
   } else {
-    add('news', newsAuthor, `"Your XI" finish ${finalPos} in a rollercoaster season. Building blocks for next year?`);
+    const templates = [
+      `"${userTeam.name}" finish ${ordinal(finalPos)} in a rollercoaster season. Building blocks for next year?`,
+      `A mixed bag for "${userTeam.name}" as they wrap up their campaign in ${ordinal(finalPos)} place.`,
+      `"${userTeam.name}" settle for a ${ordinal(finalPos)}-place finish. Moments of brilliance combined with missed opportunities.`
+    ];
+    add('news', newsAuthor, pick(templates));
   }
 
-  // Expert Take
-  const expertAuthor = 'Harsha Bhogle';
-  if (wins >= 10) {
-    add('expert', expertAuthor, `You have to admire how this team came together. Winning ${wins} matches is no joke in this format.`);
-  } else if (wins >= 5) {
-    add('expert', expertAuthor, `They had their moments, especially during that mid-season streak, but T20 is about consistency which they lacked when it mattered.`);
-  } else {
-    add('expert', expertAuthor, `I don't think they ever found their best combination. Only ${wins} wins tells you everything you need to know about their campaign.`);
+  // 2. Expert Take
+  const expertOptions = [
+    {
+      name: 'Harsha Bhogle',
+      high: `You have to admire how this team came together. Winning ${wins} matches is no joke in this league. The chemistry was simply spectacular.`,
+      med: `They had their moments, especially during that mid-season streak, but T20 is about consistency. They lacked it when it mattered most.`,
+      low: `I don't think they ever found their best combination. Only ${wins} wins tells you everything. Back to the drawing board for them.`
+    },
+    {
+      name: 'Ravi Shastri',
+      high: `Unbelievable cricket! ${wins} wins is absolutely clinical. They played like a massive unit and hit the opposition like a tracer bullet!`,
+      med: `They put up a real fight in patches, but you can't lose momentum in this tournament. It's a tough pill to swallow!`,
+      low: `No energy, no intent! Only ${wins} wins is just not good enough. You've got to stand up and be counted in this arena!`
+    },
+    {
+      name: 'Aakash Chopra',
+      high: `Kya kamaal ka pradarshan! ${wins} jeet koi choti baat nahi hai. Is team ne sabhi ko hairaan kar diya hai!`,
+      med: `Koshish acchi thi, par jeet ki gaadi thodi patri se utar gayi. Consistency hi is khel ki asli chaabi hai.`,
+      low: `Nirashajanak season. Combinations ban nahi paaye, aur ${wins} jeet ke sath safar yahi samapt hota hai.`
+    },
+    {
+      name: 'Nasser Hussain',
+      high: `Tactically, they were superb. Securing ${wins} wins shows outstanding leadership and execution of plans under pressure.`,
+      med: `They played some decent cricket, but key errors in crucial overs cost them. You simply cannot afford that in the IPL.`,
+      low: `A very poor campaign. Only ${wins} wins is a reflection of poor decision-making and failing to adapt to match situations.`
+    },
+    {
+      name: 'Ian Smith',
+      high: `What a ride! ${wins} victories in a single season! Absolute blockbuster stuff from start to finish!`,
+      med: `They gave us some thrilling finishes, but in the end, they just couldn't cross the line when the pressure was dialed up.`,
+      low: `It just never clicked for them, did it? Only ${wins} wins... a really tough pill to swallow for the players and the fans.`
+    },
+    {
+      name: 'Michael Vaughan',
+      high: `Fabulous team. Winning ${wins} games in the toughest league in the world is a brilliant achievement. Best team by far.`,
+      med: `Some good performances, but overall too inconsistent. You need to win the close games to be a top team here.`,
+      low: `Very disappointing. Only ${wins} wins... they need to make some major changes in the squad before the next auction.`
+    },
+    {
+      name: 'Pommie Mbangwa',
+      high: `Sensational! Absolutely sensational! ${wins} wins, and they did it with style and absolute authority!`,
+      med: `Oh, they entertained us, no doubt! But a few slip-ups here and there proved very costly in the final tally.`,
+      low: `A tough run for the boys. Just ${wins} wins... they'll be hurting, but they must pick themselves up and rebuild.`
+    }
+  ];
+
+  const expert = pick(expertOptions);
+  const expertText = wins >= 10 ? expert.high : wins >= 5 ? expert.med : expert.low;
+  add('expert', expert.name, expertText);
+
+  // 3. Top Batter Player Quote
+  if (topBatter && getRuns(topBatter.id) > 300) {
+    const runs = getRuns(topBatter.id);
+    const templates = isChampion ? [
+      `Gave it my all, and lifting that trophy makes every single run of my ${runs} runs worth it! Incredible team effort. 🏆`,
+      `What a feeling! Scoring ${runs} runs is sweet, but being crowned champions with this group is the ultimate dream come true!`
+    ] : [
+      `Gave it my all out there. Scoring ${runs} runs means little if we don't win the cup, but proud of the effort. We'll be back stronger. 💪`,
+      `Gave it my all out there. Personally a good season with ${runs} runs, but team success is what matters. We'll learn from this.`
+    ];
+    add('player', topBatter.name, pick(templates));
   }
 
-  // Top Batter Player Quote
-  if (topBatter && pStats[topBatter.id].runs > 300) {
-    add('player', topBatter.name, `Gave it my all out there. Scoring ${pStats[topBatter.id].runs} runs means little if we don't win the cup, but proud of the effort. We'll be back stronger. 💪`);
-  }
-
-  // Top Bowler Player Quote
-  if (topBowler && pStats[topBowler.id].wickets > 10) {
+  // 4. Top Bowler Player Quote
+  if (topBowler && getWickets(topBowler.id) > 10) {
     if (topBowler.id !== topBatter?.id) {
-      add('player', topBowler.name, `The ball was coming out nicely this season. ${pStats[topBowler.id].wickets} wickets for the team... thanks for all the support from the fans!`);
+      const wickets = getWickets(topBowler.id);
+      const templates = isChampion ? [
+        `Championship gold! ${wickets} wickets for the team... so proud of the boys. Thanks to all the fans for believing in us! 🥇`,
+        `The ball was coming out beautifully all season, but winning the cup is the real prize. ${wickets} wickets to help us lift the trophy!`
+      ] : [
+        `The ball was coming out nicely this season. ${wickets} wickets for the team... thanks for all the support from the fans!`,
+        `Happy with my contribution of ${wickets} wickets, but gutted we couldn't go all the way. We'll work harder for the next season.`
+      ];
+      add('player', topBowler.name, pick(templates));
     }
   }
 
-  // Fan Reaction
-  const fanAuthor = '@CricketCrazyFan';
+  // 5. Fan Reaction
+  const fanAuthor = pick([
+    '@CricketCrazyFan',
+    '@IPLMemes',
+    '@StatsNerdIPL',
+    '@TheBarmyArmy',
+    '@OzCricketFan',
+    '@WindiesJalapeno',
+    '@SaffasFanZone'
+  ]);
+
   if (isChampion) {
-    add('fan', fanAuthor, `I was there when we drafted them and I'm here when we won it all! WHAT A TEAM!! 🏆🔥 BEST XI EVER!`);
+    const templates: Record<string, string> = {
+      '@CricketCrazyFan': `I was there when we drafted them and I'm here when we won it all! WHAT A TEAM!! 🏆🔥 BEST XI EVER!`,
+      '@IPLMemes': `WE ACTUALLY DID IT! Champions of IPL! 🏆 Let the celebrations begin! #IPL #Champions #BestTeam`,
+      '@StatsNerdIPL': `100% deserved. The stats favored them throughout the tournament and they executed perfectly in the playoffs. Outstanding.`,
+      '@TheBarmyArmy': `Absolute class! Champions of the league! Sing your hearts out! 🎵🏆 #Champions`,
+      '@OzCricketFan': `Unstoppable force. Played the best brand of cricket and took home the silverware. Congrats! 🇦🇺💪`,
+      '@WindiesJalapeno': `Pure vibes and pure dominance! What a tournament, champions baby! 🌴🥁🏆`,
+      '@SaffasFanZone': `A masterclass campaign! So proud of the team spirit and fight they showed. Champions! 🇿🇦🔥`
+    };
+    add('fan', fanAuthor, templates[fanAuthor] || `IPL Champions! Absolutely amazing season. Well deserved!`);
   } else if (overperformed && !isChampion) {
-    add('fan', fanAuthor, `Nobody gave us a chance before the season. Finishing ${finalPos} is a massive achievement. Heads held high!`);
+    const templates: Record<string, string> = {
+      '@CricketCrazyFan': `Nobody gave us a chance before the season. Finishing ${ordinal(finalPos)} is a massive achievement. Heads held high!`,
+      '@IPLMemes': `From predicted bottom of the table to ${ordinal(finalPos)} place! What a rollercoaster! 🎢😂 #Respect`,
+      '@StatsNerdIPL': `Statistically overperformed their projected finish of ${ordinal(projectedPos)} to end up ${ordinal(finalPos)}. Credit to the management.`,
+      '@TheBarmyArmy': `A brilliant effort to finish ${ordinal(finalPos)}! Heads high, you've done us proud! 👏`,
+      '@OzCricketFan': `Fought above their weight class all season. Ending up ${ordinal(finalPos)} is a great effort.`,
+      '@WindiesJalapeno': `Showed some real character! Nobody expected ${ordinal(finalPos)} place. Keep dancing! 🕺💃`,
+      '@SaffasFanZone': `Exceeded all expectations to finish ${ordinal(finalPos)}. A wonderful season to build on.`
+    };
+    add('fan', fanAuthor, templates[fanAuthor] || `Great season! Proud of how the team performed.`);
   } else {
-    add('fan', fanAuthor, `Another year, another heartbreak. Why do we keep making the same mistakes? 😭😭😭`);
+    const templates: Record<string, string> = {
+      '@CricketCrazyFan': `Another year, another heartbreak. Why do we keep making the same mistakes? 😭😭😭`,
+      '@IPLMemes': `Expectations: 🏆. Reality: ${ordinal(finalPos)} place. Time to turn off the notifications. 💀 #SadLife`,
+      '@StatsNerdIPL': `Finished ${ordinal(finalPos)} when projected ${ordinal(projectedPos)}. Negative variance in key close matches. Re-evaluation needed.`,
+      '@TheBarmyArmy': `Well, that didn't go to plan, did it? Gutted with the result but we'll stand by the boys. 💔`,
+      '@OzCricketFan': `A tough campaign. Let's be honest, finishing ${ordinal(finalPos)} is way below where we should be.`,
+      '@WindiesJalapeno': `Tough times, man. A disappointing season ending at ${ordinal(finalPos)}. We need some magic next year. 🪄`,
+      '@SaffasFanZone': `Heartbreaking finish. Ending at ${ordinal(finalPos)} is painful, but we will return stronger.`
+    };
+    add('fan', fanAuthor, templates[fanAuthor] || `Tough season. Hard luck, we'll try again next year.`);
   }
 
   return story;
