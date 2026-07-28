@@ -5,6 +5,7 @@ import type { MpMessage, MpMessageType } from './multiplayer';
 export class PusherManager {
   private pusher: Pusher | null = null;
   private channel: any = null; // Pusher Channel instance
+  private chunkStore: Record<string, { chunks: string[]; total: number; timestamp: number }> = {};
   
   public isHost: boolean = false;
   public peerId: string = '';
@@ -48,6 +49,56 @@ export class PusherManager {
     this.onMessageCallback = callback;
   }
 
+  // Handle incoming events and reconstruct chunked messages if necessary
+  private handleIncomingEvent(data: MpMessage) {
+    if (data.type === 'CHUNK') {
+      const { chunkId, index, total, data: chunkData } = data.payload;
+      
+      if (!this.chunkStore[chunkId]) {
+        this.chunkStore[chunkId] = {
+          chunks: new Array(total),
+          total,
+          timestamp: Date.now()
+        };
+      }
+      
+      this.chunkStore[chunkId].chunks[index] = chunkData;
+      
+      // Clean up old chunks (older than 30s) to prevent memory leaks
+      const now = Date.now();
+      for (const id in this.chunkStore) {
+        if (now - this.chunkStore[id].timestamp > 30000) {
+          delete this.chunkStore[id];
+        }
+      }
+      
+      // Check if all chunks received
+      const store = this.chunkStore[chunkId];
+      let complete = true;
+      for (let i = 0; i < store.total; i++) {
+        if (store.chunks[i] === undefined) {
+          complete = false;
+          break;
+        }
+      }
+      
+      if (complete) {
+        try {
+          const assembledString = store.chunks.join('');
+          const assembledMsg = JSON.parse(assembledString) as MpMessage;
+          delete this.chunkStore[chunkId];
+          console.log(`Reassembled chunked message of type ${assembledMsg.type} from ${assembledMsg.senderPeerId}`);
+          this.onMessageCallback(assembledMsg);
+        } catch (e) {
+          console.error('Failed to parse reassembled chunked message:', e);
+          delete this.chunkStore[chunkId];
+        }
+      }
+    } else {
+      this.onMessageCallback(data);
+    }
+  }
+
   // HOST: Start hosting a lobby (subscribe to presence channel)
   public startHosting(roomId: string, state: MpState) {
     this.isHost = true;
@@ -65,7 +116,7 @@ export class PusherManager {
 
     this.channel.bind('client-game-msg', (data: MpMessage) => {
       console.log('Host received client event:', data.type, 'from:', data.senderPeerId);
-      this.onMessageCallback(data);
+      this.handleIncomingEvent(data);
     });
 
     // Detect client disconnection automatically
@@ -138,7 +189,7 @@ export class PusherManager {
 
       this.channel.bind('client-game-msg', (data: MpMessage) => {
         console.log('Client received event from Pusher:', data.type);
-        this.onMessageCallback(data);
+        this.handleIncomingEvent(data);
       });
 
       // Detect host disconnection
@@ -159,28 +210,53 @@ export class PusherManager {
 
   // Broadcast message to all channel subscribers via client-events
   public send(type: MpMessageType, payload: any, senderName: string = '') {
-    const msg: MpMessage = {
+    let msg: MpMessage = {
       type,
       senderPeerId: this.peerId,
       senderName: senderName || this.userName,
       payload
     };
 
-    if (this.channel) {
-      // In Pusher, client events must start with 'client-'
-      // When triggering, all other subscribers receive this event (not the sender)
-      if (this.isHost && (type === 'LOBBY_UPDATE' || type === 'DRAFT_UPDATE')) {
-        // Host overrides isHost for the client to be false
-        const msgForClients = {
-          ...msg,
-          payload: { ...payload, isHost: false }
+    if (!this.channel) {
+      console.warn('Cannot send: Channel is not active');
+      return;
+    }
+
+    if (this.isHost && (type === 'LOBBY_UPDATE' || type === 'DRAFT_UPDATE')) {
+      // Host overrides isHost for the client to be false
+      msg.payload = { ...payload, isHost: false };
+    }
+
+    const msgString = JSON.stringify(msg);
+    // Limit is 10 KB (10240 bytes). We chunk if the serialized string exceeds 8000 characters to be safe.
+    const CHUNK_SIZE = 8000;
+
+    if (msgString.length > CHUNK_SIZE) {
+      const chunkId = `chk-${this.peerId}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const total = Math.ceil(msgString.length / CHUNK_SIZE);
+      console.log(`Payload size ${msgString.length} exceeds limit. Chunking into ${total} parts with ID: ${chunkId}`);
+      
+      for (let i = 0; i < total; i++) {
+        const start = i * CHUNK_SIZE;
+        const end = Math.min(start + CHUNK_SIZE, msgString.length);
+        const chunkData = msgString.substring(start, end);
+        
+        const chunkMsg = {
+          type: 'CHUNK' as MpMessageType,
+          senderPeerId: this.peerId,
+          senderName: senderName || this.userName,
+          payload: {
+            chunkId,
+            index: i,
+            total,
+            data: chunkData
+          }
         };
-        this.channel.trigger('client-game-msg', msgForClients);
-      } else {
-        this.channel.trigger('client-game-msg', msg);
+        
+        this.channel.trigger('client-game-msg', chunkMsg);
       }
     } else {
-      console.warn('Cannot send: Channel is not active');
+      this.channel.trigger('client-game-msg', msg);
     }
   }
 
@@ -200,5 +276,6 @@ export class PusherManager {
     this.roomId = '';
     this.isHost = false;
     this.userName = '';
+    this.chunkStore = {};
   }
 }

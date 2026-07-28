@@ -16,7 +16,8 @@ export type MpMessageType =
   | 'PLACE_BID'
   | 'FORCE_START_SEASON'
   | 'SKIP_PLAYER'
-  | 'SEND_CHAT';
+  | 'SEND_CHAT'
+  | 'CHUNK';
 
 export interface MpMessage {
   type: MpMessageType;
