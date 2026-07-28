@@ -37,7 +37,7 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSettingChange = (field: keyof MpSettings, value: number) => {
+  const handleSettingChange = (field: keyof MpSettings, value: any) => {
     if (!state.isHost) return;
     onUpdateSettings({
       ...state.settings,
@@ -46,7 +46,7 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-3 md:p-4">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-3 md:p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -181,9 +181,9 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
                         onChange={(e) => handleSettingChange('turnTimer', parseInt(e.target.value))}
                         className="w-full px-2 py-1 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md text-[var(--text-primary)] font-bold text-[10px] focus:outline-none"
                       >
-                        <option value={20}>20 Seconds</option>
-                        <option value={30}>30 Seconds</option>
-                        <option value={45}>45 Seconds</option>
+                        <option value={20} className="bg-white text-neutral-900">20 Seconds</option>
+                        <option value={30} className="bg-white text-neutral-900">30 Seconds</option>
+                        <option value={45} className="bg-white text-neutral-900">45 Seconds</option>
                       </select>
                     ) : (
                       <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
@@ -201,13 +201,39 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
                         onChange={(e) => handleSettingChange('maxOverseas', parseInt(e.target.value))}
                         className="w-full px-2 py-1 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md text-[var(--text-primary)] font-bold text-[10px] focus:outline-none"
                       >
-                        <option value={4}>4 Players Max</option>
-                        <option value={5}>5 Players Max</option>
+                        <option value={4} className="bg-white text-neutral-900">4 Players Max</option>
+                        <option value={5} className="bg-white text-neutral-900">5 Players Max</option>
                       </select>
                     ) : (
                       <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
                     )}
                   </div>
+                </div>
+
+                {/* Auction Format */}
+                <div>
+                  <div className="flex justify-between text-[11px] mb-1">
+                    <span className="font-bold text-[var(--text-primary)]">Auction Format</span>
+                    <span className="text-blue-400 font-bold">{state.settings.auctionFormat === 'long' ? 'Longer (320 Players)' : 'Shorter (140 Players)'}</span>
+                  </div>
+                  {state.isHost ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      <button 
+                        onClick={() => handleSettingChange('auctionFormat', 'short')} 
+                        className={`py-1 rounded-lg border text-[10px] font-bold transition-all ${state.settings.auctionFormat !== 'long' ? 'bg-blue-600/20 border-blue-500 text-blue-400' : 'border-[var(--card-border)] hover:bg-[var(--card-bg)]'}`}
+                      >
+                        Shorter (140)
+                      </button>
+                      <button 
+                        onClick={() => handleSettingChange('auctionFormat', 'long')} 
+                        className={`py-1 rounded-lg border text-[10px] font-bold transition-all ${state.settings.auctionFormat === 'long' ? 'bg-blue-600/20 border-blue-500 text-blue-400' : 'border-[var(--card-border)] hover:bg-[var(--card-bg)]'}`}
+                      >
+                        Longer (320)
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
+                  )}
                 </div>
               </div>
             </div>
@@ -383,7 +409,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
           </div>
           <div className="text-base font-black text-[var(--text-primary)] truncate flex items-center gap-2">
             <span>{currentSetName}</span>
-            <span className="text-xs text-[var(--text-muted)] font-bold bg-neutral-900 px-2 py-0.5 rounded-full border border-neutral-800">
+            <span className="text-xs text-[var(--text-primary)] font-bold bg-[var(--color-canvas-soft-2)] px-2 py-0.5 rounded-full border border-[var(--card-border)]">
               {pickedInActiveSet + (activePlayer ? 1 : 0)} / {totalInActiveSet}
             </span>
           </div>
@@ -397,7 +423,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
               {highestBidderName} · <span className="text-blue-600 dark:text-blue-400 font-extrabold">₹{(currentBid / 100).toFixed(2)} Cr</span>
             </div>
           </div>
-          <div className="w-px h-6 bg-neutral-850 dark:bg-neutral-800" />
+          <div className="w-px h-6 bg-[var(--card-border)]" />
           <div className="flex items-center justify-center">
             <span className={`text-2xl font-mono font-black filter drop-shadow ${bidTimer <= 3 ? 'text-red-500 animate-pulse' : 'text-blue-600 dark:text-blue-400'}`}>
               {bidTimer}s
@@ -414,7 +440,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
             📜 Logs ({state.auctionLogs.length})
           </button>
           
-          <div className="w-px h-6 bg-neutral-800" />
+          <div className="w-px h-6 bg-[var(--card-border)]" />
 
           {state.isHost ? (
             <button
@@ -461,7 +487,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                 <div 
                   key={teamId}
                   onClick={() => setActiveInspector(teamId)}
-                  className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${activeInspector === teamId ? 'border-blue-500 bg-blue-600/5' : 'border-neutral-800 bg-neutral-900/30 hover:border-neutral-700'}`}
+                  className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${activeInspector === teamId ? 'border-blue-500 bg-blue-600/5' : 'border-[var(--card-border)] bg-[var(--color-canvas-soft)]/50 hover:border-[var(--color-hairline-strong)]'}`}
                 >
                   <div className="flex items-center gap-2.5">
                     <div 
@@ -475,7 +501,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                         <span className="truncate max-w-[100px]">{teamName}</span>
                         {isMe && <span className="text-[8px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1 rounded uppercase font-bold">YOU</span>}
                       </div>
-                      <div className="text-[9px] text-neutral-500 mt-0.5">
+                      <div className="text-[9px] text-[var(--text-muted)] mt-0.5">
                         Roster: {roster.length}/15 (OS: {osCount}/4)
                       </div>
                     </div>
@@ -485,7 +511,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                     <div className="text-xs font-black text-green-400">
                       ₹{(purse / 100).toFixed(2)} Cr
                     </div>
-                    <div className="text-[9px] text-neutral-500 mt-0.5 font-mono">
+                    <div className="text-[9px] text-[var(--text-muted)] mt-0.5 font-mono">
                       Avg: ₹{(roster.length === 15 ? 0 : purse / (15 - roster.length)).toFixed(1)} L
                     </div>
                   </div>
@@ -521,20 +547,20 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                   <span className="text-2xl font-mono font-black tracking-tight" style={{ color: getRatingBg(activePlayer.overall) }}>
                     {activePlayer.overall}
                   </span>
-                  <span className="text-[9px] font-mono font-extrabold uppercase tracking-widest text-[var(--text-muted)] bg-neutral-900 px-2 py-0.5 rounded border border-neutral-800">
+                  <span className="text-[9px] font-mono font-extrabold uppercase tracking-widest text-[var(--text-primary)] bg-[var(--color-canvas-soft-2)] px-2 py-0.5 rounded border border-[var(--card-border)]">
                     {activePlayer.role}
                   </span>
                 </div>
 
                 {/* Card Center: Player Name */}
                 <div className="z-10 py-1">
-                  <h2 className="text-2xl font-black tracking-tight text-white group-hover:text-blue-400 transition-colors">
+                  <h2 className="text-2xl font-black tracking-tight text-[var(--text-primary)] group-hover:text-blue-400 transition-colors">
                     {activePlayer.name}
                   </h2>
                 </div>
 
                 {/* Card Bottom: Team and Status info */}
-                <div className="flex justify-between items-center w-full z-10 border-t border-neutral-900 pt-2.5 text-[10px] text-[var(--text-muted)] font-semibold">
+                <div className="flex justify-between items-center w-full z-10 border-t border-[var(--card-border)] pt-2.5 text-[10px] text-[var(--text-muted)] font-semibold">
                   <span>LAST TEAM: {activePlayer.team}</span>
                   {activePlayer.is_overseas && (
                     <span className="text-[8px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded font-black uppercase tracking-wider">
@@ -546,17 +572,17 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
 
               {/* Bidding Controls CTA */}
               <div className="space-y-3 shrink-0 pt-2">
-                <div className="flex justify-between items-center text-xs text-neutral-400 px-1">
+                <div className="flex justify-between items-center text-xs text-[var(--text-muted)] px-1">
                   <span>Required Reserve Purse:</span>
-                  <span className="font-bold text-neutral-300">₹{(minRequiredReserve / 100).toFixed(2)} Cr</span>
+                  <span className="font-bold text-[var(--text-primary)]">₹{(minRequiredReserve / 100).toFixed(2)} Cr</span>
                 </div>
 
                  {hasSkipped ? (
-                   <button disabled className="w-full py-3 bg-neutral-800 text-neutral-500 border border-neutral-700 text-xs font-black uppercase tracking-wider rounded-xl cursor-not-allowed">
+                   <button disabled className="w-full py-3 bg-[var(--color-canvas-soft-2)] text-[var(--text-muted)] border border-[var(--card-border)] text-xs font-black uppercase tracking-wider rounded-xl cursor-not-allowed">
                      {isBiddingActive ? 'DROPPED OUT' : 'SKIPPED'}
                    </button>
                  ) : isHighestBidderSelf ? (
-                   <button disabled className="w-full py-3 bg-green-950/20 text-green-400 border border-green-500/30 text-xs font-black uppercase tracking-wider rounded-xl cursor-not-allowed animate-pulse">
+                   <button disabled className="w-full py-3 bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 text-xs font-black uppercase tracking-wider rounded-xl cursor-not-allowed animate-pulse">
                      YOU HAVE HIGHEST BID!
                    </button>
                  ) : (
@@ -564,7 +590,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                      <button
                        disabled={!canBid}
                        onClick={() => onPlaceBid(isBiddingActive ? nextBidPrice : state.currentBid)}
-                       className={`flex-[2] py-3 px-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${canBid ? 'bg-gradient-to-r from-blue-600 to-indigo-500 text-white hover:from-blue-500 hover:to-indigo-400 shadow-lg shadow-blue-950/10' : 'bg-neutral-800 text-neutral-500 border border-neutral-700 cursor-not-allowed'}`}
+                       className={`flex-[2] py-3 px-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${canBid ? 'bg-gradient-to-r from-blue-600 to-indigo-500 text-white hover:from-blue-500 hover:to-indigo-400 shadow-lg shadow-blue-950/10' : 'bg-[var(--color-canvas-soft-2)] text-[var(--text-muted)] border border-[var(--card-border)] cursor-not-allowed'}`}
                      >
                        {isRosterFull ? (
                          <span>ROSTER FULL</span>
@@ -592,7 +618,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
               </div>
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-center text-xs italic text-neutral-500 py-12">
+            <div className="flex-1 flex items-center justify-center text-center text-xs italic text-[var(--text-muted)] py-12">
               Auction finished! Waiting for host to start the season.
             </div>
           )}
@@ -617,7 +643,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
               (state.rosters[activeInspector] || []).map((player, idx) => (
                 <div key={player.id} className="flex justify-between items-center p-2 rounded-lg border border-[var(--card-border)] bg-black/10 hover:border-neutral-700/50 transition-colors">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-[9px] font-bold text-neutral-500 font-mono w-4">{idx + 1}.</span>
+                    <span className="text-[9px] font-bold text-[var(--text-muted)] font-mono w-4">{idx + 1}.</span>
                     <div
                       className="w-6 h-6 rounded flex items-center justify-center font-bold text-white text-[9px]"
                       style={{ backgroundColor: getRatingBg(player.overall) }}
@@ -629,7 +655,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                         {player.name}
                         {player.is_overseas && <span className="text-[8px] bg-yellow-500/10 text-yellow-500 px-1 rounded font-bold uppercase">OS</span>}
                       </div>
-                      <div className="text-[8px] text-neutral-500 mt-0.5">{player.role} • {player.team}</div>
+                      <div className="text-[8px] text-[var(--text-muted)] mt-0.5">{player.role} • {player.team}</div>
                     </div>
                   </div>
                 </div>
@@ -645,7 +671,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
           <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
             <button 
               onClick={() => setShowLogs(false)} 
-              className="absolute top-4 right-4 text-neutral-400 hover:text-white font-black text-sm border-none bg-transparent cursor-pointer"
+              className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-[var(--text-primary)] font-black text-sm border-none bg-transparent cursor-pointer"
             >
               ✕
             </button>
@@ -659,12 +685,12 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                 </div>
               ) : (
                 state.auctionLogs.map((log, idx) => {
-                  let logColor = 'text-neutral-300';
+                  let logColor = 'text-[var(--text-primary)]';
                   if (log.includes('SOLD')) logColor = 'text-emerald-400 font-bold';
-                  else if (log.includes('UNSOLD')) logColor = 'text-neutral-500 italic';
+                  else if (log.includes('UNSOLD')) logColor = 'text-[var(--text-muted)] italic';
                   
                   return (
-                    <div key={idx} className={`p-2.5 rounded-xl bg-black/15 border border-neutral-900/50 ${logColor}`}>
+                    <div key={idx} className={`p-2.5 rounded-xl bg-[var(--color-canvas-soft-2)] border border-[var(--card-border)] ${logColor}`}>
                       {log}
                     </div>
                   );
@@ -760,7 +786,7 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
   };
 
   return (
-    <div className="min-h-screen flex flex-col p-4 md:p-6 bg-[var(--color-canvas-soft)] text-[var(--text-primary)] font-sans">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col p-4 md:p-6 bg-[var(--color-canvas-soft)] text-[var(--text-primary)] font-sans">
       {/* Top Header */}
       <div className="w-full max-w-7xl mx-auto flex justify-between items-center mb-6 border-b border-[var(--card-border)] pb-4">
         <div>
@@ -824,7 +850,7 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
                           <span className="text-[9px] text-[var(--text-muted)]">{player.role} • {player.team}</span>
                         </div>
                       </div>
-                      <span className={`text-[10px] font-bold uppercase ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500'}`}>
+                      <span className={`text-[10px] font-bold uppercase ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-[var(--text-muted)]'}`}>
                         {isSelected ? 'Starting' : 'Bench'}
                       </span>
                     </button>
@@ -889,7 +915,7 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
               Lock Tactics & Lineup
             </button>
           ) : (
-            <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-xl text-center text-xs text-green-400 font-bold uppercase tracking-wider">
+            <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-xl text-center text-xs text-green-600 dark:text-green-400 font-bold uppercase tracking-wider">
               Ready! Waiting for other managers to lock lineups...
             </div>
           )}
@@ -917,7 +943,7 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
                       </div>
                       <span className="font-bold text-[var(--text-primary)]">{p.name}</span>
                     </div>
-                    <span className={`px-2 py-0.5 rounded font-bold text-[10px] uppercase ${isReady ? 'bg-green-500/15 text-green-400 border border-green-500/20' : 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20'}`}>
+                    <span className={`px-2 py-0.5 rounded font-bold text-[10px] uppercase ${isReady ? 'bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/20' : 'bg-yellow-500/15 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20'}`}>
                       {isReady ? 'READY' : 'SELECTING XI'}
                     </span>
                   </div>
@@ -990,7 +1016,7 @@ export function MpConnectionSetupScreen({ onBack, onCreateRoom, onJoinRoom, isCo
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -1156,7 +1182,7 @@ export function MpChatBox({ chatMessages, onSendMessage, currentUser }: MpChatBo
                       <div className={`px-3 py-2 rounded-xl text-sm max-w-[85%] break-words ${isMe ? 'bg-blue-600 text-white rounded-tr-none' : 'bg-[var(--color-canvas-soft-2)] text-[var(--text-primary)] border border-[var(--card-border)] rounded-tl-none'}`}>
                         {msg.text}
                       </div>
-                      <span className="text-[9px] text-neutral-500 mt-0.5">{msg.timestamp}</span>
+                      <span className="text-[9px] text-[var(--text-muted)] mt-0.5">{msg.timestamp}</span>
                     </div>
                   );
                 })

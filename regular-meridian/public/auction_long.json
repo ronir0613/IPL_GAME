@@ -1,0 +1,1922 @@
+[
+  {
+    "name": "AB de Villiers",
+    "rating": 97,
+    "role": "WK",
+    "set": "Legends"
+  },
+  {
+    "name": "Chris Gayle",
+    "rating": 97,
+    "role": "AR",
+    "set": "Legends"
+  },
+  {
+    "name": "MS Dhoni",
+    "rating": 97,
+    "role": "WK",
+    "set": "Legends"
+  },
+  {
+    "name": "Virat Kohli",
+    "rating": 97,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Andre Russell",
+    "rating": 96,
+    "role": "AR",
+    "set": "Legends"
+  },
+  {
+    "name": "Jasprit Bumrah",
+    "rating": 96,
+    "role": "BOWL",
+    "set": "Legends"
+  },
+  {
+    "name": "Jos Buttler",
+    "rating": 96,
+    "role": "WK",
+    "set": "Legends"
+  },
+  {
+    "name": "David Warner",
+    "rating": 95,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Rohit Sharma",
+    "rating": 95,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Sunil Narine",
+    "rating": 95,
+    "role": "AR",
+    "set": "Legends"
+  },
+  {
+    "name": "Suresh Raina",
+    "rating": 95,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Lasith Malinga",
+    "rating": 94,
+    "role": "BOWL",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Kieron Pollard",
+    "rating": 93,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Dwayne Bravo",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Gautam Gambhir",
+    "rating": 92,
+    "role": "BAT",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Rashid Khan",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Ravindra Jadeja",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Shane Watson",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Virender Sehwag",
+    "rating": 92,
+    "role": "BAT",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Yuzvendra Chahal",
+    "rating": 92,
+    "role": "BOWL",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "David Miller",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Faf du Plessis",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Kane Williamson",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Michael Hussey",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Rahul Dravid",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Ruturaj Gaikwad",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Sai Sudharsan",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shikhar Dhawan",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shubman Gill",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Steven Smith",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Suryakumar Yadav",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Travis Head",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Yashasvi Jaiswal",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Yuvraj Singh",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Ambati Rayudu",
+    "rating": 89,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Robin Uthappa",
+    "rating": 89,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Ajinkya Rahane",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Kevin Pietersen",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Manish Pandey",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Murali Vijay",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shaun Marsh",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Manoj Tiwary",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Mayank Agarwal",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Nitish Rana",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Rahul Tripathi",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Karun Nair",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Rinku Singh",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Saurabh Tiwary",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shreyas Iyer",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Tim David",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Adam Gilchrist",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Heinrich Klaasen",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "KL Rahul",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Nicholas Pooran",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Quinton de Kock",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Sanju Samson",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Dinesh Karthik",
+    "rating": 89,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Brendon McCullum",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Ishan Kishan",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Jonny Bairstow",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Wriddhiman Saha",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Parthiv Patel",
+    "rating": 87,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Phil Salt",
+    "rating": 86,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Rishabh Pant",
+    "rating": 86,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Yusuf Pathan",
+    "rating": 91,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Abhishek Sharma",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Cameron Green",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Glenn Maxwell",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Hardik Pandya",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Jacques Kallis",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Krunal Pandya",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Liam Livingstone",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Marcus Stoinis",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Ravichandran Ashwin",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Sam Curran",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Shivam Dube",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Venkatesh Iyer",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Irfan Pathan",
+    "rating": 89,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Piyush Chawla",
+    "rating": 89,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Albie Morkel",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Axar Patel",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Brad Hogg",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Dwayne Smith",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Harshal Patel",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Mitchell Marsh",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Tilak Varma",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Moises Henriques",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Nathan Coulter-Nile",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Rajat Bhatia",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Shakib Al Hasan",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Bhuvneshwar Kumar",
+    "rating": 91,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Shane Warne",
+    "rating": 91,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Dale Steyn",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Kagiso Rabada",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mitchell Starc",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mohammed Shami",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mohammed Siraj",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Pat Cummins",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Trent Boult",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Harbhajan Singh",
+    "rating": 89,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Amit Mishra",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Arshdeep Singh",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Avesh Khan",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Deepak Chahar",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Kuldeep Yadav",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Morne Morkel",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Pragyan Ojha",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "RP Singh",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Ravi Bishnoi",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "T Natarajan",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Umesh Yadav",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Varun Chakravarthy",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Zaheer Khan",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Ishant Sharma",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Sandeep Sharma",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Sreesanth",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Vinay Kumar",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Dhawal Kulkarni",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Jaydev Unadkat",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Karn Sharma",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Khaleel Ahmed",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mohsin Khan",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Navdeep Saini",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Shahbaz Nadeem",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Shreyas Gopal",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Tushar Deshpande",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Aaron Finch",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Aiden Markram",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Ashish Nehra",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Ashok Dinda",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Ayush Badoni",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Chris Lynn",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Mukesh Kumar",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Nehal Wadhera",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Rahul Chahar",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Rajat Patidar",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Ramandeep Singh",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Riyan Parag",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Sarfaraz Khan",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Shardul Thakur",
+    "rating": 85,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Varun Aaron",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Abhishek Nayar",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Angelo Mathews",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Anukul Roy",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Ben Cutting",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Ben Stokes",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Bipul Sharma",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Chris Morris",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Dan Christian",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "David Hussey",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Devdutt Padikkal",
+    "rating": 84,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Dhruv Jurel",
+    "rating": 84,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Iqbal Abdulla",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "James Faulkner",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Jason Holder",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Jean-Paul Duminy",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Jitesh Sharma",
+    "rating": 84,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Johan Botha",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Krishnappa Gowtham",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Laxmi Shukla",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Manvinder Bisla",
+    "rating": 84,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Mitchell Santner",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Mithun Manhas",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Moeen Ali",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Mohammad Nabi",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Mohit Sharma",
+    "rating": 84,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Prasidh Krishna",
+    "rating": 84,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Praveen Kumar",
+    "rating": 84,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Priyansh Arya",
+    "rating": 84,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Rahul Tewatia",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Rishi Dhawan",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Shahbaz Ahmed",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Shivam Mavi",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Stuart Binny",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Thisara Perera",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Vijay Shankar",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Washington Sundar",
+    "rating": 84,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Abhimanyu Mithun",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Adam Milne",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Adam Zampa",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Andrew Tye",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Ankit Sharma",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Anrich Nortje",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Anuj Rawat",
+    "rating": 83,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Ashish Reddy",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Ashutosh Sharma",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Chris Woakes",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "David Willey",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Deepak Hooda",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Eoin Morgan",
+    "rating": 83,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Glenn Phillips",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Harpreet Brar",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Imran Tahir",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Jalaj Saxena",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "James Neesham",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Josh Hazlewood",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Kedar Jadhav",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Lockie Ferguson",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Lungi Ngidi",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Marco Jansen",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Mayank Markande",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Murugan Ashwin",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Mustafizur Rahman",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Prabhsimran Singh",
+    "rating": 83,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Praveen Dubey",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Prithvi Shaw",
+    "rating": 83,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Rajagopal Sathish",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Sam Billings",
+    "rating": 83,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Sandeep Warrier",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Shadab Jakati",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Shashank Singh",
+    "rating": 83,
+    "role": "AR",
+    "set": "Stars"
+  },
+  {
+    "name": "Sheldon Jackson",
+    "rating": 83,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Swapnil Singh",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Tim Southee",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Umran Malik",
+    "rating": 83,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Vishnu Vinod",
+    "rating": 83,
+    "role": "WK",
+    "set": "Stars"
+  },
+  {
+    "name": "Abdul Samad",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Abu Nechim",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Akash Singh",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ankit Rajpoot",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Anureet Singh",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Arun Karthik",
+    "rating": 82,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ben Hilfenhaus",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Brad Hodge",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Cheteshwar Pujara",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Chidhambaram Gautam",
+    "rating": 82,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Chris Jordan",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Daniel Vettori",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Darshan Nalkande",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Dimitri Mascarenhas",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Dushmantha Chameera",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "George Bailey",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Harmeet Singh",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Harpreet Singh",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jacob Oram",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jagadeesha Suchith",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jason Behrendorff",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jason Roy",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jaydev Shah",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jofra Archer",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "KC Cariappa",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Kamlesh Nagarkoti",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Kane Richardson",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Kartik Tyagi",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Kulwant Khejroliya",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Kumar Sangakkara",
+    "rating": 82,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Lakshmipathy Balaji",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Mandeep Singh",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Manpreet Gony",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Mitchell Johnson",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Mujeeb Ur Rahman",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Munaf Patel",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Murali Kartik",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Muthiah Muralidaran",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Narayan Jagadeesan",
+    "rating": 82,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Pravin Tambe",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ricky Bhui",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Rilee Rossouw",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ross Taylor",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Rovman Powell",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "S Badrinath",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sachin Baby",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sai Kishore",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Shaun Tait",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sherfane Rutherford",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Shimron Hetmyer",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sohail Tanvir",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sreenath Aravind",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Srikar Bharat",
+    "rating": 82,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sumit Narwal",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Tillakaratne Dilshan",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Tom Curran",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Venugopal Rao",
+    "rating": 82,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Vikramjeet Malik",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Wayne Parnell",
+    "rating": 82,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Yogesh Nagar",
+    "rating": 82,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ajit Agarkar",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Akash Deep",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Andrew McDonald",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Anmolpreet Singh",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Arjun Tendulkar",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Baba Aparajith",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Basil Thampi",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Brett Lee",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Cameron White",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Chama Milind",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Corey Anderson",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "David Wiese",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Dwaraka Ravi Teja",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Eklavya Dwivedi",
+    "rating": 81,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Hanuma Vihari",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ishank Jaggi",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Jesse Ryder",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "KM Asif",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Lalit Yadav",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Mahela Jayawardene",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Manimaran Siddharth",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Matt Henry",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Matthew Wade",
+    "rating": 81,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Mitchell McClenaghan",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Nathan Ellis",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Nikhil Naik",
+    "rating": 81,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Pawan Suyal",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Rasikh Salam",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Roelof van der Merwe",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Romario Shepherd",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Ryan ten Doeschate",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sachin Tendulkar",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sarabjit Ladda",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Scott Styris",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sean Abbott",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Shrikant Mundhe",
+    "rating": 81,
+    "role": "AR",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Siddarth Kaul",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Siddharth Chitnis",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Siddharth Trivedi",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Siddhesh Lad",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Sudeep Tyagi",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Tirumalasetti Suman",
+    "rating": 81,
+    "role": "BAT",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Unmukt Chand",
+    "rating": 81,
+    "role": "WK",
+    "set": "Value Picks"
+  },
+  {
+    "name": "Vaibhav Arora",
+    "rating": 81,
+    "role": "BOWL",
+    "set": "Value Picks"
+  }
+]

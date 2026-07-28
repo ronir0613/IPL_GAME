@@ -1,0 +1,842 @@
+[
+  {
+    "name": "AB de Villiers",
+    "rating": 97,
+    "role": "WK",
+    "set": "Legends"
+  },
+  {
+    "name": "Chris Gayle",
+    "rating": 97,
+    "role": "AR",
+    "set": "Legends"
+  },
+  {
+    "name": "MS Dhoni",
+    "rating": 97,
+    "role": "WK",
+    "set": "Legends"
+  },
+  {
+    "name": "Virat Kohli",
+    "rating": 97,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Andre Russell",
+    "rating": 96,
+    "role": "AR",
+    "set": "Legends"
+  },
+  {
+    "name": "Jasprit Bumrah",
+    "rating": 96,
+    "role": "BOWL",
+    "set": "Legends"
+  },
+  {
+    "name": "Jos Buttler",
+    "rating": 96,
+    "role": "WK",
+    "set": "Legends"
+  },
+  {
+    "name": "David Warner",
+    "rating": 95,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Rohit Sharma",
+    "rating": 95,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Sunil Narine",
+    "rating": 95,
+    "role": "AR",
+    "set": "Legends"
+  },
+  {
+    "name": "Suresh Raina",
+    "rating": 95,
+    "role": "BAT",
+    "set": "Legends"
+  },
+  {
+    "name": "Lasith Malinga",
+    "rating": 94,
+    "role": "BOWL",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Kieron Pollard",
+    "rating": 93,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Dwayne Bravo",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Gautam Gambhir",
+    "rating": 92,
+    "role": "BAT",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Rashid Khan",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Ravindra Jadeja",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Shane Watson",
+    "rating": 92,
+    "role": "AR",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Virender Sehwag",
+    "rating": 92,
+    "role": "BAT",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "Yuzvendra Chahal",
+    "rating": 92,
+    "role": "BOWL",
+    "set": "Franchise Players"
+  },
+  {
+    "name": "David Miller",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Faf du Plessis",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Kane Williamson",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Michael Hussey",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Rahul Dravid",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Ruturaj Gaikwad",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Sai Sudharsan",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shikhar Dhawan",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shubman Gill",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Steven Smith",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Suryakumar Yadav",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Travis Head",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Yashasvi Jaiswal",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Yuvraj Singh",
+    "rating": 90,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Ambati Rayudu",
+    "rating": 89,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Robin Uthappa",
+    "rating": 89,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Ajinkya Rahane",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Kevin Pietersen",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Manish Pandey",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Murali Vijay",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shaun Marsh",
+    "rating": 88,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Manoj Tiwary",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Mayank Agarwal",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Nitish Rana",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Rahul Tripathi",
+    "rating": 87,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Karun Nair",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Rinku Singh",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Saurabh Tiwary",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Shreyas Iyer",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Tim David",
+    "rating": 86,
+    "role": "BAT",
+    "set": "Elite Batters"
+  },
+  {
+    "name": "Adam Gilchrist",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Heinrich Klaasen",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "KL Rahul",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Nicholas Pooran",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Quinton de Kock",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Sanju Samson",
+    "rating": 90,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Dinesh Karthik",
+    "rating": 89,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Brendon McCullum",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Ishan Kishan",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Jonny Bairstow",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Wriddhiman Saha",
+    "rating": 88,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Parthiv Patel",
+    "rating": 87,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Phil Salt",
+    "rating": 86,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Rishabh Pant",
+    "rating": 86,
+    "role": "WK",
+    "set": "Elite Wicketkeepers"
+  },
+  {
+    "name": "Yusuf Pathan",
+    "rating": 91,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Abhishek Sharma",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Cameron Green",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Glenn Maxwell",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Hardik Pandya",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Jacques Kallis",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Krunal Pandya",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Liam Livingstone",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Marcus Stoinis",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Ravichandran Ashwin",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Sam Curran",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Shivam Dube",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Venkatesh Iyer",
+    "rating": 90,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Irfan Pathan",
+    "rating": 89,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Piyush Chawla",
+    "rating": 89,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Albie Morkel",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Axar Patel",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Brad Hogg",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Dwayne Smith",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Harshal Patel",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Mitchell Marsh",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Tilak Varma",
+    "rating": 88,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Moises Henriques",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Nathan Coulter-Nile",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Rajat Bhatia",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Shakib Al Hasan",
+    "rating": 87,
+    "role": "AR",
+    "set": "Elite All-Rounders"
+  },
+  {
+    "name": "Bhuvneshwar Kumar",
+    "rating": 91,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Shane Warne",
+    "rating": 91,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Dale Steyn",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Kagiso Rabada",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mitchell Starc",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mohammed Shami",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mohammed Siraj",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Pat Cummins",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Trent Boult",
+    "rating": 90,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Harbhajan Singh",
+    "rating": 89,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Amit Mishra",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Arshdeep Singh",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Avesh Khan",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Deepak Chahar",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Kuldeep Yadav",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Morne Morkel",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Pragyan Ojha",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "RP Singh",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Ravi Bishnoi",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "T Natarajan",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Umesh Yadav",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Varun Chakravarthy",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Zaheer Khan",
+    "rating": 88,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Ishant Sharma",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Sandeep Sharma",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Sreesanth",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Vinay Kumar",
+    "rating": 87,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Dhawal Kulkarni",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Jaydev Unadkat",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Karn Sharma",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Khaleel Ahmed",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Mohsin Khan",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Navdeep Saini",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Shahbaz Nadeem",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Shreyas Gopal",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Tushar Deshpande",
+    "rating": 86,
+    "role": "BOWL",
+    "set": "Elite Bowlers"
+  },
+  {
+    "name": "Aaron Finch",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Aiden Markram",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Ashish Nehra",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Ashok Dinda",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Ayush Badoni",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Chris Lynn",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Mukesh Kumar",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Nehal Wadhera",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Rahul Chahar",
+    "rating": 85,
+    "role": "BOWL",
+    "set": "Stars"
+  },
+  {
+    "name": "Rajat Patidar",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Ramandeep Singh",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Riyan Parag",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Sarfaraz Khan",
+    "rating": 85,
+    "role": "BAT",
+    "set": "Stars"
+  },
+  {
+    "name": "Shardul Thakur",
+    "rating": 85,
+    "role": "AR",
+    "set": "Stars"
+  }
+]

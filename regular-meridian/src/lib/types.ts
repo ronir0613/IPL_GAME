@@ -251,6 +251,7 @@ export interface MpSettings {
   turnTimer: number; // in seconds, e.g. 30
   maxOverseas: number; // e.g. 4
   aiCount: number; // e.g. number of AI teams to fill 10 franchises
+  auctionFormat?: 'short' | 'long';
 }
 
 export interface MpState {

@@ -432,7 +432,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   }, [leaderboard, filterMode, filterDiff, filterRatings]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center py-16 px-4 md:px-8 max-w-5xl mx-auto">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center py-16 px-4 md:px-8 max-w-5xl mx-auto">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full">
         {/* Header */}
         <div className="mb-12 relative mt-8">
@@ -547,7 +547,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
 
 function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinue, continueLabel = "CONTINUE DRAFTING" }: { onPlay: () => void, onLeaderboard: () => void, onProfile: () => void, hasActiveGame?: boolean, onContinue?: () => void, continueLabel?: string }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 space-y-12 py-12">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 space-y-12 py-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -634,7 +634,7 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
 // ─── Mode Select Screen ──────────────────────────────────────────────
 function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => void }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 py-12">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -707,7 +707,7 @@ function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => 
 // ─── Mode Settings Screen ──────────────────────────────────────────────
 function ModeSettingsScreen({ settings, setSettings, onStart, mode }: { settings: GameSettings, setSettings: (s: GameSettings) => void, onStart: () => void, mode: GameMode }) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4 space-y-8 py-12">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 space-y-8 py-12">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -851,7 +851,7 @@ function GambleDraftScreen({
 
   if (draftState === 'init') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--color-canvas-soft)]">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-[var(--color-canvas-soft)]">
         <div className="text-sm font-mono text-[var(--color-mute)] animate-pulse uppercase tracking-widest">
           Generating Team...
         </div>
@@ -861,7 +861,7 @@ function GambleDraftScreen({
 
   if (draftState === 'philosophy' && gambleResult) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center space-y-6 bg-[var(--color-canvas-soft)]">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center space-y-6 bg-[var(--color-canvas-soft)]">
         <div className="text-[var(--color-mute)] font-mono text-xs uppercase tracking-widest">Selecting Philosophy...</div>
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }} 
@@ -886,7 +886,7 @@ function GambleDraftScreen({
 
   if (draftState === 'drafting' && gambleResult) {
     return (
-      <div className="min-h-screen flex flex-col items-center pt-24 px-4 pb-24 bg-gradient-to-b from-[var(--color-canvas)] to-[var(--color-canvas-soft)] relative overflow-hidden">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center pt-24 px-4 pb-24 bg-gradient-to-b from-[var(--color-canvas)] to-[var(--color-canvas-soft)] relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-primary)] opacity-5 rounded-full blur-3xl mix-blend-multiply" />
            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 opacity-5 rounded-full blur-3xl mix-blend-multiply" />
@@ -926,7 +926,7 @@ function GambleDraftScreen({
   if (draftState === 'reveal' && gambleResult) {
     const strength = calcSquadStrength(gambleResult.squad);
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-br from-[var(--color-canvas-soft)] to-[var(--color-canvas)]">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-br from-[var(--color-canvas-soft)] to-[var(--color-canvas)]">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -1255,7 +1255,7 @@ function DraftScreen({
   const meetsFranchiseRules = wkCount >= 2 && batCount >= 5 && arCount >= 3 && bwlCount >= 6;
 
   return (
-    <div className="min-h-screen flex flex-col max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-[var(--color-hairline)] pb-4">
         <div>
           <h2 className="text-3xl font-semibold tracking-tight text-[var(--color-ink)] flex items-center gap-3">
@@ -1620,7 +1620,7 @@ function SquadCompleteScreen({
   const odds = calcOdds(strength.overall);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] p-4 md:p-8">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] p-4 md:p-8">
       <div className="max-w-[1600px] w-full flex flex-col lg:flex-row gap-6 bg-[var(--color-canvas)]/60 backdrop-blur-3xl rounded-[2rem] border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] p-6 md:p-8 relative overflow-hidden">
         
         {/* Subtle background effects */}
@@ -1905,7 +1905,7 @@ function MatchPrepScreen({
   const strength = calcSquadStrength(localSquad); // this only counts first 11 filled, which works if they are on pitch since pitch is first 11
 
   return (
-    <div className="min-h-screen flex max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8 gap-6">
+    <div className="min-h-[calc(100vh-4rem)] flex max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8 gap-6">
       {/* Left: Pitch & Bench */}
       <div className="w-[340px] flex-shrink-0 flex flex-col gap-4">
         <div className="flex items-center justify-between bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
@@ -2442,7 +2442,7 @@ function ResultsScreen({
   const [showShare, setShowShare] = useState(false);
 
   return (
-    <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden">
+    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden">
       <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-yellow-500 opacity-5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/4" />
       
@@ -3103,12 +3103,12 @@ function FullControlSeasonScreen({
   const isUserMatch = currentMatchIdx < total && (liveTeams[a].short === 'YOUR XI' || liveTeams[b].short === 'YOUR XI');
 
   if (currentMatchIdx >= total) {
-    return <div className="min-h-screen flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Finishing Season...</div>;
+    return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Finishing Season...</div>;
   }
 
   if (lastUserResult) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm">
         <div className="card p-8 max-w-lg w-full flex flex-col items-center border-2 border-yellow-900/30 text-center shadow-2xl">
           <div className="text-sm font-bold text-[var(--color-mute)] uppercase tracking-widest mb-2">Match {currentMatchIdx} Result</div>
           <div className={`text-3xl font-semibold tracking-tight mb-6 ${lastUserResult.userWon ? 'text-green-400' : 'text-red-400'}`}>
@@ -3166,7 +3166,7 @@ function FullControlSeasonScreen({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
       <div className="text-center">
         <div className="text-[var(--color-mute)] font-bold text-xl mb-4 animate-pulse">
           Simulating around the league...
@@ -3528,7 +3528,7 @@ function WatchModeScreen({
   const sortedLive = [...liveTeams].sort((a, b) => b.points - a.points || b.nrr - a.nrr);
 
   return (
-    <div className="min-h-screen p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6">
+    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[var(--color-canvas)]/60 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)]">
         <div>
@@ -3977,7 +3977,7 @@ function PlayoffsWatchScreen({
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-hidden">
        {/* Background effect */}
        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-[var(--color-primary)] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
        
@@ -4110,6 +4110,17 @@ const SET_ORDER = [
   'Uncapped Batters',
   'Uncapped All-Rounders',
   'Uncapped Bowlers'
+];
+
+const MP_SET_ORDER = [
+  'Legends',
+  'Franchise Players',
+  'Elite Wicketkeepers',
+  'Elite Batters',
+  'Elite All-Rounders',
+  'Elite Bowlers',
+  'Stars',
+  'Value Picks'
 ];
 
 function MainAppContent() {
@@ -4358,8 +4369,8 @@ function MainAppContent() {
       }
     } else {
       // Normal sets round
-      while (currentSetIdx < SET_ORDER.length && !nextPlayer) {
-        const activeSetName = SET_ORDER[currentSetIdx];
+      while (currentSetIdx < MP_SET_ORDER.length && !nextPlayer) {
+        const activeSetName = MP_SET_ORDER[currentSetIdx];
         const setPlayers = pool.filter(p => p.set_name === activeSetName && !stateToUse.pickedIds.includes(p.id) && !stateToUse.unsoldPlayerIds.includes(p.id));
         
         if (setPlayers.length > 0) {
@@ -4382,7 +4393,7 @@ function MainAppContent() {
     }
 
     if (nextPlayer) {
-      const isMarqueeSet = nextPlayer.set_name === 'Marquee Set';
+      const isMarqueeSet = nextPlayer.set_name === 'Marquee Set' || nextPlayer.set_name === 'Legends';
       const baseInfo = getPlayerBasePrice(
         nextPlayer.overall,
         nextPlayer.category || 'Uncapped',
@@ -4622,7 +4633,7 @@ function MainAppContent() {
 
         const pickedPlayer = availablePlayers[pickedIndex];
         updatedRosters[teamId] = [...(updatedRosters[teamId] || []), pickedPlayer];
-        updatedPurses[teamId] = (updatedPurses[teamId] || 12000) - (getPlayerBasePrice(pickedPlayer.overall, pickedPlayer.category || 'Uncapped', pickedPlayer.is_overseas || false, pickedPlayer.set_name === 'Marquee Set').numeric);
+        updatedPurses[teamId] = (updatedPurses[teamId] || 12000) - (getPlayerBasePrice(pickedPlayer.overall, pickedPlayer.category || 'Uncapped', pickedPlayer.is_overseas || false, pickedPlayer.set_name === 'Marquee Set' || pickedPlayer.set_name === 'Legends').numeric);
         updatedPickedIds.push(pickedPlayer.id);
         availablePlayers.splice(pickedIndex, 1);
       }
@@ -4652,7 +4663,7 @@ function MainAppContent() {
 
         const pickedPlayer = availablePlayers[pickedIndex];
         updatedRosters[teamId] = [...(updatedRosters[teamId] || []), pickedPlayer];
-        updatedPurses[teamId] = (updatedPurses[teamId] || 12000) - (getPlayerBasePrice(pickedPlayer.overall, pickedPlayer.category || 'Uncapped', pickedPlayer.is_overseas || false, pickedPlayer.set_name === 'Marquee Set').numeric);
+        updatedPurses[teamId] = (updatedPurses[teamId] || 12000) - (getPlayerBasePrice(pickedPlayer.overall, pickedPlayer.category || 'Uncapped', pickedPlayer.is_overseas || false, pickedPlayer.set_name === 'Marquee Set' || pickedPlayer.set_name === 'Legends').numeric);
         updatedPickedIds.push(pickedPlayer.id);
         availablePlayers.splice(pickedIndex, 1);
       }
@@ -5270,7 +5281,8 @@ function MainAppContent() {
           rounds: 15, // default to 15 slots
           turnTimer: 30,
           maxOverseas: 4,
-          aiCount: 9
+          aiCount: 9,
+          auctionFormat: 'short'
         },
         draftOrder: [],
         activePickIndex: 0,
@@ -5401,7 +5413,7 @@ function MainAppContent() {
       activeTimer: 10,
       settings: {
         ...mpState.settings,
-        rounds: 15, // Default squad size to 15
+        rounds: mpState.settings.rounds,
         aiCount: neededAi
       },
       // Auction states:
@@ -5526,9 +5538,54 @@ function MainAppContent() {
   };
 
   useEffect(() => {
-    const url = phase.startsWith('mp-') ? '/auction_players.json' : '/players.json';
-    fetch(url).then(r => r.json()).then(data => setPlayersPool(data as Player[]));
-  }, [phase]);
+    if (phase.startsWith('mp-')) {
+      const format = mpState?.settings?.auctionFormat || 'short';
+      const fileUrl = format === 'long' ? '/auction_long.json' : '/auction_short.json';
+      
+      Promise.all([
+        fetch(fileUrl).then(r => r.json()),
+        fetch('/players.json').then(r => r.json()).catch(() => []),
+        fetch('/overseas_players.json').then(r => r.json()).catch(() => [])
+      ]).then(([auctionData, masterData, overseasData]) => {
+        const masterMap = new Map<string, Player>();
+        if (Array.isArray(masterData)) {
+          masterData.forEach((p: Player) => {
+            const key = p.name.toLowerCase().trim();
+            if (!masterMap.has(key) || p.overall > masterMap.get(key)!.overall) {
+              masterMap.set(key, p);
+            }
+          });
+        }
+
+        const overseasSet = new Set(
+          Array.isArray(overseasData) ? overseasData.map((n: string) => n.toLowerCase().trim()) : []
+        );
+        
+        const enrichedPool: Player[] = (auctionData as any[]).map((ap, index) => {
+          const key = ap.name.toLowerCase().trim();
+          const match = masterMap.get(key);
+          
+          return {
+            id: index + 1,
+            name: ap.name,
+            overall: ap.rating || ap.overall || 80,
+            role: ap.role,
+            is_overseas: overseasSet.has(key) || (match ? !!match.is_overseas : false),
+            team: match ? match.team : (ap.team || 'TBD'),
+            season: match ? match.season : (ap.season || 2024),
+            category: match?.category || (ap.rating >= 86 ? 'Capped' : 'Uncapped'),
+            set_name: ap.set || ap.set_name || 'Value Picks'
+          };
+        });
+        
+        setPlayersPool(enrichedPool);
+      }).catch(err => {
+        console.error('Failed to load multiplayer player pool:', err);
+      });
+    } else {
+      fetch('/players.json').then(r => r.json()).then(data => setPlayersPool(data as Player[]));
+    }
+  }, [phase, mpState?.settings?.auctionFormat]);
 
   const handleStart = () => {
     setPhase('draft');
@@ -5739,7 +5796,7 @@ function MainAppContent() {
     };
 
     return (
-      <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden text-white">
+      <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden text-[var(--text-primary)]">
         <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-yellow-500 opacity-5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/4" />
 
@@ -5815,7 +5872,7 @@ function MainAppContent() {
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2.5 mb-1.5">
-                            <span className="font-bold text-white">{item.author}</span>
+                            <span className="font-bold text-[var(--text-primary)]">{item.author}</span>
                             <span className="text-[9px] text-[var(--color-mute)] uppercase tracking-widest font-bold border border-[var(--color-hairline)] px-2 py-0.5 rounded-full bg-[var(--color-canvas)] shadow-sm">{item.type}</span>
                           </div>
                           <div className="text-sm md:text-base text-[var(--color-mute)] leading-relaxed italic font-medium">"{item.text}"</div>
@@ -5828,7 +5885,7 @@ function MainAppContent() {
 
               {/* League Table */}
               <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm">
-                <div className="p-5 font-bold text-white bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex justify-between items-center text-sm tracking-tight">
+                <div className="p-5 font-bold text-[var(--text-primary)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex justify-between items-center text-sm tracking-tight">
                   <span>Final League Standings</span>
                 </div>
                 <div className="overflow-x-auto custom-scrollbar">
@@ -5853,7 +5910,7 @@ function MainAppContent() {
                         return (
                           <tr key={t.short} className={`transition-colors border-b border-[var(--color-hairline)]/50 last:border-0 ${humanPlayer ? 'bg-blue-500/5' : 'hover:bg-[var(--color-canvas-soft-2)]'} ${i === 3 ? 'border-b-[var(--color-success)] border-b-2' : ''}`}>
                             <td className="py-3 pl-5 text-[var(--color-mute)] font-mono font-bold text-sm">{i + 1}</td>
-                            <td className="py-3 px-3 font-bold tracking-tight text-sm text-white">
+                            <td className="py-3 px-3 font-bold tracking-tight text-sm text-[var(--text-primary)]">
                               <div className="flex items-center gap-3">
                                 <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: matchedFranchise?.color || '#555' }}>
                                   <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
@@ -5869,7 +5926,7 @@ function MainAppContent() {
                             <td className="py-3 px-3 text-center text-[var(--color-mute)] font-mono font-medium">{t.played || 14}</td>
                             <td className="py-3 px-3 text-center text-[var(--color-success)] font-mono font-bold">{t.won}</td>
                             <td className="py-3 px-3 text-center text-[var(--color-error)] font-mono font-bold">{t.lost}</td>
-                            <td className={`py-3 px-3 text-center font-black tracking-tight font-mono text-base ${isLocal ? 'text-yellow-400' : 'text-white'}`}>{t.points}</td>
+                            <td className={`py-3 px-3 text-center font-black tracking-tight font-mono text-base ${isLocal ? 'text-yellow-500' : 'text-[var(--text-primary)]'}`}>{t.points}</td>
                             <td className={`py-3 px-3 text-right font-mono font-semibold text-sm ${t.nrr >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
                               {t.nrr >= 0 ? `+${t.nrr.toFixed(3)}` : t.nrr.toFixed(3)}
                             </td>
@@ -5894,7 +5951,7 @@ function MainAppContent() {
             <div className="xl:col-span-4 flex flex-col gap-6 md:gap-8">
               {/* Awards */}
               <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm flex flex-col">
-                <div className="p-5 font-bold text-white bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight flex items-center gap-2">
+                <div className="p-5 font-bold text-[var(--text-primary)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight flex items-center gap-2">
                   <span>Season Awards</span>
                 </div>
                 <div className="p-5 grid grid-cols-1 gap-4 flex-1">
@@ -5912,7 +5969,7 @@ function MainAppContent() {
                           awardName.includes('Purple') ? 'text-purple-400' :
                           awardName.includes('MVP') ? 'text-yellow-400' : 'text-blue-400'
                         }`}>{awardName}</div>
-                        <div className="text-xl font-black tracking-tight text-white z-10 truncate">{typedInfo.player}</div>
+                        <div className="text-xl font-black tracking-tight text-[var(--text-primary)] z-10 truncate">{typedInfo.player}</div>
                         <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest mt-1 z-10">{typedInfo.team}</div>
                       </div>
                     );
@@ -5937,7 +5994,7 @@ function MainAppContent() {
           {/* Season Fixtures */}
           <div className="card mb-6 overflow-hidden">
             <details className="group">
-              <summary className="p-4 cursor-pointer font-bold text-[var(--color-mute)] hover:text-white flex justify-between items-center bg-[var(--color-canvas)] select-none">
+              <summary className="p-4 cursor-pointer font-bold text-[var(--color-mute)] hover:text-[var(--text-primary)] flex justify-between items-center bg-[var(--color-canvas)] select-none">
                 <span className="text-sm uppercase tracking-wider">All Season Fixtures</span>
                 <span className="text-xl group-open:rotate-180 transition-transform text-[var(--color-mute)]">▾</span>
               </summary>
@@ -5946,7 +6003,7 @@ function MainAppContent() {
                   const isHomeWinner = m.winner === m.homeTeam;
                   const isAbandoned = m.rainEvent?.type === 'abandoned';
                   return (
-                    <details key={i} className="group border-b border-[var(--color-hairline)]/50 last:border-0 text-white">
+                    <details key={i} className="group border-b border-[var(--color-hairline)]/50 last:border-0 text-[var(--text-primary)]">
                       <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-white/5 transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
                         <div className="w-8 text-[var(--color-mute)] font-mono text-xs pl-2">#{i + 1}</div>
                         <div className="flex-1 flex flex-col items-end gap-0.5 text-xs">
@@ -5992,7 +6049,7 @@ function MainAppContent() {
 
                             {m.clutchTriggered && (
                               <div className="mb-4 flex justify-center text-center">
-                                <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest">
+                                <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/20 text-red-500 rounded bg-red-500/10 uppercase tracking-widest">
                                   ⚡ {m.clutchTriggered} Delivers Under Pressure!
                                 </span>
                               </div>
@@ -6000,8 +6057,8 @@ function MainAppContent() {
                             
                             {(m.momentumStateA || m.momentumStateB) && (
                               <div className="mb-4 flex flex-col gap-1 items-center">
-                                {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {m.homeTeam}: {m.momentumStateA}</span>}
-                                {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {m.awayTeam}: {m.momentumStateB}</span>}
+                                {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/20 rounded uppercase">🔥 {m.homeTeam}: {m.momentumStateA}</span>}
+                                {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/20 rounded uppercase">🔥 {m.awayTeam}: {m.momentumStateB}</span>}
                               </div>
                             )}
                             
@@ -6019,7 +6076,7 @@ function MainAppContent() {
                                 </div>
                                 <div className="text-right shrink-0">
                                   <div className="text-[9px] uppercase tracking-widest text-[var(--color-mute)] mb-0.5">Rating</div>
-                                  <div className="text-lg font-semibold tracking-tight text-white">{m.motm.rating.toFixed(1)}</div>
+                                  <div className="text-lg font-semibold tracking-tight text-[var(--text-primary)]">{m.motm.rating.toFixed(1)}</div>
                                 </div>
                               </div>
                             )}
@@ -6113,7 +6170,7 @@ function MainAppContent() {
       return <ModeSettingsScreen settings={settings} setSettings={setSettings} onStart={handleStart} mode={settings.mode} />;
     }
     if (phase === 'mp-lobby') {
-      if (!mpState) return <div className="min-h-screen flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Connecting to Lobby...</div>;
+      if (!mpState) return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Connecting to Lobby...</div>;
       return (
         <MpLobbyScreen
           state={mpState}
@@ -6205,7 +6262,7 @@ function MainAppContent() {
     }} />;
     if (phase === 'draft') return <DraftScreen players={playersPool} squad={squad} onPickPlayer={handlePickPlayer} onSwapPlayers={handleSwapPlayers} rerolls={rerolls} onReroll={handleReroll} pickedNames={pickedNames} settings={settings} playerForms={playerForms} onFinishDraft={() => handleFinishDraft(squad)} />;
     if (phase === 'squad-complete') return <SquadCompleteScreen squad={squad} onSimulate={(control) => runSimulation(control)} onRestart={() => setPhase('mode-select')} settings={settings} playerForms={playerForms} />;
-    if (phase === 'simulating') return <div className="min-h-screen flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Simulating Season...</div>;
+    if (phase === 'simulating') return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Simulating Season...</div>;
     if (phase === 'watching' && watchData) return (
       <WatchModeScreen
         fixtures={watchData.fixtures}
@@ -6301,7 +6358,7 @@ function MainAppContent() {
     }} onViewLeaderboard={() => setPhase('leaderboard')} />;
     
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4 text-center">
         <div className="text-4xl mb-4">⚠️</div>
         <div className="text-xl font-bold text-red-500 mb-2">Session Expired</div>
         <div className="text-sm text-[var(--color-mute)] mb-6">Your session has expired or the page was refreshed. Please start a new game.</div>
@@ -6331,7 +6388,7 @@ function MainAppContent() {
 
 export default function MainApp() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Loading...</div>}>
       <MainAppContent />
     </Suspense>
   );

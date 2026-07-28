@@ -3,7 +3,7 @@ import { ArrowLeft, Gamepad2, Building2, Coins, ShieldCheck, Scale, Target, User
 
 export default function ExplorePage() {
   return (
-    <div className="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] font-sans selection:bg-yellow-500/30 overflow-x-hidden">
+    <div className="min-h-[calc(100vh-4rem)] bg-[var(--color-canvas-soft)] text-[var(--color-ink)] font-sans selection:bg-yellow-500/30 overflow-x-hidden">
       
       {/* Top Nav */}
       <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center relative z-10">
