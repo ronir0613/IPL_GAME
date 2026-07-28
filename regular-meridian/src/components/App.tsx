@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
-import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun, Star, Users, LogOut } from 'lucide-react';
+import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun, Star, Users, LogOut, CloudRain, Globe, Sparkles, Shuffle, EyeOff, Bot, Crown, Newspaper, Mic, MessageSquare, HeartCrack, Gavel, Medal, Link2, Flame, X, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PlayerProfile from './PlayerProfile';
 import { saveRunToProfile, setProfileHandle, getProfileData } from '@/lib/profile';
@@ -40,14 +40,14 @@ function RainBadge({ event }: { event: RainEvent }) {
   if (event.type === 'abandoned') {
     return (
       <div className="flex items-center gap-1.5 px-2.5 py-1 bg-red-500/10 text-red-400 rounded text-xs font-bold border border-red-500/20">
-        <span className="text-sm">🌧</span>
+        <CloudRain className="w-3.5 h-3.5 text-red-400 shrink-0" />
         Abandoned - {event.description}
       </div>
     );
   }
   return (
     <div className="flex items-center gap-1.5 px-2.5 py-1 bg-teal-500/10 text-teal-400 rounded text-xs font-bold border border-teal-500/20">
-      <span className="text-sm">🌧</span>
+      <CloudRain className="w-3.5 h-3.5 text-teal-400 shrink-0" />
       DLS Method - {event.description}
     </div>
   );
@@ -378,7 +378,9 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
                   <div className="w-8 h-8 bg-[var(--color-canvas)] rounded-full border border-[var(--color-hairline)] shadow-sm flex items-center justify-center mb-1 relative">
                     <span className="text-[10px] font-mono font-bold text-[var(--color-ink)]">{hideRatings ? '?' : slot.player!.overall}</span>
                     {slot.player!.is_overseas && (
-                      <div className="absolute -top-1 -right-1 bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] shadow-sm">✈️</div>
+                      <div className="absolute -top-1 -right-1 bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
+                        <Globe className="w-2.5 h-2.5 text-white" />
+                      </div>
                     )}
                   </div>
                   <span className="text-[9px] font-bold text-[var(--color-ink)] text-center w-full truncate px-1">{initials(slot.player!.name)}</span>
@@ -486,9 +488,9 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                <tbody className="divide-y divide-[var(--color-hairline)]">
                  {filteredLeaderboard.map((entry, idx) => {
                    let rankDisplay: React.ReactNode = idx + 1;
-                   if (idx === 0) rankDisplay = <span className="text-xl">🥇</span>;
-                   else if (idx === 1) rankDisplay = <span className="text-xl">🥈</span>;
-                   else if (idx === 2) rankDisplay = <span className="text-xl">🥉</span>;
+                   if (idx === 0) rankDisplay = <Medal className="w-5 h-5 text-amber-500 inline-block drop-shadow-[0_0_4px_rgba(245,158,11,0.4)]" />;
+                   else if (idx === 1) rankDisplay = <Medal className="w-5 h-5 text-slate-400 inline-block drop-shadow-[0_0_4px_rgba(148,163,184,0.4)]" />;
+                   else if (idx === 2) rankDisplay = <Medal className="w-5 h-5 text-amber-700 inline-block drop-shadow-[0_0_4px_rgba(180,83,9,0.4)]" />;
 
                    return (
                      <tr key={entry.id || idx} className="hover:bg-[var(--color-canvas-soft-2)] transition-colors group">
@@ -496,7 +498,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                        <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <span className={`font-semibold text-[16px] ${entry.wins === 16 && entry.losses === 0 ? 'text-[#facc15] drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]' : 'text-[var(--color-ink)]'}`}>{entry.handle || 'Anonymous'}</span>
-                            {entry.champion && <span className="text-[#0070f3] font-bold" title="Champion">✓</span>}
+                            {entry.champion && <span title="Champion"><Check className="w-4 h-4 text-sky-500 inline-block" /></span>}
                             <span className="bg-[var(--color-canvas-soft)] text-[var(--color-mute)] border border-[var(--color-hairline)] font-mono text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">{entry.mode}</span>
                           </div>
                           <div className="text-[14px] text-[var(--color-body)] mt-1 flex items-center gap-2">
@@ -510,7 +512,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                        </td>
                        <td className="px-6 py-4 text-right">
                           <div className={`font-medium flex items-center justify-end gap-1.5 ${entry.wins === 16 && entry.losses === 0 ? 'text-[#0070f3]' : 'text-[var(--color-ink)]'}`}>
-                            {entry.wins}-{entry.losses} {entry.wins === 16 && entry.losses === 0 && <span className="text-[14px]">✨</span>}
+                            {entry.wins}-{entry.losses} {entry.wins === 16 && entry.losses === 0 && <Sparkles className="w-4 h-4 text-amber-400 inline-block ml-1 animate-pulse" />}
                           </div>
                           <div className="text-[12px] text-[var(--color-mute)] mt-1 uppercase font-mono">
                             {(() => {
@@ -1462,7 +1464,8 @@ function DraftScreen({
                 : 'btn-primary pulse-gold'
           }`}
         >
-          🎰 {isSpinning ? 'SPINNING...' : currentSpin ? `REROLL SQUAD (${rerolls} LEFT)` : 'SPIN TO REVEAL'}
+          <Shuffle className="w-5 h-5" />
+          <span>{isSpinning ? 'SPINNING...' : currentSpin ? `REROLL SQUAD (${rerolls} LEFT)` : 'SPIN TO REVEAL'}</span>
         </motion.button>
 
         {!currentSpin && !isSpinning ? (
@@ -1672,7 +1675,7 @@ function SquadCompleteScreen({
             ) : (
               <div className="flex items-center justify-center text-center py-10 opacity-60">
                 <div className="text-xs font-mono font-bold text-[var(--color-mute)] uppercase tracking-widest flex items-center gap-2">
-                  <span className="text-lg">👁️</span> Ratings Hidden
+                  <EyeOff className="w-4 h-4 text-[var(--color-mute)]" /> Ratings Hidden
                 </div>
               </div>
             )}
@@ -1793,7 +1796,7 @@ function SquadCompleteScreen({
                         : 'bg-[var(--color-canvas-soft)] border-[var(--color-hairline)] hover:border-blue-500/50'
                     }`}
                   >
-                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><span>🤖</span> AI Managed</div>
+                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><Bot className="w-4 h-4 text-indigo-500 shrink-0" /> AI Managed</div>
                     <div className="text-[10px] text-[var(--color-mute)] font-medium leading-tight">Assistant sets the XI based on form and conditions.</div>
                   </button>
                   <button
@@ -1804,7 +1807,7 @@ function SquadCompleteScreen({
                         : 'bg-[var(--color-canvas-soft)] border-[var(--color-hairline)] hover:border-[var(--color-primary)]/50'
                     }`}
                   >
-                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><span>👑</span> Full Control</div>
+                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><Crown className="w-4 h-4 text-amber-500 shrink-0" /> Full Control</div>
                     <div className="text-[10px] text-[var(--color-mute)] font-medium leading-tight">Manage playing XI manually before every match.</div>
                   </button>
                 </div>
@@ -2476,7 +2479,9 @@ function ResultsScreen({
           <div className="relative z-10">
             {isChampion ? (
               <>
-                <div className="text-7xl mb-4 md:mb-6 animate-bounce drop-shadow-[0_0_25px_rgba(234,179,8,0.4)]">🏆</div>
+                <div className="flex justify-center mb-4 md:mb-6">
+                  <Trophy className="w-20 h-20 text-yellow-500 animate-bounce drop-shadow-[0_0_25px_rgba(234,179,8,0.4)]" />
+                </div>
                 <div className="text-4xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-sm mb-3">
                   {totalLosses === 0 ? '16-0 ACHIEVED!' : 'CHAMPIONS!'}
                 </div>
@@ -2534,8 +2539,16 @@ function ResultsScreen({
               <div className="space-y-5">
                 {story.map((item) => (
                   <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 rounded-xl hover:bg-[var(--color-canvas-soft-2)] transition-colors border border-transparent hover:border-[var(--color-hairline)]">
-                    <div className="text-2xl md:text-3xl mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
-                      {item.type === 'news' ? '📰' : item.type === 'expert' ? '🎙️' : item.type === 'player' ? '🏏' : '💬'}
+                    <div className="mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
+                      {item.type === 'news' ? (
+                        <Newspaper className="w-5 h-5 text-blue-500" />
+                      ) : item.type === 'expert' ? (
+                        <Mic className="w-5 h-5 text-purple-500" />
+                      ) : item.type === 'player' ? (
+                        <Swords className="w-5 h-5 text-emerald-500" />
+                      ) : (
+                        <MessageSquare className="w-5 h-5 text-slate-500" />
+                      )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2.5 mb-1.5">
@@ -2652,20 +2665,20 @@ function ResultsScreen({
                       <div className="w-8 text-[var(--color-mute)] font-mono text-xs pl-2">#{i + 1}</div>
                       <div className="flex-1 flex flex-col items-end gap-0.5 text-xs">
                         <span className={`font-bold ${isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.homeTeam}</span>
-                        {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                        {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
                       </div>
                       <div className="px-3 text-gray-600 font-bold tracking-widest text-[10px]">
-                        {m.rainEvent ? '🌧' : 'VS'}
+                        {m.rainEvent ? <CloudRain className="w-4 h-4 text-blue-500 mx-auto" /> : 'VS'}
                       </div>
                       <div className="flex-1 flex flex-col items-start gap-0.5 text-xs">
                         <span className={`font-bold ${!isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.awayTeam}</span>
-                        {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                        {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
                       </div>
                     </summary>
                     <div className="p-4 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]/50">
                       {isAbandoned ? (
                         <div className="flex items-center gap-3 justify-center py-2 bg-blue-950/30 rounded-lg border border-blue-800/30">
-                          <span className="text-2xl">🌧</span>
+                          <CloudRain className="w-8 h-8 text-blue-400 shrink-0" />
                           <div>
                             <div className="text-blue-300 font-bold text-sm">Match Abandoned</div>
                             <div className="text-blue-400/70 text-xs">No result — 1 point each</div>
@@ -2678,33 +2691,33 @@ function ResultsScreen({
                             <div className="px-4 text-[var(--color-win)] text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center">
                               <div>{m.winner} WON</div>
                               <div className="text-[var(--color-mute)] mt-0.5">{m.margin}</div>
-                              {m.rainEvent && <div className="text-[var(--color-link)] mt-0.5">🌧 DLS</div>}
+                              {m.rainEvent && <div className="text-[var(--color-link)] mt-0.5 flex items-center justify-center gap-1"><CloudRain className="w-3.5 h-3.5 text-blue-400 inline" /> DLS</div>}
                             </div>
                             <div className="flex-1 text-left text-[var(--color-mute)]">{m.awayScore}</div>
                           </div>
 
-                          {m.destinyTriggered && (
-                            <div className="mb-4 flex justify-center text-center">
-                              <span className="text-xs font-bold px-3 py-1 bg-[var(--color-gold)] text-[var(--color-on-primary)] rounded-full shadow-[0_0_15px_rgba(245,200,66,0.5)]">
-                                ⭐ THE UNTHINKABLE! Perfect Season Destiny Saved!
-                              </span>
-                            </div>
-                          )}
+                           {m.destinyTriggered && (
+                             <div className="mb-4 flex justify-center text-center">
+                               <span className="text-xs font-bold px-3 py-1 bg-[var(--color-gold)] text-[var(--color-on-primary)] rounded-full shadow-[0_0_15px_rgba(245,200,66,0.5)] flex items-center gap-1">
+                                 <Star className="w-3.5 h-3.5 text-white" /> THE UNTHINKABLE! Perfect Season Destiny Saved!
+                               </span>
+                             </div>
+                           )}
 
-                          {m.clutchTriggered && (
-                            <div className="mb-4 flex justify-center text-center">
-                              <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest">
-                                ⚡ {m.clutchTriggered} Delivers Under Pressure!
-                              </span>
-                            </div>
-                          )}
-                          
-                          {(m.momentumStateA || m.momentumStateB) && (
-                            <div className="mb-4 flex flex-col gap-1 items-center">
-                              {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {m.homeTeam}: {m.momentumStateA}</span>}
-                              {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {m.awayTeam}: {m.momentumStateB}</span>}
-                            </div>
-                          )}
+                           {m.clutchTriggered && (
+                             <div className="mb-4 flex justify-center text-center">
+                               <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest flex items-center gap-1">
+                                 <Zap className="w-3 h-3 text-amber-500" /> {m.clutchTriggered} Delivers Under Pressure!
+                               </span>
+                             </div>
+                           )}
+                           
+                           {(m.momentumStateA || m.momentumStateB) && (
+                             <div className="mb-4 flex flex-col gap-1 items-center">
+                               {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.homeTeam}: {m.momentumStateA}</span>}
+                               {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.awayTeam}: {m.momentumStateB}</span>}
+                             </div>
+                           )}
                           
                           {m.motm && (
                             <div className="flex items-center gap-4 bg-[var(--color-canvas-soft)] p-3 rounded-xl border border-[var(--color-gold)]/30">
@@ -3227,9 +3240,9 @@ function LiveStatsPanel({ stats, isFinal }: { stats: Record<number, PlayerStats>
       </div>
       {orangeCap.length > 0 ? (
         <>
-          <StatRow title="Orange Cap (Runs)" icon="🏏" color="orange" data={orangeCap} valKey="runs" />
-          <StatRow title="Purple Cap (Wickets)" icon="🎯" color="purple" data={purpleCap} valKey="wickets" />
-          <StatRow title="Season MVP (Impact)" icon="⭐" color="yellow" data={mvp} valKey="mvpScore" />
+          <StatRow title="Orange Cap (Runs)" icon={<Swords className="w-4 h-4" />} color="orange" data={orangeCap} valKey="runs" />
+          <StatRow title="Purple Cap (Wickets)" icon={<Target className="w-4 h-4" />} color="purple" data={purpleCap} valKey="wickets" />
+          <StatRow title="Season MVP (Impact)" icon={<Star className="w-4 h-4" />} color="yellow" data={mvp} valKey="mvpScore" />
         </>
       ) : (
         <div className="text-sm text-[var(--color-mute)] text-center py-8">Stats will appear after matches.</div>
@@ -3626,11 +3639,15 @@ function WatchModeScreen({
                     Match #{currentMatchIdx} — YOUR XI
                   </div>
                   <div className="flex gap-2">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${currentResult.userWon ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`}>
-                      {currentResult.userWon ? '✓ YOUR XI WON' : '✗ YOUR XI LOST'}
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 ${currentResult.userWon ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`}>
+                      {currentResult.userWon ? <Check className="w-3 h-3 text-green-400" /> : <X className="w-3 h-3 text-red-400" />}
+                      <span>{currentResult.userWon ? 'YOUR XI WON' : 'YOUR XI LOST'}</span>
                     </span>
                     {currentResult.rainEvent && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-900/50 text-blue-300">🌧 RAIN</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-900/50 text-blue-300 flex items-center gap-1">
+                        <CloudRain className="w-3 h-3 text-blue-300" />
+                        <span>RAIN</span>
+                      </span>
                     )}
                   </div>
                 </div>
@@ -3659,24 +3676,24 @@ function WatchModeScreen({
 
                 {currentResult.destinyTriggered && (
                   <div className="mt-3 flex justify-center text-center">
-                    <span className="text-xs font-bold px-3 py-1 bg-yellow-500 text-black rounded-full shadow-[0_0_15px_rgba(234,179,8,0.5)]">
-                      ⭐ THE UNTHINKABLE! Perfect Season Destiny Saved!
+                    <span className="text-xs font-bold px-3 py-1 bg-yellow-500 text-black rounded-full shadow-[0_0_15px_rgba(234,179,8,0.5)] flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 text-black" /> THE UNTHINKABLE! Perfect Season Destiny Saved!
                     </span>
                   </div>
                 )}
 
                 {currentResult.clutchTriggered && (
                   <div className="mt-2 flex justify-center text-center">
-                    <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest">
-                      ⚡ {currentResult.clutchTriggered} Delivers Under Pressure!
+                    <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest flex items-center gap-1">
+                      <Zap className="w-3 h-3 text-amber-500" /> {currentResult.clutchTriggered} Delivers Under Pressure!
                     </span>
                   </div>
                 )}
 
                 {(currentResult.momentumStateA || currentResult.momentumStateB) && (
                   <div className="mt-2 flex flex-col gap-1 items-center">
-                    {currentResult.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {currentResult.homeTeam}: {currentResult.momentumStateA}</span>}
-                    {currentResult.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase">🔥 {currentResult.awayTeam}: {currentResult.momentumStateB}</span>}
+                    {currentResult.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {currentResult.homeTeam}: {currentResult.momentumStateA}</span>}
+                    {currentResult.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {currentResult.awayTeam}: {currentResult.momentumStateB}</span>}
                   </div>
                 )}
 
@@ -3729,8 +3746,15 @@ function WatchModeScreen({
                 {[...completedMatches].reverse().slice(1, 10).map((m, i) => (
                   <div key={i} className={`flex items-center justify-between text-xs px-3 py-1.5 rounded-lg ${m.isUserMatch ? 'bg-yellow-900/10 border border-yellow-900/20' : 'bg-[var(--color-canvas)]'}`}>
                     <span className={`font-bold truncate max-w-[35%] ${m.winner === m.homeTeam ? 'text-gray-200' : 'text-[var(--color-mute)]'}`}>{m.homeTeam.split(' ').pop()}</span>
-                    <span className="text-gray-600 text-[9px] px-2 font-mono">
-                      {m.rainEvent?.type === 'abandoned' ? '🌧 NR' : m.homeScore.split(' ')[0]}
+                    <span className="text-gray-600 text-[9px] px-2 font-mono flex items-center justify-center gap-0.5">
+                      {m.rainEvent?.type === 'abandoned' ? (
+                        <>
+                          <CloudRain className="w-2.5 h-2.5 text-blue-400" />
+                          <span>NR</span>
+                        </>
+                      ) : (
+                        m.homeScore.split(' ')[0]
+                      )}
                     </span>
                     <span className="text-gray-600 text-[9px] px-2 font-mono">
                       {m.rainEvent?.type === 'abandoned' ? '' : m.awayScore.split(' ')[0]}
@@ -4018,7 +4042,7 @@ function PlayoffsWatchScreen({
 
            {isFastForward && (
              <div className="bg-red-500/10 backdrop-blur-md rounded-2xl p-6 border border-red-500/20 flex flex-col items-center justify-center text-center shadow-lg">
-               <div className="text-4xl mb-4 animate-bounce">💔</div>
+               <HeartCrack className="w-10 h-10 text-red-500 animate-bounce mb-3" />
                <div className="text-lg font-black tracking-tight text-red-500 tracking-widest uppercase mb-2">Eliminated</div>
                <div className="text-xs text-[var(--color-mute)] font-medium">Simulating remaining matches...</div>
              </div>
@@ -5867,8 +5891,16 @@ function MainAppContent() {
                   <div className="space-y-5">
                     {story.map((item) => (
                       <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 rounded-xl hover:bg-[var(--color-canvas-soft-2)] transition-colors border border-transparent hover:border-[var(--color-hairline)]">
-                        <div className="text-2xl md:text-3xl mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
-                          {item.type === 'news' ? '📰' : item.type === 'expert' ? '🎙️' : item.type === 'player' ? '🏏' : '💬'}
+                        <div className="mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
+                          {item.type === 'news' ? (
+                            <Newspaper className="w-5 h-5 text-blue-500" />
+                          ) : item.type === 'expert' ? (
+                            <Mic className="w-5 h-5 text-purple-500" />
+                          ) : item.type === 'player' ? (
+                            <Swords className="w-5 h-5 text-emerald-500" />
+                          ) : (
+                            <MessageSquare className="w-5 h-5 text-slate-500" />
+                          )}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2.5 mb-1.5">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Copy, Check, Users, Settings, Play, ArrowRight, User, Shield, Swords, RefreshCw, Volume2, ShieldAlert, MessageSquare, X, Send, Trophy, LogOut } from 'lucide-react';
+import { Copy, Check, Users, Settings, Play, ArrowRight, User, Shield, Swords, RefreshCw, Volume2, ShieldAlert, MessageSquare, X, Send, Trophy, LogOut, ClipboardList, Gavel } from 'lucide-react';
 import type { Player, MpPlayer, MpSettings, MpState, MatchResult, MatchPrepConfig } from '@/lib/types';
 import { IPL_TEAMS } from '@/lib/types';
 import { ratingColor, initials } from '@/lib/engine';
@@ -437,7 +437,8 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
             onClick={() => setShowLogs(true)}
             className="flex items-center gap-1.5 px-3 py-2 bg-[var(--color-canvas-soft-2)] border border-[var(--card-border)] hover:border-neutral-500 rounded-xl text-xs font-bold text-[var(--text-primary)] transition-colors uppercase tracking-wider cursor-pointer"
           >
-            📜 Logs ({state.auctionLogs.length})
+            <ClipboardList size={12} />
+            <span>Logs ({state.auctionLogs.length})</span>
           </button>
           
           <div className="w-px h-6 bg-[var(--card-border)]" />
@@ -671,12 +672,12 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
           <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
             <button 
               onClick={() => setShowLogs(false)} 
-              className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-[var(--text-primary)] font-black text-sm border-none bg-transparent cursor-pointer"
+              className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-[var(--text-primary)] border-none bg-transparent cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-[var(--color-canvas-soft-2)]"
             >
-              ✕
+              <X size={16} />
             </button>
             <h3 className="font-extrabold text-sm uppercase tracking-wider text-[var(--text-primary)] mb-4 flex items-center gap-2">
-              🔨 Auction Gavel History
+              <Gavel className="w-4 h-4 text-amber-600 shrink-0" /> Auction Gavel History
             </h3>
             <div className="max-h-[350px] overflow-y-auto space-y-2 pr-1 text-xs">
               {state.auctionLogs.length === 0 ? (
@@ -689,9 +690,15 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                   if (log.includes('SOLD')) logColor = 'text-emerald-400 font-bold';
                   else if (log.includes('UNSOLD')) logColor = 'text-[var(--text-muted)] italic';
                   
+                  const cleanLog = log.replace(/^(🔨|❌)\s*/, '');
+                  const isSold = log.startsWith('🔨');
+                  const isUnsold = log.startsWith('❌');
+
                   return (
-                    <div key={idx} className={`p-2.5 rounded-xl bg-[var(--color-canvas-soft-2)] border border-[var(--card-border)] ${logColor}`}>
-                      {log}
+                    <div key={idx} className={`p-2.5 rounded-xl bg-[var(--color-canvas-soft-2)] border border-[var(--card-border)] ${logColor} flex items-start gap-2`}>
+                      {isSold && <Gavel className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />}
+                      {isUnsold && <X className="w-3.5 h-3.5 text-neutral-400 shrink-0 mt-0.5" />}
+                      <span className="flex-1">{cleanLog}</span>
                     </div>
                   );
                 })
