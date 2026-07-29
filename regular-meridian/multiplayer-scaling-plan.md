@@ -2,70 +2,55 @@
 
 As **16-0 Play** scales, Pusher's free tier limit of **200,000 messages/day** and **100 concurrent connections** may become a bottleneck, especially during active draft phases where the room state updates frequently.
 
-This document outlines the two primary scaling routes (Ably and self-hosted Soketi) and provides a concrete recommendation for the current phase.
+This document outlines the scaling route using **Ably** via its built-in **Pusher Protocol Adapter**—allowing us to scale up to **6 Million messages/month** completely for **free without requiring a credit card**.
 
 ---
 
 ## 📊 Comparison of Scaling Options
 
-| Feature | Option 1: Ably (Managed Cloud) | Option 2: Soketi (Self-Hosted on Fly.io) |
+| Feature | Option 1: Ably (Managed Cloud) | Option 2: Pusher (Current Stack) |
 | :--- | :--- | :--- |
-| **Daily Message Limit** | **Flexible** (6 Million messages / month, ~200k/day average) | **Unlimited** |
-| **Max Concurrent Users**| **200** concurrent connections | **Unlimited** (constrained only by VPS memory) |
-| **Monthly Cost** | **$0** (Free Tier) | **$0** (Using Fly.io Free Tier) |
-| **Code Changes Required**| **High** (requires replacing `pusher-js` with Ably SDK) | **None** (100% Pusher-compatible) |
-| **Server Maintenance** | None (fully managed) | Minimal (setup once on container hosting) |
+| **Monthly Message Limit** | **6 Million** messages / month (~200k/day average with peak flexibility) | **6 Million** messages / month (strictly capped at 200k/day) |
+| **Max Concurrent Users**| **200** concurrent connections | **100** concurrent connections |
+| **Signup Requirements**  | Email / Github / Google (**No credit card required**) | Email (**No credit card required**) |
+| **Code Changes Required**| **None** (Uses built-in Pusher Protocol compatibility) | N/A |
+| **Infrastructure Setup** | None (Fully managed cloud service) | None |
 
 ---
 
-## 🏆 Recommendation for Now: **Soketi on Fly.io**
+## 🏆 Recommendation for Now: **Ably Pusher Protocol Adapter**
 
-We recommend deploying **Soketi on Fly.io's Free Tier** as the immediate next step.
+We recommend switching to **Ably** using its Pusher compatibility adapter.
 
 ### Rationale:
-1. **Zero Client Code Churn**: Soketi is a drop-in replacement for Pusher. You do not need to rewrite the broadcasting, subscription, or presence logic in [pusher.ts](file:///d:/IPL_GAME/regular-meridian/src/lib/pusher.ts). You only need to update the configuration to point to your new Soketi host URL.
-2. **True Unlimited Scalability**: Under Fly.io's free tier, you get up to 3 micro VMs and 100 GB of outbound bandwidth. A single 256MB VM running Soketi can handle thousands of concurrent WebSocket connections and tens of millions of messages, completely bypassing Pusher's daily limits.
-3. **No Message Size Bottlenecks**: Pusher has a hard limit of 10KB per message, which is why the code currently implements client-side chunking. With a self-hosted Soketi instance, you can increase the max message size limit (e.g. to 100KB) in the environment variables, which simplifies state sync and removes chunking overhead entirely.
+1. **No Credit Card Block**: Unlike Fly.io or Railway, Ably's free tier is 100% card-free to sign up.
+2. **Zero Code Changes**: Ably supports the Pusher protocol natively. This means we can continue using the existing `pusher-js` library in the frontend and the standard `pusher` library in the backend with **zero modifications to the core logic**. We only change connection endpoints and credentials.
+3. **Double the Connections**: The concurrent connection limit increases from 100 to 200.
 
 ---
 
-## 🛠️ Step-by-Step Soketi Setup Guide (Fly.io)
+## 🛠️ Step-by-Step Ably Integration Guide
 
-### 1. Deploy Soketi Server
-Soketi is packaged as a Docker container. You can deploy it using the Fly.io CLI in minutes:
-
-1. Install Fly CLI and authenticate:
-   ```bash
-   fly auth login
-   ```
-2. Initialize a new app:
-   ```bash
-   fly launch --image quay.io/soketi/soketi:1.6-16-alpine --no-deploy
-   ```
-3. Update the environment variables in your generated `fly.toml` file:
-   ```toml
-   [env]
-   SOKETI_DEBUG = "true"
-   SOKETI_PORT = "8080"
-   # Customize app credentials (replace with secure random keys)
-   SOKETI_DEFAULT_APP_ID = "ipl-auction-app"
-   SOKETI_DEFAULT_APP_KEY = "ipl-auction-key"
-   SOKETI_DEFAULT_APP_SECRET = "ipl-auction-secret"
-   # Increase message payload limits if needed (default is 10MB in Soketi, vs Pusher's 10KB)
-   SOKETI_MAX_MESSAGE_SIZE = "10485760" 
-   ```
-4. Deploy the app:
-   ```bash
-   fly deploy
-   ```
+### 1. Set Up Ably Account
+1. Go to [Ably.com](https://ably.com/) and sign up for a free account (using GitHub, Google, or Email). No payment information is required.
+2. Create a new app (e.g., `IPL-Game`).
+3. Under your new App dashboard:
+   - Go to the **Settings** tab.
+   - Scroll down to **Protocol Adapter Settings**.
+   - Check/enable **Pusher protocol support**.
+4. Go to the **API Keys** tab and copy your API key (it looks like `appId.keyId:secret`).
+   - *Note*: Ably API keys contain a colon `:`. 
+   - The part **before** the colon (e.g., `appId.keyId`) is your **Pusher App Key**.
+   - The part **after** the colon (e.g., `secret`) is your **Pusher App Secret**.
+   - The portion before the first dot `.` is your **Pusher App ID**.
 
 ### 2. Client Integration Updates
-Once your Soketi app is deployed (e.g., at `your-soketi-app.fly.dev`), modify [pusher.ts](file:///d:/IPL_GAME/regular-meridian/src/lib/pusher.ts#L29-L39) to point to the new host:
+Modify [pusher.ts](file:///d:/IPL_GAME/regular-meridian/src/lib/pusher.ts#L29-L39) to redirect connections to Ably's Pusher endpoint:
 
 ```typescript
-// Replace Pusher config with Soketi URL config
-this.pusher = new Pusher('ipl-auction-key', {
-  wsHost: 'your-soketi-app.fly.dev',
+// Initialize Pusher client pointing to Ably's Pusher compatibility adapter
+this.pusher = new Pusher('YOUR_ABLY_KEY_PREFIX', { // Everything before the colon in your Ably key
+  wsHost: 'main.pusher.ably.net',
   wsPort: 443,
   wssPort: 443,
   forceTLS: true,
@@ -82,17 +67,17 @@ this.pusher = new Pusher('ipl-auction-key', {
 });
 ```
 
-### 3. Serverless Auth Endpoint Updates
-Since you are using presence channels, you will need to update your auth endpoint (e.g. Astro server routes or Cloudflare Workers) to use the new Soketi credentials to sign client tokens. Since Soketi implements the Pusher protocol, your server-side Pusher SDK simply needs to point to the Soketi host:
+### 3. Backend Auth Endpoint Updates
+Update your Pusher server-side credentials (in your environment variables or server config) to use the Ably credentials and point to the Ably host:
 
 ```javascript
 import Pusher from 'pusher';
 
 const pusher = new Pusher({
-  appId: 'ipl-auction-app',
-  key: 'ipl-auction-key',
-  secret: 'ipl-auction-secret',
-  host: 'your-soketi-app.fly.dev',
+  appId: 'YOUR_ABLY_APP_ID',      // Everything before the first dot '.'
+  key: 'YOUR_ABLY_KEY_PREFIX',    // Everything before the colon ':'
+  secret: 'YOUR_ABLY_SECRET',     // Everything after the colon ':'
+  host: 'main.pusher.ably.net',   // Point to Ably Pusher endpoint
   useTLS: true,
 });
 ```

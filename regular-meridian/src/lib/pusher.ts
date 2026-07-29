@@ -25,9 +25,13 @@ export class PusherManager {
     this.peerId = customPeerId || `client-${Math.random().toString(36).substring(2, 11)}`;
     this.userName = userName;
 
-    // Initialize Pusher client pointing to our Cloudflare auth endpoint
-    this.pusher = new Pusher('92d0689e4c171f0709c0', {
-      cluster: 'ap2',
+    // Initialize Pusher client pointing to either the standard Pusher service or a custom host (like Ably or Soketi)
+    const appKey = import.meta.env.PUBLIC_PUSHER_APP_KEY || '92d0689e4c171f0709c0';
+    const host = import.meta.env.PUBLIC_PUSHER_HOST || '';
+    const cluster = import.meta.env.PUBLIC_PUSHER_CLUSTER || 'ap2';
+
+    const options: any = {
+      forceTLS: true,
       channelAuthorization: {
         endpoint: '/api/pusher-auth',
         transport: 'ajax',
@@ -36,7 +40,19 @@ export class PusherManager {
           peerId: this.peerId,
         },
       },
-    });
+    };
+
+    if (host) {
+      options.wsHost = host;
+      options.wsPort = 443;
+      options.wssPort = 443;
+      options.disableStats = true;
+      options.enabledTransports = ['ws', 'wss'];
+    } else {
+      options.cluster = cluster;
+    }
+
+    this.pusher = new Pusher(appKey, options);
 
     return this.peerId;
   }
