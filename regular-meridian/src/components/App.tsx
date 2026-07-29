@@ -6272,6 +6272,32 @@ function MainAppContent() {
     );
   }
 
+  const resolvedMpState = useMemo(() => {
+    if (!mpState) return null;
+    if (playersPool.length === 0) return mpState;
+
+    const reconstructedRosters: Record<string, Player[]> = {};
+    for (const peerId in mpState.rosters) {
+      const roster = mpState.rosters[peerId];
+      if (Array.isArray(roster)) {
+        reconstructedRosters[peerId] = roster.map(item => {
+          if (typeof item === 'number' || (item && typeof item === 'object' && !item.name)) {
+            const playerId = typeof item === 'number' ? item : item.id;
+            const fullPlayer = playersPool.find(p => p.id === playerId);
+            if (fullPlayer) {
+              return fullPlayer;
+            }
+          }
+          return item as Player;
+        });
+      }
+    }
+    return {
+      ...mpState,
+      rosters: reconstructedRosters
+    };
+  }, [mpState, playersPool]);
+
   const renderScreen = () => {
     if (phase === 'home') return <HomeScreen onPlay={hasActiveGame ? handleStartNewGame : () => setPhase('mode-select')} onLeaderboard={() => setPhase('leaderboard')} onProfile={() => setPhase('profile')} hasActiveGame={hasActiveGame} onContinue={() => setPhase(lastActivePhase || 'mode-select')} continueLabel={continueLabel} />;
     if (phase === 'profile') return <PlayerProfile onBack={() => setPhase('home')} />;
@@ -6299,10 +6325,10 @@ function MainAppContent() {
       return <ModeSettingsScreen settings={settings} setSettings={setSettings} onStart={handleStart} mode={settings.mode} />;
     }
     if (phase === 'mp-lobby') {
-      if (!mpState) return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Connecting to Lobby...</div>;
+      if (!resolvedMpState) return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center text-[var(--color-mute)] font-mono text-sm uppercase tracking-widest animate-pulse">Connecting to Lobby...</div>;
       return (
         <MpLobbyScreen
-          state={mpState}
+          state={resolvedMpState}
           peerId={mpManagerRef.current?.peerId || ''}
           onUpdateSettings={(updatedSettings) => {
             setMpState(prev => {
@@ -6319,10 +6345,10 @@ function MainAppContent() {
       );
     }
     if (phase === 'mp-draft') {
-      if (!mpState) return null;
+      if (!resolvedMpState) return null;
       return (
         <MpDraftScreen
-          state={mpState}
+          state={resolvedMpState}
           players={playersPool}
           peerId={mpManagerRef.current?.peerId || ''}
           onPlaceBid={handleMpPlaceBid}
@@ -6332,10 +6358,10 @@ function MainAppContent() {
       );
     }
     if (phase === 'mp-match-prep') {
-      if (!mpState) return null;
+      if (!resolvedMpState) return null;
       return (
         <MpMatchCenterScreen
-          state={mpState}
+          state={resolvedMpState}
           peerId={mpManagerRef.current?.peerId || ''}
           onSelectLineup={handleMpSelectLineup}
           onSimulateRound={handleMpSimulateRound}
@@ -6344,8 +6370,8 @@ function MainAppContent() {
       );
     }
     if (phase === 'mp-watching') {
-      if (!mpState) return null;
-      const myRoster = mpState.rosters[mpManagerRef.current?.peerId || ''] || [];
+      if (!resolvedMpState) return null;
+      const myRoster = resolvedMpState.rosters[mpManagerRef.current?.peerId || ''] || [];
       const mySlots = myRoster.map(p => ({ player: p } as SquadSlot));
       return (
         <WatchModeScreen
@@ -6357,14 +6383,14 @@ function MainAppContent() {
           control="ai"
           settings={settings}
           userFranchise={mpFranchise}
-          preSimulatedResults={mpState.activeMatches}
+          preSimulatedResults={resolvedMpState.activeMatches}
           onComplete={(finalTeams, matchResults, finalForms, finalSeasonStats) => {
             setMpTeams(finalTeams);
             setMpSeasonResults(matchResults);
             handleMpLeagueComplete(finalTeams, matchResults, finalForms, finalSeasonStats);
           }}
           onSkip={() => {
-            handleMpLeagueComplete(mpTeams, mpState.activeMatches || [], playerForms, {});
+            handleMpLeagueComplete(mpTeams, resolvedMpState.activeMatches || [], playerForms, {});
           }}
           initialState={watchModeState}
           onStateChange={setWatchModeState}
@@ -6372,11 +6398,11 @@ function MainAppContent() {
       );
     }
     if (phase === 'mp-results') {
-      if (!mpState || !results) return null;
+      if (!resolvedMpState || !results) return null;
       return (
         <MpResultsScreen
           results={results}
-          state={mpState}
+          state={resolvedMpState}
           peerId={mpManagerRef.current?.peerId || ''}
           onExit={handleLeaveMp}
         />
@@ -6502,9 +6528,9 @@ function MainAppContent() {
       <div className="pt-16">
         {renderScreen()}
       </div>
-      {phase.startsWith('mp-') && mpState && (
+      {phase.startsWith('mp-') && resolvedMpState && (
         <MpChatBox
-          chatMessages={mpState.chatMessages || []}
+          chatMessages={resolvedMpState.chatMessages || []}
           onSendMessage={handleSendChat}
           currentUser={mpUserName}
         />
