@@ -32,6 +32,7 @@ export class PusherManager {
 
     const options: any = {
       forceTLS: true,
+      cluster: cluster, // Always provide cluster to satisfy Pusher JS SDK validation
       channelAuthorization: {
         endpoint: '/api/pusher-auth',
         transport: 'ajax',
@@ -48,8 +49,6 @@ export class PusherManager {
       options.wssPort = 443;
       options.disableStats = true;
       options.enabledTransports = ['ws', 'wss'];
-    } else {
-      options.cluster = cluster;
     }
 
     this.pusher = new Pusher(appKey, options);
