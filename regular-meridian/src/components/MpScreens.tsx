@@ -1205,16 +1205,20 @@ export function MpChatBox({ chatMessages, onSendMessage, currentUser }: MpChatBo
   const [isOpen, setIsOpen] = useState(false);
   const [text, setText] = useState('');
   const [unreadCount, setUnreadCount] = useState(0);
+  const lastMessageCountRef = useRef(chatMessages.length);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
       setUnreadCount(0);
-    } else if (chatMessages.length > 0) {
-      const lastMsg = chatMessages[chatMessages.length - 1];
-      if (lastMsg.sender !== currentUser) {
-        setUnreadCount(prev => prev + 1);
+      lastMessageCountRef.current = chatMessages.length;
+    } else {
+      if (chatMessages.length > lastMessageCountRef.current) {
+        const newMessages = chatMessages.slice(lastMessageCountRef.current);
+        const incomingCount = newMessages.filter(msg => msg.sender !== currentUser).length;
+        setUnreadCount(prev => prev + incomingCount);
       }
+      lastMessageCountRef.current = chatMessages.length;
     }
   }, [chatMessages, isOpen, currentUser]);
 
