@@ -125,6 +125,8 @@ export interface MatchResult {
   momentumStateA?: string;
   momentumStateB?: string;
   homeFortressBonus?: string;
+  nrrModifierA?: number;
+  nrrModifierB?: number;
 }
 
 export interface StoryItem {

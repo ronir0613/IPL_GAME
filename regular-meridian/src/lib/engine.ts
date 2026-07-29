@@ -875,22 +875,38 @@ export function applyResult(teams: SeasonTeam[], aIdx: number, bIdx: number, res
     a.points += 1;
     b.points += 1;
     // Streaks remain unchanged or reset? Let's keep them unchanged for abandoned.
-  } else if (result.winner === a.name) {
-    a.won++;
-    a.points += 2;
-    b.lost++;
-    a.streak = (a.streak || 0) + 1;
-    b.streak = 0;
-    a.nrr += parseFloat((randFloat(0.1, 0.8)).toFixed(3));
-    b.nrr -= parseFloat((randFloat(0.1, 0.5)).toFixed(3));
   } else {
-    b.won++;
-    b.points += 2;
-    a.lost++;
-    b.streak = (b.streak || 0) + 1;
-    a.streak = 0;
-    b.nrr += parseFloat((randFloat(0.1, 0.8)).toFixed(3));
-    a.nrr -= parseFloat((randFloat(0.1, 0.5)).toFixed(3));
+    let nrrA = result.nrrModifierA;
+    let nrrB = result.nrrModifierB;
+
+    if (nrrA === undefined || nrrB === undefined) {
+      if (result.winner === a.name) {
+        nrrA = parseFloat((randFloat(0.1, 0.8)).toFixed(3));
+        nrrB = -parseFloat((randFloat(0.1, 0.5)).toFixed(3));
+      } else {
+        nrrB = parseFloat((randFloat(0.1, 0.8)).toFixed(3));
+        nrrA = -parseFloat((randFloat(0.1, 0.5)).toFixed(3));
+      }
+      result.nrrModifierA = nrrA;
+      result.nrrModifierB = nrrB;
+    }
+
+    if (result.winner === a.name) {
+      a.won++;
+      a.points += 2;
+      b.lost++;
+      a.streak = (a.streak || 0) + 1;
+      b.streak = 0;
+    } else {
+      b.won++;
+      b.points += 2;
+      a.lost++;
+      b.streak = (b.streak || 0) + 1;
+      a.streak = 0;
+    }
+
+    a.nrr += nrrA;
+    b.nrr += nrrB;
   }
 
   // Update Destiny Usage
@@ -1108,7 +1124,7 @@ export function generatePlayerStats(squad: SquadSlot[], teamWins: number): Recor
 }
 
 // --- Generate player awards ---
-export function generateAwards(squad: SquadSlot[], pStats: Record<number, PlayerStats>): Record<string, { player: string; team: string }> {
+export function generateAwards(squad: SquadSlot[], pStats: Record<number, PlayerStats>, userTeamShort: string = 'YOUR XI'): Record<string, { player: string; team: string }> {
   const players = squad.filter(s => s.player).map(s => s.player!);
   const getRuns = (id: number) => pStats[id]?.runs || 0;
   const getWickets = (id: number) => pStats[id]?.wickets || 0;
@@ -1147,11 +1163,11 @@ export function generateAwards(squad: SquadSlot[], pStats: Record<number, Player
   ]);
 
   const orangeCap = (topBatter && getRuns(topBatter.id) > aiTopRuns) 
-    ? { player: topBatter.name, team: 'YOUR XI' } 
+    ? { player: topBatter.name, team: userTeamShort } 
     : aiTopRunsPick;
 
   const purpleCap = (topBowler && getWickets(topBowler.id) > aiTopWickets) 
-    ? { player: topBowler.name, team: 'YOUR XI' } 
+    ? { player: topBowler.name, team: userTeamShort } 
     : aiTopWicketsPick;
 
   const aiARScore = randInt(55, 75);
@@ -1164,12 +1180,12 @@ export function generateAwards(squad: SquadSlot[], pStats: Record<number, Player
   ]);
   
   const userARScore = topAR ? getRuns(topAR.id) / 10 + getWickets(topAR.id) * 2 : 0;
-  const bestAR = userARScore > aiARScore ? { player: topAR.name, team: 'YOUR XI' } : aiARPick;
+  const bestAR = userARScore > aiARScore ? { player: topAR.name, team: userTeamShort } : aiARPick;
 
   const aiMVPScore = randInt(65, 85);
   const userMVPScore = topAll ? getRuns(topAll.id) / 10 + getWickets(topAll.id) * 2 : 0;
   const potS = userMVPScore > aiMVPScore 
-    ? { player: topAll.name, team: 'YOUR XI' } 
+    ? { player: topAll.name, team: userTeamShort } 
     : pick([
         { player: 'Virat Kohli', team: 'RCB' },
         { player: 'Andre Russell', team: 'KKR' },

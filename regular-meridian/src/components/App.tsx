@@ -3603,9 +3603,9 @@ function WatchModeScreen({
                  Your Match is Next
                </div>
                <div className="text-xl font-semibold tracking-tight text-[var(--color-ink)] mb-6 bg-black/40 p-4 rounded-xl border border-[var(--color-hairline)] text-center flex flex-col gap-2">
-                 <span className="text-yellow-400 tracking-widest">YOUR XI</span>
+                 <span className="text-yellow-400 tracking-widest">{myFranchise}</span>
                  <span className="text-gray-600 text-xs font-bold">VS</span>
-                 <span className="text-[var(--color-mute)]">{liveTeams[fixtures[currentMatchIdx][0]].short === 'YOUR XI' ? liveTeams[fixtures[currentMatchIdx][1]].short : liveTeams[fixtures[currentMatchIdx][0]].short}</span>
+                 <span className="text-[var(--color-mute)]">{liveTeams[fixtures[currentMatchIdx][0]].short === myFranchise ? liveTeams[fixtures[currentMatchIdx][1]].short : liveTeams[fixtures[currentMatchIdx][0]].short}</span>
                </div>
                <div className="flex flex-col gap-3">
                  <button onClick={() => { setActionDoneForMatch(currentMatchIdx); setIsPaused(false); }} className="btn-primary py-3 text-sm">
@@ -3637,12 +3637,12 @@ function WatchModeScreen({
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold">
-                    Match #{currentMatchIdx} — YOUR XI
+                    Match #{currentMatchIdx} — {myFranchise}
                   </div>
                   <div className="flex gap-2">
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 ${currentResult.userWon ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`}>
                       {currentResult.userWon ? <Check className="w-3 h-3 text-green-400" /> : <X className="w-3 h-3 text-red-400" />}
-                      <span>{currentResult.userWon ? 'YOUR XI WON' : 'YOUR XI LOST'}</span>
+                      <span>{currentResult.userWon ? `${myFranchise} WON` : `${myFranchise} LOST`}</span>
                     </span>
                     {currentResult.rainEvent && (
                       <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-900/50 text-blue-300 flex items-center gap-1">
@@ -4739,8 +4739,8 @@ function MainAppContent() {
       const franchiseA = allFranchises.find(f => f.franchise === teamA.short);
       const franchiseB = allFranchises.find(f => f.franchise === teamB.short);
 
-      const isHomeUser = franchiseA && !franchiseA.id.startsWith('AI_');
-      const isAwayUser = franchiseB && !franchiseB.id.startsWith('AI_');
+      const isHomeUser = !!franchiseA && !franchiseA.id.startsWith('AI_');
+      const isAwayUser = !!franchiseB && !franchiseB.id.startsWith('AI_');
 
       const rosterA = franchiseA ? (updatedRosters[franchiseA.id] || []) : [];
       const rosterB = franchiseB ? (updatedRosters[franchiseB.id] || []) : [];
@@ -4754,24 +4754,44 @@ function MainAppContent() {
       let squadToUse = xiA.map(p => ({ player: p } as SquadSlot));
       let prepToUse: MatchPrepConfig | undefined = { playingXI: xiA, impactBench: sortedA.slice(11) };
 
+      // Calculate A's dynamic strength
       if (isHomeUser && franchiseA) {
         const tactics = mpTacticsRef.current[franchiseA.id];
         if (tactics) {
           squadToUse = tactics.playingXI.map(p => ({ player: p } as SquadSlot));
           prepToUse = { playingXI: tactics.playingXI, impactBench: tactics.impactBench };
+        } else {
+          squadToUse = xiA.map(p => ({ player: p } as SquadSlot));
+          prepToUse = { playingXI: xiA, impactBench: sortedA.slice(11) };
         }
-        teamA.short = 'YOUR XI';
-        teamA.name = 'Your XI';
-      } else if (isAwayUser && franchiseB) {
-        const tactics = mpTacticsRef.current[franchiseB.id];
-        if (tactics) {
-          squadToUse = tactics.playingXI.map(p => ({ player: p } as SquadSlot));
-          prepToUse = { playingXI: tactics.playingXI, impactBench: tactics.impactBench };
-        }
-        teamB.short = 'YOUR XI';
-        teamB.name = 'Your XI';
+        const str = calcSquadStrength(squadToUse);
+        teamA.overall = str.overall;
+        teamA.batting = str.batting;
+        teamA.bowling = str.bowling;
       }
 
+      // Calculate B's dynamic strength
+      if (isAwayUser && franchiseB) {
+        const tactics = mpTacticsRef.current[franchiseB.id];
+        let squadB = xiB.map(p => ({ player: p } as SquadSlot));
+        if (tactics) {
+          squadB = tactics.playingXI.map(p => ({ player: p } as SquadSlot));
+          if (!isHomeUser) {
+            squadToUse = squadB;
+            prepToUse = { playingXI: tactics.playingXI, impactBench: tactics.impactBench };
+          }
+        } else if (!isHomeUser) {
+          squadToUse = xiB.map(p => ({ player: p } as SquadSlot));
+          prepToUse = { playingXI: xiB, impactBench: sortedB.slice(11) };
+        }
+        const str = calcSquadStrength(squadB);
+        teamB.overall = str.overall;
+        teamB.batting = str.batting;
+        teamB.bowling = str.bowling;
+      }
+
+      // Do NOT rename teamA.short or teamB.short to 'YOUR XI' here, 
+      // so applyResult matches name correctly.
       const res = simulateMatch(
         teamA,
         teamB,
@@ -4782,6 +4802,10 @@ function MainAppContent() {
         rosterA,
         rosterB
       );
+
+      // Force human match properties for WatchModeScreen playback
+      res.isUserMatch = isHomeUser || isAwayUser;
+      res.userWon = (isHomeUser && res.winner === teamA.name) || (isAwayUser && res.winner === teamB.name);
 
       applyResult(tempTeams, a, b, res);
       simulatedMatches.push(res);
@@ -5602,7 +5626,7 @@ function MainAppContent() {
     const userTeam = sorted.find(t => t.short === myFranchiseCode) || sorted[0];
     const finalPos = sorted.findIndex(t => t.short === myFranchiseCode) + 1;
 
-    const awards = generateAwards(mySlots, {});
+    const awards = generateAwards(mySlots, {}, myFranchiseCode);
     const story = generateStory(mySlots, userTeam, finalPos, 5, playoffs.champion, userTeam.won, userTeam.lost, {});
 
     setResults({
@@ -5639,7 +5663,7 @@ function MainAppContent() {
     const userTeam = sorted.find(t => t.short === myFranchiseCode) || sorted[0];
     const finalPos = sorted.findIndex(t => t.short === myFranchiseCode) + 1;
 
-    const awards = generateAwards(mySlots, finalSeasonStats);
+    const awards = generateAwards(mySlots, finalSeasonStats, myFranchiseCode);
     const story = generateStory(mySlots, userTeam, finalPos, 5, playoffs.champion, userTeam.won, userTeam.lost, finalSeasonStats);
 
     setResults({
