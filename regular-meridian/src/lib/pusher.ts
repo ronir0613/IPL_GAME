@@ -225,11 +225,42 @@ export class PusherManager {
 
   // Broadcast message to all channel subscribers via client-events
   public send(type: MpMessageType, payload: any, senderName: string = '') {
+    let payloadToSend = payload;
+
+    const compressState = (state: any): any => {
+      if (!state || typeof state !== 'object') return state;
+      if (!state.rosters) return state;
+      
+      const compressedRosters: Record<string, number[]> = {};
+      for (const peerId in state.rosters) {
+        const roster = state.rosters[peerId];
+        if (Array.isArray(roster)) {
+          compressedRosters[peerId] = roster.map((p: any) => {
+            return (p && typeof p === 'object' && typeof p.id === 'number') ? p.id : p;
+          });
+        }
+      }
+      
+      return {
+        ...state,
+        rosters: compressedRosters
+      };
+    };
+
+    if (type === 'DRAFT_UPDATE' || type === 'LOBBY_UPDATE' || type === 'TACTICS_UPDATE') {
+      payloadToSend = compressState(payload);
+    } else if (type === 'FORCE_START_SEASON' && payload && payload.state) {
+      payloadToSend = {
+        ...payload,
+        state: compressState(payload.state)
+      };
+    }
+
     let msg: MpMessage = {
       type,
       senderPeerId: this.peerId,
       senderName: senderName || this.userName,
-      payload
+      payload: payloadToSend
     };
 
     if (!this.channel) {
@@ -239,7 +270,7 @@ export class PusherManager {
 
     if (this.isHost && (type === 'LOBBY_UPDATE' || type === 'DRAFT_UPDATE')) {
       // Host overrides isHost for the client to be false
-      msg.payload = { ...payload, isHost: false };
+      msg.payload = { ...msg.payload, isHost: false };
     }
 
     const msgString = JSON.stringify(msg);

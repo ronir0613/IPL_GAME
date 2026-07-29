@@ -4961,7 +4961,42 @@ function MainAppContent() {
   };
 
   const handleMpMessage = useCallback((msg: MpMessage) => {
-    const { type, senderPeerId, senderName, payload } = msg;
+    let { type, senderPeerId, senderName, payload } = msg;
+
+    // Helper to reconstruct rosters from player IDs
+    const decompressState = (state: any): MpState => {
+      if (!state || !state.rosters) return state;
+      const reconstructedRosters: Record<string, Player[]> = {};
+      for (const peerId in state.rosters) {
+        const playerIdsOrObjs = state.rosters[peerId];
+        if (Array.isArray(playerIdsOrObjs)) {
+          reconstructedRosters[peerId] = playerIdsOrObjs.map((item: any) => {
+            if (typeof item === 'number') {
+              const found = playersPool.find(p => p.id === item);
+              return found || ({ id: item } as any);
+            }
+            if (item && typeof item === 'object' && !item.name) {
+              const found = playersPool.find(p => p.id === item.id);
+              return found || item;
+            }
+            return item;
+          });
+        }
+      }
+      return {
+        ...state,
+        rosters: reconstructedRosters
+      };
+    };
+
+    if (type === 'DRAFT_UPDATE' || type === 'LOBBY_UPDATE' || type === 'TACTICS_UPDATE') {
+      payload = decompressState(payload);
+    } else if (type === 'FORCE_START_SEASON' && payload && payload.state) {
+      payload = {
+        ...payload,
+        state: decompressState(payload.state)
+      };
+    }
 
     switch (type) {
       case 'CLIENT_JOIN':
@@ -5279,6 +5314,41 @@ function MainAppContent() {
         break;
     }
   }, [mpState, playersPool, phase]);
+
+  // Keep mpState rosters in sync and fully populated when playersPool loads
+  useEffect(() => {
+    if (!mpState || playersPool.length === 0) return;
+    
+    let needsUpdate = false;
+    const reconstructedRosters: Record<string, Player[]> = {};
+    
+    for (const peerId in mpState.rosters) {
+      const roster = mpState.rosters[peerId];
+      if (Array.isArray(roster)) {
+        reconstructedRosters[peerId] = roster.map(item => {
+          if (typeof item === 'number' || (item && typeof item === 'object' && !item.name)) {
+            const playerId = typeof item === 'number' ? item : item.id;
+            const fullPlayer = playersPool.find(p => p.id === playerId);
+            if (fullPlayer) {
+              needsUpdate = true;
+              return fullPlayer;
+            }
+          }
+          return item as Player;
+        });
+      }
+    }
+    
+    if (needsUpdate) {
+      setMpState(prev => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          rosters: reconstructedRosters
+        };
+      });
+    }
+  }, [playersPool, mpState?.rosters]);
 
   handleMpMessageRef.current = handleMpMessage;
 
