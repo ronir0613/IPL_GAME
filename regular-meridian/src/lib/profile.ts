@@ -27,18 +27,26 @@ export function getProfileData(): PlayerProfileData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      return JSON.parse(raw) as PlayerProfileData;
+      const data = JSON.parse(raw) as PlayerProfileData;
+      // Backfill playerId if missing in existing profiles
+      if (!data.playerId) {
+        data.playerId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Math.random().toString(36).substring(2, 15) + Date.now().toString(36));
+        saveProfileData(data);
+      }
+      return data;
     }
   } catch (e) {
     console.error('Failed to parse profile data from localStorage', e);
   }
   
-  // Return default empty state
-  return {
-    playerId: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15),
+  // Return default empty state and save it
+  const defaultData: PlayerProfileData = {
+    playerId: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Math.random().toString(36).substring(2, 15) + Date.now().toString(36)),
     handle: null,
     runs: []
   };
+  saveProfileData(defaultData);
+  return defaultData;
 }
 
 export function saveProfileData(data: PlayerProfileData) {
@@ -90,8 +98,12 @@ export function exportProfileData(): string {
 
 export function importProfileData(jsonString: string): boolean {
   try {
-    const parsed = JSON.parse(jsonString) as PlayerProfileData;
-    if (parsed && parsed.playerId && Array.isArray(parsed.runs)) {
+    const parsed = JSON.parse(jsonString) as any;
+    if (parsed && Array.isArray(parsed.runs)) {
+      // Backfill playerId if missing in imported profiles
+      if (!parsed.playerId) {
+        parsed.playerId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : (Math.random().toString(36).substring(2, 15) + Date.now().toString(36));
+      }
       saveProfileData(parsed);
       return true;
     }

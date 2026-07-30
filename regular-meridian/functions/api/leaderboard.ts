@@ -85,12 +85,42 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       submissionHandle = `Player${Math.floor(Math.random() * 1000000)}`;
     }
 
+    if (!data.userId) {
+      return Response.json({ error: "Missing user ID (userId)" }, { status: 400 });
+    }
+    if (!data.id) {
+      return Response.json({ error: "Missing run ID (id)" }, { status: 400 });
+    }
+
     // The user's permanent handle (if they don't have one, this becomes their permanent one too)
     const permanentHandle = data.handle || submissionHandle;
     
-    await context.env.DB.prepare(`
-      INSERT OR IGNORE INTO users (id, handle) VALUES (?1, ?2)
-    `).bind(data.userId, permanentHandle).run();
+    // Ensure the user exists in the users table
+    let userHandle = permanentHandle;
+    const userCheck = await context.env.DB.prepare('SELECT id, handle FROM users WHERE id = ?').bind(data.userId).first<any>();
+    if (!userCheck) {
+      // If the handle is already taken, append a random suffix to make it unique
+      let handleUnique = false;
+      let suffixAttempts = 0;
+      while (!handleUnique && suffixAttempts < 10) {
+        const existingUser = await context.env.DB.prepare('SELECT id FROM users WHERE handle = ?').bind(userHandle).first();
+        if (!existingUser) {
+          handleUnique = true;
+        } else {
+          userHandle = `${permanentHandle}${Math.floor(Math.random() * 100)}`;
+          suffixAttempts++;
+        }
+      }
+      if (!handleUnique) {
+        userHandle = `${permanentHandle}${Math.floor(Math.random() * 10000)}`;
+      }
+      
+      await context.env.DB.prepare(`
+        INSERT INTO users (id, handle) VALUES (?1, ?2)
+      `).bind(data.userId, userHandle).run();
+    } else {
+      userHandle = userCheck.handle;
+    }
 
     await context.env.DB.prepare(`
       INSERT INTO leaderboard (id, user_id, date, mode, wins, losses, points, nrr, position, champion, handle, overall, finish, difficulty, showRatings) 
@@ -123,8 +153,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const rank = results.length > 0 ? results[0].rank : null;
 
-    return Response.json({ success: true, rank, handle: permanentHandle });
+    return Response.json({ success: true, rank, handle: userHandle });
   } catch (e: any) {
+    console.error("Leaderboard submission error:", e);
     return Response.json({ error: e.message }, { status: 500 });
   }
 };

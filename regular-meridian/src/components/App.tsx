@@ -3104,6 +3104,7 @@ function FullControlSeasonScreen({
         const res = simulateMatch(liveTeams[a], liveTeams[b], playersPool, currentSquad, forms);
         applyResult(liveTeams, a, b, res);
         accumulateStats(seasonStats, res.matchStats);
+        delete res.matchStats;
         
         setHistory(prev => [...prev, res]);
         setLiveTeams([...liveTeams]);
@@ -3164,6 +3165,7 @@ function FullControlSeasonScreen({
           const res = simulateMatch(liveTeams[a], liveTeams[b], playersPool, updatedSquad, forms, { playingXI, impactBench });
           applyResult(liveTeams, a, b, res);
           accumulateStats(seasonStats, res.matchStats);
+          delete res.matchStats;
           
           let newForms = { ...forms };
           newForms = updateAllForms(newForms, updatedSquad, res.userWon, res.motm?.player.id);
@@ -3416,7 +3418,7 @@ function WatchModeScreen({
   
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const teamsRef = useRef<SeasonTeam[]>(initialState?.liveTeams ? JSON.parse(JSON.stringify(initialState.liveTeams)) : JSON.parse(JSON.stringify(teams)));
-  const historyRef = useRef<MatchResult[]>(initialState?.historyRefValue ?? []);
+  const historyRef = useRef<MatchResult[]>(initialState?.completedMatches ?? initialState?.historyRefValue ?? []);
   const formsRef = useRef<Record<number, PlayerForm>>(initialState?.formsRefValue ?? initialForms);
   const seasonStatsRef = useRef<Record<number, PlayerStats>>(initialState?.seasonStatsRefValue ?? {});
   
@@ -3437,7 +3439,6 @@ function WatchModeScreen({
         localSquad,
         playingXI,
         impactBench,
-        historyRefValue: historyRef.current,
         seasonStatsRefValue: seasonStatsRef.current,
         formsRefValue: formsRef.current,
       });
@@ -3499,10 +3500,12 @@ function WatchModeScreen({
       }
       applyResult(teamsRef.current, a, b, res);
       accumulateStats(seasonStatsRef.current, res.matchStats);
+      delete res.matchStats;
     } else {
       res = simulateMatch(teamsRef.current[a], teamsRef.current[b], playersPool, localSquad, formsRef.current, matchPrepConfig);
       applyResult(teamsRef.current, a, b, res);
       accumulateStats(seasonStatsRef.current, res.matchStats);
+      delete res.matchStats;
     }
     
     setLiveSeasonStats({ ...seasonStatsRef.current });
@@ -3970,6 +3973,7 @@ function PlayoffsWatchScreen({
       // @ts-ignore
       accumulateStats(newStats, res.matchStats);
       setStats(newStats);
+      delete res.matchStats;
     }
     
     if (res.isUserMatch) {
@@ -4808,6 +4812,7 @@ function MainAppContent() {
       res.userWon = (isHomeUser && res.winner === teamA.name) || (isAwayUser && res.winner === teamB.name);
 
       applyResult(tempTeams, a, b, res);
+      delete res.matchStats;
       simulatedMatches.push(res);
     });
 
@@ -4831,6 +4836,13 @@ function MainAppContent() {
     setMpSeasonStats({});
     setMpForms({});
     setMpSeasonResults([]);
+    setWatchModeState(null);
+    setPlayoffsState(null);
+    try {
+      localStorage.removeItem('160play_active_game');
+    } catch (err) {
+      console.warn('Unable to remove game state from localStorage:', err);
+    }
 
     const finalState: MpState = {
       ...stateToStart,
@@ -5273,6 +5285,13 @@ function MainAppContent() {
         setMpSeasonStats({});
         setMpForms({});
         setMpSeasonResults([]);
+        setWatchModeState(null);
+        setPlayoffsState(null);
+        try {
+          localStorage.removeItem('160play_active_game');
+        } catch (err) {
+          console.warn('Unable to remove game state from localStorage:', err);
+        }
         setPhase('mp-watching');
         break;
 
@@ -5516,6 +5535,13 @@ function MainAppContent() {
     setMpState(null);
     setResults(null);
     setLastActivePhase(null);
+    setWatchModeState(null);
+    setPlayoffsState(null);
+    try {
+      localStorage.removeItem('160play_active_game');
+    } catch (err) {
+      console.warn('Unable to remove game state from localStorage:', err);
+    }
     setPhase('home');
   };
 
@@ -5824,6 +5850,7 @@ function MainAppContent() {
         const res = simulateMatch(teams[a], teams[b], playersPool, squad, currentForms);
         if (res.matchStats) accumulateStats(currentSeasonStats, res.matchStats);
         applyResult(teams, a, b, res);
+        delete res.matchStats;
         if (res.isUserMatch) {
           currentForms = updateAllForms(currentForms, squad, res.userWon, res.motm?.player.id);
         }
@@ -6482,6 +6509,7 @@ function MainAppContent() {
             const res = simulateMatch(teams[a], teams[b], playersPool, watchData.squad, currentForms);
             if (res.matchStats) accumulateStats(currentSeasonStats, res.matchStats);
             applyResult(teams, a, b, res);
+            delete res.matchStats;
             if (res.isUserMatch) {
               currentForms = updateAllForms(currentForms, watchData.squad, res.userWon, res.motm?.player.id);
             }
