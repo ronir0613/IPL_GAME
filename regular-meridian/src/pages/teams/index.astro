@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { slugify } from '../../lib/slugify';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const filePath = path.join(process.cwd(), 'public', 'ipl_v10_FINAL.json');
+const rawData = fs.readFileSync(filePath, 'utf-8');
+const allPlayers = JSON.parse(rawData);
+
+// Group players by team to find unique teams and calculate their average top-player rating
+const teamGroups = new Map<string, any[]>();
+for (const p of allPlayers) {
+  if (!p.team) continue;
+  const teamName = p.team.trim();
+  if (!teamGroups.has(teamName)) {
+    teamGroups.set(teamName, []);
+  }
+  teamGroups.get(teamName)!.push(p);
+}
+
+const teamsList: any[] = [];
+for (const [teamName, records] of teamGroups.entries()) {
+  const playerMap = new Map<string, any>();
+  for (const r of records) {
+    const pName = r.name.trim();
+    if (!playerMap.has(pName)) {
+      playerMap.set(pName, r);
+    } else {
+      if (r.rating > playerMap.get(pName)!.rating) {
+        playerMap.set(pName, r);
+      }
+    }
+  }
+
+  const uniquePlayers = Array.from(playerMap.values()).sort((a: any, b: any) => b.rating - a.rating);
+  
+  // Calculate a mock "franchise strength" by averaging top 11 players, or fewer if not available
+  const top11 = uniquePlayers.slice(0, 11);
+  const avgStrength = top11.reduce((sum: number, p: any) => sum + p.rating, 0) / (top11.length || 1);
+
+  teamsList.push({
+    name: teamName,
+    slug: slugify(teamName),
+    playerCount: uniquePlayers.length,
+    topPlayer: uniquePlayers[0]?.name,
+    strength: Math.round(avgStrength)
+  });
+}
+
+teamsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
+---
+
+<Layout 
+  title="16-0play Franchise Teams"
+  description="Explore all franchises available in 16-0play. View team rosters, historical strengths, and discover the best players to draft for your perfect season."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tight mb-4">Franchise Hub</h1>
+      <p class="text-lg text-[var(--color-body)] max-w-2xl">
+        Discover the historic cricket franchises that make up the 16-0play universe. Evaluate team strengths, view complete historical rosters, and plan your ultimate draft strategy.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {teamsList.map((team: any) => (
+        <a href={`/teams/${team.slug}`} class="flex flex-col p-6 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl hover:border-yellow-500/50 hover:bg-[var(--color-canvas-soft-2)] transition-all group shadow-sm">
+          <div class="flex items-start justify-between mb-4">
+            <h2 class="text-xl font-bold text-[var(--color-ink)] group-hover:text-yellow-600 transition-colors">{team.name}</h2>
+            <div class="px-2 py-1 bg-[var(--color-canvas)] rounded text-xs font-bold" style={`color: ${team.strength >= 80 ? '#ef4444' : team.strength >= 75 ? '#f59e0b' : '#3b82f6'}`}>
+              STR: {team.strength}
+            </div>
+          </div>
+          <div class="mt-auto space-y-1">
+            <p class="text-sm text-[var(--color-mute)]"><strong class="text-[var(--color-ink)]">Roster Size:</strong> {team.playerCount} players</p>
+            {team.topPlayer && (
+              <p class="text-sm text-[var(--color-mute)]"><strong class="text-[var(--color-ink)]">Top Rated:</strong> {team.topPlayer}</p>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

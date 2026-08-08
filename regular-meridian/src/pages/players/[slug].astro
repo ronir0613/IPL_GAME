@@ -1,0 +1,135 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { slugify } from '../../lib/slugify';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export async function getStaticPaths() {
+  const filePath = path.join(process.cwd(), 'public', 'ipl_v10_FINAL.json');
+  const rawData = fs.readFileSync(filePath, 'utf-8');
+  const allPlayers = JSON.parse(rawData);
+
+  // Group by normalized name
+  const playerGroups = new Map<string, any[]>();
+  for (const p of allPlayers) {
+    if (!p.name) continue;
+    const normName = p.name.trim();
+    if (!playerGroups.has(normName)) {
+      playerGroups.set(normName, []);
+    }
+    playerGroups.get(normName)!.push(p);
+  }
+
+  const paths = [];
+  for (const [name, records] of playerGroups.entries()) {
+    // Determine max rating and primary role (most frequent or max rating's role)
+    let maxRating = 0;
+    let bestRecord = records[0];
+    
+    for (const r of records) {
+      if (r.rating > maxRating) {
+        maxRating = r.rating;
+        bestRecord = r;
+      }
+    }
+    
+    // Only generate pages for meaningful players (rating > 0 or has records)
+    if (maxRating > 0) {
+      paths.push({
+        params: { slug: slugify(name) },
+        props: {
+          name,
+          role: bestRecord.role,
+          maxRating,
+          records: records.sort((a: any, b: any) => b.season - a.season),
+          bestTeam: bestRecord.team
+        }
+      });
+    }
+  }
+
+  return paths;
+}
+
+interface RecordData {
+  season: number;
+  team: string;
+  role: string;
+  rating: number;
+}
+const { name, role, maxRating, records, bestTeam } = Astro.props as { name: string; role: string; maxRating: number; records: RecordData[]; bestTeam: string };
+
+// Role Expansion
+const roleFull = ({
+  BAT: 'Batter',
+  BOWL: 'Bowler',
+  AR: 'All-Rounder',
+  WK: 'Wicketkeeper'
+} as Record<string, string>)[role] || role;
+
+const title = `${name} - 16-0play Cricket Ratings & Stats`;
+const description = `View ${name}'s historical ratings, roles, and statistics in 16-0play. Build your ultimate cricket XI with top players like ${name}.`;
+---
+
+<Layout title={title} description={description}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-8">
+      <a href="/players" class="text-yellow-600 hover:text-yellow-500 font-medium text-sm flex items-center gap-1">
+        &larr; Back to Players Database
+      </a>
+    </div>
+
+    <div class="bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-2xl overflow-hidden shadow-lg">
+      <div class="p-8 md:p-12 border-b border-[var(--color-hairline)] flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tight">{name}</h1>
+          <p class="text-xl text-[var(--color-mute)] mt-2 font-medium">{roleFull} &bull; Peak Rating: {maxRating}</p>
+        </div>
+        <div class="shrink-0">
+          <div class="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center text-3xl md:text-5xl font-black" 
+               style={`background-color: ${maxRating >= 90 ? '#ef4444' : maxRating >= 80 ? '#f59e0b' : '#3b82f6'}; color: white;`}>
+            {maxRating}
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8 md:p-12 text-[var(--color-body)] text-lg leading-relaxed">
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Player Profile</h2>
+        <p class="mb-6">
+          <strong>{name}</strong> is a highly rated <strong>{roleFull.toLowerCase()}</strong> in the 16-0play database, reaching a peak overall rating of <strong>{maxRating}</strong> during the <strong>{records.find((r: any) => r.rating === maxRating)?.season}</strong> season with <strong>{bestTeam}</strong>. 
+        </p>
+        <p>
+          In the 16-0play simulation engine, building a balanced squad is critical. As a {roleFull.toLowerCase()}, {name} plays a vital role in determining team chemistry and match outcomes. A peak rating of {maxRating} makes them {maxRating >= 85 ? 'an elite tier selection for any all-time XI aiming for a perfect 16-0 season.' : 'a solid contributor capable of anchoring your franchise through a gruelling season.'}
+        </p>
+      </div>
+
+      <div class="bg-[var(--color-canvas)] p-8 md:p-12 border-t border-[var(--color-hairline)]">
+        <h3 class="text-2xl font-bold text-[var(--color-ink)] mb-6">Career History (16-0play Database)</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-[var(--color-hairline)]">
+                <th class="py-3 px-4 text-sm font-bold text-[var(--color-mute)] uppercase tracking-wider">Season</th>
+                <th class="py-3 px-4 text-sm font-bold text-[var(--color-mute)] uppercase tracking-wider">Team</th>
+                <th class="py-3 px-4 text-sm font-bold text-[var(--color-mute)] uppercase tracking-wider">Role</th>
+                <th class="py-3 px-4 text-sm font-bold text-[var(--color-mute)] uppercase tracking-wider text-right">Rating</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[var(--color-hairline)]">
+              {records.map((record: any) => (
+                <tr class="hover:bg-[var(--color-canvas-soft-2)] transition-colors">
+                  <td class="py-4 px-4 text-[var(--color-ink)] font-medium">{record.season}</td>
+                  <td class="py-4 px-4 text-yellow-600 font-medium">
+                    <a href={`/teams/${slugify(record.team)}`} class="hover:underline">{record.team}</a>
+                  </td>
+                  <td class="py-4 px-4 text-[var(--color-mute)]">{record.role}</td>
+                  <td class="py-4 px-4 text-[var(--color-ink)] font-bold text-right">{record.rating}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

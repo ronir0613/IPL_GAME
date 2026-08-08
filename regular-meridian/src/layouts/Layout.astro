@@ -1,3 +1,17 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { 
+	title = "16-0 Play | The Ultimate Cricket Strategy Game",
+	description = "Play the ultimate 16-0 cricket simulator. Build your greatest playing XI, master cricket team management, and achieve the perfect 16-0 challenge."
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -19,7 +33,11 @@
 		<meta name="apple-mobile-web-app-title" content="16 & 0" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		
+    <slot name="head" />
+
 		<script is:inline>
 			const theme = (() => {
 				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -71,8 +89,65 @@
     <!-- Google AdSense -->
     <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3180090639225904" crossorigin="anonymous"></script>
 	</head>
-	<body>
-		<slot />
+	<body class="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)] flex flex-col">
+    <!-- Global Navigation -->
+    <header class="w-full bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <a href="/" class="text-xl font-black tracking-tight text-[var(--color-ink)] flex items-center gap-2">
+          <span class="text-yellow-500">16-0</span>PLAY
+        </a>
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--color-mute)]">
+          <a href="/" class="hover:text-yellow-600 transition-colors">Play</a>
+          <a href="/players" class="hover:text-yellow-600 transition-colors">Players</a>
+          <a href="/teams" class="hover:text-yellow-600 transition-colors">Teams</a>
+          <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
+          <a href="/how-to-play" class="hover:text-yellow-600 transition-colors">How to Play</a>
+        </nav>
+        <!-- Mobile Menu Placeholder -->
+        <div class="md:hidden flex items-center">
+          <a href="/players" class="text-xs font-bold bg-[var(--color-canvas-soft-2)] px-3 py-1.5 rounded text-[var(--color-ink)]">Menu</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col w-full">
+		  <slot />
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="w-full bg-[var(--color-canvas-soft)] border-t border-[var(--color-hairline)] py-12 mt-auto">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-4 gap-8 text-sm text-[var(--color-body)]">
+        <div class="col-span-1 md:col-span-2">
+          <h3 class="text-[var(--color-ink)] font-bold text-lg mb-3 tracking-wider">16-0 PLAY</h3>
+          <p class="text-[var(--color-mute)] leading-relaxed text-xs max-w-md">
+            The ultimate cricket strategy and team-building simulator. Build your greatest playing XI and achieve the impossible perfect season.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-[var(--color-ink)] font-bold mb-4 tracking-wider uppercase text-xs">Game Hub</h3>
+          <div class="flex flex-col space-y-2 text-[var(--color-mute)] font-medium text-xs">
+            <a href="/players" class="hover:text-yellow-600 transition-colors">Player Database</a>
+            <a href="/teams" class="hover:text-yellow-600 transition-colors">Franchises</a>
+            <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
+            <a href="/rating-system" class="hover:text-yellow-600 transition-colors">Rating System</a>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-[var(--color-ink)] font-bold mb-4 tracking-wider uppercase text-xs">Legal & Info</h3>
+          <div class="flex flex-col space-y-2 text-[var(--color-mute)] font-medium text-xs">
+            <a href="/about" class="hover:text-yellow-600 transition-colors">About Us</a>
+            <a href="/contact" class="hover:text-yellow-600 transition-colors">Contact Us</a>
+            <a href="/privacy-policy" class="hover:text-yellow-600 transition-colors">Privacy Policy</a>
+            <a href="/terms-and-conditions" class="hover:text-yellow-600 transition-colors">Terms & Conditions</a>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-[var(--color-hairline)] flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-[var(--color-mute)]">
+        <p>&copy; {new Date().getFullYear()} 16-0play. All rights reserved.</p>
+        <p>Not affiliated with any official cricket boards.</p>
+      </div>
+    </footer>
 	</body>
 </html>
 

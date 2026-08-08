@@ -1,51 +1,13 @@
 ---
-
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 import App from '../components/App.tsx';
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-
-    <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      })();
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-      window.localStorage.setItem('theme', theme);
-    </script>
-
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-DC032Y6PFZ');
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <meta name="generator" content={Astro.generator} />
-    <link rel="canonical" href="https://16-0play.com/" />
-    
-    <!-- SEO Meta Tags -->
-    <title>16-0 Play | The Ultimate Cricket Strategy Game</title>
-    <meta name="description" content="Play the ultimate 16-0 cricket simulator. Build your greatest playing XI, master cricket team management, and achieve the perfect 16-0 challenge." />
-    <meta name="keywords" content="16-0, 16-0play, 16-0 game, 6-0 college football teams, 16-0-8 fertilizer, ipl, ipl 2026, ipl standings, ipl 2025, ipl match today, cricket, greatest playing XI, ipl score, ipl schedule, 16 and 0, 16-0 challenge, perfect season challenge, perfect cricket season, build the greatest cricket team, cricket simulator, cricket management game, fantasy cricket simulator, cricket strategy game, cricket dynasty simulator, cricket franchise simulator, cricket legends team, dream cricket XI, unbeaten cricket season, 16 wins challenge, road to 16-0, perfect run, cricket leaderboard, sports simulation game, fantasy sports strategy game, online cricket game, browser cricket game, cricket team management, sports management simulator, greatest sports team challenge, cricket records, cricket statistics, cricket strategy simulator, all star cricket team, cricket history, T20 cricket, franchise cricket, 38-0, 38-0-0, game" />
-    
+<Layout 
+  title="16-0 Play | The Ultimate Cricket Strategy Game"
+  description="Play the ultimate 16-0 cricket simulator. Build your greatest playing XI, master cricket team management, and achieve the perfect 16-0 challenge."
+>
+  <Fragment slot="head">
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://16-0play.com/" />
@@ -63,194 +25,88 @@ import App from '../components/App.tsx';
   
     <!-- FAQ JSON-LD -->
     <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>16-0play is a cricket strategy and team-building game where players create their ultimate all-time cricket XI and attempt to achieve the impossible: a perfect 16-0 season.</p>"}},{"@type":"Question","name":"What does 16-0 mean in 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>16-0 represents a perfect, undefeated season where your cricket team wins all 16 matches consecutively without a single loss.</p>"}},{"@type":"Question","name":"Can I build the greatest cricket team of all time?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes. Players can build their own greatest playing XI using legendary cricketers and compete to create the strongest team possible while chasing a perfect season.</p>"}},{"@type":"Question","name":"Can I create my own all-time playing XI?","acceptedAnswer":{"@type":"Answer","text":"<p>Absolutely! You have the freedom to select players across different eras and franchises to form your customized all-time playing XI.</p>"}},{"@type":"Question","name":"How do I play 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>Simply select your players to form a squad, set your lineup, and start simulating matches. Use strategic decision-making to manage your team through the 16-game season.</p>"}},{"@type":"Question","name":"How do cricket matches work in 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>Matches are simulated using an advanced cricket engine that calculates outcomes based on player statistics, team overall ratings, and form factors.</p>"}},{"@type":"Question","name":"How do I win a perfect 16-0 season?","acceptedAnswer":{"@type":"Answer","text":"<p>Winning a 16-0 season requires selecting a balanced team, maintaining high player ratings, and utilizing effective management strategies across all 16 matches.</p>"}},{"@type":"Question","name":"Why is a 16-0 season so difficult?","acceptedAnswer":{"@type":"Answer","text":"<p>Just like in real cricket, unpredictable elements, varying pitch conditions, and tough opponents make maintaining an undefeated streak incredibly challenging.</p>"}},{"@type":"Question","name":"What happens if I lose a match?","acceptedAnswer":{"@type":"Answer","text":"<p>If you lose a match, your perfect season run ends. However, you can complete the season to see your final record or restart to try again for the elusive 16-0.</p>"}},{"@type":"Question","name":"Can I use players from different eras?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, 16-0play features a vast roster that includes both current superstars and cricket legends from different eras.</p>"}},{"@type":"Question","name":"Can I build teams with cricket legends?","acceptedAnswer":{"@type":"Answer","text":"<p>Definitely. You can draft iconic cricket legends into your team to boost your overall rating and chances of winning.</p>"}},{"@type":"Question","name":"What is the greatest playing XI challenge?","acceptedAnswer":{"@type":"Answer","text":"<p>It's the ultimate goal of the game: drafting the best possible combination of 11 players and proving their dominance by completing a perfect season.</p>"}},{"@type":"Question","name":"How does team chemistry work?","acceptedAnswer":{"@type":"Answer","text":"<p>Team chemistry is influenced by player roles, balanced squad composition, and effective combinations, heavily impacting match simulation results.</p>"}},{"@type":"Question","name":"How does the leaderboard work?","acceptedAnswer":{"@type":"Answer","text":"<p>The leaderboard tracks and ranks the best seasons globally, displaying the players who have achieved 16-0 or the highest win counts.</p>"}},{"@type":"Question","name":"Can I compete against other players?","acceptedAnswer":{"@type":"Answer","text":"<p>You compete asynchronously by comparing your best season records and team ratings on the global leaderboard.</p>"}},{"@type":"Question","name":"What is the current world record in 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>The ultimate record is a 16-0 season. Check the live leaderboard to see who has achieved this prestigious milestone.</p>"}},{"@type":"Question","name":"How are match results calculated?","acceptedAnswer":{"@type":"Answer","text":"<p>Results are determined by a complex algorithm weighing your team's batting and bowling ratings against the opponent's stats, with some random variance.</p>"}},{"@type":"Question","name":"Can I create franchise-based teams?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, you can theme your team by selecting players predominantly from specific real-world franchises.</p>"}},{"@type":"Question","name":"What is the best strategy for building a winning team?","acceptedAnswer":{"@type":"Answer","text":"<p>A balanced approach is key. Ensure you have strong top-order batsmen, versatile all-rounders, and a mix of pace and spin bowlers.</p>"}},{"@type":"Question","name":"Can I create a team with players from multiple franchises?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, there are no restrictions on player combinations. You can mix and match players from any franchise to build your ultimate dream team.</p>"}},{"@type":"Question","name":"What makes a team strong in 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>A strong team has high average player ratings, well-covered roles (openers, middle-order, spinners, pacers), and excellent depth.</p>"}},{"@type":"Question","name":"How important are team combinations?","acceptedAnswer":{"@type":"Answer","text":"<p>Crucial. Having the right combination of left/right-hand batsmen and a varied bowling attack significantly increases your win probability.</p>"}},{"@type":"Question","name":"What is a perfect season challenge?","acceptedAnswer":{"@type":"Answer","text":"<p>It is the core challenge of the game: managing a team successfully to win all 16 matches in a single campaign.</p>"}},{"@type":"Question","name":"Can I share my team with friends?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes! You can screenshot your final playing XI and your season record to share your achievements with friends.</p>"}},{"@type":"Question","name":"Is 16-0play free to play?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, 16-0play is completely free to play for all cricket fans.</p>"}},{"@type":"Question","name":"Is 16-0play a cricket simulator?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, it is a comprehensive cricket simulator focused on team building, strategy, and season management.</p>"}},{"@type":"Question","name":"Is 16-0play a cricket strategy game?","acceptedAnswer":{"@type":"Answer","text":"<p>Absolutely. Tactical decisions in squad selection and team balancing are required to succeed.</p>"}},{"@type":"Question","name":"Is 16-0play a team builder game?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, building and optimizing your cricket team is the foundational mechanic of the entire game.</p>"}},{"@type":"Question","name":"Can I build the ultimate cricket XI?","acceptedAnswer":{"@type":"Answer","text":"<p>Yes, that is exactly what the game allows you to do by giving you access to a vast database of cricket players.</p>"}},{"@type":"Question","name":"Can anyone achieve a 16-0 season?","acceptedAnswer":{"@type":"Answer","text":"<p>Anyone can try, but only the most strategic players with perfectly balanced teams will achieve the 16-0 milestone.</p>"}},{"@type":"Question","name":"Why do players chase a 16-0 record?","acceptedAnswer":{"@type":"Answer","text":"<p>A 16-0 record represents undisputed perfection, offering the highest level of bragging rights and leaderboard prestige.</p>"}}]}
+      {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>16-0play is a cricket strategy and team-building game where players create their ultimate all-time cricket XI and attempt to achieve the impossible: a perfect 16-0 season.</p>"}},{"@type":"Question","name":"What does 16-0 mean in 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>16-0 represents a perfect, undefeated season where your cricket team wins all 16 matches consecutively without a single loss.</p>"}},{"@type":"Question","name":"How do I play 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>Simply select your players to form a squad, set your lineup, and start simulating matches. Use strategic decision-making to manage your team through the 16-game season.</p>"}},{"@type":"Question","name":"How are match results calculated?","acceptedAnswer":{"@type":"Answer","text":"<p>Results are determined by a robust simulation engine weighing your team's batting, bowling, form, and chemistry ratings against the opponent's stats, with some random variance representing the unpredictability of cricket.</p>"}}]}
     </script>
-  
-    <!-- Google AdSense -->
-    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3180090639225904" crossorigin="anonymous"></script>
+    
+    <link rel="canonical" href="https://16-0play.com/" />
 
     <!-- WebGameRank SDK -->
     <script is:inline src="https://webgamerank.com/sdk.js" data-key="gr_B7aqKutjBBiZJBQSffuf6gVq" async></script>
-  </head>
-  <body class="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] overflow-x-hidden selection:bg-yellow-500/30">
-    
-    <App client:only="react" />
+  </Fragment>
 
-    <!-- SEO Content Section -->
-    <div id="home-only-content" class="w-full bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]">
-      <article class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 text-[var(--color-body)] text-base leading-relaxed space-y-8">
-        <h1 class="text-2xl font-bold text-[var(--color-ink)]">Welcome to 16-0play: The Ultimate Cricket Team Builder and Strategy Simulator</h1>
-        <p>
-          Can you build the greatest cricket team ever assembled?
-        </p>
-        <p>
-          Welcome to <strong>16-0play</strong>, the ultimate cricket strategy and team-building game where players create their all-time playing XI and attempt to achieve the impossible: a perfect <strong>16-0 season</strong>. Whether you're a fan of legendary cricket players, modern T20 stars, or strategic sports management games, 16-0play offers a unique challenge unlike any other cricket simulator online.
-        </p>
-        <p>
-          Inspired by the excitement of franchise cricket and the strategic depth of sports management games, 16-0play challenges you to assemble the strongest possible team and guide them through an unforgettable season. One loss ends the dream. Sixteen wins creates history.
-        </p>
+  <!-- Game React App -->
+  <App client:only="react" />
 
-        <h3 class="text-xl font-bold text-[var(--color-ink)] pt-4">Build Your Greatest Playing XI</h3>
-        <p>
-          Every cricket fan has asked the question: <strong>What is the greatest playing XI of all time?</strong>
-        </p>
-        <p>
-          16-0play allows you to answer that question by building your own ultimate cricket team. Choose from legendary players, modern superstars, and all-time greats to create a balanced and powerful squad capable of dominating the competition.
-        </p>
-        <p>
-          Success isn't just about selecting the highest-rated players. You'll need to balance batting depth, bowling strength, all-rounders, team chemistry, and strategic combinations. Every selection matters when you're chasing a perfect season.
-        </p>
-        <p>
-          Whether you're building a team around explosive batters, world-class bowlers, or legendary all-rounders, your decisions will determine whether your team becomes a champion—or falls short of greatness.
-        </p>
+  <!-- Content Section -->
+  <div class="w-full bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]">
+    <article class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 text-[var(--color-body)] text-base leading-relaxed space-y-6">
+      <h1 class="text-3xl font-black text-[var(--color-ink)] tracking-tight">The Ultimate Cricket Strategy Simulator</h1>
+      
+      <p class="text-lg">
+        Welcome to <strong>16-0play</strong>, a browser-based cricket strategy game that challenges you to build the greatest playing XI ever assembled and attempt to achieve the impossible: a perfect 16-0 season.
+      </p>
+      
+      <p>
+        Inspired by franchise cricket formats and the depth of sports management simulators, 16-0play requires true strategic thinking. Success isn't just about selecting players with the highest individual ratings. You need to balance batting depth, bowling variations, form, and team chemistry to navigate unpredictable match scenarios. 
+      </p>
 
-        <h3 class="text-xl font-bold text-[var(--color-ink)] pt-4">Experience the Ultimate Cricket Strategy Challenge</h3>
-        <p>
-          16-0play is more than a traditional cricket simulator. It's a cricket strategy game where every match matters.
-        </p>
-        <p>
-          Your objective is simple: <strong>Win 16 matches. Lose none.</strong>
-        </p>
-        <p>
-          Throughout your season, you'll face difficult opponents, changing conditions, pressure situations, and strategic decisions that test your ability to build and manage a winning team. Every victory brings you one step closer to cricket immortality. Can your team handle the pressure of a perfect run?
-        </p>
-
-        <h3 class="text-xl font-bold text-[var(--color-ink)] pt-4">Compete for the Best Record</h3>
-        <p>
-          The challenge doesn't end with building a great team. Every player competes for a place on the global leaderboard. Track your season record, compare your results with other players, and discover who has built the greatest cricket team. Whether you finish with a respectable 10-6 record or achieve a legendary unbeaten season, every campaign becomes part of your story. The ultimate goal remains the same: <strong>Go 16-0.</strong>
-        </p>
-
-        <h3 class="text-xl font-bold text-[var(--color-ink)] pt-4">Inspired by the World's Biggest Cricket Competitions</h3>
-        <p>
-          16-0play captures the excitement, unpredictability, and strategic depth that make franchise cricket so compelling. Fans who follow major T20 tournaments, cricket standings, schedules, scores, and player performances will feel right at home. Our game combines the thrill of competitive cricket with deep strategic gameplay, creating an experience that appeals to casual fans and cricket enthusiasts alike.
-        </p>
-
-        <h3 class="text-xl font-bold text-[var(--color-ink)] pt-4">Every Season Tells a Different Story</h3>
-        <p>
-          No two seasons are ever the same. One season, your star batter may carry your team to glory. The next, a surprise underdog could derail your perfect run. Momentum, team balance, tactical decisions, and a bit of luck all play a role in determining your final record. Will you play aggressively and chase dominance? Or will you build a balanced squad capable of surviving the pressure of a perfect season? The path to 16-0 is never easy.
-        </p>
-
-        <h3 class="text-xl font-bold text-[var(--color-ink)] pt-4">Can You Achieve the Perfect Season?</h3>
-        <p>
-          Thousands of teams can win matches. Very few can become legends.
-        </p>
-        <p>
-          Build your greatest playing XI, test your strategy, climb the leaderboard, and attempt the ultimate challenge in cricket gaming: <strong>Create the greatest cricket team ever assembled and complete the perfect 16-0 season.</strong>
-        </p>
-        <p>
-          Your journey starts now.
-        </p>
-      </article>
-
-      <!-- FAQ Section -->
-      <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 border-t border-[var(--color-hairline)]">
-        <h2 class="text-3xl font-bold text-[var(--color-ink)] mb-8 tracking-tight">Frequently Asked Questions</h2>
-        <div class="space-y-4">
-          <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
-              <span class="text-lg">What is the 16-0 challenge?</span>
-              <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
-                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
-              </span>
-            </summary>
-            <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
-              <p>The 16-0 challenge is the ultimate test in cricket gaming. It requires you to build your all-time greatest playing XI, manage them through a full season, and achieve a perfect, undefeated record: 16 wins, 0 losses.</p>
-            </div>
-          </details>
-
-          <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
-              <span class="text-lg">How do I build my greatest playing XI?</span>
-              <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
-                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
-              </span>
-            </summary>
-            <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
-              <p>You can choose from a vast roster of legendary players, modern T20 superstars, and all-time greats. However, success isn't just about picking the highest-rated players; you must balance batting depth, bowling strength, all-rounders, and team chemistry.</p>
-            </div>
-          </details>
-
-          <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
-              <span class="text-lg">Is this just a simple cricket simulator?</span>
-              <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
-                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
-              </span>
-            </summary>
-            <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
-              <p>No, 16-0play is a deep cricket strategy and team-building game. Every match matters. You'll face changing conditions, pressure situations, and strategic dilemmas. One loss ends your dream of the perfect run.</p>
-            </div>
-          </details>
-
-          <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
-              <span class="text-lg">What happens if I lose a match?</span>
-              <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
-                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
-              </span>
-            </summary>
-            <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
-              <p>If you lose a match, the dream of a perfect 16-0 season is over. However, you can still play out the rest of the season to secure a spot on the global leaderboard, such as a respectable 10-6 or 14-2 record, before trying again.</p>
-            </div>
-          </details>
-
-          <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
-              <span class="text-lg">Are seasons repetitive?</span>
-              <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
-                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
-              </span>
-            </summary>
-            <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
-              <p>No two seasons are ever the same. Momentum, tactical decisions, unpredictable form, and luck all play a part. In one season your explosive batters might dominate, while in another, a surprise underdog team could derail your perfect run.</p>
-            </div>
-          </details>
-          
-          <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
-            <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
-              <span class="text-lg">Can I compete with my friends?</span>
-              <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
-                <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
-              </span>
-            </summary>
-            <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
-              <p>Yes! The game features a global leaderboard. Track your season record, compare results with friends and other players worldwide, and prove that you have assembled the greatest cricket team ever.</p>
-            </div>
-          </details>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
+        <div class="bg-[var(--color-canvas-soft)] p-6 rounded-xl border border-[var(--color-hairline)] shadow-sm">
+          <h3 class="text-xl font-bold text-[var(--color-ink)] mb-3">Build Your Dream XI</h3>
+          <p class="text-sm text-[var(--color-mute)]">Draft from a massive database of current superstars and legendary icons. Find the right combination of aggressive openers, steady middle-order anchors, and lethal wicket-takers to build a balanced squad.</p>
         </div>
-      </section>
+        
+        <div class="bg-[var(--color-canvas-soft)] p-6 rounded-xl border border-[var(--color-hairline)] shadow-sm">
+          <h3 class="text-xl font-bold text-[var(--color-ink)] mb-3">Master the Engine</h3>
+          <p class="text-sm text-[var(--color-mute)]">Matches are simulated using a comprehensive engine that accounts for player roles, recent form factors, and team synergy. Every decision you make impacts your win probability.</p>
+        </div>
+      </div>
 
-      <!-- Footer Links -->
-      <footer class="w-full bg-[var(--color-canvas-soft)] border-t border-[var(--color-hairline)] py-20 mt-12">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-sm text-[var(--color-body)]">
-          <div>
-            <h3 class="text-[var(--color-ink)] font-bold text-lg mb-4 tracking-wider">16-0 PLAY</h3>
-            <p class="text-[var(--color-mute)] leading-relaxed text-xs">
-              The ultimate cricket strategy and team-building simulator. Build your greatest playing XI and achieve the impossible perfect season.
-            </p>
+      <p>
+        One loss ends the dream. Sixteen wins creates history. Whether you want to casually draft a team of your favorite players or dive deep into the analytics to climb the global leaderboard, your journey to the perfect season starts here.
+      </p>
+    </article>
+
+    <!-- FAQ Section -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 border-t border-[var(--color-hairline)]">
+      <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-8 tracking-tight">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
+            <span class="text-lg">What is the 16-0 challenge?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
+              <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
+            <p>The 16-0 challenge is the ultimate test in cricket gaming. It requires you to build your all-time greatest playing XI, manage them through a full season, and achieve a perfect, undefeated record: 16 wins, 0 losses.</p>
           </div>
-          <div>
-            <h3 class="text-[var(--color-ink)] font-bold mb-4 tracking-wider uppercase text-xs">Explore</h3>
-            <div class="flex flex-col space-y-3 text-[var(--color-mute)] font-medium">
-              <a href="/" class="hover:text-yellow-600 transition-colors">Home</a>
-              <a href="/explore/" class="hover:text-yellow-600 transition-colors">Player Database</a>
-            </div>
+        </details>
+
+        <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
+            <span class="text-lg">How do I build my greatest playing XI?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
+              <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
+            <p>You can choose from a vast roster of legendary players and modern superstars. Success isn't just about picking the highest-rated players; you must balance batting depth, bowling strength, all-rounders, and team chemistry.</p>
           </div>
-          <div>
-            <h3 class="text-[var(--color-ink)] font-bold mb-4 tracking-wider uppercase text-xs">Legal & Info</h3>
-            <div class="flex flex-col space-y-3 text-[var(--color-mute)] font-medium">
-              <a href="/about-us/" class="hover:text-yellow-600 transition-colors">About Us</a>
-              <a href="/contact-us/" class="hover:text-yellow-600 transition-colors">Contact Us</a>
-              <a href="/privacy-policy/" class="hover:text-yellow-600 transition-colors">Privacy Policy</a>
-              <a href="/terms-and-conditions/" class="hover:text-yellow-600 transition-colors">Terms & Conditions</a>
-            </div>
+        </details>
+
+        <details class="group bg-[var(--color-canvas-soft)] rounded-xl open:bg-[var(--color-canvas-soft-2)] transition-all duration-300 border border-[var(--color-hairline)] shadow-sm">
+          <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-6 text-[var(--color-ink)] hover:text-yellow-600 transition-colors">
+            <span class="text-lg">What happens if I lose a match?</span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-[var(--color-mute)] group-hover:text-yellow-600">
+              <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+            </span>
+          </summary>
+          <div class="text-[var(--color-body)] px-6 pb-6 text-base leading-relaxed">
+            <p>If you lose a match, the dream of a perfect 16-0 season is over. However, you can still play out the rest of the season to secure a spot on the global leaderboard, such as a respectable 10-6 or 14-2 record, before trying again.</p>
           </div>
-        </div>
-        <div class="max-w-4xl mx-auto px-6 mt-16 pt-8 border-t border-[var(--color-hairline)] flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-[var(--color-mute)] tracking-wider">
-          <p>&copy; {new Date().getFullYear()} 16-0play. All rights reserved.</p>
-          <p>Not affiliated with any official cricket boards.</p>
-        </div>
-      </footer>
-    </div>
-  </body>
-</html>
+        </details>
+      </div>
+    </section>
+  </div>
+</Layout>

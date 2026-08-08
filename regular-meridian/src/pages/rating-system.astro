@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="How Ratings Work in 16-0play | Simulation Engine Explained"
+  description="Understand the mathematics and logic behind player ratings, team chemistry, and match simulations in 16-0play."
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 text-[var(--color-body)] text-base leading-relaxed">
+    <h1 class="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tight mb-8">The 16-0play Rating System</h1>
+    
+    <p class="text-lg mb-10">
+      The 16-0play simulation engine uses a dynamic rating system designed to mirror the complexities of real cricket. Ratings are not static numbers; they interact with team composition, match conditions, and player form to determine the outcome of every match.
+    </p>
+
+    <div class="space-y-12">
+      <section>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Base Player Ratings</h2>
+        <p class="mb-4">
+          Every player in the database is assigned a base rating between 70 and 99. This rating is derived from their historical performances, peak statistical seasons, and their impact in the specific role they play.
+        </p>
+        <ul class="list-disc pl-6 space-y-2 mb-4">
+          <li><strong>90+ (Elite):</strong> Legendary, match-winning icons capable of carrying a team.</li>
+          <li><strong>80-89 (Star):</strong> Premium talent necessary for consistent victories.</li>
+          <li><strong>70-79 (Role Player):</strong> Reliable squad members who provide vital balance and depth.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Role Chemistry & Balance</h2>
+        <p class="mb-4">
+          The engine actively penalizes unbalanced teams. If you build a team of 11 Batters, your aggregate rating will be severely diminished during the match simulation due to a lack of bowling options. 
+        </p>
+        <p>
+          A balanced team typically requires a minimum number of specialist bowlers and at least one designated wicketkeeper. All-rounders provide flexibility, allowing you to field deep batting lineups without sacrificing bowling overs.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Dynamic Form System</h2>
+        <p class="mb-4">
+          In 16-0play, a player's base rating is only the starting point. The engine calculates an active <strong>Form Score</strong> (represented by sparklines on player profiles) that adjusts their effective rating up or down for the next match.
+        </p>
+        <ul class="list-disc pl-6 space-y-2 mb-4">
+          <li><strong>Hot Streaks:</strong> Consistent high performances boost a player's form, pushing their effective rating past their base maximum.</li>
+          <li><strong>Slumps:</strong> Successive poor matches will drop a player's form, making them a liability against elite opponents.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Match Simulation Logic</h2>
+        <p class="mb-4">
+          When two teams meet, the engine calculates the expected win probability by weighing the adjusted team ratings against each other. 
+        </p>
+        <p>
+          However, cricket is unpredictable. The engine incorporates controlled variance (representing pitch conditions, weather, and pure luck) to ensure that upsets are always possible. A team with a 95 overall rating can still lose to an 85 overall team if the form and variance fall the wrong way—which is what makes the 16-0 challenge so incredibly difficult.
+        </p>
+      </section>
+    </div>
+  </div>
+</Layout>

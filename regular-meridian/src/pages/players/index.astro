@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { slugify } from '../../lib/slugify';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const filePath = path.join(process.cwd(), 'public', 'ipl_v10_FINAL.json');
+const rawData = fs.readFileSync(filePath, 'utf-8');
+const allPlayers = JSON.parse(rawData);
+
+// Deduplicate players by name and find their max rating
+const playerMap = new Map<string, any>();
+for (const p of allPlayers) {
+  if (!p.name) continue;
+  const name = p.name.trim();
+  if (!playerMap.has(name)) {
+    playerMap.set(name, p);
+  } else {
+    if (p.rating > playerMap.get(name).rating) {
+      playerMap.set(name, p);
+    }
+  }
+}
+
+const uniquePlayers = Array.from(playerMap.values())
+  .filter((p: any) => p.rating > 0)
+  .sort((a: any, b: any) => b.rating - a.rating);
+
+// Group players by starting letter for easy navigation
+const groupedPlayers: Record<string, any[]> = {};
+for (const p of uniquePlayers) {
+  const initial = p.name.charAt(0).toUpperCase();
+  if (!groupedPlayers[initial]) {
+    groupedPlayers[initial] = [];
+  }
+  groupedPlayers[initial].push(p);
+}
+
+const sortedInitials = Object.keys(groupedPlayers).sort();
+---
+
+<Layout 
+  title="16-0play Player Database"
+  description="Browse the complete database of cricketers in 16-0play. Discover player ratings, roles, and historical stats to build your ultimate playing XI."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tight mb-4">Player Database</h1>
+      <p class="text-lg text-[var(--color-body)] max-w-2xl">
+        Explore the complete roster of legendary cricketers and modern superstars available in 16-0play. Every player's rating is carefully calibrated to reflect their impact on the game's simulation engine.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap gap-2 mb-12">
+      {sortedInitials.map((letter: string) => (
+        <a href={`#letter-${letter}`} class="w-10 h-10 flex items-center justify-center rounded-lg bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] text-[var(--color-ink)] font-bold hover:bg-yellow-500 hover:text-white hover:border-yellow-500 transition-colors">
+          {letter}
+        </a>
+      ))}
+    </div>
+
+    <div class="space-y-12">
+      {sortedInitials.map((letter: string) => (
+        <section id={`letter-${letter}`} class="scroll-mt-24">
+          <h2 class="text-2xl font-black text-[var(--color-ink)] border-b border-[var(--color-hairline)] pb-2 mb-6">{letter}</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {groupedPlayers[letter]
+              .sort((a: any, b: any) => a.name.localeCompare(b.name))
+              .map((player: any) => (
+              <a href={`/players/${slugify(player.name)}`} class="flex items-center justify-between p-4 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl hover:border-yellow-500/50 hover:bg-[var(--color-canvas-soft-2)] transition-all group">
+                <div>
+                  <p class="font-bold text-[var(--color-ink)] group-hover:text-yellow-600 transition-colors">{player.name}</p>
+                  <p class="text-xs text-[var(--color-mute)] font-medium uppercase tracking-wider">{player.role}</p>
+                </div>
+                <div class="text-lg font-black" style={`color: ${player.rating >= 90 ? '#ef4444' : player.rating >= 80 ? '#f59e0b' : '#3b82f6'}`}>
+                  {player.rating}
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>

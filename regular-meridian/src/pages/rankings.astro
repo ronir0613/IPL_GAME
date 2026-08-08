@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { slugify } from '../lib/slugify';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const filePath = path.join(process.cwd(), 'public', 'ipl_v10_FINAL.json');
+const rawData = fs.readFileSync(filePath, 'utf-8');
+const allPlayers = JSON.parse(rawData);
+
+// Deduplicate players by name and find their max rating + primary role
+const playerMap = new Map<string, any>();
+for (const p of allPlayers) {
+  if (!p.name) continue;
+  const name = p.name.trim();
+  if (!playerMap.has(name)) {
+    playerMap.set(name, p);
+  } else {
+    if (p.rating > playerMap.get(name).rating) {
+      playerMap.set(name, p);
+    }
+  }
+}
+
+const uniquePlayers = Array.from(playerMap.values());
+
+const topBatters = uniquePlayers.filter((p: any) => p.role === 'BAT').sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
+const topBowlers = uniquePlayers.filter((p: any) => p.role === 'BOWL').sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
+const topAllRounders = uniquePlayers.filter((p: any) => p.role === 'AR').sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
+const topWicketKeepers = uniquePlayers.filter((p: any) => p.role === 'WK').sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
+
+const getRatingColor = (rating: number) => {
+  if (rating >= 90) return '#ef4444';
+  if (rating >= 80) return '#f59e0b';
+  return '#3b82f6';
+};
+---
+
+<Layout 
+  title="16-0play Rankings & Leaderboards"
+  description="Discover the highest-rated cricketers in the 16-0play database. View top batters, bowlers, all-rounders, and wicketkeepers to build your ultimate playing XI."
+>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20">
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tight mb-4">Official Rankings</h1>
+      <p class="text-lg text-[var(--color-body)] max-w-2xl">
+        The definitive list of the highest-rated players in the 16-0play simulation engine. These are the elite athletes capable of carrying a franchise to a perfect 16-0 season.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <!-- Top Batters -->
+      <div class="bg-[var(--color-canvas-soft)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-lg">
+        <div class="bg-blue-900/10 p-6 border-b border-[var(--color-hairline)]">
+          <h2 class="text-2xl font-black text-[var(--color-ink)]">Top Batters</h2>
+        </div>
+        <ul class="divide-y divide-[var(--color-hairline)]">
+          {topBatters.map((player: any, idx: number) => (
+            <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
+              <div class="flex items-center gap-4">
+                <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
+                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+              </div>
+              <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Top Bowlers -->
+      <div class="bg-[var(--color-canvas-soft)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-lg">
+        <div class="bg-green-900/10 p-6 border-b border-[var(--color-hairline)]">
+          <h2 class="text-2xl font-black text-[var(--color-ink)]">Top Bowlers</h2>
+        </div>
+        <ul class="divide-y divide-[var(--color-hairline)]">
+          {topBowlers.map((player: any, idx: number) => (
+            <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
+              <div class="flex items-center gap-4">
+                <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
+                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+              </div>
+              <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Top All-Rounders -->
+      <div class="bg-[var(--color-canvas-soft)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-lg">
+        <div class="bg-purple-900/10 p-6 border-b border-[var(--color-hairline)]">
+          <h2 class="text-2xl font-black text-[var(--color-ink)]">Top All-Rounders</h2>
+        </div>
+        <ul class="divide-y divide-[var(--color-hairline)]">
+          {topAllRounders.map((player: any, idx: number) => (
+            <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
+              <div class="flex items-center gap-4">
+                <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
+                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+              </div>
+              <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Top Wicketkeepers -->
+      <div class="bg-[var(--color-canvas-soft)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-lg">
+        <div class="bg-yellow-900/10 p-6 border-b border-[var(--color-hairline)]">
+          <h2 class="text-2xl font-black text-[var(--color-ink)]">Top Wicketkeepers</h2>
+        </div>
+        <ul class="divide-y divide-[var(--color-hairline)]">
+          {topWicketKeepers.map((player: any, idx: number) => (
+            <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
+              <div class="flex items-center gap-4">
+                <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
+                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+              </div>
+              <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</Layout>
