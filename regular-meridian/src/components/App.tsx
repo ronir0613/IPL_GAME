@@ -612,7 +612,7 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
             My Profile
           </motion.button>
           
-          <a href="/explore">
+          <a href="/players">
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="text-[var(--text-muted)] hover:text-[var(--text-muted)] text-xs uppercase tracking-widest font-bold flex items-center gap-2 mt-4"
