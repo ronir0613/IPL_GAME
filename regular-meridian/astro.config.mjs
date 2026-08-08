@@ -10,10 +10,6 @@ export default defineConfig({
     react(),
     sitemap()
   ],
-  redirects: {
-    '/about-us': '/about',
-    '/contact-us': '/contact'
-  },
   vite: {
     plugins: [tailwindcss()],
   },

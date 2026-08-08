@@ -8,21 +8,25 @@ const filePath = path.join(process.cwd(), 'public', 'ipl_v10_FINAL.json');
 const rawData = fs.readFileSync(filePath, 'utf-8');
 const allPlayers = JSON.parse(rawData);
 
-// Deduplicate players by name and find their max rating + primary role
+// Deduplicate players by slugified name and find their max rating + primary role
 const playerMap = new Map<string, any>();
 for (const p of allPlayers) {
-  if (!p.name) continue;
-  const name = p.name.trim();
-  if (!playerMap.has(name)) {
-    playerMap.set(name, p);
+  if (p.name == null || p.team == null || p.rating == null || p.season == null) continue;
+  if (typeof p.name !== 'string' || typeof p.team !== 'string' || typeof p.rating !== 'number' || typeof p.season !== 'number') continue;
+
+  const slug = slugify(p.name);
+  if (!playerMap.has(slug)) {
+    playerMap.set(slug, p);
   } else {
-    if (p.rating > playerMap.get(name).rating) {
-      playerMap.set(name, p);
+    if (p.rating > playerMap.get(slug).rating) {
+      playerMap.set(slug, p);
     }
   }
 }
 
 const uniquePlayers = Array.from(playerMap.values());
+
+const topOverall = [...uniquePlayers].sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
 
 const topBatters = uniquePlayers.filter((p: any) => p.role === 'BAT').sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
 const topBowlers = uniquePlayers.filter((p: any) => p.role === 'BOWL').sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
@@ -49,6 +53,27 @@ const getRatingColor = (rating: number) => {
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      <!-- Top Overall -->
+      <div class="bg-[var(--color-canvas-soft)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-lg md:col-span-2">
+        <div class="bg-indigo-900/10 p-6 border-b border-[var(--color-hairline)]">
+          <h2 class="text-2xl font-black text-[var(--color-ink)]">Top 10 Overall</h2>
+        </div>
+        <ul class="divide-y divide-[var(--color-hairline)] grid grid-cols-1 md:grid-cols-2">
+          {topOverall.map((player: any, idx: number) => (
+            <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
+              <div class="flex items-center gap-4">
+                <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
+                <div>
+                  <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors block">{player.name}</a>
+                  <span class="text-xs text-[var(--color-mute)] uppercase">{player.role} • {player.team}</span>
+                </div>
+              </div>
+              <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       <!-- Top Batters -->
       <div class="bg-[var(--color-canvas-soft)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-lg">
         <div class="bg-blue-900/10 p-6 border-b border-[var(--color-hairline)]">
@@ -59,7 +84,10 @@ const getRatingColor = (rating: number) => {
             <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
               <div class="flex items-center gap-4">
                 <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
-                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+                <div>
+                  <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors block">{player.name}</a>
+                  <span class="text-xs text-[var(--color-mute)] uppercase">{player.team}</span>
+                </div>
               </div>
               <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
             </li>
@@ -77,7 +105,10 @@ const getRatingColor = (rating: number) => {
             <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
               <div class="flex items-center gap-4">
                 <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
-                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+                <div>
+                  <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors block">{player.name}</a>
+                  <span class="text-xs text-[var(--color-mute)] uppercase">{player.team}</span>
+                </div>
               </div>
               <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
             </li>
@@ -95,7 +126,10 @@ const getRatingColor = (rating: number) => {
             <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
               <div class="flex items-center gap-4">
                 <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
-                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+                <div>
+                  <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors block">{player.name}</a>
+                  <span class="text-xs text-[var(--color-mute)] uppercase">{player.team}</span>
+                </div>
               </div>
               <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
             </li>
@@ -113,7 +147,10 @@ const getRatingColor = (rating: number) => {
             <li class="flex items-center justify-between p-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors">
               <div class="flex items-center gap-4">
                 <span class="text-[var(--color-mute)] font-black w-6 text-center">{idx + 1}</span>
-                <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors">{player.name}</a>
+                <div>
+                  <a href={`/players/${slugify(player.name)}`} class="font-bold text-[var(--color-ink)] hover:text-yellow-600 transition-colors block">{player.name}</a>
+                  <span class="text-xs text-[var(--color-mute)] uppercase">{player.team}</span>
+                </div>
               </div>
               <div class="text-lg font-black" style={`color: ${getRatingColor(player.rating)}`}>{player.rating}</div>
             </li>

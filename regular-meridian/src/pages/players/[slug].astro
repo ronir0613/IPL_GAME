@@ -9,43 +9,48 @@ export async function getStaticPaths() {
   const rawData = fs.readFileSync(filePath, 'utf-8');
   const allPlayers = JSON.parse(rawData);
 
-  // Group by normalized name
-  const playerGroups = new Map<string, any[]>();
+  // Group by slugified name to handle spacing/case differences naturally
+  const playerGroups = new Map<string, { names: Set<string>, records: any[] }>();
   for (const p of allPlayers) {
-    if (!p.name) continue;
-    const normName = p.name.trim();
-    if (!playerGroups.has(normName)) {
-      playerGroups.set(normName, []);
+    if (p.name == null || p.team == null || p.rating == null || p.season == null) continue;
+    if (typeof p.name !== 'string' || typeof p.team !== 'string' || typeof p.rating !== 'number' || typeof p.season !== 'number') continue;
+    
+    const slug = slugify(p.name);
+    if (!playerGroups.has(slug)) {
+      playerGroups.set(slug, { names: new Set(), records: [] });
     }
-    playerGroups.get(normName)!.push(p);
+    const group = playerGroups.get(slug)!;
+    group.names.add(p.name.trim());
+    group.records.push(p);
   }
 
   const paths = [];
-  for (const [name, records] of playerGroups.entries()) {
-    // Determine max rating and primary role (most frequent or max rating's role)
-    let maxRating = 0;
-    let bestRecord = records[0];
+  for (const [slug, group] of playerGroups.entries()) {
+    // Determine canonical name, max rating and primary role from best record
+    let maxRating = -1;
+    let bestRecord = group.records[0];
     
-    for (const r of records) {
+    for (const r of group.records) {
       if (r.rating > maxRating) {
         maxRating = r.rating;
         bestRecord = r;
       }
     }
     
-    // Only generate pages for meaningful players (rating > 0 or has records)
-    if (maxRating > 0) {
-      paths.push({
-        params: { slug: slugify(name) },
-        props: {
-          name,
-          role: bestRecord.role,
-          maxRating,
-          records: records.sort((a: any, b: any) => b.season - a.season),
-          bestTeam: bestRecord.team
-        }
-      });
-    }
+    // Choose canonical name from the best record
+    const canonicalName = bestRecord.name.trim();
+
+    paths.push({
+      params: { slug },
+      props: {
+        name: canonicalName,
+        role: bestRecord.role,
+        maxRating,
+        isOverseas: !!bestRecord.is_overseas,
+        records: group.records.sort((a: any, b: any) => b.season - a.season),
+        bestTeam: bestRecord.team
+      }
+    });
   }
 
   return paths;
@@ -57,7 +62,7 @@ interface RecordData {
   role: string;
   rating: number;
 }
-const { name, role, maxRating, records, bestTeam } = Astro.props as { name: string; role: string; maxRating: number; records: RecordData[]; bestTeam: string };
+const { name, role, maxRating, isOverseas, records, bestTeam } = Astro.props as { name: string; role: string; maxRating: number; isOverseas: boolean; records: RecordData[]; bestTeam: string };
 
 // Role Expansion
 const roleFull = ({
@@ -99,7 +104,8 @@ const description = `View ${name}'s historical ratings, roles, and statistics in
           <strong>{name}</strong> is a highly rated <strong>{roleFull.toLowerCase()}</strong> in the 16-0play database, reaching a peak overall rating of <strong>{maxRating}</strong> during the <strong>{records.find((r: any) => r.rating === maxRating)?.season}</strong> season with <strong>{bestTeam}</strong>. 
         </p>
         <p>
-          In the 16-0play simulation engine, building a balanced squad is critical. As a {roleFull.toLowerCase()}, {name} plays a vital role in determining team chemistry and match outcomes. A peak rating of {maxRating} makes them {maxRating >= 85 ? 'an elite tier selection for any all-time XI aiming for a perfect 16-0 season.' : 'a solid contributor capable of anchoring your franchise through a gruelling season.'}
+          In the 16-0play simulation engine, building a balanced squad is critical. As a {roleFull.toLowerCase()}, {name} plays a vital role in determining team balance.
+          {isOverseas && " As an overseas player, including them in your XI requires careful management of the strict 4-overseas player limit to avoid simulation penalties."}
         </p>
       </div>
 

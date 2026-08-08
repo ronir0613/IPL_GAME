@@ -9,18 +9,23 @@ const rawData = fs.readFileSync(filePath, 'utf-8');
 const allPlayers = JSON.parse(rawData);
 
 // Group players by team to find unique teams and calculate their average top-player rating
-const teamGroups = new Map<string, any[]>();
+const teamGroups = new Map<string, { names: Set<string>, records: any[] }>();
 for (const p of allPlayers) {
-  if (!p.team) continue;
-  const teamName = p.team.trim();
-  if (!teamGroups.has(teamName)) {
-    teamGroups.set(teamName, []);
+  if (p.name == null || p.team == null || p.rating == null || p.season == null) continue;
+  if (typeof p.name !== 'string' || typeof p.team !== 'string' || typeof p.rating !== 'number' || typeof p.season !== 'number') continue;
+  
+  const slug = slugify(p.team);
+  if (!teamGroups.has(slug)) {
+    teamGroups.set(slug, { names: new Set(), records: [] });
   }
-  teamGroups.get(teamName)!.push(p);
+  const group = teamGroups.get(slug)!;
+  group.names.add(p.team.trim());
+  group.records.push(p);
 }
 
 const teamsList: any[] = [];
-for (const [teamName, records] of teamGroups.entries()) {
+for (const [slug, group] of teamGroups.entries()) {
+  const records = group.records;
   const playerMap = new Map<string, any>();
   for (const r of records) {
     const pName = r.name.trim();
@@ -39,9 +44,12 @@ for (const [teamName, records] of teamGroups.entries()) {
   const top11 = uniquePlayers.slice(0, 11);
   const avgStrength = top11.reduce((sum: number, p: any) => sum + p.rating, 0) / (top11.length || 1);
 
+  // Canonical name from the group
+  const canonicalName = Array.from(group.names).sort()[0];
+
   teamsList.push({
-    name: teamName,
-    slug: slugify(teamName),
+    name: canonicalName,
+    slug: slug,
     playerCount: uniquePlayers.length,
     topPlayer: uniquePlayers[0]?.name,
     strength: Math.round(avgStrength)
@@ -63,6 +71,16 @@ teamsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
       </p>
     </div>
 
+    <div class="mb-8 max-w-xl">
+      <label for="teamSearch" class="sr-only">Search Franchises</label>
+      <input 
+        type="search" 
+        id="teamSearch" 
+        placeholder="Search for a franchise by name..." 
+        class="w-full px-4 py-3 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-shadow shadow-sm"
+      />
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {teamsList.map((team: any) => (
         <a href={`/teams/${team.slug}`} class="flex flex-col p-6 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl hover:border-yellow-500/50 hover:bg-[var(--color-canvas-soft-2)] transition-all group shadow-sm">
@@ -82,4 +100,25 @@ teamsList.sort((a: any, b: any) => a.name.localeCompare(b.name));
       ))}
     </div>
   </div>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('teamSearch');
+      if (!searchInput) return;
+
+      searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        const links = document.querySelectorAll('a[href^="/teams/"]');
+
+        links.forEach(link => {
+          const name = link.querySelector('h2').textContent.toLowerCase();
+          if (name.includes(term)) {
+            link.style.display = '';
+          } else {
+            link.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </Layout>

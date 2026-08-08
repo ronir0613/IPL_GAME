@@ -9,22 +9,26 @@ export async function getStaticPaths() {
   const rawData = fs.readFileSync(filePath, 'utf-8');
   const allPlayers = JSON.parse(rawData);
 
-  // Group by team
-  const teamGroups = new Map<string, any[]>();
+  // Group by slugified team name
+  const teamGroups = new Map<string, { names: Set<string>, records: any[] }>();
   for (const p of allPlayers) {
-    if (!p.team) continue;
-    const teamName = p.team.trim();
-    if (!teamGroups.has(teamName)) {
-      teamGroups.set(teamName, []);
+    if (p.name == null || p.team == null || p.rating == null || p.season == null) continue;
+    if (typeof p.name !== 'string' || typeof p.team !== 'string' || typeof p.rating !== 'number' || typeof p.season !== 'number') continue;
+    
+    const slug = slugify(p.team);
+    if (!teamGroups.has(slug)) {
+      teamGroups.set(slug, { names: new Set(), records: [] });
     }
-    teamGroups.get(teamName)!.push(p);
+    const group = teamGroups.get(slug)!;
+    group.names.add(p.team.trim());
+    group.records.push(p);
   }
 
   const paths = [];
-  for (const [teamName, records] of teamGroups.entries()) {
+  for (const [slug, group] of teamGroups.entries()) {
     // Deduplicate players within the team to find unique representatives
     const playerMap = new Map<string, any>();
-    for (const r of records) {
+    for (const r of group.records) {
       const pName = r.name.trim();
       if (!playerMap.has(pName)) {
         playerMap.set(pName, r);
@@ -36,11 +40,12 @@ export async function getStaticPaths() {
     }
 
     const uniquePlayers = Array.from(playerMap.values()).sort((a: any, b: any) => b.rating - a.rating);
+    const canonicalTeamName = Array.from(group.names).sort()[0];
 
     paths.push({
-      params: { slug: slugify(teamName) },
+      params: { slug },
       props: {
-        teamName,
+        teamName: canonicalTeamName,
         players: uniquePlayers
       }
     });
@@ -57,6 +62,10 @@ interface PlayerData {
 const { teamName, players } = Astro.props as { teamName: string; players: PlayerData[] };
 
 const topPlayers = players.slice(0, 5);
+
+// Calculate strength based on top 11
+const top11 = players.slice(0, 11);
+const avgStrength = Math.round(top11.reduce((sum, p) => sum + p.rating, 0) / (top11.length || 1));
 
 const title = `${teamName} - Franchise Roster & Stats in 16-0play`;
 const description = `View the all-time 16-0play roster for ${teamName}. Discover their highest-rated players, team strengths, and build your ultimate XI.`;
@@ -80,6 +89,7 @@ const description = `View the all-time 16-0play roster for ${teamName}. Discover
         <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Franchise Overview</h2>
         <p class="mb-6">
           <strong>{teamName}</strong> is one of the distinct franchises available in the 16-0play database. The strength of a franchise in the simulation engine is heavily dependent on the depth and balance of its historical roster. 
+          Based on the top 11 players available for this franchise, they have a base historical roster strength of <strong>{avgStrength}</strong>.
         </p>
         <p class="mb-6">
           When building a custom XI in 16-0play, drafting players from <strong>{teamName}</strong> can provide significant strategic advantages. With legendary performers like <strong>{topPlayers.map((p: any) => p.name).join(', ')}</strong> anchoring the database, this franchise offers versatile options across batting, bowling, and all-rounder roles.

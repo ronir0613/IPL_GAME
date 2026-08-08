@@ -8,22 +8,23 @@ const filePath = path.join(process.cwd(), 'public', 'ipl_v10_FINAL.json');
 const rawData = fs.readFileSync(filePath, 'utf-8');
 const allPlayers = JSON.parse(rawData);
 
-// Deduplicate players by name and find their max rating
+// Deduplicate players by slugified name and find their max rating
 const playerMap = new Map<string, any>();
 for (const p of allPlayers) {
-  if (!p.name) continue;
-  const name = p.name.trim();
-  if (!playerMap.has(name)) {
-    playerMap.set(name, p);
+  if (p.name == null || p.team == null || p.rating == null || p.season == null) continue;
+  if (typeof p.name !== 'string' || typeof p.team !== 'string' || typeof p.rating !== 'number' || typeof p.season !== 'number') continue;
+  
+  const slug = slugify(p.name);
+  if (!playerMap.has(slug)) {
+    playerMap.set(slug, p);
   } else {
-    if (p.rating > playerMap.get(name).rating) {
-      playerMap.set(name, p);
+    if (p.rating > playerMap.get(slug).rating) {
+      playerMap.set(slug, p);
     }
   }
 }
 
 const uniquePlayers = Array.from(playerMap.values())
-  .filter((p: any) => p.rating > 0)
   .sort((a: any, b: any) => b.rating - a.rating);
 
 // Group players by starting letter for easy navigation
@@ -49,6 +50,16 @@ const sortedInitials = Object.keys(groupedPlayers).sort();
       <p class="text-lg text-[var(--color-body)] max-w-2xl">
         Explore the complete roster of legendary cricketers and modern superstars available in 16-0play. Every player's rating is carefully calibrated to reflect their impact on the game's simulation engine.
       </p>
+    </div>
+
+    <div class="mb-8 max-w-xl">
+      <label for="playerSearch" class="sr-only">Search Players</label>
+      <input 
+        type="search" 
+        id="playerSearch" 
+        placeholder="Search for a player by name..." 
+        class="w-full px-4 py-3 bg-[var(--color-canvas-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink)] focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-shadow shadow-sm"
+      />
     </div>
 
     <div class="flex flex-wrap gap-2 mb-12">
@@ -82,4 +93,37 @@ const sortedInitials = Object.keys(groupedPlayers).sort();
       ))}
     </div>
   </div>
+
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('playerSearch');
+      if (!searchInput) return;
+
+      searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        const sections = document.querySelectorAll('section[id^="letter-"]');
+
+        sections.forEach(section => {
+          const links = section.querySelectorAll('a[href^="/players/"]');
+          let hasVisible = false;
+
+          links.forEach(link => {
+            const name = link.querySelector('p.font-bold').textContent.toLowerCase();
+            if (name.includes(term)) {
+              link.style.display = '';
+              hasVisible = true;
+            } else {
+              link.style.display = 'none';
+            }
+          });
+
+          if (hasVisible) {
+            section.style.display = '';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </Layout>

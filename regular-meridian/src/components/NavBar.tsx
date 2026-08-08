@@ -41,6 +41,19 @@ export default function NavBar({ currentPhase, onNavigate }: { currentPhase?: st
           >
             Profile
           </button>
+          <div className="w-px h-4 bg-[var(--color-hairline)] mx-1"></div>
+          <a 
+            href="/players"
+            className="px-3 py-1.5 rounded-full text-sm transition-colors text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium"
+          >
+            Players
+          </a>
+          <a 
+            href="/teams"
+            className="px-3 py-1.5 rounded-full text-sm transition-colors text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium"
+          >
+            Teams
+          </a>
         </div>
       </div>
       

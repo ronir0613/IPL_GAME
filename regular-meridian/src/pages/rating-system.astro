@@ -15,7 +15,7 @@ import Layout from '../layouts/Layout.astro';
 
     <div class="space-y-12">
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Base Player Ratings</h2>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Base Player Ratings & Star Stacking</h2>
         <p class="mb-4">
           Every player in the database is assigned a base rating between 70 and 99. This rating is derived from their historical performances, peak statistical seasons, and their impact in the specific role they play.
         </p>
@@ -24,16 +24,32 @@ import Layout from '../layouts/Layout.astro';
           <li><strong>80-89 (Star):</strong> Premium talent necessary for consistent victories.</li>
           <li><strong>70-79 (Role Player):</strong> Reliable squad members who provide vital balance and depth.</li>
         </ul>
+        <p class="mb-4">
+          <strong>Star Stacking Penalty:</strong> The engine penalizes top-heavy teams to encourage balance. Having more than two 92+ rated players incurs a team-wide penalty. Having more than one 95+ rated player incurs an additional heavy penalty. Furthermore, any overall team strength that exceeds 90 receives a 50% diminishing return penalty on the excess points.
+        </p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Role Chemistry & Balance</h2>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Team Chemistry & Rivalries</h2>
         <p class="mb-4">
-          The engine actively penalizes unbalanced teams. If you build a team of 11 Batters, your aggregate rating will be severely diminished during the match simulation due to a lack of bowling options. 
+          Matching specific players together can either boost your team's performance or create friction:
         </p>
-        <p>
-          A balanced team typically requires a minimum number of specialist bowlers and at least one designated wicketkeeper. All-rounders provide flexibility, allowing you to field deep batting lineups without sacrificing bowling overs.
+        <ul class="list-disc pl-6 space-y-2 mb-4">
+          <li><strong>Signature Pairs (+1 Bonus):</strong> Reuniting iconic duos like <em>Virat Kohli & AB de Villiers</em> or <em>MS Dhoni & Suresh Raina</em> provides a chemistry boost to your overall team strength.</li>
+          <li><strong>Rivalry Penalty (-1 Penalty):</strong> Pairing players with historic rivalries (e.g. <em>Virat Kohli & Gautam Gambhir</em>) will actively harm your team's synergy.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Identity & Franchise Core Bonuses</h2>
+        <p class="mb-4">
+          The engine rewards teams that establish a clear tactical identity or maintain a franchise core:
         </p>
+        <ul class="list-disc pl-6 space-y-2 mb-4">
+          <li><strong>Tactical Identities:</strong> Fielding 7+ Batters/Wicketkeepers grants a <em>Batting-Heavy</em> bonus. Fielding 5+ Bowlers grants a <em>Bowling-Heavy</em> bonus. Fielding 4+ All-Rounders creates an <em>All-Rounder Army</em>.</li>
+          <li><strong>Franchise Core:</strong> Selecting 3 or more players from the same original franchise provides a +1 chemistry bonus, and 5 or more players provides a +2 bonus.</li>
+          <li><strong>Overseas Quality Limit:</strong> While you are strictly limited to a maximum of 4 overseas players on the field, the engine applies a slight progressive penalty if you field 2 or more overseas players, simulating the challenge of integrating multiple international stars.</li>
+        </ul>
       </section>
 
       <section>
@@ -42,7 +58,7 @@ import Layout from '../layouts/Layout.astro';
           In 16-0play, a player's base rating is only the starting point. The engine calculates an active <strong>Form Score</strong> (represented by sparklines on player profiles) that adjusts their effective rating up or down for the next match.
         </p>
         <ul class="list-disc pl-6 space-y-2 mb-4">
-          <li><strong>Hot Streaks:</strong> Consistent high performances boost a player's form, pushing their effective rating past their base maximum.</li>
+          <li><strong>Hot Streaks:</strong> Consistent high performances boost a player's form, pushing their effective rating past their base maximum. A team on a massive winning streak (e.g. 12+ games) enters "Dynasty Mode", granting massive momentum bonuses.</li>
           <li><strong>Slumps:</strong> Successive poor matches will drop a player's form, making them a liability against elite opponents.</li>
         </ul>
       </section>
@@ -53,7 +69,7 @@ import Layout from '../layouts/Layout.astro';
           When two teams meet, the engine calculates the expected win probability by weighing the adjusted team ratings against each other. 
         </p>
         <p>
-          However, cricket is unpredictable. The engine incorporates controlled variance (representing pitch conditions, weather, and pure luck) to ensure that upsets are always possible. A team with a 95 overall rating can still lose to an 85 overall team if the form and variance fall the wrong way—which is what makes the 16-0 challenge so incredibly difficult.
+          However, cricket is unpredictable. The engine incorporates controlled variance (representing pitch conditions, weather, and pure luck) to ensure that upsets are always possible. Furthermore, tight matches (40-60% win probability) can trigger "Clutch Player" events where individuals single-handedly flip the result. A team with a 95 overall rating can still lose to an 85 overall team if the form, risk profile, and variance fall the wrong way—which is what makes the 16-0 challenge so incredibly difficult.
         </p>
       </section>
     </div>
