@@ -119,43 +119,43 @@ function PlayerFormInline({ form, compact = false }: {
 
   if (compact) {
     return (
-      <div className="flex items-center gap-1.5 mt-0.5">
+      <div className="flex items-center gap-1.5 mt-0.5 font-mono">
         <span
-          className="text-[9px] font-black px-1.5 py-0.5 rounded tabular-nums"
+          className="text-[9px] font-black px-1.5 py-0.5 tabular-nums uppercase tracking-widest"
           style={{ background: catColor + '22', color: catColor, border: `1px solid ${catColor}44` }}
         >
           {form.grade}
         </span>
-        <span className="text-[9px] font-bold tabular-nums" style={{ color: trendColor }}>
+        <span className="text-[9px] font-black tabular-nums tracking-widest" style={{ color: trendColor }}>
           {form.trend} {sign}{Math.abs(form.trendDelta)}
         </span>
-        <span className="text-[9px] text-[var(--text-muted)] font-mono">{form.score}</span>
+        <span className="text-[9px] text-gray-500 dark:text-gray-400 font-bold">{form.score}</span>
       </div>
     );
   }
 
   return (
-    <div className="mt-1.5 space-y-1">
+    <div className="mt-1.5 space-y-1 font-mono">
       <div className="flex items-center gap-2">
         <span
-          className="text-[10px] font-black px-1.5 py-0.5 rounded shrink-0 tabular-nums"
+          className="text-[10px] font-black px-1.5 py-0.5 shrink-0 tabular-nums uppercase tracking-widest"
           style={{ background: catColor + '20', color: catColor, border: `1px solid ${catColor}40` }}
         >
           {form.grade}
         </span>
-        <span className="text-[11px] font-black tabular-nums" style={{ color: catColor }}>
+        <span className="text-[11px] font-black tabular-nums tracking-widest" style={{ color: catColor }}>
           {form.score}
         </span>
-        <div className="flex-1 h-1 rounded-full bg-[var(--card-bg)] overflow-hidden">
+        <div className="flex-1 h-1.5 bg-gray-200 dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 overflow-hidden">
           <motion.div
-            className="h-full rounded-full"
+            className="h-full"
             style={{ background: barColor }}
             initial={{ width: 0 }}
             animate={{ width: `${form.score}%` }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           />
         </div>
-        <span className="text-[10px] font-bold shrink-0" style={{ color: trendColor }}>
+        <span className="text-[10px] font-black shrink-0 tracking-widest" style={{ color: trendColor }}>
           {form.trend} {sign}{Math.abs(form.trendDelta)}
         </span>
         {sparkScores.length >= 2 && (
@@ -165,7 +165,7 @@ function PlayerFormInline({ form, compact = false }: {
         )}
       </div>
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: catColor + 'bb' }}>
+        <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: catColor + 'bb' }}>
           {form.category}
         </span>
         {form.last5.length > 0 ? (
@@ -255,12 +255,13 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
   selectedSlot?: number | null;
 }) {
   return (
-    <div className="rounded-2xl flex flex-col items-center justify-center min-h-[350px] sm:min-h-[380px] w-full relative overflow-hidden bg-[var(--color-canvas)] border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-3)] p-2 sm:p-4">
-      <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-        <div className="w-full max-w-[340px] aspect-square rounded-full bg-[var(--color-primary)] opacity-5 blur-2xl" />
+    <div className="md:rounded-lg flex flex-col items-center justify-center min-h-[350px] sm:min-h-[380px] w-full relative overflow-hidden bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 shadow-2xl p-2 sm:p-4 font-mono">
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-10 dark:opacity-[0.03]">
+        {/* Subtle grid pattern */}
+        <div className="w-full h-full" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '24px 24px' }} />
       </div>
       
-      <div className="w-full max-w-[320px] aspect-square relative rounded-full overflow-hidden shadow-2xl border-4 border-[var(--color-canvas-soft)] bg-[var(--color-canvas-soft-2)] ring-4 ring-[var(--color-hairline)]">
+      <div className="w-full max-w-[320px] aspect-square relative rounded-full overflow-hidden border-2 border-dashed border-black/20 dark:border-white/20 bg-gray-50/50 dark:bg-black/50 ring-8 ring-black/5 dark:ring-white/5">
         {squad.map((slot, idx) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
@@ -271,9 +272,7 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
             <motion.div
               key={idx}
               className="absolute inset-0 origin-center pointer-events-none"
-              style={{ 
-                transform: `rotate(${rotation}deg)`,
-              }}
+              style={{ transform: `rotate(${rotation}deg)` }}
             >
               <motion.div
                 onClick={() => onSlotClick?.(idx)}
@@ -281,18 +280,17 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
                 style={{
                   clipPath: 'polygon(50% 50%, 34% 0%, 66% 0%)',
                   background: isSelected 
-                    ? 'rgba(34,197,94,0.4)' 
-                    : (filled ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.15)' : 'rgba(255,255,255,0.08)') : 'transparent'),
-                  border: isSelected ? '1px solid #22c55e' : 'none'
+                    ? 'rgba(34,197,94,0.2)' 
+                    : (filled ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.1)' : 'rgba(128,128,128,0.1)') : 'transparent'),
                 }}
                 whileHover={!isSelected ? { 
                   background: filled 
-                    ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.15)') 
-                    : 'rgba(255,255,255,0.05)' 
+                    ? (slot.player!.is_overseas ? 'rgba(59,130,246,0.2)' : 'rgba(128,128,128,0.15)') 
+                    : 'rgba(128,128,128,0.05)' 
                 } : {}}
               >
                 {/* Separator Lines */}
-                <div className="absolute top-0 bottom-1/2 left-0 right-0 border-r border-dashed border-[var(--color-hairline)] opacity-40 pointer-events-none" style={{ transform: 'translateX(-50%)' }} />
+                <div className="absolute top-0 bottom-1/2 left-0 right-0 border-r border-dashed border-black/10 dark:border-white/10 opacity-60 pointer-events-none" style={{ transform: 'translateX(-50%)' }} />
 
                 {/* Content Container */}
                 <div 
@@ -301,20 +299,17 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
                     top: '16%',
                     left: '50%',
                     transform: `translate(-50%, -50%) rotate(${-rotation}deg)`,
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center',
-                    width: '60px'
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', width: '60px'
                   }}
                 >
                   {filled ? (
-                    <div className="flex flex-col items-center bg-[var(--color-canvas)]/60 backdrop-blur-sm rounded-lg px-2 py-1 border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-1)]">
-                      <span className={`text-[11px] font-bold tracking-tight truncate w-full text-center ${slot.player!.is_overseas ? 'text-blue-500' : 'text-[var(--color-ink)]'}`}>{initials(slot.player!.name)}</span>
-                      <span className="text-[10px] font-mono font-bold text-[var(--color-mute)]">{hideRatings ? '?' : slot.player!.overall}</span>
+                    <div className={`flex flex-col items-center bg-white/90 dark:bg-[#111]/90 backdrop-blur-md px-2 py-1 ${isSelected ? 'border-green-500 shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-black/20 dark:border-white/20'} border-[1.5px] font-mono`}>
+                      <span className={`text-[11px] font-bold tracking-tight truncate w-full text-center ${slot.player!.is_overseas ? 'text-blue-600 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>{initials(slot.player!.name)}</span>
+                      <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400">{hideRatings ? '?' : slot.player!.overall}</span>
                     </div>
                   ) : (
-                    <div className="w-8 h-8 rounded-full border border-dashed border-[var(--color-mute)] opacity-30 flex items-center justify-center">
-                      <span className="text-[10px] text-[var(--color-mute)] font-bold tracking-tighter uppercase">{['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'][idx]}</span>
+                    <div className="w-8 h-8 flex items-center justify-center opacity-30">
+                      <span className="text-[10px] text-black dark:text-white font-bold tracking-widest uppercase">{['I','II','III','IV','V','VI','VII','VIII','IX','X','XI'][idx]}</span>
                     </div>
                   )}
                 </div>
@@ -324,9 +319,9 @@ function WheelLayout({ squad, onSlotClick, settings, selectedSlot }: {
         })}
 
         {/* Center Circle XI */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] bg-[var(--color-canvas)] rounded-full border border-[var(--color-hairline)] shadow-[0_0_30px_rgba(0,0,0,0.1)] flex flex-col items-center justify-center z-20 pointer-events-none backdrop-blur-md">
-          <span className="text-3xl font-black text-[var(--color-primary)] tracking-tighter">XI</span>
-          <span className="text-[8px] font-mono text-[var(--color-mute)] uppercase tracking-widest mt-1">Squad</span>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] bg-white dark:bg-[#111] rounded-full border-4 border-black/10 dark:border-white/10 shadow-2xl flex flex-col items-center justify-center z-20 pointer-events-none font-mono">
+          <span className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">XI</span>
+          <span className="text-[8px] text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-1 font-bold">Squad</span>
         </div>
       </div>
     </div>
@@ -343,16 +338,16 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
   if (benchSlots.length === 0 || settings?.mode !== 'franchise') return null;
 
   return (
-    <div className="mt-6 w-full bg-[var(--color-canvas)] p-4 rounded-2xl border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-2)]">
-      <div className="flex items-center justify-between mb-4">
-        <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest flex items-center gap-2">
-          <Moon size={14} className="text-[var(--color-primary)]" /> Franchise Bench
+    <div className="mt-4 w-full bg-white dark:bg-[#111] p-4 border border-black/10 dark:border-white/10 md:rounded-lg shadow-xl font-mono relative overflow-hidden">
+      <div className="flex items-center justify-between mb-4 relative z-10">
+        <div className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
+          <div className="w-2 h-2 bg-yellow-500 skew-x-[-10deg]" /> Franchise Bench
         </div>
-        <div className="text-[10px] font-mono bg-[var(--color-canvas-soft-2)] px-2 py-1 rounded-md text-[var(--color-ink)] font-bold border border-[var(--color-hairline)]">
+        <div className="text-[10px] bg-black/5 dark:bg-white/5 px-2 py-1 text-gray-900 dark:text-white font-bold border border-black/10 dark:border-white/10 uppercase tracking-widest">
           {benchSlots.filter(x => x.s.player).length} / 14 Filled
         </div>
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 justify-center">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 justify-center relative z-10">
         {benchSlots.map(({ s: slot, i: idx }) => {
           const filled = !!slot.player;
           const hideRatings = settings?.showRatings === 'off';
@@ -362,32 +357,26 @@ function BenchLayout({ squad, onSlotClick, settings, selectedSlot }: {
               key={idx}
               onClick={() => onSlotClick?.(idx)}
               className={`flex flex-col items-center justify-center p-1.5
-                ${onSlotClick ? 'cursor-pointer hover:border-yellow-500/50 hover:bg-yellow-500/5' : 'cursor-default'}
-                w-full aspect-[3/4] rounded-xl relative overflow-hidden transition-all shadow-sm`}
-              style={{ 
-                border: filled 
-                  ? (isSelected ? '2px solid #22c55e' : (slot.player!.is_overseas ? '1px solid rgba(59,130,246,0.3)' : '1px solid var(--color-hairline)')) 
-                  : '1px dashed var(--color-hairline)',
-                background: filled 
-                  ? (isSelected ? 'rgba(34,197,94,0.1)' : (slot.player!.is_overseas ? 'rgba(59,130,246,0.05)' : 'var(--color-canvas-soft-2)')) 
-                  : 'var(--color-canvas-soft)',
-              }}
+                ${onSlotClick ? 'cursor-pointer hover:border-yellow-500/50 hover:bg-yellow-500/10' : 'cursor-default'}
+                w-full aspect-[3/4] relative overflow-hidden transition-all bg-gray-50 dark:bg-[#1a1a1a]
+                ${filled ? (isSelected ? 'border-2 border-green-500 bg-green-500/10' : (slot.player!.is_overseas ? 'border border-blue-500/50 bg-blue-500/5' : 'border border-black/10 dark:border-white/10')) : 'border border-dashed border-black/20 dark:border-white/20'}
+              `}
               whileHover={!isSelected ? { scale: 1.02, y: -2 } : {}}
             >
               {filled ? (
                 <>
-                  <div className="w-8 h-8 bg-[var(--color-canvas)] rounded-full border border-[var(--color-hairline)] shadow-sm flex items-center justify-center mb-1 relative">
-                    <span className="text-[10px] font-mono font-bold text-[var(--color-ink)]">{hideRatings ? '?' : slot.player!.overall}</span>
+                  <div className={`w-8 h-8 bg-white dark:bg-[#111] border ${isSelected ? 'border-green-500' : 'border-black/20 dark:border-white/20'} flex items-center justify-center mb-1 relative`}>
+                    <span className="text-[10px] font-bold text-gray-900 dark:text-white">{hideRatings ? '?' : slot.player!.overall}</span>
                     {slot.player!.is_overseas && (
-                      <div className="absolute -top-1 -right-1 bg-blue-500 text-white rounded-full w-4 h-4 flex items-center justify-center shadow-sm">
-                        <Globe className="w-2.5 h-2.5 text-white" />
+                      <div className="absolute -top-1.5 -right-1.5 bg-blue-500 text-white w-4 h-4 flex items-center justify-center shadow-sm">
+                        <span className="text-[8px]">✈️</span>
                       </div>
                     )}
                   </div>
-                  <span className="text-[9px] font-bold text-[var(--color-ink)] text-center w-full truncate px-1">{initials(slot.player!.name)}</span>
+                  <span className="text-[9px] font-bold text-gray-900 dark:text-white text-center w-full truncate px-1 uppercase">{initials(slot.player!.name)}</span>
                 </>
               ) : (
-                <span className="text-[10px] font-mono text-[var(--color-mute)]/40 font-bold">{idx + 1}</span>
+                <span className="text-[10px] text-gray-400 dark:text-gray-600 font-bold uppercase tracking-widest">{idx + 1}</span>
               )}
             </motion.div>
           );
@@ -1484,14 +1473,14 @@ function DraftScreen({
   const meetsFranchiseRules = wkCount >= 2 && batCount >= 5 && arCount >= 3 && bwlCount >= 6;
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-[var(--color-hairline)] pb-4">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col max-w-[1600px] mx-auto p-4 md:p-6 lg:p-8 font-mono">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-black/10 dark:border-white/10 pb-4">
         <div>
-          <h2 className="text-3xl font-semibold tracking-tight text-[var(--color-ink)] flex items-center gap-3">
-            <Swords className="text-yellow-500" size={28} />
+          <h2 className="text-3xl md:text-4xl font-black tracking-widest uppercase text-gray-900 dark:text-white flex items-center gap-3">
+            <Swords className="text-yellow-500" size={32} />
             {settings.mode === 'franchise' ? 'Franchise Draft' : 'Draft Your XI'}
           </h2>
-          <p className="text-sm text-[var(--color-mute)] mt-1 font-medium">
+          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-2 font-bold uppercase tracking-widest">
             {settings.mode === 'franchise' 
               ? `Select 18-25 players. Max ${maxOverseas} overseas.` 
               : 'Select 11 players to build your ultimate squad. Max 4 overseas.'}
@@ -1503,17 +1492,19 @@ function DraftScreen({
              <button
               onClick={onFinishDraft}
               disabled={filledCount < 18 || !meetsFranchiseRules}
-              className={`px-6 py-2 rounded-xl font-bold shadow-lg transition-colors ${
+              className={`group relative flex items-center justify-center gap-2 px-8 py-3 font-bold text-lg tracking-widest uppercase overflow-hidden skew-x-[-10deg] shadow-lg transition-all ${
                 (filledCount >= 18 && meetsFranchiseRules) 
                   ? 'bg-green-500 text-black hover:bg-green-400 animate-pulse'
-                  : 'bg-[var(--color-canvas)] text-[var(--color-mute)] cursor-not-allowed border border-[var(--color-hairline)]'
+                  : 'bg-gray-200 dark:bg-[#1a1a1a] text-gray-400 dark:text-gray-600 cursor-not-allowed border border-black/10 dark:border-white/10'
               }`}
              >
-               {filledCount < 18 
-                 ? `Draft ${18 - filledCount} More` 
-                 : !meetsFranchiseRules 
-                   ? 'Rules Not Met' 
-                   : 'Finish Draft'}
+               <div className="skew-x-[10deg]">
+                 {filledCount < 18 
+                   ? `Draft ${18 - filledCount} More` 
+                   : !meetsFranchiseRules 
+                     ? 'Rules Not Met' 
+                     : 'Finish Draft'}
+               </div>
              </button>
           )}
         </div>
@@ -1521,14 +1512,15 @@ function DraftScreen({
 
       <div className="flex gap-6 relative flex-grow">
       {playerForRoleSelection && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-[var(--color-primary)]/80 backdrop-blur-sm p-4">
-          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+          <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 md:rounded-lg p-6 max-w-sm w-full shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-yellow-500" />
             <div className="text-center mb-6">
               <div className="flex justify-center mb-4">
                 <RatingBadge rating={playerForRoleSelection.player.overall} hidden={settings.showRatings === 'off'} size="lg" />
               </div>
-              <h3 className="text-xl font-bold text-[var(--color-ink)] mt-3">{playerForRoleSelection.player.name}</h3>
-              <p className="text-sm text-[var(--color-mute)] mt-1">Select Role</p>
+              <h3 className="text-2xl font-black uppercase tracking-widest text-gray-900 dark:text-white mt-3">{playerForRoleSelection.player.name}</h3>
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1">Select Role</p>
             </div>
             <div className="flex flex-col gap-3">
               {playerForRoleSelection.availableRoles.map(r => (
@@ -1538,7 +1530,7 @@ function DraftScreen({
                     assignPlayerRole(playerForRoleSelection.player, r);
                     setPlayerForRoleSelection(null);
                   }}
-                  className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] hover:border-yellow-500 hover:bg-yellow-500/10 hover:text-yellow-400 text-[var(--color-ink)] py-3 rounded-xl font-bold transition-all"
+                  className="bg-gray-50 dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 hover:border-yellow-500 hover:bg-yellow-500/10 hover:text-yellow-500 text-gray-900 dark:text-white py-3 md:rounded-lg font-bold uppercase tracking-widest transition-all text-sm"
                 >
                   {r === 'BAT_AR' ? 'Batting All-Rounder' :
                    r === 'BOWL_AR' ? 'Bowling All-Rounder' :
@@ -1549,7 +1541,7 @@ function DraftScreen({
                 </button>
               ))}
             </div>
-            <button onClick={() => setPlayerForRoleSelection(null)} className="mt-4 w-full text-center text-sm font-bold text-[var(--color-mute)] hover:text-[var(--color-mute)] py-2">
+            <button onClick={() => setPlayerForRoleSelection(null)} className="mt-4 w-full text-center text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-gray-900 dark:hover:text-white py-2 transition-colors">
               Cancel
             </button>
           </motion.div>
@@ -1558,14 +1550,14 @@ function DraftScreen({
       {/* Left: Pitch & Squad */}
       <div className="w-[340px] flex-shrink-0 flex flex-col gap-4">
         {/* Top Badges */}
-        <div className="flex items-center justify-between bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
+        <div className="flex items-center justify-between bg-white dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm">
           <div className="flex items-center gap-2">
-            <span className="text-[var(--color-mute)] text-[10px] font-mono uppercase font-bold tracking-wider">Players</span>
-            <span className="text-[var(--color-ink)] font-bold text-xs bg-[var(--color-canvas)] px-2 py-0.5 rounded-md">{filledCount}/{maxPlayers}</span>
+            <span className="text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest">Players</span>
+            <span className="text-gray-900 dark:text-white font-bold text-xs bg-gray-100 dark:bg-[#1a1a1a] px-2 py-0.5 rounded border border-black/10 dark:border-white/10">{filledCount}/{maxPlayers}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[var(--color-mute)] text-[10px] font-mono uppercase font-bold tracking-wider">Overseas</span>
-            <span className={`font-bold text-xs px-2 py-0.5 rounded-md ${overseasCount >= maxOverseas ? 'bg-red-900/50 text-red-400' : 'bg-[var(--color-canvas)] text-[var(--color-ink)]'}`}>{overseasCount}/{maxOverseas}</span>
+            <span className="text-gray-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest">Overseas</span>
+            <span className={`font-bold text-xs px-2 py-0.5 rounded border ${overseasCount >= maxOverseas ? 'bg-red-500/10 text-red-500 border-red-500/20' : 'bg-gray-100 dark:bg-[#1a1a1a] text-gray-900 dark:text-white border-black/10 dark:border-white/10'}`}>{overseasCount}/{maxOverseas}</span>
           </div>
         </div>
 
@@ -1589,21 +1581,21 @@ function DraftScreen({
               setMoveMode(!moveMode);
               setSelectedSlotForMove(null);
             }}
-            className={`w-full py-3 rounded-xl font-bold text-sm transition-colors border ${
+            className={`w-full py-3 md:rounded-lg font-bold text-xs uppercase tracking-widest transition-all border ${
               moveMode 
-                ? 'bg-[var(--color-ink)] text-[var(--color-canvas)] border-[var(--color-ink)]'
-                : 'bg-[var(--color-canvas)] text-[var(--color-ink)] border-[var(--color-hairline)] hover:bg-green-800/50'
+                ? 'bg-blue-600 text-white border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.4)]'
+                : 'bg-white dark:bg-[#111] text-gray-900 dark:text-white border-black/10 dark:border-white/10 hover:border-blue-500 hover:text-blue-500'
             }`}
           >
             {moveMode ? '↔ Done moving' : '↔ Move a player'}
           </button>
           {moveMode ? (
-            <div className="mt-2 text-[10px] text-[var(--color-mute)] text-center leading-relaxed">
-              <strong className="text-[var(--color-mute)]">Tap a player on the pitch</strong> to pick them up, then tap a slot.<br/>
+            <div className="mt-3 text-[10px] text-gray-500 dark:text-gray-400 text-center leading-relaxed font-bold uppercase tracking-wider">
+              <strong className="text-blue-500">Tap a player on the pitch</strong> to pick them up, then tap a slot.<br/>
               Empty slot = they move there • Team-mate = swap.
             </div>
           ) : (
-            <div className="mt-2 text-[10px] text-[var(--color-mute)] text-center">
+            <div className="mt-3 text-[10px] text-gray-500 dark:text-gray-400 text-center font-bold uppercase tracking-wider">
               Reposition a drafted player to open up a slot.
             </div>
           )}
@@ -1611,26 +1603,26 @@ function DraftScreen({
 
         {/* Strength bars */}
         {filledCount > 0 && settings.showRatings === 'on' && (
-          <div className="card p-3 space-y-2">
-            <div className="flex justify-between text-xs">
-              <span className="text-[var(--color-mute)]">Batting</span>
-              <span className="font-bold text-[var(--color-ink)]">{strength.batting}</span>
+          <div className="bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 md:rounded-lg p-4 space-y-3 shadow-sm">
+            <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
+              <span className="text-gray-500 dark:text-gray-400">Batting</span>
+              <span className="text-gray-900 dark:text-white">{strength.batting}</span>
             </div>
             <ProgressBar value={strength.batting} color="#22c55e" />
-            <div className="flex justify-between text-xs">
-              <span className="text-[var(--color-mute)]">Bowling</span>
-              <span className="font-bold text-[var(--color-ink)]">{strength.bowling}</span>
+            <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
+              <span className="text-gray-500 dark:text-gray-400">Bowling</span>
+              <span className="text-gray-900 dark:text-white">{strength.bowling}</span>
             </div>
             <ProgressBar value={strength.bowling} color="#3b82f6" />
-            <div className="flex justify-between text-xs mt-1">
-              <span className="text-[var(--color-mute)] font-semibold">Effective Overall</span>
-              <span className="font-bold text-yellow-400">{strength.overall}</span>
+            <div className="flex justify-between text-xs mt-2 pt-2 border-t border-black/10 dark:border-white/10 font-bold uppercase tracking-widest">
+              <span className="text-gray-500 dark:text-gray-400">Effective Overall</span>
+              <span className="text-yellow-500">{strength.overall}</span>
             </div>
           </div>
         )}
         {filledCount > 0 && settings.showRatings === 'off' && (
-          <div className="card p-3 space-y-2 flex items-center justify-center text-center opacity-50 py-8">
-            <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest">Ratings Hidden</div>
+          <div className="bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 md:rounded-lg p-3 space-y-2 flex items-center justify-center text-center opacity-50 py-8">
+            <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold">Ratings Hidden</div>
           </div>
         )}
       </div>
@@ -1638,92 +1630,87 @@ function DraftScreen({
       {/* Middle: Draft Area */}
       <div className="flex-1 flex flex-col gap-4 min-w-[300px]">
         {/* Header */}
-        <div className="flex items-center justify-between bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
-          <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest">Draft Option</div>
+        <div className="flex items-center justify-between bg-white dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm">
+          <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Draft Option</div>
           <div className="flex items-center gap-2">
-            <span className="text-[var(--color-mute)] text-[10px] font-mono uppercase font-bold tracking-wider">Rerolls</span>
-            <span className="text-yellow-400 font-bold text-xs bg-yellow-400/10 px-2 py-0.5 rounded-md">{rerolls} left</span>
+            <span className="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-bold tracking-wider">Rerolls</span>
+            <span className="text-yellow-500 font-bold text-xs bg-yellow-500/10 border border-yellow-500/20 px-2 py-0.5 rounded uppercase tracking-widest">{rerolls} left</span>
           </div>
         </div>
 
         {settings.mode === 'franchise' && (
-          <div className="bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)] flex flex-col gap-2">
-            <div className="text-[10px] font-bold text-[var(--color-mute)] uppercase tracking-widest text-center">Franchise Squad Rules</div>
-            <div className="flex justify-between items-center gap-1 bg-[var(--color-canvas-soft-2)] p-2 rounded-lg">
+          <div className="bg-white dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10 flex flex-col gap-2 shadow-sm">
+            <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest text-center">Franchise Squad Rules</div>
+            <div className="flex justify-between items-center gap-1 bg-gray-50 dark:bg-[#1a1a1a] p-2 border border-black/5 dark:border-white/5 md:rounded-lg">
               <div className="flex flex-col items-center flex-1">
-                <span className="text-[var(--color-mute)] text-[9px] uppercase font-bold">WK (2+)</span>
-                <span className={`text-xs font-semibold tracking-tight ${wkCount < 2 ? 'text-red-400' : 'text-green-400'}`}>{wkCount}</span>
+                <span className="text-gray-500 dark:text-gray-400 text-[9px] uppercase font-bold tracking-widest">WK (2+)</span>
+                <span className={`text-xs font-black tracking-widest ${wkCount < 2 ? 'text-red-500' : 'text-green-500'}`}>{wkCount}</span>
               </div>
-              <div className="flex flex-col items-center flex-1 border-l border-[var(--color-hairline)]">
-                <span className="text-[var(--color-mute)] text-[9px] uppercase font-bold">BAT (5+)</span>
-                <span className={`text-xs font-semibold tracking-tight ${batCount < 5 ? 'text-red-400' : 'text-green-400'}`}>{batCount}</span>
+              <div className="flex flex-col items-center flex-1 border-l border-black/10 dark:border-white/10">
+                <span className="text-gray-500 dark:text-gray-400 text-[9px] uppercase font-bold tracking-widest">BAT (5+)</span>
+                <span className={`text-xs font-black tracking-widest ${batCount < 5 ? 'text-red-500' : 'text-green-500'}`}>{batCount}</span>
               </div>
-              <div className="flex flex-col items-center flex-1 border-l border-[var(--color-hairline)]">
-                <span className="text-[var(--color-mute)] text-[9px] uppercase font-bold">AR (3+)</span>
-                <span className={`text-xs font-semibold tracking-tight ${arCount < 3 ? 'text-red-400' : 'text-green-400'}`}>{arCount}</span>
+              <div className="flex flex-col items-center flex-1 border-l border-black/10 dark:border-white/10">
+                <span className="text-gray-500 dark:text-gray-400 text-[9px] uppercase font-bold tracking-widest">AR (3+)</span>
+                <span className={`text-xs font-black tracking-widest ${arCount < 3 ? 'text-red-500' : 'text-green-500'}`}>{arCount}</span>
               </div>
-              <div className="flex flex-col items-center flex-1 border-l border-[var(--color-hairline)]">
-                <span className="text-[var(--color-mute)] text-[9px] uppercase font-bold">BWL (6+)</span>
-                <span className={`text-xs font-semibold tracking-tight ${bwlCount < 6 ? 'text-red-400' : 'text-green-400'}`}>{bwlCount}</span>
+              <div className="flex flex-col items-center flex-1 border-l border-black/10 dark:border-white/10">
+                <span className="text-gray-500 dark:text-gray-400 text-[9px] uppercase font-bold tracking-widest">BWL (6+)</span>
+                <span className={`text-xs font-black tracking-widest ${bwlCount < 6 ? 'text-red-500' : 'text-green-500'}`}>{bwlCount}</span>
               </div>
             </div>
-            <div className="text-[9px] text-[var(--color-mute)] text-center font-semibold mt-1">
-              Min 18 total. Recommended Ideal: WK 2-3 | BAT 6-8 | AR 4-5 | BWL 8-9
+            <div className="text-[9px] text-gray-400 dark:text-gray-600 text-center font-bold tracking-widest mt-1 uppercase">
+              Min 18 total. Ideal: WK 2-3 | BAT 6-8 | AR 4-5 | BWL 8-9
             </div>
           </div>
         )}
 
         {/* Global Spin Button */}
-        <motion.button
-          whileHover={{ scale: ((currentSpin && rerolls === 0) || isSpinning) ? 1 : 1.02 }}
-          whileTap={{ scale: ((currentSpin && rerolls === 0) || isSpinning) ? 1 : 0.98 }}
+        <button
           onClick={() => {
             if (isSpinning || (currentSpin && rerolls === 0)) return;
             if (currentSpin) onReroll();
             doSpin();
           }}
           disabled={(currentSpin && rerolls === 0) || isSpinning}
-          className={`w-full text-lg py-4 font-semibold tracking-tight rounded-xl transition-all flex items-center justify-center gap-2 ${
+          className={`group relative w-full py-4 text-lg font-black tracking-widest uppercase md:rounded-lg overflow-hidden transition-all flex items-center justify-center gap-3 shadow-xl ${
             isSpinning 
-              ? 'bg-[var(--color-warning-soft)] text-[var(--color-warning-deep)] cursor-wait' 
+              ? 'bg-yellow-500/20 text-yellow-500 cursor-wait border border-yellow-500/50' 
               : (currentSpin && rerolls === 0)
-                ? 'bg-[var(--color-canvas)] text-[var(--color-mute)] cursor-not-allowed'
-                : 'btn-primary pulse-gold'
+                ? 'bg-gray-200 dark:bg-[#1a1a1a] text-gray-400 dark:text-gray-600 cursor-not-allowed border border-black/10 dark:border-white/10'
+                : 'bg-yellow-500 text-black hover:bg-yellow-400 border border-yellow-500 hover:border-yellow-400'
           }`}
         >
-          <Shuffle className="w-5 h-5" />
-          <span>{isSpinning ? 'SPINNING...' : currentSpin ? `REROLL SQUAD (${rerolls} LEFT)` : 'SPIN TO REVEAL'}</span>
-        </motion.button>
+          <div className="flex items-center gap-3">
+            <Shuffle className="w-6 h-6" />
+            <span>{isSpinning ? 'SPINNING...' : currentSpin ? `REROLL (${rerolls} LEFT)` : 'SPIN TO REVEAL'}</span>
+          </div>
+        </button>
 
         {!currentSpin && !isSpinning ? (
-          <div className="flex-1 flex flex-col items-center justify-center border border-dashed border-[var(--color-hairline)] rounded-2xl bg-[var(--color-canvas-soft-2)] p-8">
-            <div className="text-2xl font-semibold tracking-tight text-[var(--color-mute)] mb-2">Ready to Draft</div>
-            <div className="text-sm text-gray-600 text-center max-w-sm">
+          <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-black/10 dark:border-white/10 md:rounded-lg bg-gray-50/50 dark:bg-[#111]/50 p-8 shadow-inner">
+            <div className="text-2xl font-black uppercase tracking-widest text-gray-400 dark:text-gray-600 mb-2">Ready to Draft</div>
+            <div className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-500 text-center max-w-sm leading-relaxed">
               Spin to reveal a random IPL squad and season. Draft one player to your starting XI.
             </div>
           </div>
         ) : (
           <div className="flex flex-col gap-4">
             {/* Spin Info */}
-            <div className={`p-8 rounded-2xl border flex flex-col items-center justify-center min-h-[160px] transition-all duration-500 relative overflow-hidden ${isSpinning ? 'border-yellow-500/50 bg-[var(--color-canvas-soft-2)] [box-shadow:var(--shadow-vercel-3)]' : 'border-[var(--color-hairline)] bg-[var(--color-canvas)]'}`}>
-              {isSpinning && (
-                <motion.div 
-                  className="absolute inset-0 bg-yellow-500/5"
-                  animate={{ opacity: [0, 1, 0] }}
-                  transition={{ duration: 0.2, repeat: Infinity }}
-                />
-              )}
-              <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold mb-4 z-10">{isSpinning ? 'Spinning...' : 'Revealed Squad'}</div>
+            <div className={`p-8 md:rounded-lg border-2 flex flex-col items-center justify-center min-h-[160px] transition-all duration-500 relative overflow-hidden ${isSpinning ? 'border-yellow-500 bg-yellow-500/5 shadow-[0_0_30px_rgba(234,179,8,0.2)]' : 'border-black/10 dark:border-white/10 bg-white dark:bg-[#111] shadow-sm'}`}>
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold mb-4 z-10">{isSpinning ? 'Spinning...' : 'Revealed Squad'}</div>
               <div className="flex flex-col items-center gap-3 z-10">
                 <motion.div
                   key={spinDisplay.team + spinDisplay.season}
                   initial={isSpinning ? { y: -20, opacity: 0, scale: 0.8 } : false}
                   animate={isSpinning ? { y: 0, opacity: 1, scale: 1.1 } : { scale: 1 }}
                   transition={{ duration: 0.15 }}
-                  className="px-6 py-2 rounded-xl text-3xl font-semibold tracking-tight shadow-2xl border border-[var(--color-hairline)]"
-                  style={{ background: teamColor(spinDisplay.team), color: '#fff' }}
+                  className="pr-6 pl-4 py-2 border-y-2 border-r-2 border-black/10 dark:border-white/10 border-l-8 text-3xl font-black uppercase tracking-widest shadow-2xl bg-gray-900 dark:bg-black text-white md:rounded-r-lg"
+                  style={{ borderLeftColor: teamColor(spinDisplay.team) }}
                 >
-                  {spinDisplay.team || '—'} {spinDisplay.season || ''}
+                  <div>
+                    {spinDisplay.team || '—'} {spinDisplay.season || ''}
+                  </div>
                 </motion.div>
               </div>
             </div>
@@ -1731,7 +1718,7 @@ function DraftScreen({
             {/* Players Grid */}
             {!isSpinning && currentSpin && (
               <div className="flex-1 min-h-0 flex flex-col">
-                <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest mb-3 font-bold px-1">Select one player for your XI</div>
+                <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3 font-bold px-1">Select one player for your XI</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-2 custom-scrollbar pb-6">
                   {currentSpin.players.slice().sort((a, b) => {
                   const aDisabled = isPlayerDisabled(a);
@@ -1749,23 +1736,27 @@ function DraftScreen({
                       transition={{ delay: i * 0.02 }}
                       whileHover={!disabled ? { y: -2 } : {}}
                       onClick={() => !disabled && handlePickPlayer(p)}
-                      className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${
+                      className={`group relative flex items-center gap-3 p-3 border transition-all overflow-hidden ${
                         disabled
-                          ? 'opacity-40 cursor-not-allowed border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] opacity-50'
-                          : 'cursor-pointer border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:border-yellow-500/50 hover:bg-yellow-500/5 shadow-sm'
+                          ? 'opacity-40 cursor-not-allowed border-black/10 dark:border-white/10 bg-gray-50 dark:bg-[#1a1a1a]'
+                          : 'cursor-pointer border-black/10 dark:border-white/10 bg-white dark:bg-[#111] hover:border-yellow-500 hover:bg-yellow-500/5 shadow-sm'
                       }`}
                     >
+                      {!disabled && (
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-yellow-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out" />
+                      )}
+                      
                       <RatingBadge rating={p.overall} hidden={settings.showRatings === 'off'} />
-                      <div className="flex-1 min-w-0">
-                         <div className="font-semibold text-sm text-[var(--color-ink)] truncate">
+                      <div className="flex-1 min-w-0 z-10">
+                         <div className="font-black uppercase tracking-widest text-sm text-gray-900 dark:text-white truncate">
                           {p.name} {p.is_overseas && <span title="Overseas Player">✈️</span>}
                         </div>
-                        <div className="text-[10px] text-[var(--color-mute)] mt-0.5">{p.role} · {p.team} {p.season}</div>
+                        <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 mt-0.5 uppercase tracking-widest">{p.role} · {p.team} {p.season}</div>
                         {disabled && (
-                          <div className={`text-[10px] font-bold mt-1 ${
+                          <div className={`text-[10px] font-bold mt-1 tracking-widest uppercase ${
                             pickedNames.has(p.name.toLowerCase().trim())
-                              ? 'text-yellow-600'
-                              : 'text-gray-600'
+                              ? 'text-yellow-600 dark:text-yellow-500'
+                              : 'text-gray-600 dark:text-gray-400'
                           }`}>
                             {disabledReason(p)}
                           </div>
@@ -1784,31 +1775,31 @@ function DraftScreen({
       {/* Right: Selected Player Detail */}
       <div className="w-[340px] flex-shrink-0 flex flex-col gap-4">
         {selectedSlotForMove !== null && squad[selectedSlotForMove]?.player ? (
-          <div className="card p-6 flex flex-col gap-4 relative overflow-hidden shadow-2xl border border-[var(--color-hairline)]">
+          <div className="bg-white dark:bg-[#111] border border-black/10 dark:border-white/10 md:rounded-lg p-6 flex flex-col gap-4 relative overflow-hidden shadow-2xl font-mono">
              {squad[selectedSlotForMove].player!.is_overseas && (
                <div className="absolute inset-0 bg-blue-500/10 pointer-events-none" />
              )}
              <div className="flex justify-between items-start z-10">
                <div>
-                 <div className="text-2xl font-semibold tracking-tight text-[var(--color-ink)]">
+                 <div className="text-2xl font-black uppercase tracking-widest text-gray-900 dark:text-white">
                    {squad[selectedSlotForMove].player!.name}
                    {squad[selectedSlotForMove].player!.is_overseas && <span className="ml-2" title="Overseas Player">✈️</span>}
                  </div>
-                 <div className="text-sm font-bold text-[var(--color-mute)] mt-1 uppercase tracking-widest">
+                 <div className="text-xs font-bold text-gray-500 dark:text-gray-400 mt-1 uppercase tracking-widest">
                    {squad[selectedSlotForMove].player!.team} • {squad[selectedSlotForMove].player!.season}
                  </div>
                </div>
                <RatingBadge rating={squad[selectedSlotForMove].player!.overall} size="lg" hidden={settings.showRatings === 'off'} />
              </div>
              
-             <div className="flex gap-4 mt-4 pt-4 border-t border-[var(--color-hairline)] z-10">
+             <div className="flex gap-4 mt-4 pt-4 border-t border-black/10 dark:border-white/10 z-10">
                <div className="flex-1">
-                 <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold">Role</div>
-                 <div className="text-sm font-bold text-[var(--color-ink)]">{squad[selectedSlotForMove].player!.role}</div>
+                 <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold">Role</div>
+                 <div className="text-sm font-black uppercase tracking-widest text-gray-900 dark:text-white mt-1">{squad[selectedSlotForMove].player!.role}</div>
                </div>
-               <div className="flex-1 border-l border-[var(--color-hairline)] pl-4">
-                 <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold">Position</div>
-                 <div className="text-sm font-bold text-[var(--color-ink)]">{squad[selectedSlotForMove].position}</div>
+               <div className="flex-1 border-l border-black/10 dark:border-white/10 pl-4">
+                 <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold">Position</div>
+                 <div className="text-sm font-black uppercase tracking-widest text-gray-900 dark:text-white mt-1">{squad[selectedSlotForMove].position}</div>
                </div>
              </div>
              
@@ -1819,8 +1810,8 @@ function DraftScreen({
              )}
           </div>
         ) : (
-          <div className="card p-6 flex flex-col items-center justify-center text-center opacity-50 min-h-[300px]">
-            <div className="text-sm text-[var(--color-mute)]">Select a drafted player on the wheel to view details.</div>
+          <div className="bg-white dark:bg-[#111] border border-dashed border-black/10 dark:border-white/10 md:rounded-lg p-6 flex flex-col items-center justify-center text-center opacity-50 min-h-[300px] shadow-inner">
+            <div className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-600">Select a drafted player on the wheel to view details.</div>
           </div>
         )}
       </div>
