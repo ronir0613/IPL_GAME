@@ -2,6 +2,7 @@ import ThemeToggle from './ThemeToggle';
 
 export default function NavBar({ currentPhase, onNavigate }: { currentPhase?: string, onNavigate?: (p: any) => void }) {
   const handleNavigate = (p: string) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (onNavigate) {
       onNavigate(p);
     } else {

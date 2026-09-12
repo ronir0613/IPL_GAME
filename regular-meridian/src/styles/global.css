@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-canvas: #ffffff;
@@ -69,7 +70,46 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   letter-spacing: -0.01em;
+  position: relative;
 }
+
+/* --- Dynamic Background Pattern --- */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background: 
+    radial-gradient(circle at 15% 50%, rgba(20, 184, 166, 0.12), transparent 30%),
+    radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.12), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.12), transparent 30%);
+  background-size: 150% 150%;
+  animation: bg-mesh 15s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: radial-gradient(var(--color-hairline-strong) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+@keyframes bg-mesh {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+/* ---------------------------------- */
 
 /* Retaining core CSS from Next.js project but themed for Vercel */
 .rating-badge {

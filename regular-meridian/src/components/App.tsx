@@ -783,58 +783,25 @@ function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => 
     title: string;
     subtitle: string;
     themeColor: string;
+    accentBg: string;
+    hoverBg: string;
   }[] = [
-    { id: 'classic', bgLetter: 'C', icon: Swords, title: 'Classic', subtitle: 'Build the greatest XI.', themeColor: 'blue' },
-    { id: 'franchise', bgLetter: 'F', icon: ClipboardList, title: 'Franchise', subtitle: 'Impact player rules.', themeColor: 'yellow' },
-    { id: 'gamble', bgLetter: 'G', icon: Dices, title: 'Gamble', subtitle: 'Let fate decide.', themeColor: 'purple' },
-    { id: 'multiplayer', bgLetter: 'M', icon: Users, title: 'Multiplayer', subtitle: 'P2P Auction Room.', themeColor: 'green' }
+    { id: 'classic', bgLetter: 'C', icon: Swords, title: 'Classic', subtitle: 'Build the greatest XI.', themeColor: 'text-blue-500', accentBg: 'bg-blue-500', hoverBg: 'bg-blue-500/5 dark:bg-blue-500/10' },
+    { id: 'franchise', bgLetter: 'F', icon: ClipboardList, title: 'Franchise', subtitle: 'Impact player rules.', themeColor: 'text-yellow-500', accentBg: 'bg-yellow-500', hoverBg: 'bg-yellow-500/5 dark:bg-yellow-500/10' },
+    { id: 'gamble', bgLetter: 'G', icon: Dices, title: 'Gamble', subtitle: 'Let fate decide.', themeColor: 'text-purple-500', accentBg: 'bg-purple-500', hoverBg: 'bg-purple-500/5 dark:bg-purple-500/10' },
+    { id: 'multiplayer', bgLetter: 'M', icon: Users, title: 'Multiplayer', subtitle: 'P2P Auction Room.', themeColor: 'text-green-500', accentBg: 'bg-green-500', hoverBg: 'bg-green-500/5 dark:bg-green-500/10' }
   ];
 
-  const getColorClasses = (color: string, isHovered: boolean) => {
-    switch (color) {
-      case 'blue': return {
-        border: isHovered ? 'border-blue-500' : 'border-[var(--card-border)]',
-        bg: isHovered ? 'bg-blue-500/10' : 'bg-[var(--card-bg)]/80',
-        text: isHovered ? 'text-blue-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
-        icon: isHovered ? 'text-blue-400' : 'text-[var(--text-muted)]',
-        gradient: 'from-blue-500/20 to-transparent'
-      };
-      case 'yellow': return {
-        border: isHovered ? 'border-yellow-500' : 'border-[var(--card-border)]',
-        bg: isHovered ? 'bg-yellow-500/10' : 'bg-[var(--card-bg)]/80',
-        text: isHovered ? 'text-yellow-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
-        icon: isHovered ? 'text-yellow-400' : 'text-[var(--text-muted)]',
-        gradient: 'from-yellow-500/20 to-transparent'
-      };
-      case 'purple': return {
-        border: isHovered ? 'border-purple-500' : 'border-[var(--card-border)]',
-        bg: isHovered ? 'bg-purple-500/10' : 'bg-[var(--card-bg)]/80',
-        text: isHovered ? 'text-purple-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
-        icon: isHovered ? 'text-purple-400' : 'text-[var(--text-muted)]',
-        gradient: 'from-purple-500/20 to-transparent'
-      };
-      case 'green': return {
-        border: isHovered ? 'border-green-500' : 'border-[var(--card-border)]',
-        bg: isHovered ? 'bg-green-500/10' : 'bg-[var(--card-bg)]/80',
-        text: isHovered ? 'text-green-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
-        icon: isHovered ? 'text-green-400' : 'text-[var(--text-muted)]',
-        gradient: 'from-green-500/20 to-transparent'
-      };
-      default: return { border: '', bg: '', text: '', icon: '', gradient: '' };
-    }
-  };
-
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col bg-[var(--color-canvas)] px-2 pb-2 md:px-8 md:pb-8 pt-0">
-      <div className="relative flex-1 w-full rounded-b-3xl overflow-hidden shadow-2xl border border-[var(--color-hairline)] border-t-0">
+    <div className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col bg-gray-100 dark:bg-[#0a0a0a] px-0 pb-0 overflow-hidden font-mono">
+      <div className="relative flex-1 w-full">
         {/* Accordion Container */}
-        <div className="absolute inset-y-0 flex flex-col md:flex-row h-full z-10 w-full md:w-[130vw] md:left-[-15vw]">
+        <div className="absolute inset-y-0 flex flex-col md:flex-row h-full z-10 w-full md:w-[120vw] md:left-[-10vw]">
           {modes.map((mode, index) => {
             const isHovered = hoveredMode === mode.id;
             const isOtherHovered = hoveredMode !== null && hoveredMode !== mode.id;
             const isFirst = index === 0;
             const isLast = index === modes.length - 1;
-            const colors = getColorClasses(mode.themeColor, isHovered);
 
             return (
               <motion.button
@@ -842,47 +809,65 @@ function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => 
                 onClick={() => onSelectMode(mode.id)}
                 onMouseEnter={() => setHoveredMode(mode.id)}
                 onMouseLeave={() => setHoveredMode(null)}
-                style={{
-                  flex: isHovered ? 1.8 : (isOtherHovered ? 0.8 : 1),
-                }}
+                animate={{ flex: isHovered ? 2 : (isOtherHovered ? 0.8 : 1) }}
+                transition={{ type: "spring", bounce: 0.15, duration: 0.6 }}
                 className={`
                   relative flex flex-col items-center justify-center h-full
-                  transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                  border-b md:border-b-0 md:border-r border-[var(--color-hairline)]/30
+                  border-b md:border-b-0 md:border-r border-black/10 dark:border-white/10
+                  bg-white dark:bg-[#111]
                   md:-skew-x-12
-                  ${isOtherHovered ? 'md:opacity-40 md:grayscale-[0.5]' : 'opacity-100'}
-                  ${colors.bg} backdrop-blur-md
-                  ${isHovered ? 'z-20 md:shadow-[0_0_50px_rgba(0,0,0,0.4)]' : 'z-0'}
-                  group
+                  ${isOtherHovered ? 'md:opacity-60 md:grayscale' : 'opacity-100'}
+                  group overflow-hidden
                 `}
               >
+                {/* Background Pattern */}
+                <div className={`absolute inset-0 ${mode.hoverBg} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                
                 <div className={`
-                  absolute inset-0 bg-gradient-to-b ${colors.gradient} 
-                  transition-opacity duration-700
-                  ${isHovered ? 'opacity-100' : 'opacity-0'}
-                `} />
-
-                <div className={`
-                  relative z-10 flex flex-col items-center justify-center w-full h-full
-                  md:skew-x-12 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
-                  ${isFirst ? 'md:pl-[15vw]' : ''}
-                  ${isLast ? 'md:pr-[15vw]' : ''}
-                  ${isHovered ? 'scale-110' : 'scale-100'}
+                  relative z-10 flex flex-col items-center justify-center w-full h-full p-6
+                  md:skew-x-12 transition-transform duration-500
+                  ${isFirst ? 'md:pl-[10vw]' : ''}
+                  ${isLast ? 'md:pr-[10vw]' : ''}
                 `}>
-                  <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10rem] md:text-[14rem] font-black ${colors.text} transition-all duration-700 pointer-events-none`}>
+                  <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[18rem] font-black text-black/5 dark:text-white/5 transition-transform duration-700 pointer-events-none ${isHovered ? 'scale-110' : 'scale-100'}`}>
                     {mode.bgLetter}
                   </div>
                   
-                  <mode.icon size={48} className={`relative z-10 mb-4 transition-colors duration-700 ${colors.icon}`} />
+                  <motion.div
+                    animate={{ scale: isHovered ? 1.15 : 1, y: isHovered ? -10 : 0 }}
+                    transition={{ type: "spring", bounce: 0.4 }}
+                  >
+                    <mode.icon size={48} className={`mb-6 ${isHovered ? mode.themeColor : 'text-gray-400 dark:text-white/30'} transition-colors duration-300`} />
+                  </motion.div>
                   
-                  <h2 className="relative z-10 text-2xl md:text-3xl font-black text-[var(--color-ink)] mb-2 tracking-widest uppercase drop-shadow-xl text-center">
+                  <motion.h2 
+                    animate={{ y: isHovered ? -5 : 0 }}
+                    className="relative z-10 text-3xl md:text-4xl font-black text-gray-900 dark:text-white tracking-widest uppercase text-center"
+                  >
                     {mode.title}
-                  </h2>
+                  </motion.h2>
                   
-                  <p className="relative z-10 text-[var(--color-mute)] text-xs md:text-sm font-bold uppercase tracking-wider drop-shadow-md text-center">
-                    {mode.subtitle}
-                  </p>
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: isHovered ? 1 : 0, height: isHovered ? 'auto' : 0 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-gray-500 dark:text-white/50 text-xs md:text-sm font-bold uppercase tracking-widest text-center mt-3">
+                      {mode.subtitle}
+                    </p>
+                  </motion.div>
                 </div>
+
+                {/* Hover Accent Bar */}
+                <motion.div 
+                  className={`absolute bottom-0 left-0 right-0 h-1.5 md:h-full md:w-1.5 md:bottom-auto md:right-auto md:left-0 ${mode.accentBg} origin-bottom md:origin-left`}
+                  initial={{ scaleX: 0, scaleY: 0 }}
+                  animate={{ 
+                    scaleX: typeof window !== 'undefined' && window.innerWidth < 768 ? (isHovered ? 1 : 0) : 1, 
+                    scaleY: typeof window !== 'undefined' && window.innerWidth >= 768 ? (isHovered ? 1 : 0) : 1 
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
               </motion.button>
             );
           })}
@@ -894,98 +879,154 @@ function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => 
 
 // ─── Mode Settings Screen ──────────────────────────────────────────────
 function ModeSettingsScreen({ settings, setSettings, onStart, mode }: { settings: GameSettings, setSettings: (s: GameSettings) => void, onStart: () => void, mode: GameMode }) {
-  return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 space-y-8 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-2xl"
+  const isClassic = mode === 'classic';
+  const themeColor = isClassic ? 'bg-blue-600' : 'bg-yellow-500';
+  const textColor = isClassic ? 'text-blue-500' : 'text-yellow-500';
+
+  const diffs: Difficulty[] = ['easy', 'normal', 'hard'];
+  const ratings: ShowRatings[] = ['on', 'off'];
+  const speeds: SimSpeed[] = ['fast', 'full'];
+
+  const cycleDiff = (dir: 1 | -1) => {
+    const idx = diffs.indexOf(settings.difficulty);
+    let nextIdx = (idx + dir) % diffs.length;
+    if (nextIdx < 0) nextIdx = diffs.length - 1;
+    setSettings({ ...settings, difficulty: diffs[nextIdx] });
+  };
+
+  const cycleRatings = (dir: 1 | -1) => {
+    const idx = ratings.indexOf(settings.showRatings);
+    let nextIdx = (idx + dir) % ratings.length;
+    if (nextIdx < 0) nextIdx = ratings.length - 1;
+    setSettings({ ...settings, showRatings: ratings[nextIdx] });
+  };
+
+  const cycleSpeed = (dir: 1 | -1) => {
+    const idx = speeds.indexOf(settings.simSpeed);
+    let nextIdx = (idx + dir) % speeds.length;
+    if (nextIdx < 0) nextIdx = speeds.length - 1;
+    setSettings({ ...settings, simSpeed: speeds[nextIdx] });
+  };
+
+  const OptionRow = ({ label, value, helpText, onCycle, index }: { label: string, value: string, helpText?: string, onCycle: (dir: 1 | -1) => void, index: number }) => {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 + (index * 0.1), type: "spring", stiffness: 300, damping: 24 }}
+        className="group relative flex flex-col md:flex-row md:items-center justify-between w-full p-4 md:px-6 border-b border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer select-none font-mono overflow-hidden"
+        onClick={() => onCycle(1)}
       >
-        <div className="text-4xl font-black tracking-tighter text-[var(--text-primary)] drop-shadow-lg mb-2 uppercase">
-          {mode === 'classic' ? 'Classic Mode' : 'Franchise Mode'}
-        </div>
-        <div className="text-[var(--text-muted)] text-sm font-bold tracking-widest uppercase mb-8">
-          Configure Settings
-        </div>
-
-        <div className="card p-6 border border-[var(--card-border)] flex flex-col space-y-6 shadow-xl shadow-black/50 text-left">
-          <h3 className="font-bold text-[var(--text-muted)] uppercase tracking-widest text-sm mb-2 border-b border-[var(--card-border)] pb-2 flex items-center gap-2">
-            <Target size={16} className="text-blue-500" /> Simulation Settings
-          </h3>
-          
-          <div>
-            <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 font-bold">Difficulty</div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              {(['easy', 'normal', 'hard'] as Difficulty[]).map(d => (
-                <button
-                  key={d}
-                  onClick={() => setSettings({ ...settings, difficulty: d })}
-                  className={`p-2 rounded-lg border text-xs font-semibold transition-all ${
-                    settings.difficulty === d
-                      ? 'border-yellow-500 bg-yellow-500/10 text-yellow-400'
-                      : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-muted)] hover:border-gray-600 hover:text-[var(--text-muted)]'
-                  }`}
-                >
-                  <div className="capitalize">{d}</div>
-                  <div className="text-[9px] font-normal opacity-70 mt-0.5">
-                    {d === 'easy' ? '3 rerolls' : d === 'normal' ? '1 reroll' : 'No rerolls'}
-                  </div>
-                </button>
-              ))}
-            </div>
+        <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${themeColor} -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out`} />
+        
+        <div className="flex flex-col mb-2 md:mb-0 pl-0 group-hover:pl-2 transition-all duration-300">
+          <div className="text-lg md:text-xl font-bold uppercase tracking-widest text-gray-900 dark:text-white/80 group-hover:text-black dark:group-hover:text-white transition-colors">
+            {label}
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 font-bold">Show Ratings</div>
-              <div className="flex flex-col gap-2">
-                {(['on', 'off'] as ShowRatings[]).map(r => (
-                  <button
-                    key={r}
-                    onClick={() => setSettings({ ...settings, showRatings: r })}
-                    className={`p-2 rounded-lg border text-xs font-semibold transition-all ${
-                      settings.showRatings === r
-                        ? 'border-purple-500 bg-purple-500/10 text-purple-400'
-                        : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-muted)] hover:border-gray-600 hover:text-[var(--text-muted)]'
-                    }`}
-                  >
-                    <div className="capitalize">{r}</div>
-                  </button>
-                ))}
-              </div>
+          {helpText && (
+            <div className={`text-[10px] md:text-xs font-semibold uppercase tracking-widest mt-1 ${textColor} opacity-60 group-hover:opacity-100 transition-opacity`}>
+              {helpText}
             </div>
-
-            <div>
-              <div className="text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 font-bold">Simulation Speed</div>
-              <div className="flex flex-col gap-2">
-                {(['fast', 'full'] as SimSpeed[]).map(s => (
-                  <button
-                    key={s}
-                    onClick={() => setSettings({ ...settings, simSpeed: s })}
-                    className={`p-2 rounded-lg border text-xs font-semibold transition-all ${
-                      settings.simSpeed === s
-                        ? 'border-blue-500 bg-blue-500/10 text-blue-400'
-                        : 'border-[var(--card-border)] bg-[var(--card-bg)] text-[var(--text-muted)] hover:border-gray-600 hover:text-[var(--text-muted)]'
-                    }`}
-                  >
-                    <div className="capitalize">{s === 'fast' ? 'Fast' : 'Watch'}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+          )}
         </div>
         
-        <div className="flex flex-col items-center gap-4 mt-8">
-          <motion.button
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={onStart}
-            className="btn-primary text-2xl font-black px-16 py-4 pulse-gold w-full uppercase tracking-widest shadow-2xl"
-          >
-            START DRAFT
-          </motion.button>
+        <div className="flex items-center gap-3 md:gap-6 self-end md:self-auto" onClick={(e) => e.stopPropagation()}>
+          <button onClick={() => onCycle(-1)} className="text-gray-400 hover:text-gray-900 dark:text-white/30 dark:hover:text-white transition-colors p-1.5 active:scale-90">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          
+          <div className="w-24 md:w-32 text-center text-xl md:text-2xl font-bold uppercase tracking-widest text-gray-900 dark:text-white group-hover:scale-105 transition-transform relative h-8 flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={value}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ duration: 0.15 }}
+                className="absolute"
+              >
+                {value}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+          
+          <button onClick={() => onCycle(1)} className="text-gray-400 hover:text-gray-900 dark:text-white/30 dark:hover:text-white transition-colors p-1.5 active:scale-90">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
         </div>
+      </motion.div>
+    );
+  };
+
+  const getDiffHelp = (d: Difficulty) => {
+    if (d === 'easy') return '3 Draft Rerolls Allowed';
+    if (d === 'normal') return '1 Draft Reroll Allowed';
+    return 'No Rerolls. True Challenge.';
+  };
+
+  return (
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-gray-100 dark:bg-[#0a0a0a] px-0 md:px-4 py-8 relative overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="w-full max-w-2xl flex flex-col border-y md:border border-black/10 dark:border-white/10 bg-white dark:bg-[#111] md:rounded-lg shadow-2xl relative z-10"
+      >
+        <div className="bg-gray-50 dark:bg-[#1a1a1a] p-4 md:p-6 flex items-end justify-between border-b border-black/10 dark:border-white/10 font-mono">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white uppercase leading-none">
+              MATCH CONFIG
+            </h1>
+            <h2 className={`text-xs md:text-sm font-semibold tracking-widest uppercase mt-2 ${textColor}`}>
+              {isClassic ? 'Classic' : 'Franchise'} Mode
+            </h2>
+          </motion.div>
+        </div>
+
+        <div className="flex flex-col py-0">
+          <OptionRow 
+            index={0}
+            label="DIFFICULTY" 
+            value={settings.difficulty} 
+            helpText={getDiffHelp(settings.difficulty)}
+            onCycle={cycleDiff} 
+          />
+          <OptionRow 
+            index={1}
+            label="PLAYER RATINGS" 
+            value={settings.showRatings === 'on' ? 'ON' : 'OFF'} 
+            helpText="Toggle visibility of player overall ratings"
+            onCycle={cycleRatings} 
+          />
+          <OptionRow 
+            index={2}
+            label="SIMULATION SPEED" 
+            value={settings.simSpeed === 'fast' ? 'INSTANT' : 'WATCH'} 
+            helpText="Watch ball-by-ball or skip to end result"
+            onCycle={cycleSpeed} 
+          />
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="p-5 md:p-6 bg-gray-50 dark:bg-[#1a1a1a] mt-2 flex justify-end border-t border-black/10 dark:border-white/10"
+        >
+          <button
+            onClick={onStart}
+            className={`group relative flex items-center justify-center gap-3 px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-black hover:${themeColor} hover:text-white dark:hover:text-white transition-all duration-300 font-bold text-lg tracking-widest uppercase overflow-hidden skew-x-[-10deg] font-mono`}
+          >
+            <div className="skew-x-[10deg] flex items-center gap-3">
+              <span>START DRAFT</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </button>
+        </motion.div>
       </motion.div>
     </div>
   );

@@ -45,239 +45,210 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
     });
   };
 
-  return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-3 md:p-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-4xl card p-5 md:p-6 border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md shadow-2xl rounded-2xl relative overflow-hidden"
-      >
-        <div className="absolute top-0 left-0 w-full h-1 animate-rgb-strip" />
-        
-        {/* Header */}
-        <div className="flex justify-between items-center mb-6 border-b border-[var(--card-border)] pb-4">
-          <div>
-            <h1 className="text-3xl font-black uppercase tracking-wider text-[var(--text-primary)]">Multiplayer Lobby</h1>
-            <p className="text-[var(--text-muted)] text-sm">Organize squad auction and league settings</p>
+  const cycleSetting = (key: keyof MpSettings, options: any[], current: any, dir: 1 | -1) => {
+    if (!state.isHost) return;
+    const idx = options.indexOf(current);
+    let nextIdx = (idx + dir) % options.length;
+    if (nextIdx < 0) nextIdx = options.length - 1;
+    handleSettingChange(key, options[nextIdx]);
+  };
+
+  const OptionRow = ({ label, value, onCycle, disabled }: { label: string, value: string, onCycle?: (dir: 1|-1) => void, disabled?: boolean }) => {
+    return (
+      <div className="flex items-center justify-between p-3 md:px-5 border-b border-black/5 dark:border-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors group select-none font-mono">
+        <div className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 group-hover:text-gray-800 dark:group-hover:text-white/80 transition-colors">
+          {label}
+        </div>
+        <div className="flex items-center gap-2">
+          {!disabled && onCycle && (
+            <button onClick={() => onCycle(-1)} className="text-gray-400 dark:text-white/30 hover:text-gray-900 dark:hover:text-white p-1 transition-colors active:scale-90">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+          )}
+          <div className={`text-xs md:text-sm font-bold uppercase tracking-widest text-center w-28 ${disabled ? 'text-gray-400 dark:text-white/30 italic' : 'text-gray-900 dark:text-white group-hover:scale-105 transition-transform'}`}>
+            {value}
           </div>
-          <button onClick={onLeave} className="btn-secondary px-4 py-2 border border-red-500/30 hover:bg-red-500/10 text-red-400 text-xs font-bold uppercase rounded-lg">
-            Leave Room
+          {!disabled && onCycle && (
+            <button onClick={() => onCycle(1)} className="text-gray-400 dark:text-white/30 hover:text-gray-900 dark:hover:text-white p-1 transition-colors active:scale-90">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-gray-100 dark:bg-[#0a0a0a] px-0 md:px-4 py-8 relative font-mono">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-5xl flex flex-col border-y md:border border-black/10 dark:border-white/10 bg-white dark:bg-[#111] md:rounded-lg overflow-hidden shadow-2xl"
+      >
+        <div className="bg-gray-50 dark:bg-[#1a1a1a] p-4 md:p-6 flex items-end justify-between border-b border-black/10 dark:border-white/10">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white uppercase leading-none">
+              MULTIPLAYER LOBBY
+            </h1>
+            <h2 className="text-xs md:text-sm font-semibold tracking-widest uppercase mt-2 text-blue-500">
+              Squad Auction Setup
+            </h2>
+          </div>
+          <button onClick={onLeave} className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-500 border border-red-500/30 font-bold uppercase tracking-widest text-[10px] transition-colors">
+            ABORT LINK
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Left Column: Franchise Selector Grid */}
-          <div className="space-y-4">
-            {/* Franchise Selector Grid */}
-            <div className="bg-[var(--color-canvas-soft)]/50 backdrop-blur-md p-4 rounded-2xl border border-[var(--card-border)]">
-              <label className="text-[var(--text-muted)] text-[10px] font-bold uppercase tracking-widest block mb-2.5">Choose Your Franchise</label>
-              <div className="grid grid-cols-2 gap-2">
-                {IPL_TEAMS.slice(0, 10).map((t) => {
-                  const owner = state.players.find(p => p.franchise === t.short);
-                  const isSelf = owner?.peerId === peerId;
-                  const isTaken = !!owner && !isSelf;
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-black/10 dark:divide-white/10">
+          
+          {/* Left Column: Franchise Selector */}
+          <div className="flex flex-col bg-white dark:bg-[#111]">
+            <div className="p-4 bg-gray-50 dark:bg-black/20 border-b border-black/10 dark:border-white/10">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-white/50">FRANCHISE SELECTION</h3>
+            </div>
+            <div className="grid grid-cols-2 gap-2 p-4">
+              {IPL_TEAMS.slice(0, 10).map((t) => {
+                const owner = state.players.find(p => p.franchise === t.short);
+                const isSelf = owner?.peerId === peerId;
+                const isTaken = !!owner && !isSelf;
 
-                  return (
-                    <button
-                      key={t.short}
-                      disabled={isTaken}
-                      onClick={() => onSelectFranchise(t.short)}
-                      className={`relative px-3 py-2 rounded-xl border text-left transition-all duration-300 flex flex-col justify-between h-[64px] overflow-hidden cursor-pointer ${
-                        isSelf
-                          ? 'bg-[var(--card-bg)] shadow-[0_0_12px_rgba(59,130,246,0.15)]'
-                          : isTaken
-                          ? 'bg-black/25 opacity-30 border-[var(--card-border)] cursor-not-allowed'
-                          : 'bg-[var(--card-bg)] border-[var(--card-border)] hover:border-blue-500/50 hover:scale-[1.02]'
-                      }`}
-                      style={{
-                        borderColor: isSelf ? t.color : undefined
-                      }}
-                    >
-                      <div className="absolute top-0 left-0 right-0 h-1" style={{ backgroundColor: t.color }} />
-                      
-                      <div className="flex flex-col justify-between h-full pt-1 w-full">
-                        <div className="flex justify-between items-center w-full">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-primary)] truncate max-w-[85%]">
-                            {t.name}
-                          </span>
-                          {isSelf && (
-                            <span className="text-[9px] text-green-400 font-bold bg-green-500/10 px-1 py-0.2 rounded flex items-center justify-center">
-                              ✓
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex justify-between items-center w-full mt-1.5">
-                          <span className="text-[9px] font-mono font-extrabold px-1 py-0.2 rounded" style={{ backgroundColor: `${t.color}20`, color: t.color }}>
-                            {t.short}
-                          </span>
-                          {isTaken && (
-                            <span className="text-[8px] text-[var(--text-muted)] italic truncate max-w-[65%]">
-                              {owner.name}
-                            </span>
-                          )}
-                        </div>
+                return (
+                  <button
+                    key={t.short}
+                    disabled={isTaken}
+                    onClick={() => onSelectFranchise(t.short)}
+                    className={`relative p-3 border text-left transition-all duration-300 flex flex-col justify-between h-20 overflow-hidden cursor-pointer ${
+                      isSelf
+                        ? 'bg-black/5 dark:bg-white/10 border-gray-900 dark:border-white text-gray-900 dark:text-white'
+                        : isTaken
+                        ? 'bg-gray-200 dark:bg-black/50 border-black/5 dark:border-white/5 text-gray-400 dark:text-white/20 cursor-not-allowed opacity-50'
+                        : 'bg-gray-50 dark:bg-black/20 border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/5 hover:border-black/30 dark:hover:border-white/30 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white'
+                    }`}
+                    style={{
+                      borderRightWidth: '6px',
+                      borderRightColor: t.color,
+                      borderLeftWidth: isSelf ? '2px' : '1px',
+                      borderLeftColor: isSelf ? t.color : undefined
+                    }}
+                  >
+                    <div className="flex flex-col h-full justify-between">
+                      <div className="text-[10px] md:text-xs font-bold uppercase tracking-widest leading-tight">
+                        {t.name}
                       </div>
-                    </button>
-                  );
-                })}
-              </div>
+                      <div className="flex justify-between items-end w-full">
+                        <span className="text-xl font-black uppercase tracking-tight opacity-50" style={{ color: t.color }}>
+                          {t.short}
+                        </span>
+                        {isTaken && (
+                          <span className="text-[9px] font-bold uppercase tracking-widest italic text-red-500 dark:text-red-400">
+                            LOCKED: {owner.name}
+                          </span>
+                        )}
+                        {isSelf && (
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-green-600 dark:text-green-400">
+                            SELECTED
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right Column: Room Code, Players, Settings, Start */}
-          <div className="space-y-4">
+          {/* Right Column: Settings & Players */}
+          <div className="flex flex-col bg-white dark:bg-[#111]">
+            
             {/* Room Code */}
-            <div className="bg-[var(--color-canvas-soft)]/50 backdrop-blur-md p-4 rounded-xl border border-[var(--card-border)] relative overflow-hidden group hover:border-blue-500/30 transition-all duration-300">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
-              <div className="flex items-center justify-between">
-                <div>
-                  <label className="text-[var(--text-muted)] text-[9px] font-bold uppercase tracking-widest block mb-0.5">Active Room Code</label>
-                  <span className="text-2xl font-mono font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400 filter drop-shadow-[0_2px_8px_rgba(59,130,246,0.2)]">{state.roomId}</span>
-                </div>
-                <button onClick={copyCode} className="btn-primary px-4 py-2 text-xs font-bold uppercase rounded-xl flex items-center gap-1.5 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                  {copied ? <Check size={13} className="text-green-300" /> : <Copy size={13} />}
-                  {copied ? 'Copied' : 'Copy'}
-                </button>
+            <div className="p-4 md:p-6 bg-gray-100 dark:bg-black/40 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 mb-1">TARGET CODE</h3>
+                <span className="text-2xl font-black tracking-[0.3em] text-blue-600 dark:text-blue-400 uppercase">
+                  {state.roomId}
+                </span>
               </div>
+              <button onClick={copyCode} className="px-4 py-2 bg-blue-600/10 hover:bg-blue-600/30 text-blue-600 dark:text-blue-400 border border-blue-500/30 font-bold uppercase tracking-widest text-[10px] transition-colors flex items-center gap-2">
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+                {copied ? 'COPIED' : 'COPY'}
+              </button>
             </div>
 
             {/* Auction Settings */}
-            <div className="bg-[var(--color-canvas-soft)]/50 backdrop-blur-md p-4 rounded-xl border border-[var(--card-border)]">
-              <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] mb-3 flex items-center gap-1.5 border-b border-[var(--card-border)] pb-1.5">
-                <Settings size={14} /> Auction Settings
-              </h3>
-
-              <div className="space-y-3">
-                {/* Rounds */}
-                <div>
-                  <div className="flex justify-between text-[11px] mb-1">
-                    <span className="font-bold text-[var(--text-primary)]">Rounds (Picks)</span>
-                    <span className="text-blue-400 font-bold">{state.settings.rounds} rounds</span>
-                  </div>
-                  {state.isHost ? (
-                    <div className="grid grid-cols-2 gap-2">
-                      <button onClick={() => handleSettingChange('rounds', 11)} className={`py-1 rounded-lg border text-[10px] font-bold transition-all ${state.settings.rounds === 11 ? 'bg-blue-600/20 border-blue-500 text-blue-400' : 'border-[var(--card-border)] hover:bg-[var(--card-bg)]'}`}>
-                        11 (XI Only)
-                      </button>
-                      <button onClick={() => handleSettingChange('rounds', 15)} className={`py-1 rounded-lg border text-[10px] font-bold transition-all ${state.settings.rounds === 15 ? 'bg-blue-600/20 border-blue-500 text-blue-400' : 'border-[var(--card-border)] hover:bg-[var(--card-bg)]'}`}>
-                        15 (With Bench)
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
-                  )}
-                </div>
-
-                {/* Pick Timer & Overseas */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="font-bold text-[var(--text-primary)]">Timer</span>
-                      <span className="text-blue-400 font-bold">{state.settings.turnTimer}s</span>
-                    </div>
-                    {state.isHost ? (
-                      <select
-                        value={state.settings.turnTimer}
-                        onChange={(e) => handleSettingChange('turnTimer', parseInt(e.target.value))}
-                        className="w-full px-2 py-1 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md text-[var(--text-primary)] font-bold text-[10px] focus:outline-none"
-                      >
-                        <option value={5} className="bg-white text-neutral-900">5 Seconds</option>
-                        <option value={10} className="bg-white text-neutral-900">10 Seconds</option>
-                        <option value={15} className="bg-white text-neutral-900">15 Seconds</option>
-                      </select>
-                    ) : (
-                      <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
-                    )}
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-[11px] mb-1">
-                      <span className="font-bold text-[var(--text-primary)]">Overseas Limit</span>
-                      <span className="text-blue-400 font-bold">{state.settings.maxOverseas} OS</span>
-                    </div>
-                    {state.isHost ? (
-                      <select
-                        value={state.settings.maxOverseas}
-                        onChange={(e) => handleSettingChange('maxOverseas', parseInt(e.target.value))}
-                        className="w-full px-2 py-1 bg-[var(--card-bg)] border border-[var(--card-border)] rounded-md text-[var(--text-primary)] font-bold text-[10px] focus:outline-none"
-                      >
-                        <option value={4} className="bg-white text-neutral-900">4 Players Max</option>
-                        <option value={5} className="bg-white text-neutral-900">5 Players Max</option>
-                      </select>
-                    ) : (
-                      <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Auction Format */}
-                <div>
-                  <div className="flex justify-between text-[11px] mb-1">
-                    <span className="font-bold text-[var(--text-primary)]">Auction Format</span>
-                    <span className="text-blue-400 font-bold">{state.settings.auctionFormat === 'long' ? 'Longer (320 Players)' : 'Shorter (140 Players)'}</span>
-                  </div>
-                  {state.isHost ? (
-                    <div className="grid grid-cols-2 gap-2">
-                      <button 
-                        onClick={() => handleSettingChange('auctionFormat', 'short')} 
-                        className={`py-1 rounded-lg border text-[10px] font-bold transition-all ${state.settings.auctionFormat !== 'long' ? 'bg-blue-600/20 border-blue-500 text-blue-400' : 'border-[var(--card-border)] hover:bg-[var(--card-bg)]'}`}
-                      >
-                        Shorter (140)
-                      </button>
-                      <button 
-                        onClick={() => handleSettingChange('auctionFormat', 'long')} 
-                        className={`py-1 rounded-lg border text-[10px] font-bold transition-all ${state.settings.auctionFormat === 'long' ? 'bg-blue-600/20 border-blue-500 text-blue-400' : 'border-[var(--card-border)] hover:bg-[var(--card-bg)]'}`}
-                      >
-                        Longer (320)
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="text-[10px] text-[var(--text-muted)] italic">Managed by host</div>
-                  )}
-                </div>
+            <div className="flex flex-col">
+              <div className="p-4 bg-gray-50 dark:bg-black/20 border-b border-black/5 dark:border-white/5">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 flex items-center gap-2">
+                  <Settings size={12} /> MATCH PROTOCOLS {(!state.isHost) && <span className="text-blue-500 lowercase tracking-normal italic">(managed by host)</span>}
+                </h3>
+              </div>
+              <div className="flex flex-col pb-2">
+                <OptionRow 
+                  label="ROUNDS (PICKS)" 
+                  value={state.settings.rounds === 11 ? '11 (XI ONLY)' : '15 (W/ BENCH)'} 
+                  disabled={!state.isHost}
+                  onCycle={(dir) => cycleSetting('rounds', [11, 15], state.settings.rounds, dir)} 
+                />
+                <OptionRow 
+                  label="PICK TIMER" 
+                  value={`${state.settings.turnTimer} SECONDS`} 
+                  disabled={!state.isHost}
+                  onCycle={(dir) => cycleSetting('turnTimer', [5, 10, 15], state.settings.turnTimer, dir)} 
+                />
+                <OptionRow 
+                  label="OVERSEAS LIMIT" 
+                  value={`${state.settings.maxOverseas} PLAYERS`} 
+                  disabled={!state.isHost}
+                  onCycle={(dir) => cycleSetting('maxOverseas', [4, 5], state.settings.maxOverseas, dir)} 
+                />
+                <OptionRow 
+                  label="AUCTION FORMAT" 
+                  value={state.settings.auctionFormat === 'long' ? 'LONG (320)' : 'SHORT (140)'} 
+                  disabled={!state.isHost}
+                  onCycle={(dir) => cycleSetting('auctionFormat', ['short', 'long'], state.settings.auctionFormat, dir)} 
+                />
               </div>
             </div>
 
-            {/* Connected Players */}
-            <div className="bg-[var(--color-canvas-soft)]/50 backdrop-blur-md p-4 rounded-xl border border-[var(--card-border)]">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] flex items-center gap-1.5">
-                  <Users size={14} /> Players Connected ({state.players.length}/10)
+            {/* Players List */}
+            <div className="flex flex-col flex-1 border-t border-black/10 dark:border-white/10">
+              <div className="p-4 bg-gray-50 dark:bg-black/20 border-b border-black/5 dark:border-white/5 flex justify-between items-center">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 flex items-center gap-2">
+                  <Users size={12} /> USERS LINKED ({state.players.length}/10)
                 </h3>
                 {10 - state.players.length > 0 && (
-                  <span className="text-[9px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.2 rounded-full font-bold">
-                    +{10 - state.players.length} AI Teams
+                  <span className="text-[9px] text-blue-600 dark:text-blue-500 font-bold uppercase tracking-widest">
+                    +{10 - state.players.length} AI SLOTS
                   </span>
                 )}
               </div>
-              
-              <div className="space-y-1.5 max-h-[100px] overflow-y-auto pr-1">
+              <div className="p-4 space-y-2 max-h-[160px] overflow-y-auto">
                 {state.players.map((p) => {
                   const franchiseData = IPL_TEAMS.find(t => t.short === p.franchise);
                   return (
                     <motion.div
                       layoutId={`player-${p.peerId}`}
                       key={p.peerId}
-                      className="flex justify-between items-center p-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] text-xs"
+                      className="flex justify-between items-center p-3 border border-black/5 dark:border-white/5 bg-gray-100 dark:bg-black/30"
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <div
-                          className="w-6 h-6 rounded-full flex items-center justify-center font-bold text-white text-[9px]"
-                          style={{ backgroundColor: franchiseData?.color || '#374151' }}
+                          className="w-8 h-8 flex items-center justify-center font-black text-white text-[10px] uppercase border"
+                          style={{ backgroundColor: franchiseData?.color ? `${franchiseData.color}40` : '#374151', borderColor: franchiseData?.color || '#555' }}
                         >
                           {p.franchise === 'TBD' ? '?' : p.franchise}
                         </div>
-                        <div>
-                          <div className="font-bold text-[var(--text-primary)] flex items-center gap-1 font-sans">
+                        <div className="flex flex-col">
+                          <div className="font-bold text-gray-900 dark:text-white uppercase tracking-widest text-xs flex items-center gap-1.5">
                             {p.name}
-                            {p.isHost && <Shield size={10} className="text-yellow-400" />}
-                            {p.peerId === peerId && <span className="text-[9px] text-gray-500">(You)</span>}
+                            {p.isHost && <Shield size={12} className="text-yellow-600 dark:text-yellow-500" />}
+                            {p.peerId === peerId && <span className="text-blue-600 dark:text-blue-500 opacity-80">(YOU)</span>}
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                        <span className="text-[9px] text-[var(--text-muted)]">Connected</span>
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-green-600 dark:text-green-500/70">LINKED</span>
                       </div>
                     </motion.div>
                   );
@@ -286,30 +257,39 @@ export function MpLobbyScreen({ state, peerId, onUpdateSettings, onSelectFranchi
             </div>
 
             {/* Start Button */}
-            {state.isHost ? (
-              <div className="space-y-2">
+            {state.isHost && (
+              <div className="p-5 md:p-6 bg-gray-50 dark:bg-[#1a1a1a] flex flex-col justify-end border-t border-black/10 dark:border-white/10 mt-auto">
                 <button
                   onClick={onStartDraft}
                   disabled={state.players.length < 2 || state.players.some(p => p.franchise === 'TBD')}
-                  className="w-full btn-primary py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm font-black uppercase tracking-wider shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  className={`group relative flex items-center justify-center gap-3 px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all duration-300 font-bold text-lg tracking-widest uppercase overflow-hidden skew-x-[-10deg] font-mono ${
+                    (state.players.length < 2 || state.players.some(p => p.franchise === 'TBD')) ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
-                  <Play size={18} />
-                  Start Auction
+                  <div className="skew-x-[10deg] flex items-center gap-3">
+                    <span>INITIATE DRAFT</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </div>
                 </button>
-                {state.players.some(p => p.franchise === 'TBD') && (
-                  <p className="text-center text-[10px] text-yellow-500 font-semibold animate-pulse">
-                    Waiting for all players to select a franchise.
+                {state.players.length < 2 && (
+                  <p className="text-center text-[10px] text-red-600 dark:text-red-500 font-bold uppercase tracking-widest mt-3">
+                    REQUIRE MIN 2 PLAYERS
                   </p>
                 )}
-                {state.players.length < 2 && (
-                  <p className="text-center text-[10px] text-[var(--text-muted)]">
-                    Need at least 2 players to start auction
+                {state.players.length >= 2 && state.players.some(p => p.franchise === 'TBD') && (
+                  <p className="text-center text-[10px] text-yellow-600 dark:text-yellow-500 font-bold uppercase tracking-widest mt-3 animate-pulse">
+                    WAITING FOR SQUAD SELECTION
                   </p>
                 )}
               </div>
-            ) : (
-              <div className="bg-yellow-500/10 border border-yellow-500/20 p-3 rounded-xl text-center text-xs text-yellow-500 font-medium">
-                Waiting for the host to launch the auction...
+            )}
+            
+            {!state.isHost && (
+              <div className="p-5 md:p-6 bg-gray-50 dark:bg-[#1a1a1a] border-t border-black/10 dark:border-white/10 flex items-center justify-center mt-auto">
+                <p className="text-xs text-blue-600 dark:text-blue-500 font-bold uppercase tracking-widest animate-pulse flex items-center gap-2">
+                  <RefreshCw size={14} className="animate-spin" />
+                  AWAITING HOST TO INITIATE...
+                </p>
               </div>
             )}
           </div>
@@ -1099,94 +1079,116 @@ export function MpConnectionSetupScreen({ onBack, onCreateRoom, onJoinRoom, isCo
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-4">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center bg-gray-100 dark:bg-[#0a0a0a] px-0 md:px-4 py-8 relative font-mono">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md card p-6 border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md shadow-2xl rounded-2xl"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-2xl flex flex-col border-y md:border border-black/10 dark:border-white/10 bg-white dark:bg-[#111] md:rounded-lg overflow-hidden shadow-2xl"
       >
-        <h2 className="text-2xl font-black uppercase tracking-wider text-center text-[var(--text-primary)] mb-6">
-          Multiplayer Connection
-        </h2>
+        <div className="bg-gray-50 dark:bg-[#1a1a1a] p-4 md:p-6 flex items-end justify-between border-b border-black/10 dark:border-white/10">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white uppercase leading-none">
+              NETWORK CONNECTION
+            </h1>
+            <h2 className="text-xs md:text-sm font-semibold tracking-widest uppercase mt-2 text-blue-500">
+              Establish P2P Relay
+            </h2>
+          </div>
+        </div>
 
         {errorMsg && (
-          <div className="mb-4 space-y-2">
-            <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-lg text-xs font-bold flex items-center gap-2">
-              <ShieldAlert size={16} className="shrink-0" /> 
-              <span>{errorMsg}</span>
+          <div className="mx-6 mt-6">
+            <div className="bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 p-4 rounded-sm text-xs font-bold flex flex-col gap-2 uppercase tracking-widest">
+              <div className="flex items-center gap-2">
+                <ShieldAlert size={16} className="shrink-0" /> 
+                <span>CONNECTION FAILED: {errorMsg}</span>
+              </div>
             </div>
             <TroubleshootingTips />
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* User Name */}
-          <div>
-            <label className="text-[var(--text-muted)] text-xs font-bold uppercase tracking-wider block mb-1">Your Name</label>
+        <form onSubmit={handleSubmit} className="flex flex-col py-2 mt-4">
+          
+          <div className="w-full p-4 md:px-6 border-b border-black/10 dark:border-white/10">
+            <label className="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 block mb-2">CALLSIGN</label>
             <input
               type="text"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Captain Cool"
+              placeholder="ENTER DISPLAY NAME"
               maxLength={15}
-              className="w-full px-4 py-2 bg-black/10 border border-[var(--card-border)] rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-blue-500"
+              className="w-full bg-white dark:bg-black/50 border border-black/10 dark:border-white/10 text-gray-900 dark:text-white font-black text-xl p-3 focus:outline-none focus:border-blue-500 transition-colors uppercase tracking-widest placeholder-gray-300 dark:placeholder-white/20"
             />
           </div>
 
-          {/* Action Tabs */}
-          <div className="grid grid-cols-2 gap-2 bg-black/10 p-1 rounded-lg border border-[var(--card-border)]">
-            <button
-              type="button"
-              onClick={() => setActionType('create')}
-              className={`py-1.5 rounded-md text-xs font-bold uppercase transition-all ${actionType === 'create' ? 'bg-blue-600 text-white' : 'text-[var(--text-muted)]'}`}
-            >
-              Create Room
-            </button>
-            <button
-              type="button"
-              onClick={() => setActionType('join')}
-              className={`py-1.5 rounded-md text-xs font-bold uppercase transition-all ${actionType === 'join' ? 'bg-blue-600 text-white' : 'text-[var(--text-muted)]'}`}
-            >
-              Join Room
-            </button>
+          <div className="w-full p-4 md:px-6 border-b border-black/10 dark:border-white/10">
+            <label className="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 block mb-2">PROTOCOL</label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setActionType('create')}
+                className={`flex-1 py-3 text-sm font-bold uppercase tracking-widest transition-all ${actionType === 'create' ? 'bg-blue-600 text-white' : 'bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white border border-black/5 dark:border-white/5'}`}
+              >
+                HOST ROOM
+              </button>
+              <button
+                type="button"
+                onClick={() => setActionType('join')}
+                className={`flex-1 py-3 text-sm font-bold uppercase tracking-widest transition-all ${actionType === 'join' ? 'bg-blue-600 text-white' : 'bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-white/50 hover:text-gray-900 dark:hover:text-white border border-black/5 dark:border-white/5'}`}
+              >
+                JOIN ROOM
+              </button>
+            </div>
           </div>
 
-          {/* Join Code (Only for Join) */}
-          {actionType === 'join' && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              className="space-y-1"
-            >
-              <label className="text-[var(--text-muted)] text-xs font-bold uppercase tracking-wider block">Enter 5-Letter Room Code</label>
-              <input
-                type="text"
-                required
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="e.g. ABXYZ"
-                maxLength={5}
-                className="w-full px-4 py-2 bg-black/10 border border-[var(--card-border)] rounded-lg text-[var(--text-primary)] focus:outline-none focus:border-blue-500 font-mono tracking-widest text-center text-lg uppercase"
-              />
-            </motion.div>
-          )}
+          <AnimatePresence>
+            {actionType === 'join' && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="w-full p-4 md:px-6 border-b border-black/10 dark:border-white/10 overflow-hidden"
+              >
+                <label className="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-white/50 block mb-2">TARGET ROOM CODE</label>
+                <input
+                  type="text"
+                  required
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  placeholder="5-LETTER ID"
+                  maxLength={5}
+                  className="w-full bg-white dark:bg-black/50 border border-black/10 dark:border-white/10 text-blue-600 dark:text-blue-400 font-black text-3xl p-4 text-center focus:outline-none focus:border-blue-500 transition-colors uppercase tracking-[0.3em] placeholder-blue-500/20"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <div className="flex gap-2 pt-2">
-            <button type="button" onClick={onBack} className="w-1/3 btn-secondary py-2.5 rounded-xl font-bold uppercase text-xs">
-              Back
+          <div className="p-5 md:p-6 bg-gray-50 dark:bg-[#1a1a1a] flex justify-between border-t border-black/10 dark:border-white/10 mt-4">
+            <button type="button" onClick={onBack} className="group relative flex items-center justify-center px-6 py-3 bg-black/5 dark:bg-white/5 text-gray-500 dark:text-white/50 hover:bg-black/10 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white transition-all duration-300 font-bold text-sm tracking-widest uppercase font-mono">
+              ABORT
             </button>
-            <button type="submit" disabled={isConnecting} className="w-2/3 btn-primary py-2.5 rounded-xl font-bold uppercase text-xs flex items-center justify-center gap-1">
-              {isConnecting ? (
-                <>
-                  <RefreshCw size={14} className="animate-spin" />
-                  Connecting...
-                </>
-              ) : (
-                <>
-                  {actionType === 'create' ? 'Create' : 'Join'} Room
-                </>
-              )}
+            
+            <button
+              type="submit"
+              disabled={isConnecting}
+              className={`group relative flex items-center justify-center gap-3 px-8 py-3 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all duration-300 font-bold text-lg tracking-widest uppercase overflow-hidden skew-x-[-10deg] font-mono ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              <div className="skew-x-[10deg] flex items-center gap-3">
+                {isConnecting ? (
+                  <>
+                    <RefreshCw size={20} className="animate-spin" />
+                    <span>CONNECTING</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{actionType === 'create' ? 'INITIATE HOST' : 'ESTABLISH LINK'}</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1.5 transition-all"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                  </>
+                )}
+              </div>
             </button>
           </div>
         </form>
