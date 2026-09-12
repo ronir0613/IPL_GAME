@@ -4,11 +4,13 @@ import '../styles/global.css';
 interface Props {
 	title?: string;
 	description?: string;
+	hideHeader?: boolean;
 }
 
 const { 
 	title = "16-0 Play | The Ultimate Cricket Strategy Game",
-	description = "Play the ultimate 16-0 cricket simulator. Build your greatest playing XI, master cricket team management, and achieve the perfect 16-0 challenge."
+	description = "Play the ultimate 16-0 cricket simulator. Build your greatest playing XI, master cricket team management, and achieve the perfect 16-0 challenge.",
+	hideHeader = false
 } = Astro.props;
 ---
 
@@ -91,24 +93,26 @@ const {
 	</head>
 	<body class="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)] flex flex-col">
     <!-- Global Navigation -->
-    <header class="w-full bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] sticky top-0 z-50">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <a href="/" class="text-xl font-black tracking-tight text-[var(--color-ink)] flex items-center gap-2">
-          <span class="text-yellow-500">16-0</span>PLAY
-        </a>
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--color-mute)]">
-          <a href="/" class="hover:text-yellow-600 transition-colors">Play</a>
-          <a href="/players" class="hover:text-yellow-600 transition-colors">Players</a>
-          <a href="/teams" class="hover:text-yellow-600 transition-colors">Teams</a>
-          <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
-          <a href="/game-modes" class="hover:text-yellow-600 transition-colors">Game Modes</a>
-        </nav>
-        <!-- Mobile Menu Placeholder -->
-        <div class="md:hidden flex items-center">
-          <a href="/players" class="text-xs font-bold bg-[var(--color-canvas-soft-2)] px-3 py-1.5 rounded text-[var(--color-ink)]">Menu</a>
+    {!hideHeader && (
+      <header class="w-full bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <a href="/" class="text-xl font-black tracking-tight text-[var(--color-ink)] flex items-center gap-2">
+            <span class="text-yellow-500">16-0</span>PLAY
+          </a>
+          <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--color-mute)]">
+            <a href="/" class="hover:text-yellow-600 transition-colors">Play</a>
+            <a href="/players" class="hover:text-yellow-600 transition-colors">Players</a>
+            <a href="/teams" class="hover:text-yellow-600 transition-colors">Teams</a>
+            <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
+            <a href="/game-modes" class="hover:text-yellow-600 transition-colors">Game Modes</a>
+          </nav>
+          <!-- Mobile Menu Placeholder -->
+          <div class="md:hidden flex items-center">
+            <a href="/players" class="text-xs font-bold bg-[var(--color-canvas-soft-2)] px-3 py-1.5 rounded text-[var(--color-ink)]">Menu</a>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+    )}
 
     <!-- Main Content -->
     <main class="flex-grow flex flex-col w-full">

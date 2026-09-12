@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef, useMemo, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo, Suspense, memo } from 'react';
 import { Swords, Target, Trophy, Zap, Hand, TrendingUp, Pause, Play, Dices, ClipboardList, Moon, Sun, Star, Users, LogOut, CloudRain, Globe, Sparkles, Shuffle, EyeOff, Bot, Crown, Newspaper, Mic, MessageSquare, HeartCrack, Gavel, Medal, Link2, Flame, X, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import PlayerProfile from './PlayerProfile';
@@ -548,18 +548,156 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   );
 }
 
-function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinue, continueLabel = "CONTINUE DRAFTING" }: { onPlay: () => void, onLeaderboard: () => void, onProfile: () => void, hasActiveGame?: boolean, onContinue?: () => void, continueLabel?: string }) {
+const TimeOfDayBackground = memo(({ timeState }: { timeState: string }) => {
+  const getAtmosphereGradients = () => {
+    switch (timeState) {
+      case 'early_morning':
+        return 'linear-gradient(to bottom, #8ca8d2, #ffc88c)';
+      case 'morning':
+        return 'linear-gradient(to bottom, #64b4eb, #ffffff)';
+      case 'midday':
+        return 'linear-gradient(to bottom, #ffffff, #f0f0f0)';
+      case 'afternoon':
+        return 'linear-gradient(to bottom, #ffe696, #f5be64)';
+      case 'sunset':
+        return 'linear-gradient(to bottom, #ff6450, #b43ca0)';
+      case 'blue_hour':
+        return 'linear-gradient(to bottom, #1e3264, #141e46)';
+      case 'night':
+      default:
+        return 'linear-gradient(to bottom, #0f1932, #0a0f1e)';
+    }
+  };
+
+  const getGlowGradients = () => {
+    switch (timeState) {
+      case 'early_morning':
+        return 'radial-gradient(circle at 70% 30%, rgba(255, 220, 150, 0.6) 0%, transparent 60%)';
+      case 'morning':
+      case 'midday':
+        return 'radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.5) 0%, transparent 70%)';
+      case 'afternoon':
+        return 'radial-gradient(circle at 30% 40%, rgba(255, 230, 150, 0.6) 0%, transparent 70%)';
+      case 'sunset':
+        return 'radial-gradient(circle at 20% 60%, rgba(255, 150, 100, 0.8) 0%, transparent 60%)';
+      case 'blue_hour':
+      case 'night':
+      default:
+        return 'radial-gradient(ellipse at 50% 100%, rgba(200, 220, 255, 0.35) 0%, transparent 70%), radial-gradient(circle at 10% 30%, rgba(200, 220, 255, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 30%, rgba(200, 220, 255, 0.15) 0%, transparent 50%)';
+    }
+  };
+
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 space-y-12 py-12">
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden will-change-[opacity,transform] isolate">
+      {/* Layer 1: Fixed Stadium Illustration */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
+        style={{ backgroundImage: 'url(/stadium-bg.png)', transform: 'translateZ(0)' }}
+      />
+      
+      {/* Layer 1.5: Stars for Night/Blue Hour */}
+      <AnimatePresence>
+        {(timeState === 'night' || timeState === 'blue_hour') && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: timeState === 'night' ? 0.6 : 0.3 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 3 }}
+            className="absolute inset-0"
+            style={{ 
+              backgroundImage: 'radial-gradient(1px 1px at 10% 20%, #ffffff, rgba(0,0,0,0)), radial-gradient(1px 1px at 30% 40%, #ffffff, rgba(0,0,0,0)), radial-gradient(1.5px 1.5px at 60% 10%, #ffffff, rgba(0,0,0,0)), radial-gradient(2px 2px at 80% 30%, rgba(255,255,255,0.8), rgba(0,0,0,0)), radial-gradient(1px 1px at 90% 70%, #ffffff, rgba(0,0,0,0))',
+              backgroundSize: '300px 300px',
+              transform: 'translateZ(0)'
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Layer 2: Color Multiply (Colors the white background of the image) */}
+      <motion.div 
+        className="absolute inset-0"
+        animate={{ background: getAtmosphereGradients() }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+        style={{ mixBlendMode: 'multiply', transform: 'translateZ(0)' }}
+      />
+
+      {/* Layer 3: Highlights & Glow (Adds sun, moon, and floodlights) */}
+      <motion.div 
+        className="absolute inset-0"
+        animate={{ background: getGlowGradients() }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+        style={{ mixBlendMode: 'screen', transform: 'translateZ(0)' }}
+      />
+      
+      {/* Layer 4: Soft Atmosphere Overlay (Lifts the black lines so it's not too dark) */}
+      <motion.div 
+        className="absolute inset-0 opacity-30"
+        animate={{ background: getAtmosphereGradients() }}
+        transition={{ duration: 2, ease: "easeInOut" }}
+        style={{ mixBlendMode: 'normal', transform: 'translateZ(0)' }}
+      />
+
+      {/* Layer 4.5: Ground Mist for early morning / night */}
+      <AnimatePresence>
+        {(timeState === 'early_morning' || timeState === 'night' || timeState === 'blue_hour') && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: timeState === 'early_morning' ? 0.4 : 0.2 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 3 }}
+            className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[rgba(255,255,255,0.4)] to-transparent"
+            style={{ mixBlendMode: 'overlay', transform: 'translateZ(0)' }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Layer 5: UI Readability Vignette (Keeps the edges darker and center legible) */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.7)_100%)]" style={{ transform: 'translateZ(0)' }} />
+    </div>
+  );
+});
+
+function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinue, continueLabel = "CONTINUE DRAFTING" }: { onPlay: () => void, onLeaderboard: () => void, onProfile: () => void, hasActiveGame?: boolean, onContinue?: () => void, continueLabel?: string }) {
+  const [timeState, setTimeState] = useState('midday');
+
+  useEffect(() => {
+    const updateTimeState = () => {
+      const now = new Date();
+      const time = now.getHours() + now.getMinutes() / 60;
+      
+      if (time >= 5 && time < 7) setTimeState('early_morning');
+      else if (time >= 7 && time < 11) setTimeState('morning');
+      else if (time >= 11 && time < 15) setTimeState('midday');
+      else if (time >= 15 && time < 17.5) setTimeState('afternoon');
+      else if (time >= 17.5 && time < 19) setTimeState('sunset');
+      else if (time >= 19 && time < 21) setTimeState('blue_hour');
+      else setTimeState('night');
+    };
+    
+    updateTimeState();
+    const interval = setInterval(updateTimeState, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Dynamically determine text color based on time of day for better contrast
+  const isDarkTime = ['night', 'blue_hour', 'early_morning', 'sunset'].includes(timeState);
+  const subtitleColor = isDarkTime ? 'text-white/90 drop-shadow-md' : 'text-[var(--text-muted)]';
+  const linkColor = isDarkTime ? 'text-white/80 hover:text-yellow-400 drop-shadow-sm' : 'text-[var(--text-muted)] hover:text-yellow-500';
+
+  return (
+    <div className="relative min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 space-y-12 py-12 overflow-hidden transition-colors duration-1000">
+      {/* Dynamic Time-of-Day Background */}
+      <TimeOfDayBackground timeState={timeState} />
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-4xl"
+        className="relative z-10 w-full max-w-4xl"
       >
-        <div className="text-7xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-lg mb-2">
+        <div className="text-7xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] mb-2">
           16-0
         </div>
-        <div className="text-[var(--text-muted)] text-lg md:text-xl font-bold tracking-widest uppercase mb-10">The Perfect IPL Season</div>
+        <div className={`${subtitleColor} text-lg md:text-xl font-bold tracking-widest uppercase mb-10 transition-colors duration-1000`}>The Perfect IPL Season</div>
         
         <div className="flex flex-col items-center gap-4 mt-8">
           {hasActiveGame ? (
@@ -598,7 +736,7 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
             onClick={onLeaderboard}
             className="btn-secondary text-lg font-bold px-12 py-3 w-full max-w-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl"
           >
-            <Trophy size={20} className="text-yellow-500" />
+            <Trophy size={20} className="text-yellow-500 drop-shadow-sm" />
             Leaderboard
           </motion.button>
           
@@ -608,14 +746,14 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
             onClick={onProfile}
             className="btn-secondary text-lg font-bold px-12 py-3 w-full max-w-sm uppercase tracking-widest flex items-center justify-center gap-2 shadow-xl"
           >
-            <Star size={20} className="text-yellow-500" />
+            <Star size={20} className="text-yellow-500 drop-shadow-sm" />
             My Profile
           </motion.button>
           
           <a href="/players">
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="text-[var(--text-muted)] hover:text-[var(--text-muted)] text-xs uppercase tracking-widest font-bold flex items-center gap-2 mt-4"
+              className={`${linkColor} text-xs uppercase tracking-widest font-bold flex items-center gap-2 mt-4 transition-colors duration-1000`}
             >
               <span>Explore Player Database</span>
               <span>→</span>
@@ -623,10 +761,10 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
           </a>
 
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mt-12">
-            <a href="/about-us" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">About Us</a>
-            <a href="/contact-us" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">Contact Us</a>
-            <a href="/privacy-policy" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">Privacy Policy</a>
-            <a href="/terms-and-conditions" className="text-[var(--text-muted)] hover:text-yellow-500 text-xs font-bold uppercase tracking-wider transition-colors">Terms & Conditions</a>
+            <a href="/about-us" className={`${linkColor} text-xs font-bold uppercase tracking-wider transition-colors duration-1000`}>About Us</a>
+            <a href="/contact-us" className={`${linkColor} text-xs font-bold uppercase tracking-wider transition-colors duration-1000`}>Contact Us</a>
+            <a href="/privacy-policy" className={`${linkColor} text-xs font-bold uppercase tracking-wider transition-colors duration-1000`}>Privacy Policy</a>
+            <a href="/terms-and-conditions" className={`${linkColor} text-xs font-bold uppercase tracking-wider transition-colors duration-1000`}>Terms & Conditions</a>
           </div>
         </div>
       </motion.div>
@@ -636,73 +774,120 @@ function HomeScreen({ onPlay, onLeaderboard, onProfile, hasActiveGame, onContinu
 
 // ─── Mode Select Screen ──────────────────────────────────────────────
 function ModeSelectScreen({ onSelectMode }: { onSelectMode: (mode: GameMode) => void }) {
+  const [hoveredMode, setHoveredMode] = useState<GameMode | null>(null);
+
+  const modes: {
+    id: GameMode;
+    bgLetter: string;
+    icon: any;
+    title: string;
+    subtitle: string;
+    themeColor: string;
+  }[] = [
+    { id: 'classic', bgLetter: 'C', icon: Swords, title: 'Classic', subtitle: 'Build the greatest XI.', themeColor: 'blue' },
+    { id: 'franchise', bgLetter: 'F', icon: ClipboardList, title: 'Franchise', subtitle: 'Impact player rules.', themeColor: 'yellow' },
+    { id: 'gamble', bgLetter: 'G', icon: Dices, title: 'Gamble', subtitle: 'Let fate decide.', themeColor: 'purple' },
+    { id: 'multiplayer', bgLetter: 'M', icon: Users, title: 'Multiplayer', subtitle: 'P2P Auction Room.', themeColor: 'green' }
+  ];
+
+  const getColorClasses = (color: string, isHovered: boolean) => {
+    switch (color) {
+      case 'blue': return {
+        border: isHovered ? 'border-blue-500' : 'border-[var(--card-border)]',
+        bg: isHovered ? 'bg-blue-500/10' : 'bg-[var(--card-bg)]/80',
+        text: isHovered ? 'text-blue-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
+        icon: isHovered ? 'text-blue-400' : 'text-[var(--text-muted)]',
+        gradient: 'from-blue-500/20 to-transparent'
+      };
+      case 'yellow': return {
+        border: isHovered ? 'border-yellow-500' : 'border-[var(--card-border)]',
+        bg: isHovered ? 'bg-yellow-500/10' : 'bg-[var(--card-bg)]/80',
+        text: isHovered ? 'text-yellow-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
+        icon: isHovered ? 'text-yellow-400' : 'text-[var(--text-muted)]',
+        gradient: 'from-yellow-500/20 to-transparent'
+      };
+      case 'purple': return {
+        border: isHovered ? 'border-purple-500' : 'border-[var(--card-border)]',
+        bg: isHovered ? 'bg-purple-500/10' : 'bg-[var(--card-bg)]/80',
+        text: isHovered ? 'text-purple-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
+        icon: isHovered ? 'text-purple-400' : 'text-[var(--text-muted)]',
+        gradient: 'from-purple-500/20 to-transparent'
+      };
+      case 'green': return {
+        border: isHovered ? 'border-green-500' : 'border-[var(--card-border)]',
+        bg: isHovered ? 'bg-green-500/10' : 'bg-[var(--card-bg)]/80',
+        text: isHovered ? 'text-green-500/20' : 'text-[var(--color-ink)] opacity-[0.03]',
+        icon: isHovered ? 'text-green-400' : 'text-[var(--text-muted)]',
+        gradient: 'from-green-500/20 to-transparent'
+      };
+      default: return { border: '', bg: '', text: '', icon: '', gradient: '' };
+    }
+  };
+
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center text-center px-4 py-12">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-6xl"
-      >
-        <div className="text-5xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 drop-shadow-lg mb-12 uppercase">
-          PLAY
+    <div className="relative min-h-[calc(100vh-4rem)] w-full flex flex-col bg-[var(--color-canvas)] px-2 pb-2 md:px-8 md:pb-8 pt-0">
+      <div className="relative flex-1 w-full rounded-b-3xl overflow-hidden shadow-2xl border border-[var(--color-hairline)] border-t-0">
+        {/* Accordion Container */}
+        <div className="absolute inset-y-0 flex flex-col md:flex-row h-full z-10 w-full md:w-[130vw] md:left-[-15vw]">
+          {modes.map((mode, index) => {
+            const isHovered = hoveredMode === mode.id;
+            const isOtherHovered = hoveredMode !== null && hoveredMode !== mode.id;
+            const isFirst = index === 0;
+            const isLast = index === modes.length - 1;
+            const colors = getColorClasses(mode.themeColor, isHovered);
+
+            return (
+              <motion.button
+                key={mode.id}
+                onClick={() => onSelectMode(mode.id)}
+                onMouseEnter={() => setHoveredMode(mode.id)}
+                onMouseLeave={() => setHoveredMode(null)}
+                style={{
+                  flex: isHovered ? 1.8 : (isOtherHovered ? 0.8 : 1),
+                }}
+                className={`
+                  relative flex flex-col items-center justify-center h-full
+                  transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
+                  border-b md:border-b-0 md:border-r border-[var(--color-hairline)]/30
+                  md:-skew-x-12
+                  ${isOtherHovered ? 'md:opacity-40 md:grayscale-[0.5]' : 'opacity-100'}
+                  ${colors.bg} backdrop-blur-md
+                  ${isHovered ? 'z-20 md:shadow-[0_0_50px_rgba(0,0,0,0.4)]' : 'z-0'}
+                  group
+                `}
+              >
+                <div className={`
+                  absolute inset-0 bg-gradient-to-b ${colors.gradient} 
+                  transition-opacity duration-700
+                  ${isHovered ? 'opacity-100' : 'opacity-0'}
+                `} />
+
+                <div className={`
+                  relative z-10 flex flex-col items-center justify-center w-full h-full
+                  md:skew-x-12 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
+                  ${isFirst ? 'md:pl-[15vw]' : ''}
+                  ${isLast ? 'md:pr-[15vw]' : ''}
+                  ${isHovered ? 'scale-110' : 'scale-100'}
+                `}>
+                  <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[10rem] md:text-[14rem] font-black ${colors.text} transition-all duration-700 pointer-events-none`}>
+                    {mode.bgLetter}
+                  </div>
+                  
+                  <mode.icon size={48} className={`relative z-10 mb-4 transition-colors duration-700 ${colors.icon}`} />
+                  
+                  <h2 className="relative z-10 text-2xl md:text-3xl font-black text-[var(--color-ink)] mb-2 tracking-widest uppercase drop-shadow-xl text-center">
+                    {mode.title}
+                  </h2>
+                  
+                  <p className="relative z-10 text-[var(--color-mute)] text-xs md:text-sm font-bold uppercase tracking-wider drop-shadow-md text-center">
+                    {mode.subtitle}
+                  </p>
+                </div>
+              </motion.button>
+            );
+          })}
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 w-full min-h-[300px] md:h-[500px]">
-          
-          {/* Classic */}
-          <motion.button
-            onClick={() => onSelectMode('classic')}
-            whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_30px_rgba(59,130,246,0.3)]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-blue-500/20 transition-colors">C</div>
-            <Swords size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-blue-400 transition-colors" />
-            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Classic</h2>
-            <p className="text-[var(--text-muted)] text-xs font-medium">Build the greatest XI.</p>
-          </motion.button>
-
-          {/* Franchise */}
-          <motion.button
-            onClick={() => onSelectMode('franchise')}
-            whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-yellow-500 hover:shadow-[0_0_30px_rgba(234,179,8,0.3)]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-yellow-500/20 transition-colors">F</div>
-            <ClipboardList size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-yellow-400 transition-colors" />
-            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Franchise</h2>
-            <p className="text-[var(--text-muted)] text-xs font-medium">Impact player rules.</p>
-          </motion.button>
-
-          {/* Gamble */}
-          <motion.button
-            onClick={() => onSelectMode('gamble')}
-            whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-purple-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-purple-500/20 transition-colors">G</div>
-            <Dices size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-purple-400 transition-colors" />
-            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Gamble</h2>
-            <p className="text-[var(--text-muted)] text-xs font-medium">Let fate decide.</p>
-          </motion.button>
-
-          {/* Multiplayer */}
-          <motion.button
-            onClick={() => onSelectMode('multiplayer')}
-            whileHover={{ scale: 1.05 }}
-            className="relative flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/80 backdrop-blur-md overflow-hidden group transition-all duration-300 hover:border-green-500 hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="text-7xl font-black text-[var(--text-primary)]/5 mb-4 group-hover:text-green-500/20 transition-colors">M</div>
-            <Users size={40} className="text-[var(--text-muted)] mb-4 group-hover:text-green-400 transition-colors" />
-            <h2 className="text-2xl font-black text-[var(--text-primary)] mb-2 tracking-widest uppercase">Multiplayer</h2>
-            <p className="text-[var(--text-muted)] text-xs font-medium">P2P Auction Room.</p>
-          </motion.button>
-
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
