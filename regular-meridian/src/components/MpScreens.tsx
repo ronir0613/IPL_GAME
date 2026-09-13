@@ -380,32 +380,32 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
   const pickedInActiveSet = players.filter(p => p.set_name === currentSetName && state.pickedIds.includes(p.id)).length;
 
   return (
-    <div className="h-auto lg:h-[calc(100vh-76px)] flex flex-col p-4 md:p-5 bg-[var(--color-canvas-soft)] text-[var(--text-primary)] overflow-y-auto lg:overflow-hidden font-sans">
+    <div className="h-auto lg:h-[calc(100vh-76px)] flex flex-col p-4 md:p-5 bg-gray-50 dark:bg-[#111] font-mono overflow-y-auto lg:overflow-hidden">
       {/* Compact Header Row */}
-      <div className="w-full max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl px-6 py-3.5 mb-4 gap-4 shadow-lg shrink-0">
+      <div className="w-full max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg px-6 py-3.5 mb-4 gap-4 shadow-xl shrink-0">
         <div>
-          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">
+          <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-0.5">
             {state.isAcceleratedRound ? 'ACCELERATED ROUND' : 'CURRENT PLAYER SET'}
           </div>
-          <div className="text-base font-black text-[var(--text-primary)] truncate flex items-center gap-2">
+          <div className="text-base font-black text-gray-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
             <span>{currentSetName}</span>
-            <span className="text-xs text-[var(--text-primary)] font-bold bg-[var(--color-canvas-soft-2)] px-2 py-0.5 rounded-full border border-[var(--card-border)]">
+            <span className="text-xs font-bold bg-gray-50 dark:bg-[#111] text-gray-500 dark:text-gray-400 px-2 py-0.5 border border-black/10 dark:border-white/10">
               {pickedInActiveSet + (activePlayer ? 1 : 0)} / {totalInActiveSet}
             </span>
           </div>
         </div>
 
         {/* Compact Bidding Timer / Info */}
-        <div className="flex items-center gap-4 bg-[var(--color-canvas-soft-2)] px-5 py-2 rounded-xl border border-[var(--card-border)] shadow-inner">
+        <div className="flex items-center gap-4 bg-gray-50 dark:bg-[#111] px-5 py-2 md:rounded-lg border border-black/10 dark:border-white/10 shadow-inner">
           <div className="text-right">
-            <div className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-0.5">CURRENT BIDDER</div>
-            <div className="text-sm font-black tracking-tight" style={{ color: highestBidderColor }}>
-              {highestBidderName} · <span className="text-blue-600 dark:text-blue-400 font-extrabold">₹{(currentBid / 100).toFixed(2)} Cr</span>
+            <div className="text-[9px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-0.5">CURRENT BIDDER</div>
+            <div className="text-sm font-black tracking-widest uppercase" style={{ color: highestBidderColor }}>
+              {highestBidderName} · <span className="text-yellow-600 dark:text-yellow-400 font-black">₹{(currentBid / 100).toFixed(2)} Cr</span>
             </div>
           </div>
-          <div className="w-px h-6 bg-[var(--card-border)]" />
+          <div className="w-px h-6 bg-black/10 dark:bg-white/10" />
           <div className="flex items-center justify-center">
-            <span className={`text-2xl font-mono font-black filter drop-shadow ${bidTimer <= 3 ? 'text-red-500 animate-pulse' : 'text-blue-600 dark:text-blue-400'}`}>
+            <span className={`text-2xl font-black ${bidTimer <= 3 ? 'text-red-500 animate-pulse' : 'text-gray-900 dark:text-white'}`}>
               {bidTimer}s
             </span>
           </div>
@@ -415,27 +415,27 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setShowLogs(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-[var(--color-canvas-soft-2)] border border-[var(--card-border)] hover:border-neutral-500 rounded-xl text-xs font-bold text-[var(--text-primary)] transition-colors uppercase tracking-wider cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-2 bg-gray-50 dark:bg-[#111] border border-black/10 dark:border-white/10 hover:border-yellow-500 md:rounded-lg text-xs font-bold text-gray-900 dark:text-white transition-colors uppercase tracking-widest cursor-pointer"
           >
             <ClipboardList size={12} />
             <span>Logs ({state.auctionLogs.length})</span>
           </button>
           
-          <div className="w-px h-6 bg-[var(--card-border)]" />
+          <div className="w-px h-6 bg-black/10 dark:bg-white/10" />
 
           {state.isHost ? (
             <button
               onClick={onForceStartSeason}
               disabled={!readyForForceStart}
-              className={`py-2.5 px-4 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5 shadow ${readyForForceStart ? 'bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 text-white cursor-pointer' : 'bg-gray-800 text-gray-500 border border-gray-700 cursor-not-allowed'}`}
+              className={`py-2.5 px-4 text-xs font-black uppercase tracking-widest md:rounded-lg transition-all flex items-center justify-center gap-1.5 shadow-xl ${readyForForceStart ? 'bg-yellow-500 text-black hover:bg-yellow-400 border border-yellow-500 cursor-pointer' : 'bg-gray-100 dark:bg-[#1a1a1a] text-gray-400 dark:text-gray-600 border border-black/10 dark:border-white/10 cursor-not-allowed'}`}
             >
               <Play size={12} />
               Start Season ({readyHumanCount}/{humanPlayers.length} Ready)
             </button>
           ) : (
             <div className="text-right text-xs">
-              <div className="font-bold text-[var(--text-primary)]">Roster: {myRoster.length}/{state.settings.rounds}</div>
-              <div className="text-green-400 font-extrabold mt-0.5">Purse: ₹{(myPurse / 100).toFixed(2)} Cr</div>
+              <div className="font-bold text-gray-900 dark:text-white uppercase tracking-widest">Roster: {myRoster.length}/{state.settings.rounds}</div>
+              <div className="text-yellow-600 dark:text-yellow-500 font-black mt-0.5 tracking-widest">Purse: ₹{(myPurse / 100).toFixed(2)} Cr</div>
             </div>
           )}
         </div>
@@ -444,13 +444,13 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
       {/* Main Drafting 3-Column Layout */}
       <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 pb-2">
         {/* Left Column: Franchises Standings (Human Only) */}
-        <div className="flex flex-col bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-4 overflow-hidden shadow-lg h-[280px] lg:h-full">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] mb-3 flex justify-between items-center">
+        <div className="flex flex-col bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-4 overflow-hidden shadow-xl h-[280px] lg:h-full">
+          <h3 className="font-bold text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3 flex justify-between items-center">
             <span>Franchises Standings</span>
             <span>Budget</span>
           </h3>
 
-          <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+          <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
             {humanTeamIds.map(teamId => {
               const roster = state.rosters[teamId] || [];
               const purse = state.purses[teamId] ?? 12000;
@@ -468,31 +468,31 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                 <div 
                   key={teamId}
                   onClick={() => setActiveInspector(teamId)}
-                  className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${activeInspector === teamId ? 'border-blue-500 bg-blue-600/5' : 'border-[var(--card-border)] bg-[var(--color-canvas-soft)]/50 hover:border-[var(--color-hairline-strong)]'}`}
+                  className={`flex items-center justify-between p-3 border transition-all cursor-pointer ${activeInspector === teamId ? 'border-yellow-500 bg-yellow-500/5 md:rounded-lg' : 'border-black/10 dark:border-white/10 bg-gray-50 dark:bg-[#111] hover:border-gray-400'}`}
                 >
                   <div className="flex items-center gap-2.5">
                     <div 
-                      className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-xs shadow"
+                      className="w-8 h-8 flex items-center justify-center font-black text-white text-xs shadow-md md:rounded-lg"
                       style={{ backgroundColor: teamData?.color || '#555' }}
                     >
                       {franchise}
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+                      <div className="text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-1.5">
                         <span className="truncate max-w-[100px]">{teamName}</span>
-                        {isMe && <span className="text-[8px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1 rounded uppercase font-bold">YOU</span>}
+                        {isMe && <span className="text-[8px] bg-blue-500/10 text-blue-500 border border-blue-500/20 px-1 font-bold">YOU</span>}
                       </div>
-                      <div className="text-[9px] text-[var(--text-muted)] mt-0.5">
+                      <div className="text-[9px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-0.5">
                         Roster: {roster.length}/{state.settings.rounds} (OS: {osCount}/{state.settings.maxOverseas})
                       </div>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <div className="text-xs font-black text-green-400">
+                    <div className="text-xs font-black tracking-widest text-yellow-600 dark:text-yellow-500">
                       ₹{(purse / 100).toFixed(2)} Cr
                     </div>
-                    <div className="text-[9px] text-[var(--text-muted)] mt-0.5 font-mono">
+                    <div className="text-[9px] text-gray-500 dark:text-gray-400 mt-0.5 font-bold uppercase tracking-widest">
                       Avg: ₹{(roster.length === state.settings.rounds ? 0 : purse / (state.settings.rounds - roster.length)).toFixed(1)} L
                     </div>
                   </div>
@@ -503,11 +503,11 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
         </div>
 
         {/* Middle Column: Nominated Player Card */}
-        <div className="flex flex-col bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-4 overflow-hidden shadow-lg h-auto min-h-[380px] lg:h-full justify-between">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] mb-2 flex items-center gap-2">
+        <div className="flex flex-col bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-4 overflow-hidden shadow-xl h-auto min-h-[380px] lg:h-full justify-between">
+          <h3 className="font-bold text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-2">
             <span>Nominated Cricketer</span>
             {activePlayer?.is_overseas && (
-              <span className="text-[9px] bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-1.5 py-0.5 rounded font-black uppercase">
+              <span className="text-[9px] bg-blue-500/10 text-blue-500 border border-blue-500/20 px-1.5 py-0.5 font-black uppercase">
                 OVERSEAS
               </span>
             )}
@@ -516,7 +516,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
           {activePlayer ? (
             <div className="flex-1 flex flex-col justify-between overflow-hidden">
               {/* Minimalist Premium Sports Card Display */}
-              <div className="h-[180px] w-full bg-[var(--color-canvas-soft)]/50 backdrop-blur-md rounded-2xl border border-[var(--card-border)] relative overflow-hidden flex flex-col justify-between p-5 my-3 group hover:border-neutral-700/50 transition-all duration-300">
+              <div className="h-[180px] w-full bg-gray-50 dark:bg-[#111] md:rounded-lg border border-black/10 dark:border-white/10 relative overflow-hidden flex flex-col justify-between p-5 my-3 group transition-all duration-300">
                 {/* Visual Glow */}
                 <div 
                   className="absolute top-0 right-0 w-32 h-32 opacity-15 blur-2xl pointer-events-none transition-all duration-500" 
@@ -528,23 +528,23 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                   <span className="text-2xl font-mono font-black tracking-tight" style={{ color: getRatingBg(activePlayer.overall) }}>
                     {activePlayer.overall}
                   </span>
-                  <span className="text-[9px] font-mono font-extrabold uppercase tracking-widest text-[var(--text-primary)] bg-[var(--color-canvas-soft-2)] px-2 py-0.5 rounded border border-[var(--card-border)]">
+                  <span className="text-[9px] font-mono font-extrabold uppercase tracking-widest text-gray-900 dark:text-white bg-white dark:bg-[#1a1a1a] px-2 py-0.5 border border-black/10 dark:border-white/10">
                     {activePlayer.role}
                   </span>
                 </div>
 
                 {/* Card Center: Player Name */}
                 <div className="z-10 py-1">
-                  <h2 className="text-2xl font-black tracking-tight text-[var(--text-primary)] group-hover:text-blue-400 transition-colors">
+                  <h2 className="text-2xl font-black uppercase tracking-widest text-gray-900 dark:text-white group-hover:text-blue-500 transition-colors">
                     {activePlayer.name}
                   </h2>
                 </div>
 
                 {/* Card Bottom: Team and Status info */}
-                <div className="flex justify-between items-center w-full z-10 border-t border-[var(--card-border)] pt-2.5 text-[10px] text-[var(--text-muted)] font-semibold">
+                <div className="flex justify-between items-center w-full z-10 border-t border-black/10 dark:border-white/10 pt-2.5 text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest">
                   <span>LAST TEAM: {activePlayer.team}</span>
                   {activePlayer.is_overseas && (
-                    <span className="text-[8px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded font-black uppercase tracking-wider">
+                    <span className="text-[8px] bg-blue-500/10 text-blue-500 border border-blue-500/20 px-1.5 py-0.5 font-black uppercase tracking-wider">
                       OVERSEAS
                     </span>
                   )}
@@ -553,17 +553,17 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
 
               {/* Bidding Controls CTA */}
               <div className="space-y-3 shrink-0 pt-2">
-                <div className="flex justify-between items-center text-xs text-[var(--text-muted)] px-1">
+                <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 px-1">
                   <span>Required Reserve Purse:</span>
-                  <span className="font-bold text-[var(--text-primary)]">₹{(minRequiredReserve / 100).toFixed(2)} Cr</span>
+                  <span className="font-bold text-gray-900 dark:text-white uppercase tracking-widest">₹{(minRequiredReserve / 100).toFixed(2)} Cr</span>
                 </div>
 
                  {hasSkipped ? (
-                   <button disabled className="w-full py-3 bg-[var(--color-canvas-soft-2)] text-[var(--text-muted)] border border-[var(--card-border)] text-xs font-black uppercase tracking-wider rounded-xl cursor-not-allowed">
+                   <button disabled className="w-full py-3 bg-gray-100 dark:bg-[#1a1a1a] text-gray-400 dark:text-gray-500 border border-black/10 dark:border-white/10 text-xs font-black uppercase tracking-widest md:rounded-lg cursor-not-allowed">
                      {isBiddingActive ? 'DROPPED OUT' : 'SKIPPED'}
                    </button>
                  ) : isHighestBidderSelf ? (
-                   <button disabled className="w-full py-3 bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 text-xs font-black uppercase tracking-wider rounded-xl cursor-not-allowed animate-pulse">
+                   <button disabled className="w-full py-3 bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500 text-xs font-black uppercase tracking-widest md:rounded-lg cursor-not-allowed animate-pulse">
                      YOU HAVE HIGHEST BID!
                    </button>
                  ) : (
@@ -571,7 +571,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                      <button
                        disabled={!canBid}
                        onClick={() => onPlaceBid(isBiddingActive ? nextBidPrice : state.currentBid)}
-                       className={`flex-[2] py-3 px-2 text-xs font-black uppercase tracking-wider rounded-xl transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${canBid ? 'bg-gradient-to-r from-blue-600 to-indigo-500 text-white hover:from-blue-500 hover:to-indigo-400 shadow-lg shadow-blue-950/10' : 'bg-[var(--color-canvas-soft-2)] text-[var(--text-muted)] border border-[var(--card-border)] cursor-not-allowed'}`}
+                       className={`flex-[2] py-3 px-2 text-xs font-black uppercase tracking-widest md:rounded-lg transition-all cursor-pointer flex flex-col items-center justify-center gap-0.5 ${canBid ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-xl' : 'bg-gray-100 dark:bg-[#1a1a1a] text-gray-400 dark:text-gray-500 border border-black/10 dark:border-white/10 cursor-not-allowed'}`}
                      >
                        {isRosterFull ? (
                          <span>ROSTER FULL</span>
@@ -590,7 +590,7 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
                      </button>
                      <button
                        onClick={onSkipPlayer}
-                       className="flex-1 py-3 px-2 bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white font-black text-xs uppercase tracking-wider rounded-xl shadow-lg hover:shadow-red-950/20 transition-all cursor-pointer flex items-center justify-center"
+                       className="flex-1 py-3 px-2 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-widest md:rounded-lg shadow-xl transition-all cursor-pointer flex items-center justify-center border border-red-600 hover:border-red-500"
                      >
                        {isBiddingActive ? 'DROP' : 'SKIP'}
                      </button>
@@ -599,15 +599,15 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
               </div>
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-center text-xs italic text-[var(--text-muted)] py-12">
+            <div className="flex-1 flex items-center justify-center text-center text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest py-12">
               Auction finished! Waiting for host to start the season.
             </div>
           )}
         </div>
 
         {/* Right Column: Roster Inspector */}
-        <div className="flex flex-col bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-4 overflow-hidden shadow-lg h-[320px] lg:h-full">
-          <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] mb-3">
+        <div className="flex flex-col bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-4 overflow-hidden shadow-xl h-[320px] lg:h-full">
+          <h3 className="font-bold text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
             Roster: {
               activeInspector.startsWith('AI_') 
                 ? `AI - ${activeInspector.split('_')[1]}` 
@@ -615,28 +615,28 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
             } ({(state.rosters[activeInspector] || []).length}/{state.settings.rounds})
           </h3>
           
-          <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
+          <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
             {(state.rosters[activeInspector] || []).length === 0 ? (
-              <div className="text-center text-[var(--text-muted)] py-12 text-xs italic">
+              <div className="text-center text-gray-500 dark:text-gray-400 py-12 text-xs font-bold uppercase tracking-widest">
                 No cricketers acquired yet.
               </div>
             ) : (
               (state.rosters[activeInspector] || []).map((player, idx) => (
-                <div key={player.id} className="flex justify-between items-center p-2 rounded-lg border border-[var(--card-border)] bg-black/10 hover:border-neutral-700/50 transition-colors">
+                <div key={player.id} className="flex justify-between items-center p-2 border border-black/10 dark:border-white/10 bg-gray-50 dark:bg-[#111] hover:border-gray-400 transition-colors">
                   <div className="flex items-center gap-2.5">
-                    <span className="text-[9px] font-bold text-[var(--text-muted)] font-mono w-4">{idx + 1}.</span>
+                    <span className="text-[9px] font-black text-gray-500 dark:text-gray-400 font-mono w-4">{idx + 1}.</span>
                     <div
-                      className="w-6 h-6 rounded flex items-center justify-center font-bold text-white text-[9px]"
+                      className="w-6 h-6 flex items-center justify-center font-black text-white text-[9px]"
                       style={{ backgroundColor: getRatingBg(player.overall) }}
                     >
                       {player.overall}
                     </div>
                     <div>
-                      <div className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1">
+                      <div className="text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-1">
                         {player.name}
-                        {player.is_overseas && <span className="text-[8px] bg-yellow-500/10 text-yellow-500 px-1 rounded font-bold uppercase">OS</span>}
+                        {player.is_overseas && <span className="text-[8px] bg-blue-500/10 text-blue-500 border border-blue-500/20 px-1 font-bold uppercase">OS</span>}
                       </div>
-                      <div className="text-[8px] text-[var(--text-muted)] mt-0.5">{player.role} • {player.team}</div>
+                      <div className="text-[8px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-0.5">{player.role} • {player.team}</div>
                     </div>
                   </div>
                 </div>
@@ -649,36 +649,36 @@ export function MpDraftScreen({ state, players, peerId, onPlaceBid, onForceStart
       {/* Toggleable Auction Logs Modal */}
       {showLogs && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-6 w-full max-w-md shadow-2xl relative">
+          <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-6 w-full max-w-md shadow-2xl relative font-mono">
             <button 
               onClick={() => setShowLogs(false)} 
-              className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-[var(--text-primary)] border-none bg-transparent cursor-pointer flex items-center justify-center p-1 rounded-full hover:bg-[var(--color-canvas-soft-2)]"
+              className="absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border-none bg-transparent cursor-pointer flex items-center justify-center p-1 hover:bg-gray-50 dark:hover:bg-[#111]"
             >
               <X size={16} />
             </button>
-            <h3 className="font-extrabold text-sm uppercase tracking-wider text-[var(--text-primary)] mb-4 flex items-center gap-2">
-              <Gavel className="w-4 h-4 text-amber-600 shrink-0" /> Auction Gavel History
+            <h3 className="font-black text-sm uppercase tracking-widest text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <Gavel className="w-4 h-4 text-yellow-600 shrink-0" /> Auction Gavel History
             </h3>
-            <div className="max-h-[350px] overflow-y-auto space-y-2 pr-1 text-xs">
+            <div className="max-h-[350px] overflow-y-auto space-y-2 pr-1 text-xs custom-scrollbar">
               {state.auctionLogs.length === 0 ? (
-                <div className="text-center text-[var(--text-muted)] py-12 italic">
+                <div className="text-center text-gray-500 dark:text-gray-400 py-12 font-bold uppercase tracking-widest">
                   Gavel has not fallen yet.
                 </div>
               ) : (
                 state.auctionLogs.map((log, idx) => {
-                  let logColor = 'text-[var(--text-primary)]';
-                  if (log.includes('SOLD')) logColor = 'text-emerald-400 font-bold';
-                  else if (log.includes('UNSOLD')) logColor = 'text-[var(--text-muted)] italic';
+                  let logColor = 'text-gray-900 dark:text-white';
+                  if (log.includes('SOLD')) logColor = 'text-green-500 font-bold';
+                  else if (log.includes('UNSOLD')) logColor = 'text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest';
                   
                   const cleanLog = log.replace(/^(🔨|❌)\s*/, '');
                   const isSold = log.startsWith('🔨');
                   const isUnsold = log.startsWith('❌');
 
                   return (
-                    <div key={idx} className={`p-2.5 rounded-xl bg-[var(--color-canvas-soft-2)] border border-[var(--card-border)] ${logColor} flex items-start gap-2`}>
-                      {isSold && <Gavel className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />}
-                      {isUnsold && <X className="w-3.5 h-3.5 text-neutral-400 shrink-0 mt-0.5" />}
-                      <span className="flex-1">{cleanLog}</span>
+                    <div key={idx} className={`p-2.5 bg-gray-50 dark:bg-[#111] border border-black/10 dark:border-white/10 ${logColor} flex items-start gap-2`}>
+                      {isSold && <Gavel className="w-3.5 h-3.5 text-green-500 shrink-0 mt-0.5" />}
+                      {isUnsold && <X className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />}
+                      <span className="flex-1 font-bold">{cleanLog}</span>
                     </div>
                   );
                 })
@@ -773,14 +773,14 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col p-4 md:p-6 bg-[var(--color-canvas-soft)] text-[var(--text-primary)] font-sans">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col p-4 md:p-6 bg-gray-50 dark:bg-[#111] font-mono">
       {/* Top Header */}
-      <div className="w-full max-w-7xl mx-auto flex justify-between items-center mb-6 border-b border-[var(--card-border)] pb-4">
+      <div className="w-full max-w-7xl mx-auto flex justify-between items-center mb-6 border-b border-black/10 dark:border-white/10 pb-4">
         <div>
-          <span className="text-xs bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full font-bold uppercase">
+          <span className="text-xs bg-blue-500/10 text-blue-600 dark:text-blue-500 border border-blue-500/20 px-2 py-0.5 font-bold uppercase tracking-widest">
             IPL League Tournament
           </span>
-          <h1 className="text-3xl font-black uppercase text-[var(--text-primary)] mt-1">Match Day Center</h1>
+          <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white mt-1">Match Day Center</h1>
         </div>
         
         {state.isHost && (
@@ -789,7 +789,7 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
               <button
                 onClick={onSimulateRound}
                 disabled={state.readyCount < state.players.filter(p => p.franchise !== 'TBD').length}
-                className="btn-primary px-6 py-3 text-sm font-bold uppercase rounded-xl flex items-center gap-1.5 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gray-900 dark:bg-white text-white dark:text-black px-6 py-3 text-sm font-black uppercase tracking-widest md:rounded-lg flex items-center gap-1.5 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-black dark:hover:bg-gray-100 transition-colors"
               >
                 <Swords size={18} />
                 Start Season & Simulate ({state.readyCount}/{state.players.filter(p => p.franchise !== 'TBD').length} Ready)
@@ -801,21 +801,21 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
 
       <div className="w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
         {/* Left Columns (2/3 width): Squad & Tactics Selector */}
-        <div className="lg:col-span-2 flex flex-col bg-[var(--card-bg)] border border-[var(--card-border)] rounded-2xl p-5">
-          <div className="flex justify-between items-center mb-4 border-b border-[var(--card-border)] pb-3">
-            <h3 className="font-extrabold text-base text-[var(--text-primary)]">
+        <div className="lg:col-span-2 flex flex-col bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-5 shadow-xl">
+          <div className="flex justify-between items-center mb-4 border-b border-black/10 dark:border-white/10 pb-3">
+            <h3 className="font-black tracking-widest uppercase text-base text-gray-900 dark:text-white">
               Tactical Lineup Selector
             </h3>
-            <span className={`text-xs font-bold px-2 py-0.5 rounded ${submitted ? 'bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20' : 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20'}`}>
+            <span className={`text-xs font-bold uppercase tracking-widest px-2 py-0.5 border ${submitted ? 'bg-green-500/10 text-green-600 dark:text-green-500 border-green-500/20' : 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/20'}`}>
               {submitted ? 'Tactics Locked' : 'Lineup Incomplete'}
             </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 mb-4">
             {/* Squad Pool */}
-            <div className="border border-[var(--card-border)] rounded-xl p-3 bg-[var(--color-canvas-soft-2)]/60 flex flex-col h-[400px]">
-              <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-2">DRAFTED SQUAD (Click to toggle)</div>
-              <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
+            <div className="border border-black/10 dark:border-white/10 md:rounded-lg p-3 bg-gray-50 dark:bg-[#111] flex flex-col h-[400px]">
+              <div className="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">DRAFTED SQUAD (Click to toggle)</div>
+              <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
                 {myRoster.map((player) => {
                   const isSelected = playingXI.some(p => p.id === player.id);
                   return (
@@ -823,21 +823,21 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
                       key={player.id}
                       onClick={() => handleTogglePlayer(player)}
                       disabled={submitted}
-                      className={`w-full flex justify-between items-center p-2.5 rounded-lg border text-left transition-all ${isSelected ? 'border-blue-500/30 bg-blue-500/5 hover:bg-blue-500/10' : 'border-[var(--card-border)] bg-[var(--card-bg)] hover:bg-[var(--card-border)]/20'}`}
+                      className={`w-full flex justify-between items-center p-2.5 border text-left transition-all ${isSelected ? 'border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/10' : 'border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] hover:bg-gray-100 dark:hover:bg-black'}`}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded flex items-center justify-center font-bold text-white text-[10px]" style={{ backgroundColor: getRatingBg(player.overall) }}>
+                        <div className="w-6 h-6 flex items-center justify-center font-black text-white text-[10px]" style={{ backgroundColor: getRatingBg(player.overall) }}>
                           {player.overall}
                         </div>
                         <div>
-                          <div className="text-xs font-bold flex items-center gap-1">
+                          <div className="text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-1">
                             {player.name}
-                            {player.is_overseas && <span className="text-[8px] bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 px-1 rounded font-bold">OS</span>}
+                            {player.is_overseas && <span className="text-[8px] bg-blue-500/10 text-blue-500 px-1 font-bold">OS</span>}
                           </div>
-                          <span className="text-[9px] text-[var(--text-muted)]">{player.role} • {player.team}</span>
+                          <span className="text-[9px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">{player.role} • {player.team}</span>
                         </div>
                       </div>
-                      <span className={`text-[10px] font-bold uppercase ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-[var(--text-muted)]'}`}>
+                      <span className={`text-[10px] font-black uppercase tracking-widest ${isSelected ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>
                         {isSelected ? 'Starting' : 'Bench'}
                       </span>
                     </button>
@@ -847,30 +847,30 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
             </div>
 
             {/* Selected XI Details */}
-            <div className="border border-[var(--card-border)] rounded-xl p-3 bg-[var(--color-canvas-soft-2)]/60 flex flex-col h-[400px]">
-              <div className="flex justify-between items-center text-[10px] font-bold text-[var(--text-muted)] mb-2">
+            <div className="border border-black/10 dark:border-white/10 md:rounded-lg p-3 bg-gray-50 dark:bg-[#111] flex flex-col h-[400px]">
+              <div className="flex justify-between items-center text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">
                 <span>STARTING XI ({playingXI.length}/11)</span>
                 <span>WK: {playingXI.filter(p => p.role === 'WK').length} • OS: {playingXI.filter(p => p.is_overseas).length}/4</span>
               </div>
               
-              <div className="flex-1 overflow-y-auto space-y-1.5 pr-1">
+              <div className="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
                 {playingXI.length === 0 ? (
-                  <div className="text-center text-[var(--text-muted)] py-12 text-xs italic">
+                  <div className="text-center font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest py-12 text-xs">
                     Select players from the left pool to build your XI.
                   </div>
                 ) : (
                   playingXI.map((player) => (
-                    <div key={player.id} className="flex justify-between items-center p-2 rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)]">
+                    <div key={player.id} className="flex justify-between items-center p-2 border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a]">
                       <div className="flex items-center gap-2">
-                        <div className="w-5.5 h-5.5 rounded flex items-center justify-center font-bold text-white text-[9px]" style={{ backgroundColor: getRatingBg(player.overall) }}>
+                        <div className="w-5.5 h-5.5 flex items-center justify-center font-black text-white text-[9px]" style={{ backgroundColor: getRatingBg(player.overall) }}>
                           {player.overall}
                         </div>
                         <div>
-                          <div className="text-xs font-bold flex items-center gap-1">
+                          <div className="text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-1">
                             {player.name}
-                            {player.name === captain && <span className="text-[8px] bg-yellow-500/20 text-yellow-600 dark:text-yellow-400 px-1 rounded font-bold uppercase">C</span>}
+                            {player.name === captain && <span className="text-[8px] bg-yellow-500/20 text-yellow-600 dark:text-yellow-500 px-1 font-bold uppercase">C</span>}
                           </div>
-                          <span className="text-[9.5px] text-[var(--text-muted)]">{player.role}</span>
+                          <span className="text-[9.5px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">{player.role}</span>
                         </div>
                       </div>
                       
@@ -878,13 +878,13 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setCaptain(player.name)}
-                            className={`px-2 py-0.5 text-[9px] font-bold uppercase rounded border ${captain === player.name ? 'bg-yellow-500/25 border-yellow-500 text-yellow-600 dark:text-yellow-400' : 'border-[var(--card-border)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
+                            className={`px-2 py-0.5 text-[9px] font-black uppercase tracking-widest border ${captain === player.name ? 'bg-yellow-500/25 border-yellow-500 text-yellow-600 dark:text-yellow-500' : 'border-black/10 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}
                           >
                             Set Captain
                           </button>
                           <button
                             onClick={() => handleTogglePlayer(player)}
-                            className="text-[9px] font-bold uppercase text-red-600 dark:text-red-400 hover:opacity-80"
+                            className="text-[9px] font-black uppercase tracking-widest text-red-600 dark:text-red-500 hover:opacity-80"
                           >
                             Remove
                           </button>
@@ -898,11 +898,11 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
           </div>
 
           {!submitted ? (
-            <button onClick={handleSubmit} className="w-full btn-primary py-3 rounded-xl font-bold uppercase tracking-wider text-sm shadow-md">
+            <button onClick={handleSubmit} className="w-full bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-gray-100 py-3 md:rounded-lg font-black uppercase tracking-widest text-sm shadow-xl transition-colors">
               Lock Tactics & Lineup
             </button>
           ) : (
-            <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-xl text-center text-xs text-green-600 dark:text-green-400 font-bold uppercase tracking-wider">
+            <div className="bg-green-500/10 border border-green-500/20 p-3 md:rounded-lg text-center text-xs text-green-600 dark:text-green-500 font-black uppercase tracking-widest">
               Ready! Waiting for other managers to lock lineups...
             </div>
           )}
@@ -911,8 +911,8 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
         {/* Right Column: Lobby Readiness & Standing Table Preview */}
         <div className="space-y-6">
           {/* Readiness Tracker */}
-          <div className="card p-4 border border-[var(--card-border)] bg-[var(--card-bg)]">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] mb-3">
+          <div className="p-4 border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] shadow-xl md:rounded-lg">
+            <h3 className="font-bold text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
               Room Readiness
             </h3>
             <div className="space-y-2">
@@ -920,17 +920,17 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
                 const isReady = p.isReady || (p.peerId === peerId && submitted);
                 const franchiseData = IPL_TEAMS.find(t => t.short === p.franchise);
                 return (
-                  <div key={p.peerId} className="flex justify-between items-center p-2.5 border border-[var(--card-border)] rounded-xl text-xs bg-[var(--card-bg)] shadow-sm hover:border-[var(--card-border)]/50 transition-colors">
+                  <div key={p.peerId} className="flex justify-between items-center p-2.5 border border-black/10 dark:border-white/10 text-xs bg-gray-50 dark:bg-[#111] shadow-sm hover:border-gray-400 transition-colors">
                     <div className="flex items-center gap-2">
                       <div
-                        className="w-6 h-6 rounded-md flex items-center justify-center font-bold text-white text-[9px]"
+                        className="w-6 h-6 flex items-center justify-center font-black text-white text-[9px]"
                         style={{ backgroundColor: franchiseData?.color || '#374151' }}
                       >
                         {p.franchise === 'TBD' ? '?' : p.franchise}
                       </div>
-                      <span className="font-bold text-[var(--text-primary)]">{p.name}</span>
+                      <span className="font-black uppercase tracking-widest text-gray-900 dark:text-white">{p.name}</span>
                     </div>
-                    <span className={`px-2 py-0.5 rounded font-bold text-[10px] uppercase ${isReady ? 'bg-green-500/15 text-green-600 dark:text-green-400 border border-green-500/20' : 'bg-yellow-500/15 text-yellow-600 dark:text-yellow-400 border border-yellow-500/20'}`}>
+                    <span className={`px-2 py-0.5 border font-black text-[10px] uppercase tracking-widest ${isReady ? 'bg-green-500/15 text-green-600 dark:text-green-500 border-green-500/20' : 'bg-yellow-500/15 text-yellow-600 dark:text-yellow-500 border-yellow-500/20'}`}>
                       {isReady ? 'READY' : 'SELECTING XI'}
                     </span>
                   </div>
@@ -940,23 +940,23 @@ export function MpMatchCenterScreen({ state, peerId, onSelectLineup, onSimulateR
           </div>
 
           {/* Matches & Results summary */}
-          <div className="card p-4 border border-[var(--card-border)] bg-[var(--card-bg)]">
-            <h3 className="font-bold text-xs uppercase tracking-wider text-[var(--text-muted)] mb-3">
+          <div className="p-4 border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] shadow-xl md:rounded-lg">
+            <h3 className="font-bold text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3">
               Fixtures & Outcomes
             </h3>
             {state.activeMatches.length === 0 ? (
-              <div className="text-center text-xs text-[var(--text-muted)] italic py-8">
+              <div className="text-center text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 py-8">
                 Simulation results will display here.
               </div>
             ) : (
-              <div className="space-y-2 max-h-[250px] overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-[250px] overflow-y-auto pr-1 custom-scrollbar">
                 {state.activeMatches.map((m, idx) => (
-                  <div key={idx} className="p-2 border border-[var(--card-border)] rounded-lg text-xs bg-[var(--color-canvas-soft-2)]/60 flex flex-col gap-1">
-                    <div className="flex justify-between font-bold">
+                  <div key={idx} className="p-2 border border-black/10 dark:border-white/10 text-xs bg-gray-50 dark:bg-[#111] flex flex-col gap-1">
+                    <div className="flex justify-between font-black uppercase tracking-widest text-gray-900 dark:text-white">
                       <span>{m.homeTeam} vs {m.awayTeam}</span>
-                      <span className="text-blue-600 dark:text-blue-400">{m.winner} Won</span>
+                      <span className="text-blue-500">{m.winner} Won</span>
                     </div>
-                    <div className="flex justify-between text-[10px] text-[var(--text-muted)]">
+                    <div className="flex justify-between text-[10px] font-bold tracking-widest text-gray-500 dark:text-gray-400">
                       <span>{m.homeScore} vs {m.awayScore}</span>
                       <span>{m.margin}</span>
                     </div>

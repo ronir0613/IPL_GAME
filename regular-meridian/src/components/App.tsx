@@ -424,21 +424,20 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
   }, [leaderboard, filterMode, filterDiff, filterRatings]);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center py-16 px-4 md:px-8 max-w-5xl mx-auto">
+    <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center py-16 px-4 md:px-8 max-w-5xl mx-auto font-mono">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full">
         {/* Header */}
         <div className="mb-12 relative mt-8">
-           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-to-r from-[#007cf0] via-[#7928ca] to-[#ff0080] blur-[100px] opacity-10 -z-10 rounded-full" />
-           <h2 className="text-4xl md:text-[48px] leading-tight font-semibold tracking-[-2.4px] text-[var(--color-ink)] mb-4 text-center">
-             16-0 Global Leaderboard.
+           <h2 className="text-4xl md:text-[48px] leading-tight font-black uppercase tracking-widest text-gray-900 dark:text-white mb-4 text-center">
+             16-0 Global Leaderboard
            </h2>
-           <p className="text-[var(--color-body)] text-[18px] text-center max-w-2xl mx-auto">All-time greatest XIs.</p>
+           <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-center max-w-2xl mx-auto">All-time greatest XIs</p>
         </div>
 
         {/* Filters */}
         <div className="mb-8 w-full flex flex-col gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--color-mute)]">Filters</span>
+            <span className="font-black text-xs uppercase tracking-widest text-gray-500 dark:text-gray-400">Filters</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {[
@@ -451,7 +450,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
               <button 
                 key={f.label}
                 onClick={() => setFilterMode(f.label)}
-                className={`px-4 py-1.5 rounded-full text-[14px] transition-colors shadow-sm ${filterMode === f.label ? 'bg-[var(--color-primary)] text-[var(--color-on-primary)] font-medium' : 'bg-[var(--color-canvas)] text-[var(--color-ink)] border border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft-2)]'}`}
+                className={`px-4 py-1.5 md:rounded-lg text-sm transition-colors border shadow-sm font-black uppercase tracking-widest cursor-pointer ${filterMode === f.label ? 'bg-gray-900 dark:bg-white text-white dark:text-black border-transparent' : 'bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white border-black/10 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-[#111]'}`}
               >
                 {f.label}
               </button>
@@ -461,50 +460,50 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
         
         {/* Table */}
         {loading ? (
-          <div className="text-center text-[var(--color-mute)] py-20 font-medium bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-2)]">Loading leaderboard...</div>
+          <div className="text-center text-gray-500 dark:text-gray-400 py-20 font-black uppercase tracking-widest bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg shadow-sm">Loading leaderboard...</div>
         ) : filteredLeaderboard.length === 0 ? (
-          <div className="text-center text-[var(--color-mute)] py-20 font-medium bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-2)]">No records yet. Go play a season!</div>
+          <div className="text-center text-gray-500 dark:text-gray-400 py-20 font-black uppercase tracking-widest bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg shadow-sm">No records yet. Go play a season!</div>
         ) : (
-          <div className={`bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[12px] shadow-[var(--shadow-vercel-3)] mb-12 relative transition-all duration-500 ease-in-out ${isExpanded ? 'overflow-y-auto max-h-[800px]' : 'overflow-hidden max-h-[400px]'}`}>
+          <div className={`bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg shadow-sm mb-12 relative transition-all duration-500 ease-in-out ${isExpanded ? 'overflow-y-auto max-h-[800px]' : 'overflow-hidden max-h-[400px]'}`}>
              <table className="w-full text-left border-collapse">
                <thead>
-                 <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] text-[var(--color-mute)] text-[12px] font-mono uppercase tracking-widest">
+                 <tr className="bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 text-gray-500 dark:text-gray-400 text-xs font-black uppercase tracking-widest">
                    <th className="px-6 py-4 w-16 text-center">Rank</th>
                    <th className="px-6 py-4">Player</th>
                    <th className="px-6 py-4 text-right">Result</th>
                    <th className="px-6 py-4 text-right">Points</th>
                  </tr>
                </thead>
-               <tbody className="divide-y divide-[var(--color-hairline)]">
+               <tbody className="divide-y divide-black/10 dark:divide-white/10">
                  {filteredLeaderboard.map((entry, idx) => {
                    let rankDisplay: React.ReactNode = idx + 1;
-                   if (idx === 0) rankDisplay = <Medal className="w-5 h-5 text-amber-500 inline-block drop-shadow-[0_0_4px_rgba(245,158,11,0.4)]" />;
-                   else if (idx === 1) rankDisplay = <Medal className="w-5 h-5 text-slate-400 inline-block drop-shadow-[0_0_4px_rgba(148,163,184,0.4)]" />;
-                   else if (idx === 2) rankDisplay = <Medal className="w-5 h-5 text-amber-700 inline-block drop-shadow-[0_0_4px_rgba(180,83,9,0.4)]" />;
+                   if (idx === 0) rankDisplay = <Medal className="w-5 h-5 text-yellow-500 inline-block drop-shadow-sm" />;
+                   else if (idx === 1) rankDisplay = <Medal className="w-5 h-5 text-gray-400 inline-block drop-shadow-sm" />;
+                   else if (idx === 2) rankDisplay = <Medal className="w-5 h-5 text-amber-700 inline-block drop-shadow-sm" />;
 
                    return (
-                     <tr key={entry.id || idx} className="hover:bg-[var(--color-canvas-soft-2)] transition-colors group">
-                       <td className="px-6 py-4 font-mono font-medium text-[var(--color-ink)] text-center text-[14px]">{rankDisplay}</td>
+                     <tr key={entry.id || idx} className="hover:bg-gray-50 dark:hover:bg-[#111] transition-colors group">
+                       <td className="px-6 py-4 font-black text-gray-900 dark:text-white text-center text-sm">{rankDisplay}</td>
                        <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <span className={`font-semibold text-[16px] ${entry.wins === 16 && entry.losses === 0 ? 'text-[#facc15] drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]' : 'text-[var(--color-ink)]'}`}>{entry.handle || 'Anonymous'}</span>
-                            {entry.champion && <span title="Champion"><Check className="w-4 h-4 text-sky-500 inline-block" /></span>}
-                            <span className="bg-[var(--color-canvas-soft)] text-[var(--color-mute)] border border-[var(--color-hairline)] font-mono text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider">{entry.mode}</span>
+                            <span className={`font-black uppercase tracking-widest text-base ${entry.wins === 16 && entry.losses === 0 ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>{entry.handle || 'Anonymous'}</span>
+                            {entry.champion && <span title="Champion"><Check className="w-4 h-4 text-blue-500 inline-block" /></span>}
+                            <span className="bg-gray-50 dark:bg-[#111] text-gray-500 dark:text-gray-400 border border-black/10 dark:border-white/10 font-black text-[10px] px-1.5 py-0.5 md:rounded-lg uppercase tracking-widest">{entry.mode}</span>
                           </div>
-                          <div className="text-[14px] text-[var(--color-body)] mt-1 flex items-center gap-2">
+                          <div className="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-2">
                             <span>{entry.overall ? `${entry.overall} rated` : 'Unknown rating'} · {entry.mode === 'gamble' ? 'Gamble' : 'Normal'}</span>
                             {entry.username && (
-                              <span className="text-[12px] font-mono text-[var(--color-primary)] opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-xs font-black text-blue-600 dark:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">
                                 @{entry.username}
                               </span>
                             )}
                           </div>
                        </td>
                        <td className="px-6 py-4 text-right">
-                          <div className={`font-medium flex items-center justify-end gap-1.5 ${entry.wins === 16 && entry.losses === 0 ? 'text-[#0070f3]' : 'text-[var(--color-ink)]'}`}>
-                            {entry.wins}-{entry.losses} {entry.wins === 16 && entry.losses === 0 && <Sparkles className="w-4 h-4 text-amber-400 inline-block ml-1 animate-pulse" />}
+                          <div className={`font-black uppercase tracking-widest flex items-center justify-end gap-1.5 ${entry.wins === 16 && entry.losses === 0 ? 'text-blue-600 dark:text-blue-500' : 'text-gray-900 dark:text-white'}`}>
+                            {entry.wins}-{entry.losses} {entry.wins === 16 && entry.losses === 0 && <Sparkles className="w-4 h-4 text-yellow-500 inline-block ml-1 animate-pulse" />}
                           </div>
-                          <div className="text-[12px] text-[var(--color-mute)] mt-1 uppercase font-mono">
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 uppercase font-bold tracking-widest">
                             {(() => {
                               const posStr = entry.position + (['st','nd','rd'][entry.position-1]||'th');
                               const finishStr = entry.finish || (entry.champion ? 'Champions' : posStr);
@@ -512,7 +511,7 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                             })()}
                           </div>
                        </td>
-                       <td className="px-6 py-4 text-right font-semibold text-[var(--color-ink)] text-[16px]">
+                       <td className="px-6 py-4 text-right font-black text-gray-900 dark:text-white text-base">
                           {entry.points}
                        </td>
                      </tr>
@@ -521,10 +520,10 @@ function LeaderboardScreen({ onBack }: { onBack: () => void }) {
                </tbody>
              </table>
              {!isExpanded && filteredLeaderboard.length > 5 && (
-               <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[var(--color-canvas)] via-[var(--color-canvas)]/80 to-transparent flex items-end justify-center pb-6 pointer-events-none">
+               <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white dark:from-[#1a1a1a] via-white/80 dark:via-[#1a1a1a]/80 to-transparent flex items-end justify-center pb-6 pointer-events-none">
                  <button 
                    onClick={() => setIsExpanded(true)}
-                   className="pointer-events-auto px-8 py-2.5 bg-[var(--color-ink)] text-[var(--color-canvas)] rounded-full text-sm font-bold shadow-lg hover:scale-105 transition-transform uppercase tracking-widest cursor-pointer"
+                   className="pointer-events-auto px-8 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-black md:rounded-lg text-sm font-black shadow-lg hover:scale-105 transition-transform uppercase tracking-widest cursor-pointer"
                  >
                    Show More
                  </button>
@@ -1069,8 +1068,8 @@ function GambleDraftScreen({
 
   if (draftState === 'init') {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-[var(--color-canvas-soft)]">
-        <div className="text-sm font-mono text-[var(--color-mute)] animate-pulse uppercase tracking-widest">
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 dark:bg-[#111] font-mono">
+        <div className="text-sm font-bold text-gray-500 dark:text-gray-400 animate-pulse uppercase tracking-widest">
           Generating Team...
         </div>
       </div>
@@ -1079,23 +1078,23 @@ function GambleDraftScreen({
 
   if (draftState === 'philosophy' && gambleResult) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center space-y-6 bg-[var(--color-canvas-soft)]">
-        <div className="text-[var(--color-mute)] font-mono text-xs uppercase tracking-widest">Selecting Philosophy...</div>
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center space-y-6 bg-gray-50 dark:bg-[#111] font-mono">
+        <div className="text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-widest">Selecting Philosophy...</div>
         <motion.div 
           initial={{ scale: 0.8, opacity: 0 }} 
           animate={{ scale: 1, opacity: 1 }} 
-          className="text-3xl font-semibold tracking-tight text-[var(--color-ink)] flex items-center gap-4"
+          className="text-3xl md:text-4xl font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-4"
         >
-          <span className="text-[var(--color-link)]">✓</span> {gambleResult.philosophy}
+          <span className="text-green-500">✓</span> {gambleResult.philosophy}
         </motion.div>
         {gambleResult.specialEvent !== 'NONE' && (
           <motion.div 
             initial={{ y: 20, opacity: 0 }} 
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-4 px-3 py-1.5 bg-[var(--color-canvas)] text-[var(--color-ink)] rounded-full text-xs font-mono border border-[var(--color-hairline)] [box-shadow:var(--shadow-vercel-2)]"
+            className="mt-4 px-4 py-2 bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border border-yellow-500/20 text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-sm"
           >
-            SPECIAL EVENT: {gambleResult.specialEvent}
+            <Zap size={14} /> SPECIAL EVENT: {gambleResult.specialEvent}
           </motion.div>
         )}
       </div>
@@ -1104,12 +1103,12 @@ function GambleDraftScreen({
 
   if (draftState === 'drafting' && gambleResult) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center pt-24 px-4 pb-24 bg-gradient-to-b from-[var(--color-canvas)] to-[var(--color-canvas-soft)] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[var(--color-primary)] opacity-5 rounded-full blur-3xl mix-blend-multiply" />
-           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 opacity-5 rounded-full blur-3xl mix-blend-multiply" />
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center pt-24 px-4 pb-24 bg-gray-50 dark:bg-[#111] relative overflow-hidden font-mono">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30 dark:opacity-10">
+           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500 rounded-full blur-3xl mix-blend-multiply" />
+           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500 rounded-full blur-3xl mix-blend-multiply" />
         </div>
-        <div className="text-[var(--color-mute)] font-mono text-xs uppercase tracking-widest mb-12 z-10 font-bold bg-[var(--color-canvas-soft-2)] px-4 py-2 rounded-full border border-[var(--color-hairline)] shadow-sm">Drafting Players...</div>
+        <div className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-widest mb-12 z-10 font-bold bg-white dark:bg-[#1a1a1a] px-4 py-2 border border-black/10 dark:border-white/10 shadow-sm">Drafting Players...</div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl z-10">
           <AnimatePresence>
             {revealedPlayers.map((p, i) => (
@@ -1118,19 +1117,19 @@ function GambleDraftScreen({
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-canvas)]/80 backdrop-blur-md border border-[var(--color-hairline)] shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] relative overflow-hidden group hover:border-[var(--color-primary)]/50 transition-colors"
+                className="flex items-center gap-4 p-4 bg-white/90 dark:bg-[#111]/90 backdrop-blur-md border border-black/10 dark:border-white/10 shadow-sm relative overflow-hidden group hover:border-yellow-500 transition-colors"
               >
-                {p.is_overseas && <div className="absolute top-0 right-0 w-8 h-8 bg-blue-500/10 rounded-bl-xl flex items-center justify-center text-[10px]">✈️</div>}
+                {p.is_overseas && <div className="absolute top-0 right-0 w-8 h-8 bg-blue-500/10 flex items-center justify-center text-[10px]">✈️</div>}
                 
-                <div className="w-12 h-12 flex items-center justify-center font-mono font-bold text-lg rounded-full bg-[var(--color-canvas-soft-2)] text-[var(--color-ink)] border-2 border-[var(--color-hairline)] shadow-inner">
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-lg bg-gray-50 dark:bg-[#1a1a1a] text-gray-900 dark:text-white border border-black/10 dark:border-white/10 shadow-inner">
                   {p.overall}
                 </div>
                 
                 <div className="flex flex-col flex-1 min-w-0 pr-6">
-                  <span className="font-bold text-base tracking-tight text-[var(--color-ink)] truncate group-hover:text-[var(--color-primary)] transition-colors">{p.name}</span>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className="text-[10px] text-[var(--color-mute)] font-mono font-bold uppercase bg-[var(--color-canvas-soft-2)] px-1.5 py-0.5 rounded">{p.role}</span>
-                    <span className="text-[10px] text-[var(--color-mute)] truncate">{p.team}</span>
+                  <span className="font-black uppercase tracking-widest text-sm text-gray-900 dark:text-white truncate group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">{p.name}</span>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest bg-gray-100 dark:bg-[#1a1a1a] px-1.5 py-0.5">{p.role}</span>
+                    <span className="text-[10px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest truncate">{p.team}</span>
                   </div>
                 </div>
               </motion.div>
@@ -1144,30 +1143,30 @@ function GambleDraftScreen({
   if (draftState === 'reveal' && gambleResult) {
     const strength = calcSquadStrength(gambleResult.squad);
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 py-12 bg-gradient-to-br from-[var(--color-canvas-soft)] to-[var(--color-canvas)]">
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 py-12 bg-gray-50 dark:bg-[#111] font-mono">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="w-full max-w-4xl bg-[var(--color-canvas)]/90 backdrop-blur-xl p-8 md:p-12 rounded-3xl border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.15)] relative overflow-hidden"
+          className="w-full max-w-4xl bg-white dark:bg-[#111] p-8 md:p-12 md:rounded-lg border border-black/10 dark:border-white/10 shadow-2xl relative overflow-hidden"
         >
           {/* Decorative background glow */}
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-yellow-500/5 rounded-full blur-[100px] pointer-events-none" />
           
           <div className="text-center mb-12 relative z-10">
             <motion.h1 
               initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-5xl font-black tracking-tighter text-[var(--color-ink)] mb-6 drop-shadow-sm"
+              className="text-4xl md:text-5xl font-black uppercase tracking-widest text-gray-900 dark:text-white mb-6 drop-shadow-sm"
             >
               Your Gamble Team
             </motion.h1>
-            <div className="inline-flex items-center gap-3 px-5 py-2 bg-[var(--color-canvas-soft)]/80 backdrop-blur border border-[var(--color-hairline)] text-[var(--color-ink)] rounded-full font-mono text-xs shadow-sm font-bold">
-              <span className="text-[var(--color-primary)]">TEAM TYPE</span> {gambleResult.philosophy}
+            <div className="inline-flex items-center gap-3 px-5 py-2 bg-gray-100 dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 text-gray-900 dark:text-white font-bold text-xs uppercase tracking-widest shadow-sm">
+              <span className="text-gray-500 dark:text-gray-400">TEAM TYPE</span> {gambleResult.philosophy}
             </div>
             {gambleResult.specialEvent !== 'NONE' && (
               <motion.div 
                 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
-                className="mt-6 text-[var(--color-warning)] font-mono text-sm font-bold uppercase tracking-widest flex items-center justify-center gap-2 bg-[var(--color-warning)]/10 py-2 px-4 rounded-lg inline-flex w-auto mx-auto border border-[var(--color-warning)]/20"
+                className="mt-6 text-yellow-600 dark:text-yellow-500 text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 bg-yellow-500/10 py-2 px-4 border border-yellow-500/20 w-auto mx-auto"
               >
                 <Zap size={16} /> {gambleResult.specialEvent} <Zap size={16} />
               </motion.div>
@@ -1175,58 +1174,58 @@ function GambleDraftScreen({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 relative z-10">
-            <div className="bg-[var(--color-canvas-soft-2)]/50 backdrop-blur p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex items-center gap-2 text-[var(--color-mute)] text-xs font-mono uppercase tracking-widest font-bold mb-4">
+            <div className="bg-gray-50 dark:bg-[#1a1a1a] p-6 border border-black/10 dark:border-white/10 md:rounded-lg shadow-sm">
+              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-widest font-bold mb-4">
                 <Target size={16} /> Projected Record
               </div>
-              <div className="text-5xl font-black tracking-tighter text-[var(--color-ink)]">{gambleResult.projectedRecord}</div>
+              <div className="text-5xl font-black uppercase tracking-widest text-gray-900 dark:text-white">{gambleResult.projectedRecord}</div>
             </div>
             
-            <div className="bg-[var(--color-canvas-soft-2)]/50 backdrop-blur p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm hover:shadow-md transition-shadow flex flex-col justify-center">
-              <div className="flex items-center gap-2 text-[var(--color-mute)] text-xs font-mono uppercase tracking-widest font-bold mb-4">
+            <div className="bg-gray-50 dark:bg-[#1a1a1a] p-6 border border-black/10 dark:border-white/10 md:rounded-lg shadow-sm flex flex-col justify-center">
+              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-widest font-bold mb-4">
                 <Trophy size={16} /> Team Strength
               </div>
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-[var(--color-body)] font-bold">Batting</span> 
-                  <span className="font-mono text-base font-bold bg-[var(--color-canvas)] px-3 py-1 rounded-lg border border-[var(--color-hairline)]">{strength.batting}</span>
+                  <span className="text-gray-900 dark:text-white font-bold uppercase tracking-widest">Batting</span> 
+                  <span className="font-bold text-base bg-white dark:bg-[#111] px-3 py-1 border border-black/10 dark:border-white/10 text-gray-900 dark:text-white">{strength.batting}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-[var(--color-body)] font-bold">Bowling</span> 
-                  <span className="font-mono text-base font-bold bg-[var(--color-canvas)] px-3 py-1 rounded-lg border border-[var(--color-hairline)]">{strength.bowling}</span>
+                  <span className="text-gray-900 dark:text-white font-bold uppercase tracking-widest">Bowling</span> 
+                  <span className="font-bold text-base bg-white dark:bg-[#111] px-3 py-1 border border-black/10 dark:border-white/10 text-gray-900 dark:text-white">{strength.bowling}</span>
                 </div>
-                <div className="flex justify-between items-center mt-3 pt-3 border-t border-[var(--color-hairline)]">
-                  <span className="text-[var(--color-ink)] font-black text-lg">Overall Rating</span> 
-                  <span className="font-mono font-black text-2xl text-[var(--color-primary)] drop-shadow-md">{strength.overall}</span>
+                <div className="flex justify-between items-center mt-3 pt-3 border-t border-black/10 dark:border-white/10">
+                  <span className="text-gray-900 dark:text-white font-black text-lg uppercase tracking-widest">Overall Rating</span> 
+                  <span className="font-black text-2xl text-yellow-500 dark:text-yellow-400 drop-shadow-md">{strength.overall}</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 relative z-10">
-            <div className="bg-[var(--color-success)]/5 p-6 rounded-2xl border border-[var(--color-success)]/20 shadow-inner">
-              <div className="text-[var(--color-success)] font-mono text-sm font-bold uppercase tracking-widest mb-5 flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-[var(--color-success)]/20 flex items-center justify-center">✓</div>
+            <div className="bg-blue-500/5 p-6 border border-blue-500/20 md:rounded-lg shadow-inner">
+              <div className="text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-5 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center">✓</div>
                 Strengths
               </div>
-              <ul className="text-[var(--color-ink)] text-sm space-y-3 font-medium">
+              <ul className="text-gray-900 dark:text-white text-sm space-y-3 font-bold">
                 {gambleResult.strengths.map((s, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-[var(--color-success)] mt-0.5">•</span> {s}
+                    <span className="text-blue-500 mt-0.5">•</span> {s}
                   </li>
                 ))}
               </ul>
             </div>
             
-            <div className="bg-[var(--color-error)]/5 p-6 rounded-2xl border border-[var(--color-error)]/20 shadow-inner">
-              <div className="text-[var(--color-error)] font-mono text-sm font-bold uppercase tracking-widest mb-5 flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-[var(--color-error)]/20 flex items-center justify-center">✗</div>
+            <div className="bg-red-500/5 p-6 border border-red-500/20 md:rounded-lg shadow-inner">
+              <div className="text-red-600 dark:text-red-400 text-xs font-bold uppercase tracking-widest mb-5 flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-red-500/10 flex items-center justify-center">✗</div>
                 Weaknesses
               </div>
-              <ul className="text-[var(--color-ink)] text-sm space-y-3 font-medium">
+              <ul className="text-gray-900 dark:text-white text-sm space-y-3 font-bold">
                 {gambleResult.weaknesses.map((w, i) => (
                   <li key={i} className="flex items-start gap-2">
-                    <span className="text-[var(--color-error)] mt-0.5">•</span> {w}
+                    <span className="text-red-500 mt-0.5">•</span> {w}
                   </li>
                 ))}
               </ul>
@@ -1237,12 +1236,11 @@ function GambleDraftScreen({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onComplete(gambleResult.squad)}
-            className="w-full relative overflow-hidden rounded-2xl p-[2px] z-10 group shadow-xl"
+            className="w-full relative overflow-hidden md:rounded-lg z-10 group shadow-xl bg-yellow-500 border border-yellow-500 hover:bg-yellow-400 hover:border-yellow-400 transition-colors"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 dark:from-[var(--color-primary)] dark:via-yellow-400 dark:to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
-            <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover:bg-transparent">
-               <span className="font-bold text-lg text-[var(--color-ink)] group-hover:text-black transition-colors tracking-tight">Accept Fate & Start Season</span>
-               <Play size={20} className="text-[var(--color-primary)] group-hover:text-black transition-colors" />
+            <div className="relative py-4 flex items-center justify-center gap-3">
+               <span className="font-black text-lg text-black uppercase tracking-widest">Accept Fate & Start Season</span>
+               <Play size={20} className="text-black" />
             </div>
           </motion.button>
         </motion.div>
@@ -1841,17 +1839,17 @@ function SquadCompleteScreen({
   const odds = calcOdds(strength.overall);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] p-4 md:p-8">
-      <div className="max-w-[1600px] w-full flex flex-col lg:flex-row gap-6 bg-[var(--color-canvas)]/60 backdrop-blur-3xl rounded-[2rem] border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] p-6 md:p-8 relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50 dark:bg-[#111] font-mono p-4 md:p-8">
+      <div className="max-w-[1600px] w-full flex flex-col lg:flex-row gap-6 bg-white dark:bg-[#1a1a1a] md:rounded-lg border border-black/10 dark:border-white/10 shadow-2xl p-6 md:p-8 relative overflow-hidden">
         
         {/* Subtle background effects */}
-        <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-yellow-500/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
         
         {/* Left: Wheel */}
         <div className="w-full lg:w-[380px] flex-shrink-0 flex flex-col gap-6 z-10">
-          <div className="flex items-center gap-3 bg-[var(--color-success)]/10 text-[var(--color-success)] px-4 py-2 rounded-full w-max border border-[var(--color-success)]/20 shadow-sm">
-            <span className="font-bold text-sm tracking-tight">Squad Complete</span>
-            <div className="w-5 h-5 rounded-full bg-[var(--color-success)] flex items-center justify-center text-[var(--color-canvas)] text-xs">✓</div>
+          <div className="flex items-center gap-3 bg-green-500/10 text-green-600 dark:text-green-500 px-4 py-2 w-max border border-green-500/20 shadow-sm">
+            <span className="font-bold text-sm uppercase tracking-widest">Squad Complete</span>
+            <div className="w-5 h-5 bg-green-500 flex items-center justify-center text-white text-xs">✓</div>
           </div>
           
           <WheelLayout 
@@ -1870,7 +1868,7 @@ function SquadCompleteScreen({
             />
           )}
           
-          <div className="bg-[var(--color-canvas)] p-5 rounded-2xl border border-[var(--color-hairline)] shadow-sm space-y-4">
+          <div className="bg-white dark:bg-[#111] p-5 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm space-y-4">
             {settings.showRatings === 'on' ? (
               <>
                 {[
@@ -1879,21 +1877,21 @@ function SquadCompleteScreen({
                 ].map(({ label, val, color }) => (
                   <div key={label}>
                     <div className="flex justify-between items-center text-xs mb-1.5 font-bold">
-                      <span className="text-[var(--color-mute)] uppercase tracking-wider">{label}</span>
-                      <span className="text-[var(--color-ink)]">{val}</span>
+                      <span className="text-gray-500 dark:text-gray-400 uppercase tracking-widest">{label}</span>
+                      <span className="text-gray-900 dark:text-white">{val}</span>
                     </div>
                     <ProgressBar value={val} color={color} />
                   </div>
                 ))}
-                <div className="flex justify-between items-center pt-3 mt-1 border-t border-[var(--color-hairline)]">
-                  <span className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-wider">Effective Overall</span>
-                  <span className="text-2xl font-black tracking-tight text-[var(--color-primary)]">{strength.overall}</span>
+                <div className="flex justify-between items-center pt-3 mt-1 border-t border-black/10 dark:border-white/10">
+                  <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Effective Overall</span>
+                  <span className="text-2xl font-black text-gray-900 dark:text-white">{strength.overall}</span>
                 </div>
               </>
             ) : (
               <div className="flex items-center justify-center text-center py-10 opacity-60">
-                <div className="text-xs font-mono font-bold text-[var(--color-mute)] uppercase tracking-widest flex items-center gap-2">
-                  <EyeOff className="w-4 h-4 text-[var(--color-mute)]" /> Ratings Hidden
+                <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                  <EyeOff className="w-4 h-4" /> Ratings Hidden
                 </div>
               </div>
             )}
@@ -1902,22 +1900,22 @@ function SquadCompleteScreen({
 
         {/* Middle: Player Form */}
         <div className="w-full lg:w-[440px] flex-shrink-0 flex flex-col z-10 h-[calc(100vh-10rem)] max-h-[850px]">
-          <div className="text-xl font-bold tracking-tight text-[var(--color-ink)] mb-4 flex items-center gap-2">
+          <div className="text-xl font-black tracking-widest uppercase text-gray-900 dark:text-white mb-4 flex items-center gap-2">
             Player Form
           </div>
           
           {selectedSlot !== null && squad[selectedSlot]?.player ? (
-            <div className="bg-[var(--color-canvas)] p-6 rounded-2xl flex flex-col gap-5 relative overflow-hidden shadow-lg border border-[var(--color-hairline)] mb-4">
+            <div className="bg-white dark:bg-[#111] p-6 md:rounded-lg flex flex-col gap-5 relative overflow-hidden shadow-lg border border-black/10 dark:border-white/10 mb-4">
                {squad[selectedSlot].player!.is_overseas && (
                  <div className="absolute inset-0 bg-blue-500/5 pointer-events-none" />
                )}
                <div className="flex justify-between items-start z-10">
                  <div className="flex flex-col gap-1">
-                   <div className="text-2xl font-bold tracking-tight text-[var(--color-ink)] flex items-center">
+                   <div className="text-2xl font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center">
                      {squad[selectedSlot].player!.name}
                      {squad[selectedSlot].player!.is_overseas && <span className="ml-2 text-sm" title="Overseas Player">✈️</span>}
                    </div>
-                   <div className="inline-flex items-center gap-2 bg-[var(--color-canvas-soft-2)] px-2.5 py-1 rounded-md text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest border border-[var(--color-hairline)] w-max">
+                   <div className="inline-flex items-center gap-2 bg-gray-50 dark:bg-[#1a1a1a] px-2.5 py-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest border border-black/10 dark:border-white/10 w-max">
                      {squad[selectedSlot].player!.team} • {squad[selectedSlot].player!.season}
                    </div>
                  </div>
@@ -1925,18 +1923,18 @@ function SquadCompleteScreen({
                </div>
                
                {playerForms && playerForms[squad[selectedSlot].player!.id] && (
-                 <div className="z-10 mt-1 pt-5 border-t border-[var(--color-hairline)]">
+                 <div className="z-10 mt-1 pt-5 border-t border-black/10 dark:border-white/10">
                    <PlayerFormInline form={playerForms[squad[selectedSlot].player!.id]} />
                  </div>
                )}
             </div>
           ) : (
-            <div className="bg-[var(--color-canvas)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-sm flex flex-col flex-1">
-              <div className="p-4 bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" />
-                <span className="text-xs font-bold tracking-widest uppercase text-[var(--color-mute)]">Pre-Season Form Report</span>
+            <div className="bg-white dark:bg-[#111] md:rounded-lg border border-black/10 dark:border-white/10 overflow-hidden shadow-sm flex flex-col flex-1">
+              <div className="p-4 bg-gray-50 dark:bg-[#1a1a1a] border-b border-black/10 dark:border-white/10 flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+                <span className="text-xs font-bold tracking-widest uppercase text-gray-500 dark:text-gray-400">Pre-Season Form Report</span>
               </div>
-              <div className="divide-y divide-[var(--color-hairline)] overflow-y-auto custom-scrollbar flex-1">
+              <div className="divide-y divide-black/10 dark:divide-white/10 overflow-y-auto custom-scrollbar flex-1">
                 {squad.filter(s => s.player).map((slot, idx) => {
                   const p = slot.player!;
                   const form = playerForms[p.id];
@@ -1946,16 +1944,16 @@ function SquadCompleteScreen({
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.03 }}
-                      className="px-5 py-4 hover:bg-[var(--color-canvas-soft-2)] transition-colors cursor-pointer"
+                      className="px-5 py-4 hover:bg-gray-50 dark:hover:bg-[#1a1a1a] transition-colors cursor-pointer"
                       onClick={() => setSelectedSlot(squad.indexOf(slot))}
                     >
                       <div className="flex items-start gap-4">
                         <RatingBadge rating={p.overall} size="sm" hidden={settings.showRatings === 'off'} />
                         <div className="flex-1 min-w-0 flex flex-col gap-1.5">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-[var(--color-ink)] truncate">{p.name}</span>
+                            <span className="text-sm font-black uppercase tracking-widest text-gray-900 dark:text-white truncate">{p.name}</span>
                             {p.is_overseas && <span className="text-[10px] text-blue-500">✈️</span>}
-                            <span className="text-[9px] bg-[var(--color-canvas)] px-1.5 py-0.5 rounded text-[var(--color-mute)] border border-[var(--color-hairline)] font-bold uppercase ml-auto shrink-0">{p.role}</span>
+                            <span className="text-[9px] bg-white dark:bg-[#111] px-1.5 py-0.5 text-gray-500 dark:text-gray-400 border border-black/10 dark:border-white/10 font-bold uppercase ml-auto shrink-0">{p.role}</span>
                           </div>
                           <PlayerFormInline form={form} compact />
                         </div>
@@ -1969,20 +1967,20 @@ function SquadCompleteScreen({
         </div>
 
         {/* Right side: Predictions panel */}
-        <div className="flex-1 flex flex-col z-10 min-w-[350px] lg:border-l lg:border-[var(--color-hairline)] lg:pl-8 h-[calc(100vh-10rem)] max-h-[850px]">
+        <div className="flex-1 flex flex-col z-10 min-w-[350px] lg:border-l lg:border-black/10 dark:lg:border-white/10 lg:pl-8 h-[calc(100vh-10rem)] max-h-[850px]">
           <div className="flex flex-col h-full overflow-y-auto custom-scrollbar pr-2">
-            <div className="text-2xl font-bold tracking-tight text-[var(--color-ink)] mb-2">Pre-Season Predictions</div>
-            <div className="text-[var(--color-mute)] text-sm mb-8 leading-relaxed font-medium">Here's what the bookies make of your XI. Simulate the season and chase the impossible.</div>
+            <div className="text-2xl font-black uppercase tracking-widest text-gray-900 dark:text-white mb-2">Pre-Season Predictions</div>
+            <div className="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed font-bold">Here's what the bookies make of your XI. Simulate the season and chase the impossible.</div>
 
-            <div className="bg-[var(--color-canvas)] p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm mb-6">
+            <div className="bg-white dark:bg-[#111] p-6 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm mb-6">
               <div className="flex justify-between items-end mb-8">
                 <div className="flex flex-col gap-1">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)]">Projected Finish</div>
-                  <div className="text-5xl font-black tracking-tighter text-[var(--color-ink)]">{odds.pos}<span className="text-2xl text-[var(--color-mute)]">{['st','nd','rd'][odds.pos-1]||'th'}</span></div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">Projected Finish</div>
+                  <div className="text-5xl font-black text-gray-900 dark:text-white">{odds.pos}<span className="text-2xl text-gray-500 dark:text-gray-400">{['st','nd','rd'][odds.pos-1]||'th'}</span></div>
                 </div>
                 <div className="text-right flex flex-col gap-1">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)]">Expected Pts</div>
-                  <div className="text-5xl font-black tracking-tighter text-[var(--color-primary)]">{odds.expectedPoints}</div>
+                  <div className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">Expected Pts</div>
+                  <div className="text-5xl font-black text-yellow-600 dark:text-yellow-500">{odds.expectedPoints}</div>
                 </div>
               </div>
               <div className="space-y-4">
@@ -1993,7 +1991,7 @@ function SquadCompleteScreen({
                 ].map(({ label, val, color }) => (
                   <div key={label}>
                     <div className="flex justify-between text-xs font-bold uppercase tracking-wider mb-2">
-                      <span className="text-[var(--color-mute)]">{label}</span>
+                      <span className="text-gray-500 dark:text-gray-400">{label}</span>
                       <span style={{ color }}>{val}%</span>
                     </div>
                     <ProgressBar value={val} color={color} />
@@ -2003,30 +2001,30 @@ function SquadCompleteScreen({
             </div>
 
             {settings.mode === 'franchise' && (
-              <div className="bg-[var(--color-canvas)] p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm mb-6 flex flex-col gap-4">
-                <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold">Franchise Control Mode</div>
+              <div className="bg-white dark:bg-[#111] p-6 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm mb-6 flex flex-col gap-4">
+                <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-bold">Franchise Control Mode</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <button
                     onClick={() => setLocalControl('ai')}
-                    className={`p-4 rounded-xl text-left transition-all border-2 flex flex-col h-full ${
+                    className={`p-4 md:rounded-lg text-left transition-all border-2 flex flex-col h-full ${
                       localControl === 'ai' 
                         ? 'bg-blue-500/10 border-blue-500' 
-                        : 'bg-[var(--color-canvas-soft)] border-[var(--color-hairline)] hover:border-blue-500/50'
+                        : 'bg-gray-50 dark:bg-[#1a1a1a] border-black/10 dark:border-white/10 hover:border-blue-500/50'
                     }`}
                   >
-                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><Bot className="w-4 h-4 text-indigo-500 shrink-0" /> AI Managed</div>
-                    <div className="text-[10px] text-[var(--color-mute)] font-medium leading-tight">Assistant sets the XI based on form and conditions.</div>
+                    <div className="font-black tracking-widest uppercase text-base text-gray-900 dark:text-white mb-1 flex items-center gap-2"><Bot className="w-4 h-4 text-blue-500 shrink-0" /> AI Managed</div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-bold leading-tight">Assistant sets the XI based on form and conditions.</div>
                   </button>
                   <button
                     onClick={() => setLocalControl('full')}
-                    className={`p-4 rounded-xl text-left transition-all border-2 flex flex-col h-full ${
+                    className={`p-4 md:rounded-lg text-left transition-all border-2 flex flex-col h-full ${
                       localControl === 'full' 
-                        ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]' 
-                        : 'bg-[var(--color-canvas-soft)] border-[var(--color-hairline)] hover:border-[var(--color-primary)]/50'
+                        ? 'bg-yellow-500/10 border-yellow-500' 
+                        : 'bg-gray-50 dark:bg-[#1a1a1a] border-black/10 dark:border-white/10 hover:border-yellow-500/50'
                     }`}
                   >
-                    <div className="font-bold tracking-tight text-base text-[var(--color-ink)] mb-1 flex items-center gap-2"><Crown className="w-4 h-4 text-amber-500 shrink-0" /> Full Control</div>
-                    <div className="text-[10px] text-[var(--color-mute)] font-medium leading-tight">Manage playing XI manually before every match.</div>
+                    <div className="font-black tracking-widest uppercase text-base text-gray-900 dark:text-white mb-1 flex items-center gap-2"><Crown className="w-4 h-4 text-yellow-500 shrink-0" /> Full Control</div>
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-bold leading-tight">Manage playing XI manually before every match.</div>
                   </button>
                 </div>
               </div>
@@ -2037,12 +2035,11 @@ function SquadCompleteScreen({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onSimulate(localControl)} 
-                className="flex-1 relative overflow-hidden rounded-2xl p-[2px] group shadow-lg"
+                className="flex-1 relative overflow-hidden md:rounded-lg group shadow-lg bg-yellow-500 hover:bg-yellow-400 border border-yellow-500 hover:border-yellow-400 transition-colors"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 dark:from-[var(--color-primary)] dark:via-yellow-400 dark:to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
-                <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover:bg-transparent h-full">
-                  <Play size={20} className="text-[var(--color-primary)] group-hover:text-black transition-colors" />
-                  <span className="font-bold text-lg text-[var(--color-ink)] group-hover:text-black transition-colors tracking-tight">SIMULATE SEASON</span>
+                <div className="relative py-4 flex items-center justify-center gap-3 h-full">
+                  <Play size={20} className="text-black" />
+                  <span className="font-black text-lg text-black uppercase tracking-widest">SIMULATE SEASON</span>
                 </div>
               </motion.button>
               
@@ -2050,7 +2047,7 @@ function SquadCompleteScreen({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onRestart} 
-                className="w-16 h-[64px] rounded-2xl bg-[var(--color-canvas-soft-2)] text-[var(--color-mute)] hover:text-red-500 hover:bg-red-500/10 transition-colors border border-[var(--color-hairline)] flex items-center justify-center shadow-sm"
+                className="w-16 h-[64px] md:rounded-lg bg-gray-50 dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-400 hover:text-red-500 hover:border-red-500 transition-colors border border-black/10 dark:border-white/10 flex items-center justify-center shadow-sm"
                 title="Restart Draft"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -2663,19 +2660,18 @@ function ResultsScreen({
   const [showShare, setShowShare] = useState(false);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden">
-      <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
-      <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-yellow-500 opacity-5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/4" />
+    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-gray-100 dark:bg-[#0a0a0a] relative overflow-x-hidden font-mono">
+      {/* Remove decorative background blur circles to stick to console UI */}
       
       <div className="max-w-[1400px] mx-auto relative z-10 space-y-6 md:space-y-8">
         
         {/* Header section w/ Actions */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <button onClick={onRestart} className="btn-secondary py-2 px-6 flex items-center gap-2">
+            <button onClick={onRestart} className="btn-secondary py-2 px-6 flex items-center gap-2 border border-black/10 dark:border-white/10 md:rounded-lg">
               <span>↻</span> Start New Season
             </button>
-            <button onClick={onViewLeaderboard} className="btn-secondary py-2 px-6">
+            <button onClick={onViewLeaderboard} className="btn-secondary py-2 px-6 border border-black/10 dark:border-white/10 md:rounded-lg">
               View Leaderboard
             </button>
           </div>
@@ -2685,40 +2681,37 @@ function ResultsScreen({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-center py-10 md:py-16 rounded-[2rem] border border-[var(--color-hairline)] shadow-2xl relative overflow-hidden ${
+          className={`text-center py-10 md:py-16 md:rounded-lg border shadow-xl relative overflow-hidden ${
             isChampion 
-              ? 'bg-gradient-to-br from-yellow-500/10 to-yellow-900/10 border-yellow-500/30' 
-              : 'bg-[var(--color-canvas)]/60 backdrop-blur-md'
+              ? 'bg-yellow-500/10 border-yellow-500/30' 
+              : 'bg-white dark:bg-[#1a1a1a] border-black/10 dark:border-white/10'
           }`}
         >
-          {isChampion && (
-            <div className="absolute inset-0 bg-yellow-500/5 mix-blend-overlay pointer-events-none" />
-          )}
           <div className="relative z-10">
             {isChampion ? (
               <>
                 <div className="flex justify-center mb-4 md:mb-6">
                   <Trophy className="w-20 h-20 text-yellow-500 animate-bounce drop-shadow-[0_0_25px_rgba(234,179,8,0.4)]" />
                 </div>
-                <div className="text-4xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-sm mb-3">
+                <div className="text-4xl md:text-6xl font-black tracking-widest uppercase text-yellow-500 drop-shadow-sm mb-3">
                   {totalLosses === 0 ? '16-0 ACHIEVED!' : 'CHAMPIONS!'}
                 </div>
-                <div className="text-[var(--color-mute)] text-lg md:text-xl font-medium tracking-tight">Your XI etched their name in history.</div>
+                <div className="text-gray-500 dark:text-gray-400 text-lg md:text-xl font-bold tracking-widest uppercase">Your XI etched their name in history.</div>
               </>
             ) : (
               <>
-                <div className="text-6xl font-black tracking-tighter text-[var(--color-ink)] mb-4">Season Over</div>
+                <div className="text-6xl font-black tracking-widest uppercase text-gray-900 dark:text-white mb-4">Season Over</div>
                 {finalPos > 4 ? (
-                  <div className="text-2xl font-bold text-red-500 uppercase tracking-widest bg-red-500/10 inline-block px-4 py-2 rounded-xl border border-red-500/20">
+                  <div className="text-2xl font-black text-red-500 uppercase tracking-widest bg-red-500/10 inline-block px-4 py-2 border border-red-500/20">
                     Finished {finalPos}<span className="text-xl">{['st','nd','rd'][finalPos-1]||'th'}</span>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2 mt-4">
-                    <div className="text-2xl md:text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-green-600">
+                    <div className="text-2xl md:text-3xl font-black tracking-widest uppercase text-green-500">
                       PLAYOFFS REACHED
                     </div>
                     {playoffSubText && (
-                      <div className="text-lg font-bold text-red-400 bg-red-400/10 px-4 py-1.5 rounded-lg border border-red-400/20 uppercase tracking-widest mt-2">
+                      <div className="text-lg font-black text-red-400 bg-red-400/10 px-4 py-1.5 border border-red-400/20 uppercase tracking-widest mt-2">
                         {playoffSubText}
                       </div>
                     )}
@@ -2726,21 +2719,20 @@ function ResultsScreen({
                 )}
               </>
             )}
-            
           </div>
         </motion.div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {[
-            { label: 'Final Position', val: finalPosText, color: '#f5c842' },
+            { label: 'Final Position', val: finalPosText, color: '#eab308' },
             { label: 'Projected Position', val: `${projectedPos}${['st','nd','rd'][projectedPos-1]||'th'}`, color: '#6b7280' },
             { label: 'Wins - Losses', val: `${totalWins} - ${totalLosses}`, color: '#22c55e' },
-            { label: 'Overall Rating', val: strength.overall, color: '#7c3aed' },
+            { label: 'Overall Rating', val: strength.overall, color: '#a855f7' },
           ].map(({ label, val, color }) => (
-            <div key={label} className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:border-[var(--color-primary)]/30 transition-colors">
-              <div className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-mute)]">{label}</div>
-              <div className="text-3xl md:text-4xl font-black tracking-tighter" style={{ color }}>{val}</div>
+            <div key={label} className="bg-white dark:bg-[#1a1a1a] p-6 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:bg-gray-50 dark:hover:bg-[#111] transition-colors">
+              <div className="text-[11px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">{label}</div>
+              <div className="text-3xl md:text-4xl font-black tracking-widest uppercase" style={{ color }}>{val}</div>
             </div>
           ))}
         </div>
@@ -2749,15 +2741,15 @@ function ResultsScreen({
           {/* Main Content Area */}
           <div className="xl:col-span-8 flex flex-col gap-6 md:gap-8">
             {/* Story */}
-            <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm">
-              <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold mb-6 flex items-center gap-3">
-                <span className="w-1.5 h-6 rounded-full bg-[var(--color-primary)]" />
+            <div className="bg-white dark:bg-[#1a1a1a] p-6 md:p-8 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm">
+              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black mb-6 flex items-center gap-3">
+                <span className="w-1.5 h-6 bg-gray-900 dark:bg-white" />
                 Season Story
               </div>
               <div className="space-y-5">
                 {story.map((item) => (
-                  <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 rounded-xl hover:bg-[var(--color-canvas-soft-2)] transition-colors border border-transparent hover:border-[var(--color-hairline)]">
-                    <div className="mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
+                  <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 hover:bg-gray-50 dark:hover:bg-[#111] transition-colors border border-transparent hover:border-black/10 dark:hover:border-white/10">
+                    <div className="mt-1 shrink-0 bg-gray-50 dark:bg-[#111] w-12 h-12 flex items-center justify-center border border-black/10 dark:border-white/10">
                       {item.type === 'news' ? (
                         <Newspaper className="w-5 h-5 text-blue-500" />
                       ) : item.type === 'expert' ? (
@@ -2765,15 +2757,15 @@ function ResultsScreen({
                       ) : item.type === 'player' ? (
                         <Swords className="w-5 h-5 text-emerald-500" />
                       ) : (
-                        <MessageSquare className="w-5 h-5 text-slate-500" />
+                        <MessageSquare className="w-5 h-5 text-gray-500" />
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2.5 mb-1.5">
-                        <span className="font-bold text-[var(--color-ink)]">{item.author}</span>
-                        <span className="text-[9px] text-[var(--color-mute)] uppercase tracking-widest font-bold border border-[var(--color-hairline)] px-2 py-0.5 rounded-full bg-[var(--color-canvas)] shadow-sm">{item.type}</span>
+                        <span className="font-black tracking-widest uppercase text-gray-900 dark:text-white">{item.author}</span>
+                        <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black border border-black/10 dark:border-white/10 px-2 py-0.5 bg-gray-50 dark:bg-[#111] shadow-sm">{item.type}</span>
                       </div>
-                      <div className="text-sm md:text-base text-[var(--color-mute)] leading-relaxed italic font-medium">"{item.text}"</div>
+                      <div className="text-sm md:text-base text-gray-500 dark:text-gray-400 italic font-bold">"{item.text}"</div>
                     </div>
                   </div>
                 ))}
@@ -2781,38 +2773,38 @@ function ResultsScreen({
             </div>
 
             {/* League Table */}
-            <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm">
-              <div className="p-5 font-bold text-[var(--color-ink)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex justify-between items-center text-sm tracking-tight">
+            <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg overflow-hidden border border-black/10 dark:border-white/10 shadow-sm">
+              <div className="p-5 font-black uppercase tracking-widest text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 flex justify-between items-center text-sm">
                 <span>Final League Table</span>
               </div>
               <div className="overflow-x-auto custom-scrollbar">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)]">
-                      <th className="py-4 pl-5 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] w-12">#</th>
-                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)]">Team</th>
-                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">P</th>
-                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">W</th>
-                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">L</th>
-                      <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-[var(--color-mute)] text-center">Pts</th>
+                    <tr className="bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10">
+                      <th className="py-4 pl-5 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 w-12">#</th>
+                      <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400">Team</th>
+                      <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">P</th>
+                      <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">W</th>
+                      <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">L</th>
+                      <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">Pts</th>
                     </tr>
                   </thead>
                   <tbody>
                     {teams.map((t, i) => (
-                      <tr key={t.short} className={`transition-colors border-b border-[var(--color-hairline)]/50 last:border-0 ${t.short === 'YOUR XI' ? 'bg-yellow-500/10' : 'hover:bg-[var(--color-canvas-soft-2)]'} ${i === 3 ? 'border-b-[var(--color-success)] border-b-2' : ''}`}>
-                        <td className="py-3 pl-5 text-[var(--color-mute)] font-mono font-bold text-sm">{i + 1}</td>
-                        <td className={`py-3 px-3 font-bold tracking-tight text-sm ${t.short === 'YOUR XI' ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                      <tr key={t.short} className={`transition-colors border-b border-black/10 dark:border-white/10 last:border-0 ${t.short === 'YOUR XI' ? 'bg-yellow-500/10' : 'hover:bg-gray-50 dark:hover:bg-[#111]'} ${i === 3 ? 'border-b-blue-500 border-b-2' : ''}`}>
+                        <td className="py-3 pl-5 text-gray-500 dark:text-gray-400 font-bold text-sm">{i + 1}</td>
+                        <td className={`py-3 px-3 font-black tracking-widest uppercase text-sm ${t.short === 'YOUR XI' ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                           <div className="flex items-center gap-3">
-                            <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: teamColor(t.short) }}>
-                              <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
+                            <div className="w-5 h-5 flex items-center justify-center shrink-0 shadow-sm" style={{ background: teamColor(t.short) }}>
+                              <span className="text-[9px] font-black text-white">{t.short.slice(0, 1)}</span>
                             </div>
                             {t.name}
                           </div>
                         </td>
-                        <td className="py-3 px-3 text-center text-[var(--color-mute)] font-mono font-medium">14</td>
-                        <td className="py-3 px-3 text-center text-[var(--color-success)] font-mono font-bold">{t.won}</td>
-                        <td className="py-3 px-3 text-center text-[var(--color-error)] font-mono font-bold">{t.lost}</td>
-                        <td className={`py-3 px-3 text-center font-black tracking-tight font-mono text-base ${t.short === 'YOUR XI' ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>{t.points}</td>
+                        <td className="py-3 px-3 text-center text-gray-500 dark:text-gray-400 font-bold">14</td>
+                        <td className="py-3 px-3 text-center text-blue-600 dark:text-blue-500 font-black">{t.won}</td>
+                        <td className="py-3 px-3 text-center text-red-600 dark:text-red-500 font-black">{t.lost}</td>
+                        <td className={`py-3 px-3 text-center font-black text-base ${t.short === 'YOUR XI' ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>{t.points}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -2822,8 +2814,8 @@ function ResultsScreen({
             
             {/* Playoff Bracket */}
             {playoffMatches && playoffMatches.length > 0 && (
-              <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm overflow-hidden">
-                <div className="text-xs text-[var(--color-mute)] uppercase tracking-[0.15em] mb-8 text-center font-bold">Playoffs Bracket</div>
+              <div className="bg-white dark:bg-[#1a1a1a] p-6 md:p-8 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm overflow-hidden">
+                <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8 text-center font-black">Playoffs Bracket</div>
                 <PlayoffBracket matches={playoffMatches} />
               </div>
             )}
@@ -2832,25 +2824,25 @@ function ResultsScreen({
           {/* Sidebar */}
           <div className="xl:col-span-4 flex flex-col gap-6 md:gap-8">
             {/* Awards */}
-            <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm flex flex-col">
-              <div className="p-5 font-bold text-[var(--color-ink)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight flex items-center gap-2">
+            <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg overflow-hidden border border-black/10 dark:border-white/10 shadow-sm flex flex-col">
+              <div className="p-5 font-black uppercase tracking-widest text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 text-sm flex items-center gap-2">
                 <span>Season Awards</span>
               </div>
               <div className="p-5 grid grid-cols-1 gap-4 flex-1">
                 {Object.entries(awards).map(([awardName, info]) => (
-                  <div key={awardName} className="bg-[var(--color-canvas-soft)] p-5 rounded-xl border border-[var(--color-hairline)] flex flex-col justify-center relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-colors">
+                  <div key={awardName} className="bg-gray-50 dark:bg-[#111] p-5 border border-black/10 dark:border-white/10 flex flex-col justify-center relative overflow-hidden group hover:border-black/30 dark:hover:border-white/30 transition-colors">
                     <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-[40px] pointer-events-none opacity-20 ${
                       awardName.includes('Orange') ? 'bg-orange-500' :
                       awardName.includes('Purple') ? 'bg-purple-500' :
                       awardName.includes('MVP') ? 'bg-yellow-500' : 'bg-blue-500'
                     }`} />
-                    <div className={`text-[10px] uppercase tracking-widest font-bold mb-1.5 z-10 ${
-                      awardName.includes('Orange') ? 'text-orange-400' :
-                      awardName.includes('Purple') ? 'text-purple-400' :
-                      awardName.includes('MVP') ? 'text-yellow-400' : 'text-blue-400'
+                    <div className={`text-[10px] uppercase tracking-widest font-black mb-1.5 z-10 ${
+                      awardName.includes('Orange') ? 'text-orange-600 dark:text-orange-500' :
+                      awardName.includes('Purple') ? 'text-purple-600 dark:text-purple-500' :
+                      awardName.includes('MVP') ? 'text-yellow-600 dark:text-yellow-500' : 'text-blue-600 dark:text-blue-500'
                     }`}>{awardName}</div>
-                    <div className="text-xl font-black tracking-tight text-[var(--color-ink)] z-10 truncate">{info.player}</div>
-                    <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest mt-1 z-10">{info.team}</div>
+                    <div className="text-xl font-black uppercase tracking-widest text-gray-900 dark:text-white z-10 truncate">{info.player}</div>
+                    <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-1 z-10">{info.team}</div>
                   </div>
                 ))}
               </div>
@@ -2867,64 +2859,64 @@ function ResultsScreen({
         {playerStats && <PlayerStatsTable squad={squad} stats={playerStats} playerForms={playerForms} />}
 
         {/* Season Fixtures */}
-        <div className="card mb-6 overflow-hidden">
+        <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg mb-6 overflow-hidden shadow-xl">
           <details className="group">
-            <summary className="p-4 cursor-pointer font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] flex justify-between items-center bg-[var(--color-canvas)] select-none">
-              <span className="text-sm uppercase tracking-wider">All Season Fixtures</span>
-              <span className="text-xl group-open:rotate-180 transition-transform text-[var(--color-mute)]">▾</span>
+            <summary className="p-4 cursor-pointer font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex justify-between items-center bg-gray-50 dark:bg-[#111] select-none">
+              <span className="text-sm">All Season Fixtures</span>
+              <span className="text-xl group-open:rotate-180 transition-transform">▾</span>
             </summary>
-            <div className="p-4 border-t border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] max-h-96 overflow-y-auto custom-scrollbar">
+            <div className="p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] max-h-96 overflow-y-auto custom-scrollbar">
               {matches && matches.map((m: MatchResult, i: number) => {
                 const isHomeWinner = m.winner === m.homeTeam;
                 const isAbandoned = m.rainEvent?.type === 'abandoned';
                 return (
-                  <details key={i} className="group border-b border-[var(--color-hairline)]/50 last:border-0">
-                    <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-white/5 transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
-                      <div className="w-8 text-[var(--color-mute)] font-mono text-xs pl-2">#{i + 1}</div>
+                  <details key={i} className="group border-b border-black/10 dark:border-white/10 last:border-0">
+                    <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#111] transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
+                      <div className="w-8 text-gray-500 dark:text-gray-400 font-bold text-xs pl-2">#{i + 1}</div>
                       <div className="flex-1 flex flex-col items-end gap-0.5 text-xs">
-                        <span className={`font-bold ${isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.homeTeam}</span>
-                        {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
+                        <span className={`font-black uppercase tracking-widest ${isHomeWinner && !isAbandoned ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>{m.homeTeam}</span>
+                        {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-yellow-600/60 dark:text-yellow-500/60 font-bold uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
                       </div>
-                      <div className="px-3 text-gray-600 font-bold tracking-widest text-[10px]">
+                      <div className="px-3 text-gray-500 dark:text-gray-400 font-black tracking-widest text-[10px]">
                         {m.rainEvent ? <CloudRain className="w-4 h-4 text-blue-500 mx-auto" /> : 'VS'}
                       </div>
                       <div className="flex-1 flex flex-col items-start gap-0.5 text-xs">
-                        <span className={`font-bold ${!isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.awayTeam}</span>
-                        {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
+                        <span className={`font-black uppercase tracking-widest ${!isHomeWinner && !isAbandoned ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>{m.awayTeam}</span>
+                        {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-yellow-600/60 dark:text-yellow-500/60 font-bold uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
                       </div>
                     </summary>
-                    <div className="p-4 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]/50">
+                    <div className="p-4 bg-gray-50 dark:bg-[#111] border-t border-black/10 dark:border-white/10">
                       {isAbandoned ? (
-                        <div className="flex items-center gap-3 justify-center py-2 bg-blue-950/30 rounded-lg border border-blue-800/30">
-                          <CloudRain className="w-8 h-8 text-blue-400 shrink-0" />
+                        <div className="flex items-center gap-3 justify-center py-2 bg-blue-900/10 border border-blue-900/30">
+                          <CloudRain className="w-8 h-8 text-blue-500 shrink-0" />
                           <div>
-                            <div className="text-blue-300 font-bold text-sm">Match Abandoned</div>
-                            <div className="text-blue-400/70 text-xs">No result — 1 point each</div>
+                            <div className="text-blue-500 font-black uppercase tracking-widest text-sm">Match Abandoned</div>
+                            <div className="text-blue-500/70 font-bold uppercase tracking-widest text-xs">No result — 1 point each</div>
                           </div>
                         </div>
                       ) : (
                         <>
-                          <div className="flex justify-between items-center mb-5 text-sm font-bold bg-[var(--color-canvas-soft-2)] p-3 rounded-lg border border-[var(--color-hairline)]">
-                            <div className="flex-1 text-right text-[var(--color-mute)]">{m.homeScore}</div>
-                            <div className="px-4 text-[var(--color-win)] text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center">
+                          <div className="flex justify-between items-center mb-5 text-sm font-black uppercase tracking-widest bg-white dark:bg-[#1a1a1a] p-3 border border-black/10 dark:border-white/10">
+                            <div className="flex-1 text-right text-gray-500 dark:text-gray-400">{m.homeScore}</div>
+                            <div className="px-4 text-blue-600 dark:text-blue-500 text-[10px] text-center">
                               <div>{m.winner} WON</div>
-                              <div className="text-[var(--color-mute)] mt-0.5">{m.margin}</div>
-                              {m.rainEvent && <div className="text-[var(--color-link)] mt-0.5 flex items-center justify-center gap-1"><CloudRain className="w-3.5 h-3.5 text-blue-400 inline" /> DLS</div>}
+                              <div className="text-gray-500 dark:text-gray-400 mt-0.5">{m.margin}</div>
+                              {m.rainEvent && <div className="text-blue-500 mt-0.5 flex items-center justify-center gap-1"><CloudRain className="w-3.5 h-3.5 inline" /> DLS</div>}
                             </div>
-                            <div className="flex-1 text-left text-[var(--color-mute)]">{m.awayScore}</div>
+                            <div className="flex-1 text-left text-gray-500 dark:text-gray-400">{m.awayScore}</div>
                           </div>
 
                            {m.destinyTriggered && (
                              <div className="mb-4 flex justify-center text-center">
-                               <span className="text-xs font-bold px-3 py-1 bg-[var(--color-gold)] text-[var(--color-on-primary)] rounded-full shadow-[0_0_15px_rgba(245,200,66,0.5)] flex items-center gap-1">
-                                 <Star className="w-3.5 h-3.5 text-white" /> THE UNTHINKABLE! Perfect Season Destiny Saved!
+                               <span className="text-xs font-black uppercase tracking-widest px-3 py-1 bg-yellow-500 text-black flex items-center gap-1">
+                                 <Star className="w-3.5 h-3.5 text-black" /> THE UNTHINKABLE! Perfect Season Destiny Saved!
                                </span>
                              </div>
                            )}
 
                            {m.clutchTriggered && (
                              <div className="mb-4 flex justify-center text-center">
-                               <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest flex items-center gap-1">
+                               <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 border border-red-500/50 text-red-500 bg-red-500/10 flex items-center gap-1">
                                  <Zap className="w-3 h-3 text-amber-500" /> {m.clutchTriggered} Delivers Under Pressure!
                                </span>
                              </div>
@@ -2932,26 +2924,26 @@ function ResultsScreen({
                            
                            {(m.momentumStateA || m.momentumStateB) && (
                              <div className="mb-4 flex flex-col gap-1 items-center">
-                               {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.homeTeam}: {m.momentumStateA}</span>}
-                               {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.awayTeam}: {m.momentumStateB}</span>}
+                               {m.momentumStateA && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/30 flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.homeTeam}: {m.momentumStateA}</span>}
+                               {m.momentumStateB && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/30 flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.awayTeam}: {m.momentumStateB}</span>}
                              </div>
                            )}
                           
                           {m.motm && (
-                            <div className="flex items-center gap-4 bg-[var(--color-canvas-soft)] p-3 rounded-xl border border-[var(--color-gold)]/30">
-                              <div className="w-12 h-12 bg-[var(--color-canvas)] border-2 border-[var(--color-gold)]/50 rounded-full flex items-center justify-center text-xl font-bold text-[var(--color-gold)] shadow-[0_0_15px_rgba(245,200,66,0.15)] shrink-0">
+                            <div className="flex items-center gap-4 bg-white dark:bg-[#1a1a1a] p-3 border border-yellow-500/30">
+                              <div className="w-12 h-12 bg-gray-50 dark:bg-[#111] border-2 border-yellow-500/50 flex items-center justify-center text-xl font-black text-yellow-600 dark:text-yellow-500 shrink-0">
                                 {initials(m.motm.player.name)}
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-[var(--color-gold)] font-semibold tracking-tight tracking-wide truncate">{m.motm.player.name}</span>
-                                  <span className="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-gold)]/20 text-[var(--color-gold)] px-1.5 py-0.5 rounded shrink-0">MotM</span>
+                                  <span className="text-yellow-600 dark:text-yellow-500 font-black uppercase tracking-widest truncate">{m.motm.player.name}</span>
+                                  <span className="text-[9px] uppercase tracking-widest font-black bg-yellow-500/20 text-yellow-600 dark:text-yellow-500 px-1.5 py-0.5 shrink-0">MotM</span>
                                 </div>
-                                <div className="text-[var(--color-mute)] text-sm font-semibold truncate">{m.motm.summary}</div>
+                                <div className="text-gray-500 dark:text-gray-400 text-sm font-bold truncate uppercase tracking-widest">{m.motm.summary}</div>
                               </div>
                               <div className="text-right shrink-0">
-                                <div className="text-[9px] uppercase tracking-widest text-[var(--color-mute)] mb-0.5">Rating</div>
-                                <div className="text-lg font-semibold tracking-tight text-[var(--color-ink)]">{m.motm.rating.toFixed(1)}</div>
+                                <div className="text-[9px] uppercase tracking-widest font-black text-gray-500 dark:text-gray-400 mb-0.5">Rating</div>
+                                <div className="text-lg font-black text-gray-900 dark:text-white">{m.motm.rating.toFixed(1)}</div>
                               </div>
                             </div>
                           )}
@@ -2967,12 +2959,12 @@ function ResultsScreen({
           </details>
         </div>
 
-        <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-6 rounded-2xl mb-6 shadow-xl relative overflow-hidden group">
-           <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 p-6 md:rounded-lg mb-6 shadow-xl relative overflow-hidden group">
+           <div className="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
            <div className="relative z-10 flex flex-col gap-4">
              <div>
-               <h3 className="text-xl font-semibold tracking-tight text-[var(--color-ink)] tracking-widest uppercase mb-1">Add this run to the leaderboard</h3>
-               <p className="text-sm font-medium text-[var(--color-mute)]">Your unique username will be automatically generated.</p>
+               <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-widest uppercase mb-1">Add this run to the leaderboard</h3>
+               <p className="text-sm font-bold text-gray-500 dark:text-gray-400">Your unique username will be automatically generated.</p>
              </div>
              
              {!submitted ? (
@@ -2982,19 +2974,19 @@ function ResultsScreen({
                      whileHover={{ scale: 1.02 }}
                      whileTap={{ scale: 0.97 }}
                      onClick={handleSubmitLeaderboard}
-                     className="w-full bg-[var(--color-primary)] hover:opacity-90 text-[var(--color-on-primary)] font-semibold tracking-tight uppercase tracking-widest px-8 py-3 rounded-xl transition-colors shadow-lg"
+                     className="w-full bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black font-black uppercase tracking-widest px-8 py-3 md:rounded-lg transition-colors shadow-lg"
                    >
                      Add to Leaderboard
                    </motion.button>
                  </div>
                  {submitError && (
-                   <div className="text-red-500 text-sm font-semibold tracking-wide bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
+                   <div className="text-red-500 text-sm font-black uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-4 py-2">
                      ⚠️ {submitError}
                    </div>
                  )}
                </div>
              ) : (
-               <div className="flex items-center gap-2 text-green-400 font-bold uppercase tracking-widest text-sm bg-green-500/10 p-4 rounded-xl border border-green-500/20">
+               <div className="flex items-center gap-2 text-green-600 dark:text-green-500 font-black uppercase tracking-widest text-sm bg-green-500/10 p-4 border border-green-500/20">
                  <span>✓</span> Submitted to Leaderboard
                </div>
              )}
@@ -3006,7 +2998,7 @@ function ResultsScreen({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={onRestart}
-            className="btn-primary flex-1 text-lg"
+            className="flex-1 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black font-black uppercase tracking-widest py-3 md:rounded-lg transition-colors shadow-lg text-lg"
           >
             ↺ Play Again — New Run
           </motion.button>
@@ -3014,7 +3006,7 @@ function ResultsScreen({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => setShowShare(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm border border-green-700 bg-green-600/15 text-green-400 hover:bg-green-600/25 transition-colors flex-shrink-0"
+            className="flex items-center gap-2 px-6 py-3 md:rounded-lg font-black uppercase tracking-widest text-sm border border-green-500/30 bg-green-500/10 text-green-600 dark:text-green-500 hover:bg-green-500/20 transition-colors flex-shrink-0"
           >
             <span>🔗</span> Share
           </motion.button>
@@ -3087,35 +3079,35 @@ function MatchCard({ match, delay, isFinal = false }: { match: PlayoffMatch, del
       initial={{ opacity: 0, scale: 0.9, y: 15 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={`absolute w-[220px] rounded-xl overflow-hidden backdrop-blur-md shadow-xl border ${isFinal ? 'border-[var(--color-gold)]/60 shadow-[0_0_25px_rgba(245,200,66,0.25)] bg-gradient-to-br from-[var(--color-warning-deep)]/30 to-[var(--color-canvas)]' : 'border-[var(--color-hairline)]/60 bg-[var(--color-canvas-soft-2)]/90 hover:bg-[var(--color-canvas)]'}`}
+      className={`absolute w-[220px] rounded-none overflow-hidden backdrop-blur-md shadow-xl border font-mono ${isFinal ? 'border-yellow-500 shadow-[0_0_25px_rgba(234,179,8,0.25)] bg-white dark:bg-[#111]' : 'border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] hover:bg-gray-50 dark:hover:bg-[#111]'}`}
     >
-      <div className={`text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center py-1.5 ${isFinal ? 'bg-gradient-to-r from-[var(--color-gold-dim)] to-[var(--color-gold)] text-black shadow-md' : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-b border-[var(--color-hairline)]'}`}>
+      <div className={`text-[10px] font-black tracking-widest uppercase text-center py-1.5 ${isFinal ? 'bg-yellow-500 text-black shadow-md' : 'bg-gray-50 dark:bg-[#111] text-gray-500 dark:text-gray-400 border-b border-black/10 dark:border-white/10'}`}>
         {match.name}
       </div>
       <div className="p-3">
         {/* Team 1 */}
         <div className="flex justify-between items-center mb-2">
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-5 rounded-full shadow-sm" style={{ background: teamColor(match.team1) }} />
-            <span className={`font-semibold tracking-tight text-sm ${t1Winner ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{match.team1}</span>
+            <div className="w-1.5 h-5 shadow-sm" style={{ background: teamColor(match.team1) }} />
+            <span className={`font-black uppercase tracking-widest text-xs ${t1Winner ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{match.team1}</span>
           </div>
-          <span className={`font-mono font-bold text-xs ${t1Winner ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{match.team1Score || '-'}</span>
+          <span className={`font-bold text-xs ${t1Winner ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{match.team1Score || '-'}</span>
         </div>
         {/* Team 2 */}
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-5 rounded-full shadow-sm" style={{ background: teamColor(match.team2) }} />
-            <span className={`font-semibold tracking-tight text-sm ${t2Winner ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{match.team2}</span>
+            <div className="w-1.5 h-5 shadow-sm" style={{ background: teamColor(match.team2) }} />
+            <span className={`font-black uppercase tracking-widest text-xs ${t2Winner ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{match.team2}</span>
           </div>
-          <span className={`font-mono font-bold text-xs ${t2Winner ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{match.team2Score || '-'}</span>
+          <span className={`font-bold text-xs ${t2Winner ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{match.team2Score || '-'}</span>
         </div>
         
         {/* Result & MOTM */}
-        <div className="border-t border-[var(--color-hairline)]/60 pt-2 flex flex-col gap-1.5">
-          <div className="text-[9px] font-semibold tracking-tight text-green-400 uppercase text-center tracking-wider">{match.result}</div>
+        <div className="border-t border-black/10 dark:border-white/10 pt-2 flex flex-col gap-1.5">
+          <div className="text-[9px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-500 text-center">{match.result}</div>
           {match.motm && (
-            <div className="text-[9px] text-[var(--color-mute)] font-medium text-center flex items-center justify-center gap-1 bg-[var(--color-canvas-soft)] py-1 rounded">
-              <span className="text-[var(--color-gold)] text-[10px]">⭐</span> {match.motm.player.name.split(' ').pop()} {match.motm.summary}
+            <div className="text-[9px] text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-center flex items-center justify-center gap-1 bg-gray-50 dark:bg-[#111] py-1">
+              <span className="text-yellow-600 dark:text-yellow-500 text-[10px]">⭐</span> {match.motm.player.name.split(' ').pop()} {match.motm.summary}
             </div>
           )}
         </div>
@@ -3134,7 +3126,7 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
   
   return (
     <div className="relative w-full overflow-x-auto custom-scrollbar">
-      <div className="relative min-w-[820px] h-[400px] my-4 bg-[var(--color-canvas-soft-2)] rounded-2xl border border-[var(--color-hairline)]/50 overflow-hidden">
+      <div className="relative min-w-[820px] h-[400px] my-4 bg-gray-50 dark:bg-[#111] md:rounded-lg border border-black/10 dark:border-white/10 overflow-hidden">
         
         {/* Background Decorative Elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -3144,12 +3136,12 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
         <svg className="absolute inset-0 pointer-events-none w-full h-full" style={{ zIndex: 0 }}>
           <defs>
             <linearGradient id="q1ToFinal" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="var(--color-hairline-strong)" />
-              <stop offset="100%" stopColor="var(--color-gold)" />
+              <stop offset="0%" className="text-gray-300 dark:text-gray-700" stopColor="currentColor" />
+              <stop offset="100%" className="text-yellow-500" stopColor="currentColor" />
             </linearGradient>
             <linearGradient id="q2ToFinal" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="var(--color-hairline-strong)" />
-              <stop offset="100%" stopColor="var(--color-gold)" />
+              <stop offset="0%" className="text-gray-300 dark:text-gray-700" stopColor="currentColor" />
+              <stop offset="100%" className="text-yellow-500" stopColor="currentColor" />
             </linearGradient>
           </defs>
 
@@ -3159,7 +3151,7 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 0.8 }}
             d="M 240 90 L 270 90 L 270 250 L 300 250" 
-            fill="none" stroke="var(--color-hairline-strong)" strokeWidth="2" strokeDasharray="4 4" 
+            fill="none" className="stroke-gray-300 dark:stroke-gray-700" strokeWidth="2" strokeDasharray="4 4" 
           />
           {/* Elim to Q2 (Winner) */}
           <motion.path 
@@ -3167,7 +3159,7 @@ function PlayoffBracket({ matches }: { matches: PlayoffMatch[] }) {
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 1.2 }}
             d="M 240 310 L 270 310 L 270 250" 
-            fill="none" stroke="var(--color-hairline-strong)" strokeWidth="2" 
+            fill="none" className="stroke-gray-300 dark:stroke-gray-700" strokeWidth="2" 
           />
           {/* Q2 to Final (Winner) */}
           <motion.path 
@@ -3224,40 +3216,40 @@ function PlayerStatsTable({ squad, stats, playerForms }: {
 }) {
   const players = squad.filter(s => s.player).map(s => s.player!);
   return (
-    <div className="card mb-6 overflow-hidden">
+    <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg border border-black/10 dark:border-white/10 shadow-xl mb-6 overflow-hidden font-mono">
       <details className="group">
-        <summary className="p-4 cursor-pointer font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] flex justify-between items-center bg-[var(--color-canvas)] select-none">
-          <span className="text-sm uppercase tracking-wider">Player Stats &amp; Form</span>
-          <span className="text-xl group-open:rotate-180 transition-transform text-[var(--color-mute)]">▾</span>
+        <summary className="p-4 cursor-pointer font-black text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex justify-between items-center bg-gray-50 dark:bg-[#111] select-none">
+          <span className="text-sm uppercase tracking-widest">Player Stats &amp; Form</span>
+          <span className="text-xl group-open:rotate-180 transition-transform">▾</span>
         </summary>
-        <div className="border-t border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)]">
-          <div className="divide-y divide-[var(--color-hairline)]">
+        <div className="border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a]">
+          <div className="divide-y divide-black/10 dark:divide-white/10">
             {players.map(p => {
               const st = stats[p.id];
               const form = playerForms?.[p.id];
               const isBatter = p.role === 'BAT' || p.role === 'WK' || p.role === 'BAT_AR';
               const isBowler = p.role === 'BOWL' || p.role === 'BOWL_AR';
               return (
-                <div key={p.id} className="px-4 py-3 hover:bg-[var(--color-canvas)] transition-colors">
+                <div key={p.id} className="px-4 py-3 hover:bg-gray-50 dark:hover:bg-[#111] transition-colors">
                   <div className="flex items-start gap-3">
                     {/* Stats summary */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-[9px] text-[var(--color-mute)] font-bold uppercase shrink-0">{p.role}</span>
-                        <span className="text-sm font-bold text-[var(--color-ink)] truncate">{p.name}</span>
+                        <span className="text-[9px] text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest shrink-0">{p.role}</span>
+                        <span className="text-sm font-black uppercase tracking-widest text-gray-900 dark:text-white truncate">{p.name}</span>
                       </div>
                       {/* Stat pills */}
                       <div className="flex flex-wrap gap-2 mb-1">
                         {(isBatter || p.role === 'AR' || p.role === 'BAT_AR' || p.role === 'BOWL_AR') && (
                           <>
-                            <span className="text-[10px] font-mono bg-[var(--color-gold)]/10 text-[var(--color-gold-dim)] px-2 py-0.5 rounded">{st.runs} runs</span>
-                            <span className="text-[10px] font-mono bg-[var(--color-canvas)] text-[var(--color-mute)] px-2 py-0.5 rounded">SR {st.strikeRate}</span>
+                            <span className="text-[10px] font-black bg-yellow-500 text-black px-2 py-0.5 uppercase tracking-widest">{st.runs} runs</span>
+                            <span className="text-[10px] font-bold bg-gray-100 dark:bg-[#222] text-gray-500 dark:text-gray-400 px-2 py-0.5 uppercase tracking-widest">SR {st.strikeRate}</span>
                           </>
                         )}
                         {(isBowler || p.role === 'AR' || p.role === 'BAT_AR' || p.role === 'BOWL_AR') && st.wickets > 0 && (
                           <>
-                            <span className="text-[10px] font-mono bg-[var(--color-win)]/10 text-[var(--color-win)] px-2 py-0.5 rounded">{st.wickets} wkts</span>
-                            {st.economy > 0 && <span className="text-[10px] font-mono bg-[var(--color-canvas)] text-[var(--color-mute)] px-2 py-0.5 rounded">Eco {st.economy}</span>}
+                            <span className="text-[10px] font-black bg-green-500 text-black px-2 py-0.5 uppercase tracking-widest">{st.wickets} wkts</span>
+                            {st.economy > 0 && <span className="text-[10px] font-bold bg-gray-100 dark:bg-[#222] text-gray-500 dark:text-gray-400 px-2 py-0.5 uppercase tracking-widest">Eco {st.economy}</span>}
                           </>
                         )}
                       </div>
@@ -3340,28 +3332,28 @@ function FullControlSeasonScreen({
 
   if (lastUserResult) {
     return (
-      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm">
-        <div className="card p-8 max-w-lg w-full flex flex-col items-center border-2 border-yellow-900/30 text-center shadow-2xl">
-          <div className="text-sm font-bold text-[var(--color-mute)] uppercase tracking-widest mb-2">Match {currentMatchIdx} Result</div>
-          <div className={`text-3xl font-semibold tracking-tight mb-6 ${lastUserResult.userWon ? 'text-green-400' : 'text-red-400'}`}>
+      <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm font-mono">
+        <div className="bg-white dark:bg-[#1a1a1a] p-8 max-w-lg w-full flex flex-col items-center border border-black/10 dark:border-white/10 md:rounded-lg text-center shadow-2xl">
+          <div className="text-sm font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2">Match {currentMatchIdx} Result</div>
+          <div className={`text-3xl font-black uppercase tracking-widest mb-6 ${lastUserResult.userWon ? 'text-green-600 dark:text-green-500' : 'text-red-600 dark:text-red-500'}`}>
             {lastUserResult.userWon ? 'VICTORY' : 'DEFEAT'}
           </div>
-          <div className="text-xl font-semibold tracking-tight text-[var(--color-ink)] mb-2">{lastUserResult.winner} won {lastUserResult.margin}</div>
-          <div className="flex gap-4 mb-6 w-full justify-center text-xl font-mono text-[var(--color-mute)] bg-[var(--color-canvas-soft-2)] p-4 rounded-xl border border-[var(--color-hairline)]">
+          <div className="text-xl font-black tracking-widest text-gray-900 dark:text-white uppercase mb-2">{lastUserResult.winner} won {lastUserResult.margin}</div>
+          <div className="flex gap-4 mb-6 w-full justify-center text-xl font-bold text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] p-4 border border-black/10 dark:border-white/10">
              <div className="flex-1 text-right">{lastUserResult.homeScore}</div>
-             <div className="text-gray-600 font-bold">VS</div>
+             <div className="text-gray-500 dark:text-gray-400 font-black">VS</div>
              <div className="flex-1 text-left">{lastUserResult.awayScore}</div>
           </div>
           {lastUserResult.motm && (
-             <div className="text-sm font-bold text-yellow-500 mb-8 flex items-center gap-2 bg-yellow-900/20 px-4 py-3 rounded-xl border border-yellow-900/50">
+             <div className="text-sm font-black text-yellow-600 dark:text-yellow-500 mb-8 flex items-center gap-2 bg-yellow-500/10 px-4 py-3 border border-yellow-500/30">
                 ⭐ {lastUserResult.motm.player.name} - {lastUserResult.motm.summary}
              </div>
           )}
           <button 
              onClick={() => setLastUserResult(null)}
-             className="btn-primary w-full py-4 text-lg"
+             className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-widest py-4 md:rounded-lg shadow-xl transition-colors"
           >
-             Continue Season
+             CONTINUE SEASON ▶
           </button>
         </div>
       </div>
@@ -3399,12 +3391,12 @@ function FullControlSeasonScreen({
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center font-mono">
       <div className="text-center">
-        <div className="text-[var(--color-mute)] font-bold text-xl mb-4 animate-pulse">
+        <div className="text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest text-xl mb-4 animate-pulse">
           Simulating around the league...
         </div>
-        <div className="text-xs text-gray-600 uppercase tracking-widest">
+        <div className="text-xs text-gray-900 dark:text-white uppercase tracking-widest font-black bg-white dark:bg-[#1a1a1a] inline-block px-4 py-2 border border-black/10 dark:border-white/10 md:rounded-lg">
           Match {currentMatchIdx + 1} of {total}
         </div>
       </div>
@@ -3419,9 +3411,9 @@ function LiveStatsPanel({ stats, isFinal }: { stats: Record<number, PlayerStats>
   const mvp = [...players].sort((a, b) => (b.mvpScore || 0) - (a.mvpScore || 0)).slice(0, 3);
 
   const THEMES = {
-    orange: { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/30" },
-    purple: { text: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/30" },
-    yellow: { text: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/30" }
+    orange: { text: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/30" },
+    purple: { text: "text-purple-500", bg: "bg-purple-500/10", border: "border-purple-500/30" },
+    yellow: { text: "text-yellow-600 dark:text-yellow-500", bg: "bg-yellow-500/10", border: "border-yellow-500/30" }
   };
 
   const StatRow = ({ title, icon, color, data, valKey }: any) => {
@@ -3430,22 +3422,22 @@ function LiveStatsPanel({ stats, isFinal }: { stats: Record<number, PlayerStats>
       <div className="mb-6 last:mb-0">
         <div className="flex items-center gap-2 mb-3">
           <span className={theme.text}>{icon}</span>
-          <h4 className={`text-sm font-semibold tracking-tight uppercase tracking-widest ${theme.text}`}>{title}</h4>
+          <h4 className={`text-sm font-black uppercase tracking-widest ${theme.text}`}>{title}</h4>
         </div>
         <div className="space-y-2">
           {data.map((p: any, i: number) => (
-            <div key={i} className={`flex items-center justify-between p-2 rounded-lg border ${p.isUserTeam ? `${theme.bg} ${theme.border}` : 'bg-[var(--color-canvas)] border-[var(--color-hairline)]'}`}>
+            <div key={i} className={`flex items-center justify-between p-2 border ${p.isUserTeam ? `${theme.bg} ${theme.border}` : 'bg-gray-50 dark:bg-[#111] border-black/10 dark:border-white/10'}`}>
               <div className="flex items-center gap-3">
-                <span className={`text-xs font-semibold tracking-tight ${i === 0 ? theme.text : 'text-[var(--color-mute)]'}`}>#{i + 1}</span>
+                <span className={`text-xs font-black tracking-widest ${i === 0 ? theme.text : 'text-gray-500 dark:text-gray-400'}`}>#{i + 1}</span>
                 <div>
-                  <div className={`text-xs font-bold text-[var(--color-ink)]`}>{p.name}</div>
-                  <div className="text-[9px] text-[var(--color-mute)] uppercase flex items-center gap-1 mt-0.5 font-bold">
+                  <div className={`text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white`}>{p.name}</div>
+                  <div className="text-[9px] text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-1 mt-0.5 font-bold">
                     {p.team}
-                    {p.isUserTeam && <span className="text-[var(--color-primary)] tracking-wider font-bold border border-[var(--color-primary)]/30 bg-[var(--color-primary)]/10 px-1 py-[1px] rounded leading-none text-[8px]">YOUR XI</span>}
+                    {p.isUserTeam && <span className="text-blue-600 dark:text-blue-500 tracking-widest font-black border border-blue-500/30 bg-blue-500/10 px-1 py-[1px] leading-none text-[8px]">YOUR XI</span>}
                   </div>
                 </div>
               </div>
-              <div className={`text-sm font-semibold tracking-tight ${theme.text}`}>{valKey === 'strikeRate' ? p[valKey].toFixed(1) : p[valKey]}</div>
+              <div className={`text-sm font-black font-mono ${theme.text}`}>{valKey === 'strikeRate' ? p[valKey].toFixed(1) : p[valKey]}</div>
             </div>
           ))}
         </div>
@@ -3454,8 +3446,8 @@ function LiveStatsPanel({ stats, isFinal }: { stats: Record<number, PlayerStats>
   };
 
   return (
-    <div className="card p-5 border border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] h-full overflow-y-auto custom-scrollbar shadow-sm">
-      <div className="text-xs text-[var(--color-mute)] font-bold uppercase tracking-widest mb-4 border-b border-[var(--color-hairline)] pb-3">
+    <div className="p-5 border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] h-full overflow-y-auto custom-scrollbar shadow-xl md:rounded-lg font-mono">
+      <div className="text-xs text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest mb-4 border-b border-black/10 dark:border-white/10 pb-3">
         {isFinal ? 'Final Season Leaders' : 'Live Tournament Leaders'}
       </div>
       {orangeCap.length > 0 ? (
@@ -3465,7 +3457,7 @@ function LiveStatsPanel({ stats, isFinal }: { stats: Record<number, PlayerStats>
           <StatRow title="Season MVP (Impact)" icon={<Star className="w-4 h-4" />} color="yellow" data={mvp} valKey="mvpScore" />
         </>
       ) : (
-        <div className="text-sm text-[var(--color-mute)] text-center py-8">Stats will appear after matches.</div>
+        <div className="text-sm text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-center py-8">Stats will appear after matches.</div>
       )}
     </div>
   );
@@ -3762,23 +3754,23 @@ function WatchModeScreen({
   const sortedLive = [...liveTeams].sort((a, b) => b.points - a.points || b.nrr - a.nrr);
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6">
+    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-6 font-mono">
       {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[var(--color-canvas)]/60 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)]">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gray-50 dark:bg-[#111] p-6 md:rounded-lg border border-black/10 dark:border-white/10 shadow-xl">
         <div>
-          <div className="text-xs text-[var(--color-primary)] uppercase tracking-widest font-bold flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse" /> Watch Mode
+          <div className="text-xs text-blue-600 dark:text-blue-500 uppercase tracking-widest font-black flex items-center gap-2">
+            <span className="w-2 h-2 rounded-none bg-blue-600 dark:bg-blue-500 animate-pulse" /> Watch Mode
           </div>
-          <div className="text-3xl font-black tracking-tighter text-[var(--color-ink)] mt-1">
-            Match <span className="text-yellow-400">{Math.min(currentMatchIdx, total)}</span>
-            <span className="text-[var(--color-mute)] text-xl font-medium tracking-tight"> / {total}</span>
+          <div className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white mt-1">
+            Match <span className="text-yellow-500">{Math.min(currentMatchIdx, total)}</span>
+            <span className="text-gray-500 dark:text-gray-400 text-xl font-bold tracking-widest"> / {total}</span>
           </div>
         </div>
         
         <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="w-full md:w-64 h-3 bg-[var(--color-canvas-soft-2)] rounded-full overflow-hidden border border-[var(--color-hairline)] shadow-inner">
+          <div className="w-full md:w-64 h-3 bg-gray-200 dark:bg-black overflow-hidden border border-black/10 dark:border-white/10">
             <motion.div
-              className="h-full bg-gradient-to-r from-yellow-500 to-[var(--color-primary)] rounded-full"
+              className="h-full bg-blue-600 dark:bg-blue-500"
               animate={{ width: `${(currentMatchIdx / total) * 100}%` }}
               transition={{ duration: 0.5 }}
             />
@@ -3788,10 +3780,10 @@ function WatchModeScreen({
             <>
               <button
                 onClick={() => setIsPaused(!isPaused)}
-                className={`flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-xl border transition-all shadow-sm shrink-0 ${
+                className={`flex items-center gap-2 text-xs font-black uppercase tracking-widest px-5 py-2.5 md:rounded-lg border transition-all shadow-sm shrink-0 ${
                   isPaused 
-                    ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/50 hover:bg-yellow-500/20' 
-                    : 'bg-[var(--color-canvas)] text-[var(--color-mute)] border-[var(--color-hairline)] hover:bg-[var(--color-canvas-soft-2)]'
+                    ? 'bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 border-yellow-500/50 hover:bg-yellow-500/20' 
+                    : 'bg-white dark:bg-[#1a1a1a] text-gray-500 dark:text-gray-400 border-black/10 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-black'
                 }`}
               >
                 {isPaused ? <><Play size={16} /> Resume</> : <><Pause size={16} /> Pause</>}
@@ -3802,7 +3794,7 @@ function WatchModeScreen({
                   if (timerRef.current) clearTimeout(timerRef.current);
                   onSkip();
                 }}
-                className="text-sm font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] border border-[var(--color-hairline)] hover:border-gray-500 px-5 py-2.5 rounded-xl transition-all bg-[var(--color-canvas)] shrink-0 shadow-sm"
+                className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-black/10 dark:border-white/10 hover:border-gray-500 px-5 py-2.5 md:rounded-lg transition-all bg-white dark:bg-[#1a1a1a] shrink-0 shadow-sm"
               >
                 ⏭ Skip to End
               </button>
@@ -3817,21 +3809,21 @@ function WatchModeScreen({
           {showSquadBuilder ? (
             <SimpleSquadBuilder squad={localSquad} onSubmit={handleSquadSubmit} settings={settings} />
           ) : isWaitingForUser ? (
-             <div className="card p-5 border-2 border-yellow-500/50 bg-yellow-900/10 shadow-2xl">
-               <div className="text-xs text-yellow-500 font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+             <div className="p-5 border-2 border-yellow-500/50 bg-yellow-500/10 shadow-2xl md:rounded-lg">
+               <div className="text-xs text-yellow-600 dark:text-yellow-500 font-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                 <div className="w-2 h-2 rounded-none bg-yellow-500 animate-pulse" />
                  Your Match is Next
                </div>
-               <div className="text-xl font-semibold tracking-tight text-[var(--color-ink)] mb-6 bg-black/40 p-4 rounded-xl border border-[var(--color-hairline)] text-center flex flex-col gap-2">
-                 <span className="text-yellow-400 tracking-widest">{myFranchise}</span>
-                 <span className="text-gray-600 text-xs font-bold">VS</span>
-                 <span className="text-[var(--color-mute)]">{liveTeams[fixtures[currentMatchIdx][0]].short === myFranchise ? liveTeams[fixtures[currentMatchIdx][1]].short : liveTeams[fixtures[currentMatchIdx][0]].short}</span>
+               <div className="text-xl font-black uppercase tracking-widest text-gray-900 dark:text-white mb-6 bg-white dark:bg-black p-4 md:rounded-lg border border-black/10 dark:border-white/10 text-center flex flex-col gap-2 shadow-inner">
+                 <span className="text-yellow-600 dark:text-yellow-500">{myFranchise}</span>
+                 <span className="text-gray-500 dark:text-gray-400 text-xs font-bold">VS</span>
+                 <span className="text-gray-900 dark:text-white">{liveTeams[fixtures[currentMatchIdx][0]].short === myFranchise ? liveTeams[fixtures[currentMatchIdx][1]].short : liveTeams[fixtures[currentMatchIdx][0]].short}</span>
                </div>
                <div className="flex flex-col gap-3">
-                 <button onClick={() => { setActionDoneForMatch(currentMatchIdx); setIsPaused(false); }} className="btn-primary py-3 text-sm">
+                 <button onClick={() => { setActionDoneForMatch(currentMatchIdx); setIsPaused(false); }} className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-widest py-3 md:rounded-lg shadow-xl transition-colors">
                    ▶ Continue with Same Team
                  </button>
-                 <button onClick={() => setShowSquadBuilder(true)} className="btn-secondary py-3 text-sm">
+                 <button onClick={() => setShowSquadBuilder(true)} className="w-full bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-black dark:hover:bg-gray-100 font-black text-xs uppercase tracking-widest py-3 md:rounded-lg shadow-xl transition-colors">
                    Make Changes
                  </button>
                </div>
@@ -3845,76 +3837,76 @@ function WatchModeScreen({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.35 }}
-                className={`card p-5 border-2 ${
+                className={`p-5 border-2 md:rounded-lg shadow-xl ${
                   currentResult.rainEvent?.type === 'abandoned'
-                    ? 'border-blue-700/60 bg-blue-950/20'
+                    ? 'border-blue-500/50 bg-blue-500/10'
                     : currentResult.rainEvent?.type === 'dls_reduced'
-                    ? 'border-teal-700/60 bg-teal-950/20'
+                    ? 'border-teal-500/50 bg-teal-500/10'
                     : currentResult.userWon
-                      ? 'border-green-600/60 bg-green-950/20'
-                      : 'border-red-600/60 bg-red-950/20'
+                      ? 'border-green-500/50 bg-green-500/10'
+                      : 'border-red-500/50 bg-red-500/10'
                 }`}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold">
+                  <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black">
                     Match #{currentMatchIdx} — {myFranchise}
                   </div>
                   <div className="flex gap-2">
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 ${currentResult.userWon ? 'bg-green-900/50 text-green-400' : 'bg-red-900/50 text-red-400'}`}>
-                      {currentResult.userWon ? <Check className="w-3 h-3 text-green-400" /> : <X className="w-3 h-3 text-red-400" />}
+                    <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 border flex items-center gap-1 ${currentResult.userWon ? 'bg-green-500/15 text-green-600 dark:text-green-500 border-green-500/20' : 'bg-red-500/15 text-red-600 dark:text-red-500 border-red-500/20'}`}>
+                      {currentResult.userWon ? <Check className="w-3 h-3 text-green-500" /> : <X className="w-3 h-3 text-red-500" />}
                       <span>{currentResult.userWon ? `${myFranchise} WON` : `${myFranchise} LOST`}</span>
                     </span>
                     {currentResult.rainEvent && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-900/50 text-blue-300 flex items-center gap-1">
-                        <CloudRain className="w-3 h-3 text-blue-300" />
+                      <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 border bg-blue-500/15 text-blue-600 dark:text-blue-500 border-blue-500/20 flex items-center gap-1">
+                        <CloudRain className="w-3 h-3 text-blue-500" />
                         <span>RAIN</span>
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-4 font-mono">
                   <div className="flex-1 text-right">
-                    <div className={`text-sm font-semibold tracking-tight ${currentResult.winner === currentResult.homeTeam ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>
+                    <div className={`text-sm font-black uppercase tracking-widest ${currentResult.winner === currentResult.homeTeam ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>
                       {currentResult.homeTeam}
                     </div>
-                    <div className="text-sm font-mono text-[var(--color-mute)] mt-1">{currentResult.homeScore}</div>
+                    <div className="text-sm font-bold text-gray-900 dark:text-white mt-1">{currentResult.homeScore}</div>
                   </div>
-                  <div className="text-gray-600 font-bold text-xs tracking-widest px-2">VS</div>
+                  <div className="text-gray-500 dark:text-gray-400 font-black text-xs tracking-widest px-2">VS</div>
                   <div className="flex-1">
-                    <div className={`text-sm font-semibold tracking-tight ${currentResult.winner === currentResult.awayTeam ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>
+                    <div className={`text-sm font-black uppercase tracking-widest ${currentResult.winner === currentResult.awayTeam ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>
                       {currentResult.awayTeam}
                     </div>
-                    <div className="text-sm font-mono text-[var(--color-mute)] mt-1">{currentResult.awayScore}</div>
+                    <div className="text-sm font-bold text-gray-900 dark:text-white mt-1">{currentResult.awayScore}</div>
                   </div>
                 </div>
 
                 {currentResult.rainEvent?.type !== 'abandoned' && (
-                  <div className="text-center text-sm font-bold text-green-400">
+                  <div className="text-center text-xs font-black uppercase tracking-widest text-green-600 dark:text-green-500">
                     {currentResult.winner} won {currentResult.margin}
                   </div>
                 )}
 
                 {currentResult.destinyTriggered && (
                   <div className="mt-3 flex justify-center text-center">
-                    <span className="text-xs font-bold px-3 py-1 bg-yellow-500 text-black rounded-full shadow-[0_0_15px_rgba(234,179,8,0.5)] flex items-center gap-1">
-                      <Star className="w-3.5 h-3.5 text-black" /> THE UNTHINKABLE! Perfect Season Destiny Saved!
+                    <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 bg-yellow-500 text-black shadow-xl flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 text-black" /> PERFECT SEASON DESTINY SAVED!
                     </span>
                   </div>
                 )}
 
                 {currentResult.clutchTriggered && (
                   <div className="mt-2 flex justify-center text-center">
-                    <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/50 text-red-400 rounded bg-red-950/50 uppercase tracking-widest flex items-center gap-1">
-                      <Zap className="w-3 h-3 text-amber-500" /> {currentResult.clutchTriggered} Delivers Under Pressure!
+                    <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 border border-red-500/50 text-red-600 dark:text-red-500 bg-red-500/10 flex items-center gap-1">
+                      <Zap className="w-3 h-3 text-red-500" /> {currentResult.clutchTriggered} DELIVERS UNDER PRESSURE!
                     </span>
                   </div>
                 )}
 
                 {(currentResult.momentumStateA || currentResult.momentumStateB) && (
                   <div className="mt-2 flex flex-col gap-1 items-center">
-                    {currentResult.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {currentResult.homeTeam}: {currentResult.momentumStateA}</span>}
-                    {currentResult.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-900/50 text-orange-400 rounded uppercase flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {currentResult.awayTeam}: {currentResult.momentumStateB}</span>}
+                    {currentResult.momentumStateA && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-orange-500/10 text-orange-600 dark:text-orange-500 border border-orange-500/20 flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {currentResult.homeTeam}: {currentResult.momentumStateA}</span>}
+                    {currentResult.momentumStateB && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-orange-500/10 text-orange-600 dark:text-orange-500 border border-orange-500/20 flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {currentResult.awayTeam}: {currentResult.momentumStateB}</span>}
                   </div>
                 )}
 
@@ -3926,18 +3918,18 @@ function WatchModeScreen({
 
                 {currentResult.motm && currentResult.rainEvent?.type !== 'abandoned' && (
                   <div className="mt-4 space-y-2">
-                    <div className="flex items-center gap-3 bg-yellow-900/10 border border-yellow-900/30 p-2.5 rounded-xl">
-                      <div className="w-9 h-9 bg-[var(--color-canvas)] border border-yellow-700/50 rounded-full flex items-center justify-center text-sm font-bold text-yellow-500 shrink-0">
+                    <div className="flex items-center gap-3 bg-yellow-500/5 border border-yellow-500/20 p-2.5">
+                      <div className="w-9 h-9 bg-white dark:bg-[#1a1a1a] border border-yellow-500/50 flex items-center justify-center text-xs font-black text-yellow-600 dark:text-yellow-500 shrink-0">
                         {initials(currentResult.motm.player.name)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="text-yellow-400 text-xs font-semibold tracking-tight truncate">{currentResult.motm.player.name}</div>
-                        <div className="text-[var(--color-mute)] text-[10px]">{currentResult.motm.summary}</div>
+                        <div className="text-yellow-600 dark:text-yellow-500 text-xs font-black uppercase tracking-widest truncate">{currentResult.motm.player.name}</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-[10px] font-bold tracking-widest uppercase">{currentResult.motm.summary}</div>
                         {liveForms[currentResult.motm.player.id] && (
                           <PlayerFormInline form={liveForms[currentResult.motm.player.id]} compact />
                         )}
                       </div>
-                      <div className="text-sm font-semibold tracking-tight text-[var(--color-ink)] shrink-0">{currentResult.motm.rating.toFixed(1)}</div>
+                      <div className="text-sm font-black text-gray-900 dark:text-white shrink-0">{currentResult.motm.rating.toFixed(1)}</div>
                     </div>
                   </div>
                 )}
@@ -3947,11 +3939,11 @@ function WatchModeScreen({
                 key={`sim-${currentMatchIdx}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="card p-5 border border-[var(--color-hairline)] flex items-center justify-between"
+                className="p-5 border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] md:rounded-lg shadow-xl flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse shrink-0" />
-                  <div className="text-xs text-[var(--color-mute)] font-bold uppercase tracking-widest">
+                  <div className="w-2 h-2 rounded-none bg-blue-500 animate-pulse shrink-0" />
+                  <div className="text-xs text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest">
                     {isPaused ? 'Simulation Paused' : 'Simulating other matches...'}
                   </div>
                 </div>
@@ -3961,26 +3953,26 @@ function WatchModeScreen({
           )}
 
           {completedMatches.length > 1 && (
-            <div className="card p-4">
-              <div className="text-[10px] font-mono text-[var(--color-mute)] uppercase tracking-widest font-bold mb-3">Recent Results</div>
-              <div className="space-y-1.5 max-h-[300px] overflow-y-auto custom-scrollbar">
+            <div className="p-4 border border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] md:rounded-lg shadow-xl">
+              <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black mb-3">Recent Results</div>
+              <div className="space-y-1.5 max-h-[300px] overflow-y-auto custom-scrollbar pr-1">
                 {[...completedMatches].reverse().slice(1, 10).map((m, i) => (
-                  <div key={i} className={`flex items-center justify-between text-xs px-3 py-1.5 rounded-lg ${m.isUserMatch ? 'bg-yellow-900/10 border border-yellow-900/20' : 'bg-[var(--color-canvas)]'}`}>
-                    <span className={`font-bold truncate max-w-[35%] ${m.winner === m.homeTeam ? 'text-gray-200' : 'text-[var(--color-mute)]'}`}>{m.homeTeam.split(' ').pop()}</span>
-                    <span className="text-gray-600 text-[9px] px-2 font-mono flex items-center justify-center gap-0.5">
+                  <div key={i} className={`flex items-center justify-between text-[10px] font-bold uppercase tracking-widest px-3 py-2 border ${m.isUserMatch ? 'bg-yellow-500/10 border-yellow-500/20' : 'bg-gray-50 dark:bg-[#111] border-black/10 dark:border-white/10'}`}>
+                    <span className={`truncate max-w-[35%] ${m.winner === m.homeTeam ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{m.homeTeam.split(' ').pop()}</span>
+                    <span className="text-gray-900 dark:text-white px-2 font-mono flex items-center justify-center gap-0.5">
                       {m.rainEvent?.type === 'abandoned' ? (
                         <>
-                          <CloudRain className="w-2.5 h-2.5 text-blue-400" />
+                          <CloudRain className="w-2.5 h-2.5 text-blue-500" />
                           <span>NR</span>
                         </>
                       ) : (
                         m.homeScore.split(' ')[0]
                       )}
                     </span>
-                    <span className="text-gray-600 text-[9px] px-2 font-mono">
+                    <span className="text-gray-900 dark:text-white px-2 font-mono">
                       {m.rainEvent?.type === 'abandoned' ? '' : m.awayScore.split(' ')[0]}
                     </span>
-                    <span className={`font-bold truncate max-w-[35%] text-right ${m.winner === m.awayTeam ? 'text-gray-200' : 'text-[var(--color-mute)]'}`}>{m.awayTeam.split(' ').pop()}</span>
+                    <span className={`truncate max-w-[35%] text-right ${m.winner === m.awayTeam ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{m.awayTeam.split(' ').pop()}</span>
                   </div>
                 ))}
               </div>
@@ -3989,21 +3981,21 @@ function WatchModeScreen({
         </div>
 
         {/* Middle: Live Table (Span 4) */}
-        <div className="lg:col-span-4 bg-[var(--color-canvas)] rounded-2xl border border-[var(--color-hairline)] overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] flex flex-col h-full">
-          <div className="p-5 font-bold text-[var(--color-ink)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight shrink-0 flex items-center justify-between">
+        <div className="lg:col-span-4 bg-white dark:bg-[#1a1a1a] md:rounded-lg border border-black/10 dark:border-white/10 overflow-hidden shadow-xl flex flex-col h-full font-mono">
+          <div className="p-5 font-black uppercase tracking-widest text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 text-sm shrink-0 flex items-center justify-between">
             <span>Live Standings</span>
-            <span className="text-[10px] uppercase font-mono tracking-widest text-[var(--color-mute)]">{total - currentMatchIdx} Matches Left</span>
+            <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400">{total - currentMatchIdx} Matches Left</span>
           </div>
           <div className="overflow-x-auto flex-1 custom-scrollbar">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)]">
-                  <th className="py-3 pl-4 text-[10px] font-bold text-[var(--color-mute)] uppercase tracking-widest">Team</th>
-                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">P</th>
-                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">W</th>
-                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">L</th>
-                  <th className="py-3 px-2 text-[10px] font-bold text-[var(--color-mute)] uppercase text-center tracking-widest">Pts</th>
-                  <th className="py-3 pr-4 text-[10px] font-bold text-[var(--color-mute)] uppercase text-right tracking-widest">NRR</th>
+                <tr className="bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10">
+                  <th className="py-3 pl-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Team</th>
+                  <th className="py-3 px-2 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase text-center tracking-widest">P</th>
+                  <th className="py-3 px-2 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase text-center tracking-widest">W</th>
+                  <th className="py-3 px-2 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase text-center tracking-widest">L</th>
+                  <th className="py-3 px-2 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase text-center tracking-widest">Pts</th>
+                  <th className="py-3 pr-4 text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase text-right tracking-widest">NRR</th>
                 </tr>
               </thead>
               <tbody>
@@ -4012,29 +4004,29 @@ function WatchModeScreen({
                   const isUser = t.short === 'YOUR XI';
                   return (
                     <tr key={t.short} className={`
-                      border-b border-[var(--color-hairline)]/50 transition-colors
-                      ${isUser ? 'bg-yellow-500/5 hover:bg-yellow-500/10' : 'hover:bg-[var(--color-canvas-soft-2)]'}
-                      ${isTop4 && !isUser ? 'bg-green-500/5 hover:bg-green-500/10' : ''}
-                      ${idx === 3 ? 'border-b-[var(--color-primary)] border-b-2' : ''}
+                      border-b border-black/10 dark:border-white/10 transition-colors
+                      ${isUser ? 'bg-yellow-500/10' : 'hover:bg-gray-50 dark:hover:bg-[#111]'}
+                      ${isTop4 && !isUser ? 'bg-green-500/5' : ''}
+                      ${idx === 3 ? 'border-b-blue-500 border-b-2' : ''}
                     `}>
                       <td className="py-2.5 pl-4">
                         <div className="flex items-center gap-3">
-                          <div className={`w-1 h-8 rounded-full ${isTop4 ? 'bg-[var(--color-success)]' : 'bg-transparent'}`} />
-                          <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: teamColor(t.short) }}>
-                            <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
+                          <div className={`w-1 h-8 ${isTop4 ? 'bg-green-500' : 'bg-transparent'}`} />
+                          <div className="w-5 h-5 flex items-center justify-center shrink-0" style={{ background: teamColor(t.short) }}>
+                            <span className="text-[9px] font-black text-white">{t.short.slice(0, 1)}</span>
                           </div>
-                          <span className={`text-sm font-bold tracking-tight ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                          <span className={`text-sm font-black uppercase tracking-widest ${isUser ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                             {t.short}
                           </span>
                         </div>
                       </td>
-                      <td className="py-2.5 px-2 text-center text-xs font-mono font-medium text-[var(--color-mute)]">{t.played}</td>
-                      <td className="py-2.5 px-2 text-center text-xs font-mono font-bold text-[var(--color-success)]">{t.won}</td>
-                      <td className="py-2.5 px-2 text-center text-xs font-mono font-bold text-[var(--color-error)]">{t.lost}</td>
-                      <td className={`py-2.5 px-2 text-center text-sm font-black tracking-tight font-mono ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                      <td className="py-2.5 px-2 text-center text-xs font-bold text-gray-500 dark:text-gray-400">{t.played}</td>
+                      <td className="py-2.5 px-2 text-center text-xs font-bold text-green-600 dark:text-green-500">{t.won}</td>
+                      <td className="py-2.5 px-2 text-center text-xs font-bold text-red-600 dark:text-red-500">{t.lost}</td>
+                      <td className={`py-2.5 px-2 text-center text-sm font-black ${isUser ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                         {t.points}
                       </td>
-                      <td className={`py-2.5 pr-4 text-right text-[11px] font-mono font-bold tracking-tighter ${t.nrr >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
+                      <td className={`py-2.5 pr-4 text-right text-[11px] font-bold ${t.nrr >= 0 ? 'text-blue-500' : 'text-red-500'}`}>
                         {t.nrr > 0 ? '+' : ''}{t.nrr.toFixed(3)}
                       </td>
                     </tr>
@@ -4223,38 +4215,38 @@ function PlayoffsWatchScreen({
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 max-w-[1600px] mx-auto flex flex-col gap-8 bg-gray-50 dark:bg-[#111] relative overflow-hidden font-mono text-gray-900 dark:text-white">
        {/* Background effect */}
-       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-[var(--color-primary)] opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-yellow-500 opacity-[0.03] rounded-full blur-[120px] pointer-events-none" />
        
        <div className="text-center mb-4 mt-6 z-10 relative">
-         <div className="text-4xl md:text-5xl font-black tracking-tighter text-[var(--color-ink)] drop-shadow-sm">
-           IPL <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-[var(--color-primary)]">PLAYOFFS</span>
+         <div className="text-4xl md:text-5xl font-black uppercase tracking-widest text-gray-900 dark:text-white drop-shadow-sm">
+           IPL <span className="text-yellow-600 dark:text-yellow-500">PLAYOFFS</span>
          </div>
-         <div className="text-sm md:text-base text-yellow-500 tracking-[0.2em] uppercase font-bold mt-2">The Road to the Trophy</div>
+         <div className="text-sm md:text-base text-yellow-600 dark:text-yellow-500 tracking-[0.2em] uppercase font-black mt-2">The Road to the Trophy</div>
        </div>
 
        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1 z-10">
          <div className="lg:col-span-3 flex flex-col gap-6">
-           <div className="bg-[var(--color-canvas)]/60 backdrop-blur-xl rounded-2xl overflow-hidden shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] border border-[var(--color-hairline)]">
-             <div className="p-4 bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-xs uppercase font-bold text-[var(--color-ink)] tracking-widest flex items-center justify-between">
+           <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg overflow-hidden shadow-xl border border-black/10 dark:border-white/10">
+             <div className="p-4 bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 text-xs uppercase font-black text-gray-900 dark:text-white tracking-widest flex items-center justify-between">
                <span>Final Standings</span>
-               <span className="text-[10px] text-[var(--color-mute)] bg-[var(--color-canvas)] px-2 py-0.5 rounded border border-[var(--color-hairline)]">TOP 4</span>
+               <span className="text-[10px] text-gray-500 dark:text-gray-400 bg-white dark:bg-black px-2 py-0.5 border border-black/10 dark:border-white/10 font-bold uppercase tracking-widest">TOP 4</span>
              </div>
              <table className="w-full text-left text-sm">
                <tbody>
                  {top4.map((t, i) => {
                    const isUser = t.short === 'YOUR XI';
                    return (
-                     <tr key={t.short} className={`border-b border-[var(--color-hairline)]/50 last:border-0 transition-colors ${isUser ? 'bg-yellow-500/10' : 'hover:bg-[var(--color-canvas-soft-2)]'}`}>
-                       <td className="p-4 w-12 text-center text-[var(--color-mute)] font-mono font-bold">{i+1}</td>
-                       <td className={`p-4 truncate font-bold tracking-tight ${isUser ? 'text-yellow-400' : 'text-[var(--color-ink)]'}`}>
+                     <tr key={t.short} className={`border-b border-black/10 dark:border-white/10 last:border-0 transition-colors ${isUser ? 'bg-yellow-500/10' : 'hover:bg-gray-50 dark:hover:bg-[#111]'}`}>
+                       <td className="p-4 w-12 text-center text-gray-500 dark:text-gray-400 font-bold">{i+1}</td>
+                       <td className={`p-4 truncate font-black tracking-widest uppercase ${isUser ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                          <div className="flex items-center gap-2">
-                           <div className="w-3 h-3 rounded-sm flex items-center justify-center shrink-0" style={{ background: teamColor(t.short) }} />
+                           <div className="w-3 h-3 flex items-center justify-center shrink-0" style={{ background: teamColor(t.short) }} />
                            {t.short}
                          </div>
                        </td>
-                       <td className={`p-4 text-right font-mono font-black ${isUser ? 'text-yellow-400' : 'text-[var(--color-mute)]'}`}>{t.points}</td>
+                       <td className={`p-4 text-right font-black ${isUser ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>{t.points}</td>
                      </tr>
                    );
                  })}
@@ -4263,18 +4255,18 @@ function PlayoffsWatchScreen({
            </div>
 
            {isFastForward && (
-             <div className="bg-red-500/10 backdrop-blur-md rounded-2xl p-6 border border-red-500/20 flex flex-col items-center justify-center text-center shadow-lg">
+             <div className="bg-red-500/10 md:rounded-lg p-6 border border-red-500/20 flex flex-col items-center justify-center text-center shadow-lg">
                <HeartCrack className="w-10 h-10 text-red-500 animate-bounce mb-3" />
-               <div className="text-lg font-black tracking-tight text-red-500 tracking-widest uppercase mb-2">Eliminated</div>
-               <div className="text-xs text-[var(--color-mute)] font-medium">Simulating remaining matches...</div>
+               <div className="text-lg font-black uppercase tracking-widest text-red-600 dark:text-red-500 mb-2">Eliminated</div>
+               <div className="text-xs text-red-500/70 font-bold uppercase tracking-widest">Simulating remaining matches...</div>
              </div>
            )}
          </div>
 
          <div className="lg:col-span-9 flex flex-col gap-6">
-            <div className="bg-[var(--color-canvas)]/60 backdrop-blur-xl rounded-2xl p-6 md:p-8 flex-shrink-0 shadow-[0_8px_32px_-8px_rgba(0,0,0,0.1)] border border-[var(--color-hairline)] relative overflow-hidden">
-               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-yellow-500 to-[var(--color-primary)] opacity-50" />
-               <div className="text-sm text-[var(--color-mute)] uppercase tracking-[0.15em] mb-8 text-center font-bold">Playoffs Bracket</div>
+            <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg p-6 md:p-8 flex-shrink-0 shadow-xl border border-black/10 dark:border-white/10 relative overflow-hidden">
+               <div className="absolute top-0 inset-x-0 h-1 bg-yellow-500 opacity-50" />
+               <div className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8 text-center font-black">Playoffs Bracket</div>
                <PlayoffBracket matches={[
                   matches[0] || { name: 'Qualifier 1', team1: top4[0].short, team2: top4[1].short, team1Score: '-', team2Score: '-', winner: '', result: 'Pending' },
                   matches[1] || { name: 'Eliminator', team1: top4[2].short, team2: top4[3].short, team1Score: '-', team2Score: '-', winner: '', result: 'Pending' },
@@ -4292,42 +4284,39 @@ function PlayoffsWatchScreen({
                     </motion.div>
                   ) : lastResult ? (
                     <motion.div key="result" initial={{ opacity: 0, scale: 0.9, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} className="w-full max-w-2xl relative group">
-                       <div className={`absolute -inset-1 rounded-[2rem] blur-xl opacity-30 group-hover:opacity-50 transition duration-1000 ${lastResult.userWon ? 'bg-green-500' : 'bg-red-500'}`} />
-                       <div className={`relative bg-[var(--color-canvas)] p-8 md:p-10 rounded-3xl border border-[var(--color-hairline)] shadow-2xl overflow-hidden`}>
-                         <div className={`absolute top-0 inset-x-0 h-2 ${lastResult.userWon ? 'bg-[var(--color-success)]' : 'bg-[var(--color-error)]'}`} />
+                       <div className={`absolute -inset-1 blur-xl opacity-30 group-hover:opacity-50 transition duration-1000 ${lastResult.userWon ? 'bg-green-500' : 'bg-red-500'}`} />
+                       <div className={`relative bg-white dark:bg-[#1a1a1a] p-8 md:p-10 md:rounded-lg border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden`}>
+                         <div className={`absolute top-0 inset-x-0 h-2 ${lastResult.userWon ? 'bg-green-500' : 'bg-red-500'}`} />
                          
-                         <div className="text-center text-sm font-bold text-[var(--color-mute)] uppercase tracking-widest mb-8">
+                         <div className="text-center text-sm font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8">
                            {currentMatchConfig?.name} Result
                          </div>
                          <div className="flex items-center gap-4 md:gap-8 mb-10">
                            <div className="flex-1 text-right flex flex-col items-end gap-1">
-                             <div className={`text-3xl md:text-4xl font-black tracking-tighter ${lastResult.winner === lastResult.homeTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{lastResult.homeTeam}</div>
-                             <div className="text-xl md:text-2xl font-mono font-bold text-[var(--color-mute)]">{lastResult.homeScore}</div>
+                             <div className={`text-3xl md:text-4xl font-black uppercase tracking-widest ${lastResult.winner === lastResult.homeTeam ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{lastResult.homeTeam}</div>
+                             <div className="text-xl md:text-2xl font-bold text-gray-500 dark:text-gray-400">{lastResult.homeScore}</div>
                            </div>
-                           <div className="text-[var(--color-mute)] font-black text-2xl md:text-3xl opacity-50">VS</div>
+                           <div className="text-gray-500 dark:text-gray-400 font-black text-2xl md:text-3xl opacity-50">VS</div>
                            <div className="flex-1 text-left flex flex-col items-start gap-1">
-                             <div className={`text-3xl md:text-4xl font-black tracking-tighter ${lastResult.winner === lastResult.awayTeam ? 'text-[var(--color-ink)]' : 'text-[var(--color-mute)]'}`}>{lastResult.awayTeam}</div>
-                             <div className="text-xl md:text-2xl font-mono font-bold text-[var(--color-mute)]">{lastResult.awayScore}</div>
+                             <div className={`text-3xl md:text-4xl font-black uppercase tracking-widest ${lastResult.winner === lastResult.awayTeam ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>{lastResult.awayTeam}</div>
+                             <div className="text-xl md:text-2xl font-bold text-gray-500 dark:text-gray-400">{lastResult.awayScore}</div>
                            </div>
                          </div>
-                         <div className="text-center font-black tracking-tight text-xl md:text-2xl text-[var(--color-primary)] mb-10">
+                         <div className="text-center font-black tracking-widest uppercase text-xl md:text-2xl text-blue-600 dark:text-blue-500 mb-10">
                            {lastResult.winner} won {lastResult.margin}
                          </div>
-                         <button onClick={() => { setLastResult(null); setStep(s => s + 1); }} className="w-full relative overflow-hidden rounded-2xl p-[2px] group/btn">
-                           <div className="absolute inset-0 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 dark:from-[var(--color-primary)] dark:via-yellow-400 dark:to-[var(--color-primary)] animate-shimmer bg-[length:200%_100%]" />
-                           <div className="relative bg-[var(--color-canvas)] py-4 rounded-[14px] flex items-center justify-center gap-3 transition-colors group-hover/btn:bg-transparent">
-                             <span className="font-bold text-lg text-[var(--color-ink)] group-hover/btn:text-black transition-colors tracking-widest uppercase">CONTINUE ▶</span>
-                           </div>
+                         <button onClick={() => { setLastResult(null); setStep(s => s + 1); }} className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black text-sm uppercase tracking-widest py-4 md:rounded-lg shadow-xl transition-colors">
+                           CONTINUE ▶
                          </button>
                        </div>
                     </motion.div>
                   ) : (
                     <motion.div key="simulating" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center gap-6 mt-12">
                        <div className="relative">
-                         <div className="w-16 h-16 rounded-full border-4 border-yellow-500/20" />
-                         <div className="absolute top-0 left-0 w-16 h-16 rounded-full border-4 border-t-yellow-500 animate-spin" />
+                         <div className="w-16 h-16 border-4 border-yellow-500/20" />
+                         <div className="absolute top-0 left-0 w-16 h-16 border-4 border-t-yellow-500 animate-spin" />
                        </div>
-                       <div className="text-sm font-mono uppercase tracking-[0.2em] font-bold text-[var(--color-mute)] bg-[var(--color-canvas-soft-2)] px-4 py-2 rounded-lg border border-[var(--color-hairline)] shadow-inner">
+                       <div className="text-sm uppercase tracking-widest font-black text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-[#111] px-4 py-2 border border-black/10 dark:border-white/10 shadow-inner">
                          Simulating {currentMatchConfig?.name || '...'}
                        </div>
                     </motion.div>
@@ -6185,23 +6174,20 @@ function MainAppContent() {
     };
 
     return (
-      <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-gradient-to-br from-[var(--color-canvas)] to-[var(--color-canvas-soft-2)] relative overflow-x-hidden text-[var(--text-primary)]">
-        <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-[var(--color-primary)] opacity-5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-yellow-500 opacity-5 rounded-full blur-[100px] pointer-events-none translate-y-1/2 -translate-x-1/4" />
-
-        <div className="max-w-[1400px] mx-auto relative z-10 space-y-6 md:space-y-8 font-sans">
+      <div className="min-h-[calc(100vh-4rem)] p-4 md:p-8 bg-gray-100 dark:bg-[#0a0a0a] relative overflow-x-hidden font-mono">
+        <div className="max-w-[1400px] mx-auto relative z-10 space-y-6 md:space-y-8">
           
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-center bg-[var(--color-canvas)]/60 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-xl gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1a1a1a] p-6 md:rounded-lg border border-black/10 dark:border-white/10 shadow-xl gap-4">
             <div>
-              <h1 className="text-3xl font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 flex items-center gap-2">
+              <h1 className="text-3xl font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-2">
                 🏆 Multiplayer Championship
               </h1>
-              <p className="text-[var(--color-mute)] text-sm">Final standings, awards, and playoff brackets</p>
+              <p className="text-gray-500 dark:text-gray-400 font-bold tracking-widest uppercase text-sm mt-1">Final standings, awards, and playoff brackets</p>
             </div>
             <button
               onClick={onExit}
-              className="flex items-center gap-2 px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white font-bold uppercase rounded-xl shadow-lg transition-all text-xs border-none cursor-pointer"
+              className="flex items-center gap-2 px-5 py-2.5 bg-red-500 text-white font-black uppercase tracking-widest md:rounded-lg shadow-lg transition-all text-xs border border-red-600 cursor-pointer"
             >
               <LogOut size={16} /> Exit Room
             </button>
@@ -6212,18 +6198,16 @@ function MainAppContent() {
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative overflow-hidden p-8 rounded-[2rem] border text-center shadow-2xl flex flex-col items-center justify-center gap-2"
-            style={{
-              background: `linear-gradient(135deg, ${championTeam.color}20, ${championTeam.color}40)`,
-              borderColor: championTeam.color,
-            }}
+            className={`relative overflow-hidden py-10 md:py-16 md:rounded-lg border shadow-2xl flex flex-col items-center justify-center gap-2 text-center ${
+              isChampion 
+                ? 'bg-yellow-500/10 border-yellow-500/30' 
+                : 'bg-white dark:bg-[#1a1a1a] border-black/10 dark:border-white/10'
+            }`}
           >
-            <div className="absolute inset-0 bg-white/5 mix-blend-overlay pointer-events-none" />
-            <span className="text-6xl animate-bounce">🏆</span>
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+            <div className="text-4xl md:text-5xl font-black uppercase tracking-widest text-yellow-500 drop-shadow-sm mb-3">
               {championTeam.name} ARE THE CHAMPIONS!
-            </h2>
-            <p className="text-yellow-400 font-bold uppercase tracking-widest text-xs">
+            </div>
+            <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-sm">
               Multiplayer League Tournament Trophy Winner
             </p>
           </motion.div>
@@ -6231,14 +6215,14 @@ function MainAppContent() {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
-              { label: 'Final Position', val: finalPosText, color: '#f5c842' },
+              { label: 'Final Position', val: finalPosText, color: '#eab308' },
               { label: 'Projected Position', val: `${projectedPos}${['st','nd','rd'][projectedPos-1]||'th'}`, color: '#6b7280' },
               { label: 'Wins - Losses', val: `${totalWins} - ${totalLosses}`, color: '#22c55e' },
-              { label: 'Overall Rating', val: strength.overall, color: '#7c3aed' },
+              { label: 'Overall Rating', val: strength.overall, color: '#a855f7' },
             ].map(({ label, val, color }) => (
-              <div key={label} className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 rounded-2xl border border-[var(--color-hairline)] shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:border-[var(--color-primary)]/30 transition-colors">
-                <div className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-mute)]">{label}</div>
-                <div className="text-3xl md:text-4xl font-black tracking-tighter" style={{ color }}>{val}</div>
+              <div key={label} className="bg-white dark:bg-[#1a1a1a] p-6 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm text-center flex flex-col items-center justify-center gap-2 hover:bg-gray-50 dark:hover:bg-[#111] transition-colors">
+                <div className="text-[11px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">{label}</div>
+                <div className="text-3xl md:text-4xl font-black tracking-widest uppercase" style={{ color }}>{val}</div>
               </div>
             ))}
           </div>
@@ -6248,15 +6232,15 @@ function MainAppContent() {
             <div className="xl:col-span-8 flex flex-col gap-6 md:gap-8">
               {/* Story */}
               {story && story.length > 0 && (
-                <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm">
-                  <div className="text-xs text-[var(--color-mute)] uppercase tracking-widest font-bold mb-6 flex items-center gap-3">
-                    <span className="w-1.5 h-6 rounded-full bg-[var(--color-primary)]" />
+                <div className="bg-white dark:bg-[#1a1a1a] p-6 md:p-8 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black mb-6 flex items-center gap-3">
+                    <span className="w-1.5 h-6 bg-gray-900 dark:bg-white" />
                     Season Story
                   </div>
                   <div className="space-y-5">
                     {story.map((item) => (
-                      <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 rounded-xl hover:bg-[var(--color-canvas-soft-2)] transition-colors border border-transparent hover:border-[var(--color-hairline)]">
-                        <div className="mt-1 shrink-0 bg-[var(--color-canvas)] w-12 h-12 flex items-center justify-center rounded-full shadow-sm border border-[var(--color-hairline)]">
+                      <div key={item.id} className="flex gap-4 md:gap-5 items-start p-4 hover:bg-gray-50 dark:hover:bg-[#111] transition-colors border border-transparent hover:border-black/10 dark:hover:border-white/10">
+                        <div className="mt-1 shrink-0 bg-gray-50 dark:bg-[#111] w-12 h-12 flex items-center justify-center border border-black/10 dark:border-white/10">
                           {item.type === 'news' ? (
                             <Newspaper className="w-5 h-5 text-blue-500" />
                           ) : item.type === 'expert' ? (
@@ -6264,15 +6248,15 @@ function MainAppContent() {
                           ) : item.type === 'player' ? (
                             <Swords className="w-5 h-5 text-emerald-500" />
                           ) : (
-                            <MessageSquare className="w-5 h-5 text-slate-500" />
+                            <MessageSquare className="w-5 h-5 text-gray-500" />
                           )}
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center gap-2.5 mb-1.5">
-                            <span className="font-bold text-[var(--text-primary)]">{item.author}</span>
-                            <span className="text-[9px] text-[var(--color-mute)] uppercase tracking-widest font-bold border border-[var(--color-hairline)] px-2 py-0.5 rounded-full bg-[var(--color-canvas)] shadow-sm">{item.type}</span>
+                            <span className="font-black tracking-widest uppercase text-gray-900 dark:text-white">{item.author}</span>
+                            <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black border border-black/10 dark:border-white/10 px-2 py-0.5 bg-gray-50 dark:bg-[#111] shadow-sm">{item.type}</span>
                           </div>
-                          <div className="text-sm md:text-base text-[var(--color-mute)] leading-relaxed italic font-medium">"{item.text}"</div>
+                          <div className="text-sm md:text-base text-gray-500 dark:text-gray-400 italic font-bold">"{item.text}"</div>
                         </div>
                       </div>
                     ))}
@@ -6281,21 +6265,21 @@ function MainAppContent() {
               )}
 
               {/* League Table */}
-              <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm">
-                <div className="p-5 font-bold text-[var(--text-primary)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] flex justify-between items-center text-sm tracking-tight">
+              <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg overflow-hidden border border-black/10 dark:border-white/10 shadow-sm">
+                <div className="p-5 font-black uppercase tracking-widest text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 flex justify-between items-center text-sm">
                   <span>Final League Standings</span>
                 </div>
                 <div className="overflow-x-auto custom-scrollbar">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="bg-[var(--color-canvas-soft)] border-b border-[var(--color-hairline)] text-[var(--color-mute)]">
-                        <th className="py-4 pl-5 font-bold uppercase tracking-widest text-[10px] w-12">#</th>
-                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px]">Team</th>
-                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">P</th>
-                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">W</th>
-                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">L</th>
-                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-center">Pts</th>
-                        <th className="py-4 px-3 font-bold uppercase tracking-widest text-[10px] text-right">NRR</th>
+                      <tr className="bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10">
+                        <th className="py-4 pl-5 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 w-12">#</th>
+                        <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400">Team</th>
+                        <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">P</th>
+                        <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">W</th>
+                        <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">L</th>
+                        <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-center">Pts</th>
+                        <th className="py-4 px-3 font-black uppercase tracking-widest text-[10px] text-gray-500 dark:text-gray-400 text-right">NRR</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -6305,26 +6289,26 @@ function MainAppContent() {
                         const isLocal = humanPlayer?.peerId === peerId;
 
                         return (
-                          <tr key={t.short} className={`transition-colors border-b border-[var(--color-hairline)]/50 last:border-0 ${humanPlayer ? 'bg-blue-500/5' : 'hover:bg-[var(--color-canvas-soft-2)]'} ${i === 3 ? 'border-b-[var(--color-success)] border-b-2' : ''}`}>
-                            <td className="py-3 pl-5 text-[var(--color-mute)] font-mono font-bold text-sm">{i + 1}</td>
-                            <td className="py-3 px-3 font-bold tracking-tight text-sm text-[var(--text-primary)]">
+                          <tr key={t.short} className={`transition-colors border-b border-black/10 dark:border-white/10 last:border-0 ${humanPlayer ? (isLocal ? 'bg-yellow-500/10' : 'bg-blue-500/5') : 'hover:bg-gray-50 dark:hover:bg-[#111]'} ${i === 3 ? 'border-b-blue-500 border-b-2' : ''}`}>
+                            <td className="py-3 pl-5 text-gray-500 dark:text-gray-400 font-bold text-sm">{i + 1}</td>
+                            <td className={`py-3 px-3 font-black tracking-widest uppercase text-sm ${isLocal ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>
                               <div className="flex items-center gap-3">
-                                <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 shadow-sm" style={{ background: matchedFranchise?.color || '#555' }}>
-                                  <span className="text-[9px] font-bold tracking-tight text-white">{t.short.slice(0, 1)}</span>
+                                <div className="w-5 h-5 flex items-center justify-center shrink-0 shadow-sm" style={{ background: matchedFranchise?.color || '#555' }}>
+                                  <span className="text-[9px] font-black text-white">{t.short.slice(0, 1)}</span>
                                 </div>
                                 <span>{t.name}</span>
                                 {humanPlayer && (
-                                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 uppercase font-black tracking-wider flex items-center gap-1">
+                                  <span className={`text-[9px] px-1.5 py-0.5 border uppercase font-black tracking-widest flex items-center gap-1 ${isLocal ? 'bg-yellow-500/20 text-yellow-600 dark:text-yellow-500 border-yellow-500/30' : 'bg-blue-500/20 text-blue-600 dark:text-blue-500 border-blue-500/30'}`}>
                                     👤 {humanPlayer.name} {isLocal ? '(You)' : ''}
                                   </span>
                                 )}
                               </div>
                             </td>
-                            <td className="py-3 px-3 text-center text-[var(--color-mute)] font-mono font-medium">{t.played || 14}</td>
-                            <td className="py-3 px-3 text-center text-[var(--color-success)] font-mono font-bold">{t.won}</td>
-                            <td className="py-3 px-3 text-center text-[var(--color-error)] font-mono font-bold">{t.lost}</td>
-                            <td className={`py-3 px-3 text-center font-black tracking-tight font-mono text-base ${isLocal ? 'text-yellow-500' : 'text-[var(--text-primary)]'}`}>{t.points}</td>
-                            <td className={`py-3 px-3 text-right font-mono font-semibold text-sm ${t.nrr >= 0 ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
+                            <td className="py-3 px-3 text-center text-gray-500 dark:text-gray-400 font-bold">{t.played || 14}</td>
+                            <td className="py-3 px-3 text-center text-blue-600 dark:text-blue-500 font-black">{t.won}</td>
+                            <td className="py-3 px-3 text-center text-red-600 dark:text-red-500 font-black">{t.lost}</td>
+                            <td className={`py-3 px-3 text-center font-black text-base ${isLocal ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-900 dark:text-white'}`}>{t.points}</td>
+                            <td className={`py-3 px-3 text-right font-black text-sm ${t.nrr >= 0 ? 'text-green-600 dark:text-green-500' : 'text-red-600 dark:text-red-500'}`}>
                               {t.nrr >= 0 ? `+${t.nrr.toFixed(3)}` : t.nrr.toFixed(3)}
                             </td>
                           </tr>
@@ -6337,8 +6321,8 @@ function MainAppContent() {
               
               {/* Playoff Bracket */}
               {playoffMatches && playoffMatches.length > 0 && (
-                <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-[var(--color-hairline)] shadow-sm overflow-hidden">
-                  <div className="text-xs text-[var(--color-mute)] uppercase tracking-[0.15em] mb-8 text-center font-bold">Playoffs Bracket</div>
+                <div className="bg-white dark:bg-[#1a1a1a] p-6 md:p-8 md:rounded-lg border border-black/10 dark:border-white/10 shadow-sm overflow-hidden">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-8 text-center font-black">Playoffs Bracket</div>
                   <PlayoffBracket matches={playoffMatches} />
                 </div>
               )}
@@ -6347,27 +6331,27 @@ function MainAppContent() {
             {/* Sidebar */}
             <div className="xl:col-span-4 flex flex-col gap-6 md:gap-8">
               {/* Awards */}
-              <div className="bg-[var(--color-canvas)]/80 backdrop-blur-md rounded-2xl overflow-hidden border border-[var(--color-hairline)] shadow-sm flex flex-col">
-                <div className="p-5 font-bold text-[var(--text-primary)] bg-[var(--color-canvas-soft-2)] border-b border-[var(--color-hairline)] text-sm tracking-tight flex items-center gap-2">
+              <div className="bg-white dark:bg-[#1a1a1a] md:rounded-lg overflow-hidden border border-black/10 dark:border-white/10 shadow-sm flex flex-col">
+                <div className="p-5 font-black uppercase tracking-widest text-gray-900 dark:text-white bg-gray-50 dark:bg-[#111] border-b border-black/10 dark:border-white/10 text-sm flex items-center gap-2">
                   <span>Season Awards</span>
                 </div>
                 <div className="p-5 grid grid-cols-1 gap-4 flex-1">
                   {Object.entries(awards).map(([awardName, info]) => {
                     const typedInfo = info as { player: string; team: string };
                     return (
-                      <div key={awardName} className="bg-[var(--color-canvas-soft)] p-5 rounded-xl border border-[var(--color-hairline)] flex flex-col justify-center relative overflow-hidden group hover:border-[var(--color-primary)]/30 transition-colors">
+                      <div key={awardName} className="bg-gray-50 dark:bg-[#111] p-5 border border-black/10 dark:border-white/10 flex flex-col justify-center relative overflow-hidden group hover:border-black/30 dark:hover:border-white/30 transition-colors">
                         <div className={`absolute top-0 right-0 w-24 h-24 rounded-full blur-[40px] pointer-events-none opacity-20 ${
                           awardName.includes('Orange') ? 'bg-orange-500' :
                           awardName.includes('Purple') ? 'bg-purple-500' :
                           awardName.includes('MVP') ? 'bg-yellow-500' : 'bg-blue-500'
                         }`} />
-                        <div className={`text-[10px] uppercase tracking-widest font-bold mb-1.5 z-10 ${
-                          awardName.includes('Orange') ? 'text-orange-400' :
-                          awardName.includes('Purple') ? 'text-purple-400' :
-                          awardName.includes('MVP') ? 'text-yellow-400' : 'text-blue-400'
+                        <div className={`text-[10px] uppercase tracking-widest font-black mb-1.5 z-10 ${
+                          awardName.includes('Orange') ? 'text-orange-600 dark:text-orange-500' :
+                          awardName.includes('Purple') ? 'text-purple-600 dark:text-purple-500' :
+                          awardName.includes('MVP') ? 'text-yellow-600 dark:text-yellow-500' : 'text-blue-600 dark:text-blue-500'
                         }`}>{awardName}</div>
-                        <div className="text-xl font-black tracking-tight text-[var(--text-primary)] z-10 truncate">{typedInfo.player}</div>
-                        <div className="text-xs font-bold text-[var(--color-mute)] uppercase tracking-widest mt-1 z-10">{typedInfo.team}</div>
+                        <div className="text-xl font-black uppercase tracking-widest text-gray-900 dark:text-white z-10 truncate">{typedInfo.player}</div>
+                        <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mt-1 z-10">{typedInfo.team}</div>
                       </div>
                     );
                   })}
@@ -6389,91 +6373,91 @@ function MainAppContent() {
           )}
 
           {/* Season Fixtures */}
-          <div className="card mb-6 overflow-hidden">
+          <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg mb-6 overflow-hidden shadow-xl">
             <details className="group">
-              <summary className="p-4 cursor-pointer font-bold text-[var(--color-mute)] hover:text-[var(--text-primary)] flex justify-between items-center bg-[var(--color-canvas)] select-none">
-                <span className="text-sm uppercase tracking-wider">All Season Fixtures</span>
-                <span className="text-xl group-open:rotate-180 transition-transform text-[var(--color-mute)]">▾</span>
+              <summary className="p-4 cursor-pointer font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white flex justify-between items-center bg-gray-50 dark:bg-[#111] select-none">
+                <span className="text-sm">All Season Fixtures</span>
+                <span className="text-xl group-open:rotate-180 transition-transform">▾</span>
               </summary>
-              <div className="p-4 border-t border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] max-h-96 overflow-y-auto custom-scrollbar">
+              <div className="p-4 border-t border-black/10 dark:border-white/10 bg-white dark:bg-[#1a1a1a] max-h-96 overflow-y-auto custom-scrollbar">
                 {matches && matches.map((m: MatchResult, i: number) => {
                   const isHomeWinner = m.winner === m.homeTeam;
                   const isAbandoned = m.rainEvent?.type === 'abandoned';
                   return (
-                    <details key={i} className="group border-b border-[var(--color-hairline)]/50 last:border-0 text-[var(--text-primary)]">
-                      <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-white/5 transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
-                        <div className="w-8 text-[var(--color-mute)] font-mono text-xs pl-2">#{i + 1}</div>
+                    <details key={i} className="group border-b border-black/10 dark:border-white/10 last:border-0">
+                      <summary className="flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#111] transition-colors select-none list-none [&::-webkit-details-marker]:hidden">
+                        <div className="w-8 text-gray-500 dark:text-gray-400 font-bold text-xs pl-2">#{i + 1}</div>
                         <div className="flex-1 flex flex-col items-end gap-0.5 text-xs">
-                          <span className={`font-bold ${isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.homeTeam}</span>
-                          {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                          <span className={`font-black uppercase tracking-widest ${isHomeWinner && !isAbandoned ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>{m.homeTeam}</span>
+                          {m.motm && isHomeWinner && !isAbandoned && <span className="text-[9px] text-yellow-600/60 dark:text-yellow-500/60 font-bold uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
                         </div>
-                        <div className="px-3 text-gray-600 font-bold tracking-widest text-[10px]">
-                          {m.rainEvent ? '🌧' : 'VS'}
+                        <div className="px-3 text-gray-500 dark:text-gray-400 font-black tracking-widest text-[10px]">
+                          {m.rainEvent ? <CloudRain className="w-4 h-4 text-blue-500 mx-auto" /> : 'VS'}
                         </div>
                         <div className="flex-1 flex flex-col items-start gap-0.5 text-xs">
-                          <span className={`font-bold ${!isHomeWinner && !isAbandoned ? 'text-[var(--color-gold)]' : 'text-[var(--color-mute)]'}`}>{m.awayTeam}</span>
-                          {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-[var(--color-gold-dim)]/60 uppercase tracking-widest">⭐ {m.motm.player.name.split(' ').pop()}</span>}
+                          <span className={`font-black uppercase tracking-widest ${!isHomeWinner && !isAbandoned ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-500 dark:text-gray-400'}`}>{m.awayTeam}</span>
+                          {m.motm && !isHomeWinner && !isAbandoned && <span className="text-[9px] text-yellow-600/60 dark:text-yellow-500/60 font-bold uppercase tracking-widest flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-yellow-500 shrink-0" /> {m.motm.player.name.split(' ').pop()}</span>}
                         </div>
                       </summary>
-                      <div className="p-4 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]/50">
+                      <div className="p-4 bg-gray-50 dark:bg-[#111] border-t border-black/10 dark:border-white/10">
                         {isAbandoned ? (
-                          <div className="flex items-center gap-3 justify-center py-2 bg-blue-950/30 rounded-lg border border-blue-800/30">
-                            <span className="text-2xl">🌧</span>
+                          <div className="flex items-center gap-3 justify-center py-2 bg-blue-900/10 border border-blue-900/30">
+                            <CloudRain className="w-8 h-8 text-blue-500 shrink-0" />
                             <div>
-                              <div className="text-blue-300 font-bold text-sm">Match Abandoned</div>
-                              <div className="text-blue-400/70 text-xs">No result — 1 point each</div>
+                              <div className="text-blue-500 font-black uppercase tracking-widest text-sm">Match Abandoned</div>
+                              <div className="text-blue-500/70 font-bold uppercase tracking-widest text-xs">No result — 1 point each</div>
                             </div>
                           </div>
                         ) : (
                           <>
-                            <div className="flex justify-between items-center mb-5 text-sm font-bold bg-[var(--color-canvas-soft-2)] p-3 rounded-lg border border-[var(--color-hairline)]">
-                              <div className="flex-1 text-right text-[var(--color-mute)]">{m.homeScore}</div>
-                              <div className="px-4 text-[var(--color-win)] text-[10px] font-semibold tracking-tight uppercase tracking-widest text-center">
+                            <div className="flex justify-between items-center mb-5 text-sm font-black uppercase tracking-widest bg-white dark:bg-[#1a1a1a] p-3 border border-black/10 dark:border-white/10">
+                              <div className="flex-1 text-right text-gray-500 dark:text-gray-400">{m.homeScore}</div>
+                              <div className="px-4 text-blue-600 dark:text-blue-500 text-[10px] text-center">
                                 <div>{m.winner} WON</div>
-                                <div className="text-[var(--color-mute)] mt-0.5">{m.margin}</div>
-                                {m.rainEvent && <div className="text-[var(--color-link)] mt-0.5">🌧 DLS</div>}
+                                <div className="text-gray-500 dark:text-gray-400 mt-0.5">{m.margin}</div>
+                                {m.rainEvent && <div className="text-blue-500 mt-0.5 flex items-center justify-center gap-1"><CloudRain className="w-3.5 h-3.5 inline" /> DLS</div>}
                               </div>
-                              <div className="flex-1 text-left text-[var(--color-mute)]">{m.awayScore}</div>
+                              <div className="flex-1 text-left text-gray-500 dark:text-gray-400">{m.awayScore}</div>
                             </div>
 
                             {m.destinyTriggered && (
                               <div className="mb-4 flex justify-center text-center">
-                                <span className="text-xs font-bold px-3 py-1 bg-[var(--color-gold)] text-[var(--color-on-primary)] rounded-full shadow-[0_0_15px_rgba(245,200,66,0.5)]">
-                                  ⭐ THE UNTHINKABLE! Perfect Season Destiny Saved!
+                                <span className="text-xs font-black uppercase tracking-widest px-3 py-1 bg-yellow-500 text-black flex items-center gap-1">
+                                  <Star className="w-3.5 h-3.5 text-black" /> THE UNTHINKABLE! Perfect Season Destiny Saved!
                                 </span>
                               </div>
                             )}
 
                             {m.clutchTriggered && (
                               <div className="mb-4 flex justify-center text-center">
-                                <span className="text-[10px] font-bold px-2 py-0.5 border border-red-500/20 text-red-500 rounded bg-red-500/10 uppercase tracking-widest">
-                                  ⚡ {m.clutchTriggered} Delivers Under Pressure!
+                                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 border border-red-500/50 text-red-500 bg-red-500/10 flex items-center gap-1">
+                                  <Zap className="w-3 h-3 text-amber-500" /> {m.clutchTriggered} Delivers Under Pressure!
                                 </span>
                               </div>
                             )}
                             
                             {(m.momentumStateA || m.momentumStateB) && (
                               <div className="mb-4 flex flex-col gap-1 items-center">
-                                {m.momentumStateA && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/20 rounded uppercase">🔥 {m.homeTeam}: {m.momentumStateA}</span>}
-                                {m.momentumStateB && <span className="text-[9px] font-bold px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/20 rounded uppercase">🔥 {m.awayTeam}: {m.momentumStateB}</span>}
+                                {m.momentumStateA && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/30 flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.homeTeam}: {m.momentumStateA}</span>}
+                                {m.momentumStateB && <span className="text-[9px] font-black uppercase tracking-widest px-2 py-0.5 bg-orange-500/10 text-orange-500 border border-orange-500/30 flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500 animate-pulse" /> {m.awayTeam}: {m.momentumStateB}</span>}
                               </div>
                             )}
                             
                             {m.motm && (
-                              <div className="flex items-center gap-4 bg-[var(--color-canvas-soft)] p-3 rounded-xl border border-[var(--color-gold)]/30">
-                                <div className="w-12 h-12 bg-[var(--color-canvas)] border-2 border-[var(--color-gold)]/50 rounded-full flex items-center justify-center text-xl font-bold text-[var(--color-gold)] shadow-[0_0_15px_rgba(245,200,66,0.15)] shrink-0">
+                              <div className="flex items-center gap-4 bg-white dark:bg-[#1a1a1a] p-3 border border-yellow-500/30">
+                                <div className="w-12 h-12 bg-gray-50 dark:bg-[#111] border-2 border-yellow-500/50 flex items-center justify-center text-xl font-black text-yellow-600 dark:text-yellow-500 shrink-0">
                                   {initials(m.motm.player.name)}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2 mb-1">
-                                    <span className="text-[var(--color-gold)] font-semibold tracking-tight tracking-wide truncate">{m.motm.player.name}</span>
-                                    <span className="text-[9px] uppercase tracking-wider font-bold bg-[var(--color-gold)]/20 text-[var(--color-gold)] px-1.5 py-0.5 rounded shrink-0">MotM</span>
+                                    <span className="text-yellow-600 dark:text-yellow-500 font-black uppercase tracking-widest truncate">{m.motm.player.name}</span>
+                                    <span className="text-[9px] uppercase tracking-widest font-black bg-yellow-500/20 text-yellow-600 dark:text-yellow-500 px-1.5 py-0.5 shrink-0">MotM</span>
                                   </div>
-                                  <div className="text-[var(--color-mute)] text-sm font-semibold truncate">{m.motm.summary}</div>
+                                  <div className="text-gray-500 dark:text-gray-400 text-sm font-bold truncate uppercase tracking-widest">{m.motm.summary}</div>
                                 </div>
                                 <div className="text-right shrink-0">
-                                  <div className="text-[9px] uppercase tracking-widest text-[var(--color-mute)] mb-0.5">Rating</div>
-                                  <div className="text-lg font-semibold tracking-tight text-[var(--text-primary)]">{m.motm.rating.toFixed(1)}</div>
+                                  <div className="text-[9px] uppercase tracking-widest font-black text-gray-500 dark:text-gray-400 mb-0.5">Rating</div>
+                                  <div className="text-lg font-black text-gray-900 dark:text-white">{m.motm.rating.toFixed(1)}</div>
                                 </div>
                               </div>
                             )}
@@ -6490,12 +6474,12 @@ function MainAppContent() {
           </div>
 
           {/* Leaderboard Card */}
-          <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] p-6 rounded-2xl mb-6 shadow-xl relative overflow-hidden group">
-             <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 p-6 md:rounded-lg mb-6 shadow-xl relative overflow-hidden group">
+             <div className="absolute inset-0 bg-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
              <div className="relative z-10 flex flex-col gap-4">
                <div>
-                 <h3 className="text-xl font-semibold tracking-tight text-white tracking-widest uppercase mb-1">Add this multiplayer run to the leaderboard</h3>
-                 <p className="text-sm font-medium text-[var(--color-mute)]">Your unique username will be automatically generated.</p>
+                 <h3 className="text-xl font-black text-gray-900 dark:text-white tracking-widest uppercase mb-1">Add this multiplayer run to the leaderboard</h3>
+                 <p className="text-sm font-bold text-gray-500 dark:text-gray-400">Your unique username will be automatically generated.</p>
                </div>
                
                {!submitted ? (
@@ -6505,19 +6489,19 @@ function MainAppContent() {
                        whileHover={{ scale: 1.02 }}
                        whileTap={{ scale: 0.97 }}
                        onClick={handleSubmitLeaderboard}
-                       className="w-full bg-[var(--color-primary)] hover:opacity-90 text-[var(--color-on-primary)] font-semibold tracking-tight uppercase tracking-widest px-8 py-3 rounded-xl transition-colors shadow-lg cursor-pointer"
+                       className="w-full bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black font-black uppercase tracking-widest px-8 py-3 md:rounded-lg transition-colors shadow-lg cursor-pointer"
                      >
                        Add to Leaderboard
                      </motion.button>
                    </div>
                    {submitError && (
-                     <div className="text-red-500 text-sm font-semibold tracking-wide bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-xl">
+                     <div className="text-red-500 text-sm font-black uppercase tracking-widest bg-red-500/10 border border-red-500/20 px-4 py-2">
                        ⚠️ {submitError}
                      </div>
                    )}
                  </div>
                ) : (
-                 <div className="flex items-center gap-2 text-green-400 font-bold uppercase tracking-widest text-sm bg-green-500/10 p-4 rounded-xl border border-green-500/20">
+                 <div className="flex items-center gap-2 text-green-600 dark:text-green-500 font-black uppercase tracking-widest text-sm bg-green-500/10 p-4 border border-green-500/20">
                    <span>✓</span> Submitted to Leaderboard
                  </div>
                )}
@@ -6530,7 +6514,7 @@ function MainAppContent() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={onExit}
-              className="btn-primary flex-1 text-lg py-3 rounded-xl cursor-pointer"
+              className="flex-1 bg-gray-900 dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-black font-black uppercase tracking-widest py-3 md:rounded-lg transition-colors shadow-lg text-lg cursor-pointer"
             >
               ↺ Exit Room — Start New Game
             </motion.button>

@@ -16,7 +16,7 @@ function getTierColor(tier: CardTier) {
     case 'Gold': return 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 text-yellow-950 border-yellow-400';
     case 'Silver': return 'bg-gradient-to-br from-gray-200 via-gray-300 to-gray-500 text-gray-900 border-gray-300';
     case 'Bronze': return 'bg-gradient-to-br from-amber-600 via-amber-700 to-amber-900 text-amber-100 border-amber-600';
-    default: return 'bg-[var(--color-card-bg)] text-[var(--color-body)] border-[var(--color-card-border)]';
+    default: return 'bg-white dark:bg-[#1a1a1a] text-gray-900 dark:text-white border-black/10 dark:border-white/10';
   }
 }
 
@@ -40,7 +40,7 @@ function DummyShareCard({ tier, count, isPreview = false }: { tier: CardTier, co
                      'via-transparent';
 
   return (
-    <div className={`rounded-xl border flex flex-col items-center justify-between transition-transform ${getTierColor(tier)} ${glowClass} ${opacityClass} ${paddingClass} relative overflow-hidden group`}>
+    <div className={`md:rounded-lg border flex flex-col items-center justify-between transition-transform ${getTierColor(tier)} ${glowClass} ${opacityClass} ${paddingClass} relative overflow-hidden group`}>
       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
       
       {/* Shine effect that sweeps on hover */}
@@ -59,7 +59,7 @@ function DummyShareCard({ tier, count, isPreview = false }: { tier: CardTier, co
       
       {!isPreview && count !== undefined && (
         <div className="w-full text-center relative z-10">
-          <div className="text-sm font-black tracking-tight">× {count}</div>
+          <div className="text-sm font-black tracking-widest uppercase">× {count}</div>
         </div>
       )}
       
@@ -120,7 +120,7 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
     e.target.value = '';
   };
 
-  if (!profile) return <div className="p-8 text-center text-[var(--color-mute)]">Loading profile...</div>;
+  if (!profile) return <div className="p-8 text-center text-gray-500 dark:text-gray-400 font-mono font-bold tracking-widest uppercase">Loading profile...</div>;
 
   const totalSeasons = profile.runs.length;
   const championships = profile.runs.filter(r => r.champion).length;
@@ -148,24 +148,24 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-24 animate-fade-in pt-8 px-4 sm:px-6">
+    <div className="min-h-[calc(100vh-4rem)] max-w-4xl mx-auto pb-24 animate-fade-in pt-8 px-4 sm:px-6 font-mono">
       
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         {onBack ? (
-          <button onClick={onBack} className="text-sm font-bold uppercase tracking-widest text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors flex items-center gap-2">
+          <button onClick={onBack} className="text-sm font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-2 cursor-pointer">
             ← Back
           </button>
         ) : <div />}
-        <button onClick={() => setShowPreviews(true)} className="text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors p-2 rounded-full hover:bg-[var(--color-canvas-soft)]">
+        <button onClick={() => setShowPreviews(true)} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-2 md:rounded-lg hover:bg-gray-50 dark:hover:bg-[#111] border border-transparent hover:border-black/10 dark:hover:border-white/10 cursor-pointer">
           <Info size={20} />
         </button>
       </div>
       <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tighter mb-2">
+        <h1 className="text-4xl md:text-5xl font-black uppercase tracking-widest text-gray-900 dark:text-white mb-2">
           {profile.handle || 'Unknown Player'}
         </h1>
-        <p className="text-[var(--color-mute)] flex items-center justify-center gap-2">
+        <p className="text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
           <Trophy size={16} /> Hall of Fame
         </p>
       </div>
@@ -174,27 +174,27 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
         
         {/* Left Column: Overview Stats */}
         <div className="md:col-span-1 space-y-6">
-          <div className="bg-[var(--color-card-bg)] border border-[var(--color-card-border)] rounded-2xl p-6 shadow-sm">
-            <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)] mb-6 flex items-center gap-2">
+          <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-6 shadow-sm">
+            <h2 className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-6 flex items-center gap-2">
               <Info size={14} /> Overview
             </h2>
             
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
-              <div className="bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
-                <div className="text-2xl font-bold text-[var(--color-ink)]">{totalSeasons}</div>
-                <div className="text-[10px] text-[var(--color-mute)] uppercase tracking-wider font-bold">Seasons</div>
+              <div className="bg-gray-50 dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10">
+                <div className="text-2xl font-black text-gray-900 dark:text-white">{totalSeasons}</div>
+                <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black">Seasons</div>
               </div>
-              <div className="bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
-                <div className="text-2xl font-bold text-[var(--color-ink)]">{bestRun ? `${bestRun.wins}-${bestRun.losses}` : 'N/A'}</div>
-                <div className="text-[10px] text-[var(--color-mute)] uppercase tracking-wider font-bold">Best Record</div>
+              <div className="bg-gray-50 dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10">
+                <div className="text-2xl font-black text-gray-900 dark:text-white">{bestRun ? `${bestRun.wins}-${bestRun.losses}` : 'N/A'}</div>
+                <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black">Best Record</div>
               </div>
-              <div className="bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
-                <div className="text-2xl font-bold text-[var(--color-ink)]">{championships}</div>
-                <div className="text-[10px] text-[var(--color-mute)] uppercase tracking-wider font-bold">Titles</div>
+              <div className="bg-gray-50 dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10">
+                <div className="text-2xl font-black text-gray-900 dark:text-white">{championships}</div>
+                <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black">Titles</div>
               </div>
-              <div className="bg-[var(--color-canvas)] p-3 rounded-xl border border-[var(--color-hairline)]">
-                <div className="text-2xl font-bold text-[var(--color-ink)]">{longestStreak}</div>
-                <div className="text-[10px] text-[var(--color-mute)] uppercase tracking-wider font-bold">Max Streak</div>
+              <div className="bg-gray-50 dark:bg-[#111] p-3 md:rounded-lg border border-black/10 dark:border-white/10">
+                <div className="text-2xl font-black text-gray-900 dark:text-white">{longestStreak}</div>
+                <div className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest font-black">Max Streak</div>
               </div>
             </div>
           </div>
@@ -205,7 +205,7 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
           
           {/* Sharecard Collection */}
           <div>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)] mb-4 flex items-center gap-2">
+            <h2 className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-2">
               <Star size={14} /> Collection
             </h2>
             <div className="flex flex-wrap gap-3">
@@ -218,13 +218,13 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
           {/* Run History */}
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xs font-bold uppercase tracking-widest text-[var(--color-mute)] flex items-center gap-2">
+              <h2 className="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 flex items-center gap-2">
                 <History size={14} /> {showAllRuns ? 'All Run History' : 'Recent Run History'}
               </h2>
               {profile.runs.length > 3 && (
                 <button 
                   onClick={() => setShowAllRuns(!showAllRuns)}
-                  className="text-[10px] uppercase font-bold text-[var(--color-link)] hover:text-[var(--color-link-deep)] transition-colors"
+                  className="text-[10px] uppercase font-black tracking-widest text-blue-600 dark:text-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors cursor-pointer"
                 >
                   {showAllRuns ? 'Show Last 3 Runs' : 'Show All Runs'}
                 </button>
@@ -232,50 +232,50 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
             </div>
             
             {profile.runs.length === 0 ? (
-              <div className="bg-[var(--color-card-bg)] border border-[var(--color-card-border)] rounded-2xl p-8 text-center text-[var(--color-mute)]">
+              <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg p-8 text-center text-gray-500 dark:text-gray-400 font-bold uppercase tracking-widest text-sm">
                 No seasons completed yet.
               </div>
             ) : (
               <div className={`space-y-3 ${showAllRuns ? 'max-h-[500px] overflow-y-auto custom-scrollbar pr-2' : ''}`}>
                 {[...profile.runs].reverse().slice(0, showAllRuns ? undefined : 3).map((run) => (
-                  <div key={run.id} className="bg-[var(--color-card-bg)] border border-[var(--color-card-border)] rounded-xl overflow-hidden shadow-sm transition-all">
+                  <div key={run.id} className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg overflow-hidden shadow-sm transition-all">
                     
                     {/* Collapsed Header */}
                     <button 
                       onClick={() => setExpandedRun(expandedRun === run.id ? null : run.id)}
-                      className="w-full px-5 py-4 flex items-center justify-between hover:bg-[var(--color-canvas-soft)] transition-colors text-left"
+                      className="w-full px-5 py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-[#111] transition-colors text-left cursor-pointer"
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`w-3 h-3 rounded-full ${
+                        <div className={`w-3 h-3 md:rounded-lg ${
                           run.tier === 'Platinum' ? 'bg-gradient-to-br from-cyan-400 to-purple-500' :
                           run.tier === 'Gold' ? 'bg-gradient-to-br from-yellow-400 to-yellow-600' :
                           run.tier === 'Silver' ? 'bg-gradient-to-br from-gray-300 to-gray-500' :
                           run.tier === 'Bronze' ? 'bg-gradient-to-br from-amber-600 to-amber-800' :
-                          'bg-[var(--color-hairline-strong)]'
+                          'bg-gray-300 dark:bg-gray-700'
                         }`} />
                         <div>
-                          <div className="font-bold text-[var(--color-ink)] text-lg">
+                          <div className="font-black text-gray-900 dark:text-white text-lg">
                             {run.wins}-{run.losses}
                           </div>
                         </div>
                       </div>
-                      <div className="text-xs font-mono text-[var(--color-mute)]">
+                      <div className="text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
                         {new Date(run.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                       </div>
                     </button>
 
                     {/* Expanded Content */}
                     {expandedRun === run.id && (
-                      <div className="px-5 pb-5 pt-2 border-t border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)]">
-                        <div className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-mute)] mb-3 mt-2">Playing XI</div>
+                      <div className="px-5 pb-5 pt-2 border-t border-black/10 dark:border-white/10 bg-gray-50 dark:bg-[#111]">
+                        <div className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-3 mt-2">Playing XI</div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
                           {run.playingXI.map((p, idx) => (
-                            <div key={p.id} className="flex items-center justify-between py-1 border-b border-[var(--color-hairline)] border-dashed last:border-0">
+                            <div key={p.id} className="flex items-center justify-between py-1 border-b border-black/10 dark:border-white/10 border-dashed last:border-0">
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-mono text-[var(--color-mute)] w-4">{idx + 1}.</span>
-                                <span className="text-sm font-semibold text-[var(--color-ink)]">{p.name}</span>
+                                <span className="text-xs font-bold text-gray-500 dark:text-gray-400 w-4">{idx + 1}.</span>
+                                <span className="text-sm font-black uppercase tracking-widest text-gray-900 dark:text-white">{p.name}</span>
                               </div>
-                              <div className="text-xs px-1.5 rounded" style={{ backgroundColor: ratingColor(p.overall), color: '#fff', fontWeight: 'bold' }}>
+                              <div className="text-xs px-1.5 md:rounded-lg" style={{ backgroundColor: ratingColor(p.overall), color: '#fff', fontWeight: 'bold' }}>
                                 {p.overall}
                               </div>
                             </div>
@@ -294,14 +294,14 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
       </div>
 
       {/* Export / Import Save Data */}
-      <div className="mt-20 pt-8 border-t border-[var(--color-hairline)] flex items-center justify-center gap-6 opacity-40 hover:opacity-100 transition-opacity">
+      <div className="mt-20 pt-8 border-t border-black/10 dark:border-white/10 flex items-center justify-center gap-6 opacity-40 hover:opacity-100 transition-opacity">
         <button 
           onClick={handleExport}
-          className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors"
+          className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer"
         >
           <Download size={14} /> Export Save
         </button>
-        <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors cursor-pointer">
+        <label className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer">
           <Upload size={14} /> Import Save
           <input 
             type="file" 
@@ -315,12 +315,12 @@ export default function PlayerProfile({ onBack }: { onBack?: () => void }) {
       {/* Previews Modal */}
       {showPreviews && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-2xl w-full max-w-5xl shadow-2xl overflow-hidden flex flex-col max-h-screen">
-            <div className="p-4 border-b border-[var(--color-hairline)] flex justify-between items-center bg-[var(--color-canvas-soft)]">
-              <h2 className="font-bold uppercase tracking-widest text-[var(--color-ink)] flex items-center gap-2">
+          <div className="bg-white dark:bg-[#1a1a1a] border border-black/10 dark:border-white/10 md:rounded-lg w-full max-w-5xl shadow-2xl overflow-hidden flex flex-col max-h-screen">
+            <div className="p-4 border-b border-black/10 dark:border-white/10 flex justify-between items-center bg-gray-50 dark:bg-[#111]">
+              <h2 className="font-black uppercase tracking-widest text-gray-900 dark:text-white flex items-center gap-2">
                 <Star size={16} /> Sharecard Tiers
               </h2>
-              <button onClick={() => setShowPreviews(false)} className="text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-colors p-1">
+              <button onClick={() => setShowPreviews(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors p-1 cursor-pointer">
                 <X size={20} />
               </button>
             </div>
