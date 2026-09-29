@@ -55,6 +55,12 @@ export default function NavBar({ currentPhase, onNavigate }: { currentPhase?: st
           >
             Teams
           </a>
+          <a
+            href="/guides/"
+            className="px-3 py-1.5 rounded-full text-sm transition-colors text-[var(--color-body)] hover:bg-[var(--color-canvas-soft-2)] font-medium"
+          >
+            Guides
+          </a>
         </div>
       </div>
       

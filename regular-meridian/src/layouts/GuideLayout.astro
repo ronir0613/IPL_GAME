@@ -1,0 +1,101 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  publishDate: string;
+  updatedDate: string;
+  readingTime: string;
+  toc: { id: string; label: string }[];
+  related: { title: string; href: string }[];
+}
+
+const page = ((Astro.props as { frontmatter?: Props }).frontmatter ?? Astro.props) as Props;
+const { title, description, slug, publishDate, updatedDate, readingTime, toc = [], related = [] } = page;
+const canonical = `https://16-0play.com/guides/${slug}/`;
+const articleData = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: publishDate,
+  dateModified: updatedDate,
+  author: { '@type': 'Organization', name: '16-0 Play' },
+  publisher: { '@type': 'Organization', name: '16-0 Play', url: 'https://16-0play.com' },
+  mainEntityOfPage: canonical,
+};
+---
+
+<Layout title={title} description={description} canonical={canonical}>
+  <Fragment slot="head">
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="16-0 Play" />
+    <meta property="og:image" content="https://16-0play.com/og-image.png" />
+    <meta property="article:published_time" content={publishDate} />
+    <meta property="article:modified_time" content={updatedDate} />
+    <script type="application/ld+json" set:html={JSON.stringify(articleData)} />
+  </Fragment>
+
+  <article class="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <nav aria-label="Breadcrumb" class="mb-8 text-sm text-[var(--color-mute)]">
+      <a class="underline underline-offset-4 hover:text-yellow-600" href="/">Home</a>
+      <span aria-hidden="true" class="px-2">/</span>
+      <a class="underline underline-offset-4 hover:text-yellow-600" href="/guides/">Guides</a>
+      <span aria-hidden="true" class="px-2">/</span>
+      <span aria-current="page" class="text-[var(--color-ink)]">{title}</span>
+    </nav>
+
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start">
+      <div class="min-w-0">
+        <header class="mb-10 max-w-3xl">
+          <h1 class="mb-5 text-4xl font-black tracking-tight text-[var(--color-ink)] sm:text-5xl">{title}</h1>
+          <p class="mb-5 text-lg leading-8 text-[var(--color-body)]">{description}</p>
+          <p class="text-sm text-[var(--color-mute)]">
+            By 16-0 Play <span aria-hidden="true">·</span>
+            <time datetime={publishDate}>Published {publishDate}</time> <span aria-hidden="true">·</span>
+            <time datetime={updatedDate}>Updated {updatedDate}</time> <span aria-hidden="true">·</span>
+            {readingTime} min read
+          </p>
+        </header>
+
+        <div class="guide-prose max-w-3xl text-base leading-8 text-[var(--color-body)]">
+          <slot />
+        </div>
+
+        <section class="mt-12 border-t border-[var(--color-hairline)] pt-8" aria-labelledby="related-guides-heading">
+          <h2 id="related-guides-heading" class="mb-4 text-xl font-bold text-[var(--color-ink)]">Related guides</h2>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {related.map((item) => <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href={item.href}>{item.title}</a></li>)}
+          </ul>
+          <a href="/" class="mt-8 inline-flex min-h-11 items-center rounded-lg bg-[var(--color-primary)] px-5 py-2 font-semibold text-[var(--color-on-primary)] hover:opacity-90">Back to the game</a>
+        </section>
+      </div>
+
+      <aside class="order-first rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-5 lg:sticky lg:top-24 lg:order-last" aria-label="Guide navigation">
+        <h2 class="mb-3 text-sm font-bold uppercase tracking-wide text-[var(--color-ink)]">On this page</h2>
+        <nav aria-label="Table of contents">
+          <ol class="space-y-2 text-sm leading-6">
+            {toc.map((item) => <li><a class="text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href={`#${item.id}`}>{item.label}</a></li>)}
+          </ol>
+        </nav>
+      </aside>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .guide-prose :global(h2) { margin: 2.5rem 0 0.75rem; color: var(--color-ink); font-size: 1.5rem; line-height: 1.3; font-weight: 750; scroll-margin-top: 6rem; }
+  .guide-prose :global(h3) { margin: 1.75rem 0 0.5rem; color: var(--color-ink); font-size: 1.15rem; line-height: 1.4; font-weight: 700; scroll-margin-top: 6rem; }
+  .guide-prose :global(p) { margin: 0 0 1.15rem; }
+  .guide-prose :global(ul), .guide-prose :global(ol) { margin: 0.5rem 0 1.5rem; padding-left: 1.5rem; }
+  .guide-prose :global(li) { margin: 0.4rem 0; padding-left: 0.2rem; }
+  .guide-prose :global(a) { color: var(--color-link); text-decoration: underline; text-underline-offset: 3px; }
+  .guide-prose :global(a:hover) { color: var(--color-link-deep); }
+  .guide-prose :global(strong) { color: var(--color-ink); }
+</style>
+

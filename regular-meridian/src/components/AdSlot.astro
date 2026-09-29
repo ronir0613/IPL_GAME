@@ -1,0 +1,10 @@
+---
+// Content pages only (such as guides or About), never the game. Keep disabled until ads are approved.
+const ADS_ENABLED = false;
+---
+
+{ADS_ENABLED && (
+  <div class="ad-slot" aria-label="Advertisement">
+    <slot />
+  </div>
+)}

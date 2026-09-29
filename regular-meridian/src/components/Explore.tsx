@@ -39,7 +39,7 @@ export default function ExplorePage() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0ea5e9] to-[#10b981]">Master The Mechanics.</span>
           </h1>
           <p className="text-[18px] md:text-[20px] text-[var(--color-body)] max-w-2xl mx-auto leading-relaxed">
-            The 16-0 engine powers a deterministic cricket simulation where your drafting choices dictate every boundary, wicket, and championship run. Explore the mechanics below.
+            The 16-0 engine runs a probability-based cricket simulation. Your squad choices shape team strength, while random outcomes mean no lineup guarantees a result. Explore the mechanics below.
           </p>
         </motion.section>
 
@@ -69,7 +69,7 @@ export default function ExplorePage() {
               </div>
               <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[var(--color-ink)]">Franchise</h3>
               <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
-                Take long-term control. Manage budgets, negotiate contracts, and navigate player aging across multiple seasons to establish an unstoppable historic dynasty.
+                Build a larger roster, choose an impact bench, and set how the season is controlled. Franchise mode gives you more players to manage before selecting the XI for a match.
               </p>
             </motion.div>
 
@@ -80,7 +80,7 @@ export default function ExplorePage() {
               </div>
               <h3 className="text-[24px] font-bold tracking-tight mb-4 text-[var(--color-ink)]">Gamble</h3>
               <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
-                High stakes, high rewards. Wager your built-up currency on specific match outcomes, player milestones, and playoff brackets to multiply your resources.
+                Let the game generate a squad from a random team philosophy. Review its projected record, strengths, and weaknesses, then decide whether to continue with the revealed XI.
               </p>
             </motion.div>
           </div>
@@ -100,7 +100,7 @@ export default function ExplorePage() {
               
               <div className="space-y-6">
                 <p className="text-[18px] text-[#94a3b8] leading-relaxed mb-6">
-                  Player ratings range dynamically from 70 to 99, calculated precisely from historical performance, peak consistency, and contextual impact during their specific IPL season. 
+                  The player database stores internal ratings from 70 to 99. These values are balanced for this simulator and are not official ratings or a definitive measure of real-world ability.
                 </p>
 
                 <div className="bg-[#1e293b] border border-[#334155] rounded-[12px] p-6 mb-12 flex items-start gap-4 shadow-lg">
@@ -153,7 +153,7 @@ export default function ExplorePage() {
                 <h3 className="text-[22px] font-bold tracking-tight text-[var(--color-ink)]">The Overseas Rule</h3>
               </div>
               <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
-                Like real life, your Playing XI is strictly limited to a maximum of 4 overseas players. Fielding 5 or more overseas players breaks regulations and immediately invalidates your lineup. You must balance domestic strength with international firepower.
+                The standard single-player Playing XI allows at most 4 overseas players. The separate multiplayer lobby can use a host-selected limit of 4 or 5, so check the rules for your mode before submitting a lineup.
               </p>
             </div>
 
@@ -164,7 +164,7 @@ export default function ExplorePage() {
                 <h3 className="text-[22px] font-bold tracking-tight text-[var(--color-ink)]">Role Balance</h3>
               </div>
               <p className="text-[16px] text-[var(--color-body)] leading-relaxed">
-                A team of 11 pure batters will collapse under engine pressure. The simulation checks for structural integrity: having at least 7 batting options, 5 bowling options, and versatile all-rounders drastically improves your win probabilities.
+                Role weights shape the batting and bowling strength averages. The engine gives role-identity bonuses at specific thresholds, but those bonuses do not replace checking how each player contributes to the whole XI.
               </p>
             </div>
 

@@ -29,8 +29,6 @@ import App from '../components/App.tsx';
       {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is 16-0play?","acceptedAnswer":{"@type":"Answer","text":"<p>A cricket strategy game where you draft an all-time XI and try to complete a perfect 16-0 season against AI franchises.</p>"}},{"@type":"Question","name":"How are match results calculated?","acceptedAnswer":{"@type":"Answer","text":"<p>Matches are simulated using a robust engine that weighs player ratings, team chemistry, form, and random variance.</p>"}}]}
     </script>
     
-    <link rel="canonical" href="https://16-0play.com/" />
-
     <!-- WebGameRank SDK -->
     <script is:inline src="https://webgamerank.com/sdk.js" data-key="gr_B7aqKutjBBiZJBQSffuf6gVq" async></script>
   </Fragment>
@@ -108,6 +106,18 @@ import App from '../components/App.tsx';
           </div>
         </details>
       </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-16 border-t border-[var(--color-hairline)]" aria-labelledby="strategy-guides-heading">
+      <h2 id="strategy-guides-heading" class="text-2xl font-bold text-[var(--color-ink)] mb-4 tracking-tight">Learn the game rules</h2>
+      <p class="text-[var(--color-body)] leading-7 mb-4">16-0 Play is a cricket squad-building and season simulator. Choose an XI from a player database, balance batting and bowling roles, and follow a schedule of simulated results. Player ratings, role weights, chemistry combinations, overseas limits, and game form affect the team calculation; random outcomes mean the higher-rated side is not guaranteed to win.</p>
+      <p class="text-[var(--color-body)] leading-7 mb-6">Use these guides to understand how the current game works. They explain the selection rules and simulator behavior from the site's code, including where its simplified rain and multiplayer systems differ from real cricket or a traditional snake draft.</p>
+      <ul class="grid gap-3 sm:grid-cols-2 text-sm font-medium">
+        <li><a class="text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="/guides/">All cricket strategy guides</a></li>
+        <li><a class="text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="/guides/play-16-0-play/">Beginner's guide</a></li>
+        <li><a class="text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="/guides/build-playing-xi/">Build a playing XI</a></li>
+        <li><a class="text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="/guides/ratings-star-stacking-chemistry/">Ratings and chemistry</a></li>
+      </ul>
     </section>
   </div>
 </Layout>

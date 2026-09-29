@@ -5,13 +5,22 @@ interface Props {
 	title?: string;
 	description?: string;
 	hideHeader?: boolean;
+	canonical?: string;
+	showAds?: boolean;
 }
 
 const { 
 	title = "16-0 Play | The Ultimate Cricket Strategy Game",
 	description = "Play the ultimate 16-0 cricket simulator. Build your greatest playing XI, master cricket team management, and achieve the perfect 16-0 challenge.",
-	hideHeader = false
+	hideHeader = false,
+	canonical: canonicalOverride,
+	showAds = false
 } = Astro.props;
+
+const canonical = canonicalOverride ?? new URL(
+	Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`,
+	Astro.site ?? Astro.url
+).href;
 ---
 
 <!doctype html>
@@ -37,6 +46,7 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
 		
     <slot name="head" />
 
@@ -88,8 +98,10 @@ const {
 			}, true); // Use capture phase to catch script element loading errors
 		</script>
 	
-    <!-- Google AdSense -->
-    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3180090639225904" crossorigin="anonymous"></script>
+    <!-- Manual owner check: keep Auto ads off or exclude the game in AdSense. -->
+    {showAds && (
+      <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3180090639225904" crossorigin="anonymous"></script>
+    )}
 	</head>
 	<body class="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)] flex flex-col">
     <!-- Global Navigation -->
@@ -105,6 +117,7 @@ const {
             <a href="/teams" class="hover:text-yellow-600 transition-colors">Teams</a>
             <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
             <a href="/game-modes" class="hover:text-yellow-600 transition-colors">Game Modes</a>
+            <a href="/guides/" class="hover:text-yellow-600 transition-colors">Guides</a>
           </nav>
           <!-- Mobile Menu Placeholder -->
           <div class="md:hidden flex items-center">
@@ -134,6 +147,8 @@ const {
             <a href="/players" class="hover:text-yellow-600 transition-colors">Player Database</a>
             <a href="/teams" class="hover:text-yellow-600 transition-colors">Franchises</a>
             <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
+            <a href="/guides/" class="hover:text-yellow-600 transition-colors">Guides</a>
+            <a href="/game-modes" class="hover:text-yellow-600 transition-colors">Game Modes</a>
             <a href="/rating-system" class="hover:text-yellow-600 transition-colors">Rating System</a>
           </div>
         </div>
@@ -149,7 +164,7 @@ const {
       </div>
       <div class="max-w-6xl mx-auto px-4 sm:px-6 mt-12 pt-6 border-t border-[var(--color-hairline)] flex flex-col md:flex-row justify-between items-center gap-2 text-xs text-[var(--color-mute)]">
         <p>&copy; {new Date().getFullYear()} 16-0play. All rights reserved.</p>
-        <p>Not affiliated with any official cricket boards.</p>
+        <p>Not affiliated with the IPL, BCCI, or any franchise.</p>
       </div>
     </footer>
 	</body>

@@ -1,55 +1,30 @@
 ---
-import NavBar from '../components/NavBar';
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 import ExplorePage from '../components/Explore.tsx';
-
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-
-    <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          return 'dark';
-        }
-        return 'light';
-      })();
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-      window.localStorage.setItem('theme', theme);
-    </script>
-
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DC032Y6PFZ"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-DC032Y6PFZ');
-    </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <title>Game Modes - 16-0 Play</title>
-    <link rel="canonical" href="https://16-0play.com/game-modes/" />
-    <meta name="description" content="Learn about the different game modes, mechanics, and simulation scaling in 16-0play." />
-  
-    <!-- Google AdSense -->
-    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3180090639225904" crossorigin="anonymous"></script>
-  </head>
-  <body class="min-h-screen bg-[var(--color-canvas-soft)] text-[var(--color-ink)] selection:bg-yellow-500/30">
-    <NavBar client:load />
-    <div class="pt-16">
-      <ExplorePage client:load />
-
-    </div>
-  </body>
-</html>
+<Layout title="Game Modes and Mechanics | 16-0 Play" description="Explore solo modes and multiplayer auction rules in 16-0 Play, with a code-checked guide to how the game works." hideHeader={true}>
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://16-0play.com/game-modes/" />
+    <meta property="og:title" content="Game Modes and Mechanics | 16-0 Play" />
+    <meta property="og:description" content="Explore solo modes and multiplayer auction rules in 16-0 Play, with a code-checked guide to how the game works." />
+  </Fragment>
+  <ExplorePage client:load />
+  <article class="mx-auto w-full max-w-4xl px-4 py-12 leading-7 text-[var(--color-body)] sm:px-6">
+    <h2 class="mb-5 text-3xl font-bold tracking-tight text-[var(--color-ink)]">Choosing a mode and reading its rules</h2>
+    <p class="mb-4">The game currently presents four main choices: Classic, Franchise, Gamble, and Multiplayer. Classic asks you to build an eleven-player side and take it into the season simulation. Franchise expands the roster to as many as twenty-five players, marks impact-player rules in its mode card, and offers season control options. Gamble generates a team from a randomly chosen philosophy and shows the resulting squad before you decide to continue. Multiplayer opens a room-based auction flow with human participants and AI franchises.</p>
+    <p class="mb-4">These modes share player data but do not expose every control in the same way. The standard solo XI allows up to four overseas players. Franchise roster building supports up to twenty-five total players and a higher overseas roster count, while the playing XI is checked separately. Multiplayer hosts select an eleven- or fifteen-player roster, a five-, ten-, or fifteen-second timer, a four- or five-player overseas setting, and a short or long auction pool. Check the setting shown in the lobby rather than carrying a rule from one mode into another.</p>
+    <h3 class="mb-3 mt-8 text-xl font-bold text-[var(--color-ink)]">Classic and Franchise</h3>
+    <p class="mb-4">Classic is the most direct way to learn the strength calculation: fill an XI, review roles and team values, then simulate the season. Franchise adds a larger roster and impact-player preparation, so reserves can matter at lineup time even though the strength calculation uses the selected first eleven. In the franchise flow, the app exposes control choices for how the season is simulated. The details shown in the app are the operative controls; they do not mean the game models every real franchise contract or player-aging event described in older page copy.</p>
+    <h3 class="mb-3 mt-8 text-xl font-bold text-[var(--color-ink)]">Gamble and Multiplayer</h3>
+    <p class="mb-4">Gamble assembles a side from a selected random team philosophy, reveals its strengths and weaknesses, and lets you continue with that squad. The generator uses player filters and constraints; it does not ask you to make individual selections during the initial generation. Multiplayer has a live room, team selection, bids, a purse, and timed auction decisions. The live human acquisition flow is an auction, not a standard snake draft. A separate AI fill path uses snake-order distribution when allocating players to AI rosters.</p>
+    <p class="mb-4">Across modes, calculated team strength is only one input to a simulated match. Ratings have role weights; the XI can gain chemistry and identity bonuses or incur stacking, overseas, and rivalry deductions. Form and random outcomes can affect results. A rain marker may show an abandoned match or a reduced-over event labelled DLS, but the source implements a simplified result-generation path rather than a full official DLS calculation.</p>
+    <p class="mb-4">The modes also differ in their roster screens. Standard Classic uses an eleven-player side and a four-player overseas cap. Franchise lets you build a deeper roster of up to twenty-five players, with a separate impact-bench selection before a match. Its overseas roster allowance is higher than the standard XI limit, but lineup validation still applies to the active side. The settings panel and ready state are the clearest guide to what is required before simulation.</p>
+    <p class="mb-4">Gamble works differently from a manual draft: the game picks a team philosophy, generates a constrained squad, and reveals the selection, projected record, strengths, and weaknesses. You can decide whether to continue with that team. Multiplayer is a room-based auction. Its lobby supports up to ten team slots shared by people and AI, a timer setting, roster size options, an overseas setting, and a choice of auction pool length. The host controls room settings, so coordinate those before the first bid.</p>
+    <p class="mb-4">There are important limits to the simulation. The game uses its own player ratings and generated form. The rain branch can abandon a regular-season match or mark a reduced-over result as DLS; it does not show a full official Duckworth–Lewis–Stern calculation. The standard fixture generator creates fourteen regular-season matches per team, then uses four playoff matches to decide the champion. Those source details clarify how to interpret the “16-0” challenge name without claiming that the league schedule itself has sixteen matches.</p>
+    <p class="mb-4">The simulator uses a different sequence for a full league and for the playoffs. The generated schedule groups ten teams into two sets of five, repeats each within-group pairing, and plays cross-group opponents once with one repeat per team. The four highest places move into Qualifier 1, the Eliminator, Qualifier 2, and the Final. A rain-abandoned league match awards one point to both teams; a completed match awards two points to the winner. These details matter when you read the table after a long run.</p>
+    <p class="mb-4">For players who want to understand the numbers, the team-strength calculation starts from the first eleven filled slots and applies role weights. It then checks exact chemistry and rivalry name pairs, role identities, franchise cores, overseas count, stacking, and diminishing returns above 90. The displayed figures explain the team's setup, but each match still has random outcomes. Review a lineup's breakdown before starting, then separate a calculated strength from the result of an individual match.</p>
+    <p class="mb-4">The mode descriptions on this page are an overview, not a substitute for the rules visible in a room or lineup screen. In multiplayer, a host controls draft settings and all players share those settings; in Franchise, reserves and an impact bench are distinct from the starting XI. If the interface shows a different roster size or overseas cap for the mode you are playing, follow that mode's current setting. The guides below document the inspected code and call out places where two modes differ.</p>
+    <p>Use <a class="underline underline-offset-4" href="/guides/play-16-0-play/">the beginner's guide</a> to get started, <a class="underline underline-offset-4" href="/guides/build-playing-xi/">the XI guide</a> for roster decisions, and <a class="underline underline-offset-4" href="/guides/multiplayer-draft/">the multiplayer guide</a> before joining a room. The <a class="underline underline-offset-4" href="/rating-system/">rating-system reference</a> explains the strength calculation in more detail.</p>
+  </article>
+</Layout>

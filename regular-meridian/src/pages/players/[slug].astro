@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { slugify } from '../../lib/slugify';
+import { getCanonicalSlug } from '../../lib/canonical';
+import { formatOvers, getPlayerStatsBySlug } from '../../lib/playerStats';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -74,9 +76,28 @@ const roleFull = ({
 
 const title = `${name} - 16-0play Cricket Ratings & Stats`;
 const description = `View ${name}'s historical ratings, roles, and statistics in 16-0play. Build your ultimate cricket XI with top players like ${name}.`;
+const canonical = new URL(`/players/${getCanonicalSlug(Astro.params.slug ?? '')}/`, Astro.site ?? Astro.url).href;
+const careerStats = getPlayerStatsBySlug(Astro.params.slug ?? '');
+const ratingTier = maxRating >= 90 ? 'Elite' : maxRating >= 80 ? 'Star' : 'Role Player';
+const seasonRange = careerStats?.firstSeason != null && careerStats.lastSeason != null
+  ? careerStats.firstSeason === careerStats.lastSeason
+    ? `in ${careerStats.firstSeason}`
+    : `from ${careerStats.firstSeason} to ${careerStats.lastSeason}`
+  : 'with the season span unavailable in the source data';
+const introVariants = careerStats ? [
+  `${name} is listed as a ${roleFull.toLowerCase()} for ${bestTeam} in the 16-0 Play database, with a ${ratingTier} rating of ${maxRating}. Cricsheet records ${careerStats.matches} IPL matches ${seasonRange}, including ${careerStats.batting.runs} runs and ${careerStats.bowling.wickets} wickets.`,
+  `The 16-0 Play profile for ${name} shows a peak rating of ${maxRating} (${ratingTier}) and a ${roleFull.toLowerCase()} role with ${bestTeam}. Their matched Cricsheet record covers ${careerStats.matches} IPL matches ${seasonRange}, with ${careerStats.batting.runs} runs and ${careerStats.bowling.wickets} wickets.`,
+  `${name}'s highest 16-0 Play rating is ${maxRating}, placing this profile in the ${ratingTier} tier; the listed role is ${roleFull.toLowerCase()} and the peak-rated team is ${bestTeam}. In the Cricsheet IPL data, the matched record totals ${careerStats.matches} matches ${seasonRange}, ${careerStats.batting.runs} runs and ${careerStats.bowling.wickets} wickets.`,
+  `For ${bestTeam}, ${name} has a ${roleFull.toLowerCase()} profile with a peak 16-0 Play rating of ${maxRating} (${ratingTier}). Cricsheet's IPL records list ${careerStats.matches} appearances ${seasonRange}, with ${careerStats.batting.runs} runs and ${careerStats.bowling.wickets} wickets.`,
+  `${name} appears in the 16-0 Play database as a ${roleFull.toLowerCase()} for ${bestTeam}, rated ${maxRating} at peak (${ratingTier}). The corresponding Cricsheet IPL record covers ${careerStats.matches} matches ${seasonRange}, with ${careerStats.batting.runs} runs and ${careerStats.bowling.wickets} wickets.`,
+] : [];
+let introHash = 0;
+for (const character of Astro.params.slug ?? '') introHash = (introHash * 31 + character.charCodeAt(0)) >>> 0;
+const careerIntro = introVariants.length ? introVariants[introHash % introVariants.length] : '';
+const statValue = (value: number | null) => value === null ? '—' : value.toFixed(2);
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} canonical={canonical}>
   <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20">
     <div class="mb-8">
       <a href="/players" class="text-yellow-600 hover:text-yellow-500 font-medium text-sm flex items-center gap-1">
@@ -108,6 +129,85 @@ const description = `View ${name}'s historical ratings, roles, and statistics in
           {isOverseas && " As an overseas player, including them in your XI requires careful management of the strict 4-overseas player limit to avoid simulation penalties."}
         </p>
       </div>
+
+      {careerStats && (
+        <section class="bg-[var(--color-canvas-soft)] p-8 md:p-12 border-t border-[var(--color-hairline)]" aria-labelledby="ipl-career-heading">
+          <h2 id="ipl-career-heading" class="text-2xl font-bold text-[var(--color-ink)] mb-4">Career in the IPL</h2>
+          <p class="mb-8 text-[var(--color-body)] leading-relaxed">{careerIntro}</p>
+
+          <h3 class="text-lg font-bold text-[var(--color-ink)] mb-3">Batting</h3>
+          <div role="region" aria-label="Batting statistics table; scroll horizontally on narrow screens" tabindex="0" class="overflow-x-auto max-w-full mb-8 rounded-lg border border-[var(--color-hairline)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-500">
+            <table class="min-w-[920px] w-full text-left border-collapse text-sm">
+              <caption class="sr-only">IPL batting career statistics for {name}</caption>
+              <thead class="bg-[var(--color-canvas)]">
+                <tr class="border-b border-[var(--color-hairline)]">
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Matches</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Innings</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Runs</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Balls faced</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Average</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Strike rate</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">50s</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">100s</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">High score</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">4s</th>
+                  <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">6s</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-[var(--color-canvas-soft)] text-[var(--color-ink)] tabular-nums">
+                  <td class="py-3 px-3">{careerStats.matches}</td>
+                  <td class="py-3 px-3">{careerStats.batting.innings}</td>
+                  <td class="py-3 px-3 font-bold">{careerStats.batting.runs}</td>
+                  <td class="py-3 px-3">{careerStats.batting.ballsFaced}</td>
+                  <td class="py-3 px-3">{statValue(careerStats.batting.average)}</td>
+                  <td class="py-3 px-3">{statValue(careerStats.batting.strikeRate)}</td>
+                  <td class="py-3 px-3">{careerStats.batting.fifties}</td>
+                  <td class="py-3 px-3">{careerStats.batting.hundreds}</td>
+                  <td class="py-3 px-3">{careerStats.batting.highestScore}</td>
+                  <td class="py-3 px-3">{careerStats.batting.fours}</td>
+                  <td class="py-3 px-3">{careerStats.batting.sixes}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {careerStats.bowling.legalBalls >= 60 && (
+            <>
+              <h3 class="text-lg font-bold text-[var(--color-ink)] mb-3">Bowling</h3>
+              <div role="region" aria-label="Bowling statistics table; scroll horizontally on narrow screens" tabindex="0" class="overflow-x-auto max-w-full mb-8 rounded-lg border border-[var(--color-hairline)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-500">
+                <table class="min-w-[640px] w-full text-left border-collapse text-sm">
+                  <caption class="sr-only">IPL bowling career statistics for {name}</caption>
+                  <thead class="bg-[var(--color-canvas)]">
+                    <tr class="border-b border-[var(--color-hairline)]">
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Matches</th>
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Overs</th>
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Runs</th>
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Wickets</th>
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Economy</th>
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">Best</th>
+                      <th scope="col" class="py-3 px-3 font-bold text-[var(--color-mute)]">3-wicket hauls</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="bg-[var(--color-canvas-soft)] text-[var(--color-ink)] tabular-nums">
+                      <td class="py-3 px-3">{careerStats.bowling.matches}</td>
+                      <td class="py-3 px-3">{formatOvers(careerStats.bowling.legalBalls)}</td>
+                      <td class="py-3 px-3">{careerStats.bowling.runsConceded}</td>
+                      <td class="py-3 px-3 font-bold">{careerStats.bowling.wickets}</td>
+                      <td class="py-3 px-3">{statValue(careerStats.bowling.economy)}</td>
+                      <td class="py-3 px-3">{careerStats.bowling.bestBowling ? `${careerStats.bowling.bestBowling.wickets}/${careerStats.bowling.bestBowling.runs}` : '—'}</td>
+                      <td class="py-3 px-3">{careerStats.bowling.threeWicketHaulsOrBetter}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+
+          <p class="text-xs text-[var(--color-mute)]">IPL ball-by-ball data: <a class="underline underline-offset-2 hover:text-yellow-600" href="https://cricsheet.org/">Cricsheet</a>. Player identifiers: its Register, licensed under <a class="underline underline-offset-2 hover:text-yellow-600" href="http://opendatacommons.org/licenses/by/1.0/">ODC-BY 1.0</a>.</p>
+        </section>
+      )}
 
       <div class="bg-[var(--color-canvas)] p-8 md:p-12 border-t border-[var(--color-hairline)]">
         <h3 class="text-2xl font-bold text-[var(--color-ink)] mb-6">Career History (16-0play Database)</h3>

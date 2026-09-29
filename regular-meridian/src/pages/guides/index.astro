@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const guides = [
+  ['play-16-0-play', 'How to Play 16-0 Play: A Beginner’s Guide', 'Start with the squad, learn the season flow, and understand what the 16-0 challenge asks of you.'],
+  ['ratings-star-stacking-chemistry', 'Ratings, Star Stacking, and Team Chemistry', 'A code-checked explanation of player ratings, balance bonuses, penalties, and pair chemistry.'],
+  ['build-playing-xi', 'How to Build a Playing XI', 'Use role balance, bowling options, overseas limits, and squad depth when you choose a lineup.'],
+  ['signature-pairs', 'Signature Pairs and Team Chemistry', 'The twelve player pairs recognized by the current simulation, plus the limit on their bonus.'],
+  ['multiplayer-draft', 'Multiplayer Draft Guide: The Auction Flow', 'How rooms, rosters, bidding timers, and automatic picks work in the current multiplayer mode.'],
+  ['dls-rain-events', 'DLS Labels and Rain Events in the Simulator', 'What rain can change in a simulated match, and what the game does not model.'],
+  ['overseas-players', 'Overseas Players: Building Around the Limit', 'Plan a legal XI and understand the separate overseas strength penalty.'],
+  ['draft-mistakes', 'Ten Draft Mistakes and How to Avoid Them', 'A practical checklist for building a functional squad instead of chasing names alone.'],
+];
+---
+
+<Layout title="Cricket Strategy Guides | 16-0 Play" description="Practical guides to the 16-0 Play cricket simulator, built from its current rules and data.">
+  <Fragment slot="head">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://16-0play.com/guides/" />
+    <meta property="og:title" content="Cricket Strategy Guides | 16-0 Play" />
+    <meta property="og:description" content="Practical guides to the 16-0 Play cricket simulator, built from its current rules and data." />
+    <meta property="og:site_name" content="16-0 Play" />
+  </Fragment>
+  <section class="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
+    <header class="mb-10 max-w-3xl">
+      <h1 class="mb-4 text-4xl font-black tracking-tight text-[var(--color-ink)] sm:text-5xl">Cricket strategy guides</h1>
+      <p class="text-lg leading-8 text-[var(--color-body)]">Learn the squad rules and match systems used by 16-0 Play. Each guide is based on the current game code and data.</p>
+    </header>
+    <ul class="grid gap-5 md:grid-cols-2">
+      {guides.map(([slug, title, description]) => (
+        <li class="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-6">
+          <h2 class="mb-2 text-xl font-bold text-[var(--color-ink)]"><a class="underline decoration-[var(--color-hairline-strong)] underline-offset-4 hover:text-yellow-600" href={`/guides/${slug}/`}>{title}</a></h2>
+          <p class="leading-7 text-[var(--color-body)]">{description}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>
