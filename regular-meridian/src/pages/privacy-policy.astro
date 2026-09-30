@@ -1,51 +1,99 @@
 ---
 import Layout from '../layouts/Layout.astro';
 ---
-<Layout title="Privacy Policy | 16-0 Play" description="How 16-0 Play handles browser data, game submissions, analytics, advertising and contact messages.">
+<Layout title="Privacy Policy | 16-0 Play" description="Learn what information 16-0 Play collects, how it is used, when it is shared, and the choices available to you.">
   <article class="w-full px-6 py-14 sm:py-20">
     <div class="mx-auto max-w-4xl">
       <header class="mb-12 max-w-3xl">
         <h1 class="text-4xl font-bold tracking-tight text-[var(--color-ink)] sm:text-5xl">Privacy Policy</h1>
-        <p class="mt-5 text-lg leading-8 text-[var(--color-body)]">This page explains what information may be handled when you use 16-0 Play and the choices available to you.</p>
-        <p class="mt-4 text-sm text-[var(--color-mute)]">Last updated <time datetime="2026-09-29">September 29, 2026</time></p>
+        <p class="mt-5 text-lg leading-8 text-[var(--color-body)]">This policy explains how 16-0 Play handles information when you visit the site, play a game, use the leaderboard or multiplayer features, or contact us.</p>
+        <p class="mt-4 text-sm text-[var(--color-mute)]">Last updated <time datetime="2026-09-30">September 30, 2026</time></p>
       </header>
 
+      <aside aria-labelledby="privacy-summary" class="mb-10 max-w-3xl rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-5 sm:p-6">
+        <h2 id="privacy-summary" class="font-semibold text-[var(--color-ink)]">In short</h2>
+        <p class="mt-2 text-[var(--color-body)]">Game progress and your profile stay in your browser. Scores you submit appear publicly on the leaderboard. Google Analytics measures site visits, Pusher runs multiplayer, and FormSubmit delivers contact messages. Clear browser data or email us to request a leaderboard change.</p>
+      </aside>
+
       <div class="max-w-3xl space-y-10 text-base leading-7 text-[var(--color-body)]">
-        <section>
-          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">Information the game uses</h2>
-          <p class="mt-3">Game progress and your display preference may be saved in your browser so you can return to a game and keep your chosen theme. The site stores this information in local storage on your device.</p>
-          <p class="mt-3">If you submit a run to the leaderboard, the game sends a generated player identifier and handle together with run details such as mode, results, date and settings. The leaderboard stores and displays run information so players can compare results.</p>
-          <p class="mt-3">Multiplayer mode uses Pusher to connect players and share live-room information needed to operate the game, including room membership, participant names, roster selections, bids, tactics, match state and chat messages when those features are used. Pusher may process connection and device information to provide the service; see <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://pusher.com/legal/" target="_blank" rel="noopener noreferrer">Pusher's legal and privacy information</a>. The current source uses Pusher; a PeerJS client library was not found in the project dependencies or multiplayer imports reviewed for this policy.</p>
+        <nav aria-label="On this page" class="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-5 sm:p-6">
+          <h2 class="font-semibold text-[var(--color-ink)]">On this page</h2>
+          <ul class="mt-3 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+            <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4" href="#information">Information we handle</a></li>
+            <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4" href="#use">How we use information</a></li>
+            <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4" href="#sharing">When information is shared</a></li>
+            <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4" href="#retention">How long we keep information</a></li>
+            <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4" href="#choices">Your choices and requests</a></li>
+            <li><a class="font-medium text-[var(--color-link)] underline underline-offset-4" href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <section id="information" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">1. Information we handle</h2>
+          <p class="mt-3">You can play without creating an account. The site does not ask for a real name, email address, or password to play. Some features use the following information:</p>
+          <ul class="mt-3 list-disc space-y-2 pl-6">
+            <li><strong class="text-[var(--color-ink)]">Saved game and profile data:</strong> Your browser's saved site data can hold your theme choice, a randomly generated player code, your game handle, saved progress, and local run history. A run record may include its date, result, selected lineup, game mode, difficulty, and card category. This information stays in your browser unless you choose to submit a leaderboard entry or otherwise share it.</li>
+            <li><strong class="text-[var(--color-ink)]">Leaderboard submissions:</strong> If you submit a run, our server receives a generated player code, your handle, the submission date, and game results and settings. These include game mode, wins, losses, points, net run rate, finish, difficulty, and team rating. Each submission gets its own reference. Results and handles are shown publicly so visitors can compare scores.</li>
+            <li><strong class="text-[var(--color-ink)]">Multiplayer activity:</strong> If you use multiplayer, the game uses a generated connection code, the name you enter, and information needed to run the room. This can include the room code, team and lineup choices, picks, bids, tactics, match progress, readiness, and chat messages. Other people in your room can see information shared with that room.</li>
+            <li><strong class="text-[var(--color-ink)]">Contact messages:</strong> If you use the contact form, FormSubmit receives the name, email address, and message you enter so it can deliver them to our contact inbox. If you email us directly, we receive the information in your email.</li>
+            <li><strong class="text-[var(--color-ink)]">Visit and device information:</strong> Google Analytics runs on site pages and may receive page views, interaction and browser or device information, and identifiers such as cookies. Our hosting and service providers may also process technical information, such as your internet address, request details, and connection information, when their services deliver or secure the site.</li>
+          </ul>
+        </section>
+
+        <section id="use" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">2. How we use information</h2>
+          <p class="mt-3">We use information to save your game and preferences, provide multiplayer rooms, receive and display leaderboard results, answer messages, understand site usage, and maintain the security and operation of the site. We do not use leaderboard or local game data to create advertising profiles.</p>
+        </section>
+
+        <section id="sharing" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">3. When information is shared</h2>
+          <p class="mt-3">We share information with service providers only as needed to operate the features described here:</p>
+          <ul class="mt-3 list-disc space-y-2 pl-6">
+            <li><strong class="text-[var(--color-ink)]">Cloudflare:</strong> Hosts the site and leaderboard service and stores leaderboard records.</li>
+            <li><strong class="text-[var(--color-ink)]">Google:</strong> Provides Google Analytics for site measurement. Google Analytics uses cookies or similar technologies under its own settings and policies. Read <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">Google's cookie information</a> and <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google's Privacy Policy</a>.</li>
+            <li><strong class="text-[var(--color-ink)]">Pusher:</strong> Provides real-time multiplayer connections and relays room events between participants. Its service may process connection and usage information. Read <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://pusher.com/legal/" target="_blank" rel="noopener noreferrer">Pusher's legal information</a>.</li>
+            <li><strong class="text-[var(--color-ink)]">FormSubmit:</strong> Delivers contact-form submissions to our inbox. Read <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer">FormSubmit's privacy terms</a>.</li>
+          </ul>
+          <p class="mt-3">A leaderboard handle and submitted results are public. Multiplayer information is shared with participants in that room. Service providers may process information in the countries where they or their infrastructure operate, subject to their own practices and applicable law. We may also disclose information where required by law or when reasonably necessary to protect the site, its users, or the public.</p>
+          <p class="mt-3">Google AdSense advertising is not currently enabled on the site's pages. If we enable advertising in the future, we will update this policy to describe the advertising services and relevant choices.</p>
+        </section>
+
+        <section id="retention" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">4. How long we keep information</h2>
+          <p class="mt-3">Browser data remains on your device until you clear it or the game removes saved progress after a game ends. Clearing site data may erase your saved games, profile, run history, and theme preference. Leaderboard entries are kept in the site's database and remain publicly available until removed; the site does not currently apply an automatic deletion schedule to them. Contact messages may remain in the delivery service or contact inbox for as long as needed to handle the message and related records. Each service provider may keep its own technical records under its own schedule.</p>
+        </section>
+
+        <section id="choices" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">5. Your choices and requests</h2>
+          <ul class="mt-3 list-disc space-y-2 pl-6">
+            <li>Use your browser's site-data controls to clear local storage or cookies. This can remove saved progress and preferences.</li>
+            <li>You can limit or clear Google Analytics cookies through your browser settings. Google's <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Analytics opt-out browser add-on</a> is another option. Some site or measurement features may work differently when cookies are blocked.</li>
+            <li>To ask us to access, correct, or delete a leaderboard entry or handle, email us from the address below. Include the handle and, if available, the approximate submission date and result so we can identify the record. We may need to verify the request before acting.</li>
+            <li>For a contact-form submission, you can ask us to delete the message from our inbox. FormSubmit and other providers may separately retain records under their own policies.</li>
+          </ul>
+          <p class="mt-3">Privacy rights and available choices depend on where you live. We will handle requests in accordance with applicable law.</p>
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">Analytics and advertising</h2>
-          <p class="mt-3">The site loads Google Analytics (gtag.js) to measure visits and use of the site. Google Analytics may use cookies or similar identifiers and receive information about your browser, device and interactions. See <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener noreferrer">Google's information about cookies</a>.</p>
-          <p class="mt-3">Google AdSense is not currently enabled in the site's page code. If advertising is enabled later, Google AdSense and its advertising partners, including DoubleClick services, may use cookies or similar technologies to serve, personalize, limit, and measure ads. Personalized ads may use information associated with a visitor's prior visits to this site or other sites. Third-party ad vendors may receive technical information such as an IP address, browser or device details, and ad interactions when their services run. The site owner should enable ads only on appropriate content pages and follow applicable consent requirements.</p>
-          <p class="mt-3">You can review or change Google's personalized advertising choices in <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>. You can opt out of personalized ads there; you may still see non-personalized ads if advertising is enabled. Learn how <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google uses information from sites and apps that use its services</a>, and review <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://support.google.com/adsense/answer/7549925" target="_blank" rel="noopener noreferrer">how AdSense uses cookies</a>.</p>
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">6. Security</h2>
+          <p class="mt-3">We use service providers and technical measures to operate the site, but no website or method of transmission can be guaranteed completely secure. Please do not include passwords, financial details, or other sensitive personal information in multiplayer chat or contact messages.</p>
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">Contact messages</h2>
-          <p class="mt-3">If you use the contact form, the name, email address and message you provide are sent through FormSubmit to our contact inbox. FormSubmit processes the submission to deliver it. You can also contact us directly by email.</p>
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">7. Third-party services and links</h2>
+          <p class="mt-3">The services listed above handle information under their own terms and privacy notices. Other websites linked from 16-0 Play are not operated by us; review their privacy information before sharing information with them.</p>
         </section>
 
         <section>
-          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">Hosting and service providers</h2>
-          <p class="mt-3">The site is hosted using Cloudflare Pages. The services described above may process technical information, including network or device information, to deliver their features, protect their systems or operate the site. Their handling of information is governed by their own policies.</p>
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">8. Changes to this policy</h2>
+          <p class="mt-3">We may revise this policy when the site, its services, or applicable requirements change. We will post the revised version on this page and update the date above. The current version applies from its posted date.</p>
         </section>
 
-        <section>
-          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">Your choices</h2>
-          <p class="mt-3">You can clear local storage or cookies through your browser settings; doing so may remove saved game progress, your profile, or your theme preference. You can adjust advertising choices in <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ads Settings</a> and use browser controls to block or clear cookies. Blocking a service may affect related site features.</p>
-        </section>
-
-        <section>
-          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">Changes and questions</h2>
-          <p class="mt-3">We may update this policy when the site or its services change. The date at the top shows when the current version was last revised. For a privacy question or request, email <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="mailto:curatedclass13@gmail.com">curatedclass13@gmail.com</a>.</p>
+        <section id="contact" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold text-[var(--color-ink)]">9. Contact us</h2>
+          <p class="mt-3">For privacy questions or requests, contact 16-0 Play at <a class="font-medium text-[var(--color-link)] underline underline-offset-4 hover:text-[var(--color-link-deep)]" href="mailto:curatedclass13@gmail.com">curatedclass13@gmail.com</a>.</p>
         </section>
       </div>
     </div>
   </article>
 </Layout>
-
