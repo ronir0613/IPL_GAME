@@ -21,7 +21,16 @@ const canonical = canonicalOverride ?? new URL(
 	Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`,
 	Astro.site ?? Astro.url
 ).href;
-const isGameModesPage = Astro.url.pathname.replace(/\/+$/, '') === '/game-modes';
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const currentSection = currentPath === '/' ? 'play'
+	: currentPath.startsWith('/players') ? 'players'
+	: currentPath.startsWith('/teams') ? 'teams'
+	: currentPath.startsWith('/rankings') ? 'rankings'
+	: currentPath === '/game-modes' ? 'game-modes'
+	: currentPath.startsWith('/guides') ? 'guides'
+	: '';
+const navCurrent = (section: string, route: string) =>
+	currentSection === section ? (currentPath === route ? 'page' : 'location') : undefined;
 ---
 
 <!doctype html>
@@ -113,22 +122,22 @@ const isGameModesPage = Astro.url.pathname.replace(/\/+$/, '') === '/game-modes'
             <span class="text-yellow-500">16-0</span>PLAY
           </a>
           <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-[var(--color-mute)]">
-            <a href="/" class="hover:text-yellow-600 transition-colors">Play</a>
-            <a href="/players" class="hover:text-yellow-600 transition-colors">Players</a>
-            <a href="/teams" class="hover:text-yellow-600 transition-colors">Teams</a>
-            <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
-            <a href="/game-modes" aria-current={isGameModesPage ? 'page' : undefined} class:list={["hover:text-yellow-600 transition-colors", isGameModesPage && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Game Modes</a>
-            <a href="/guides/" class="hover:text-yellow-600 transition-colors">Guides</a>
+            <a href="/" aria-current={navCurrent('play', '/')} class:list={["hover:text-yellow-600 transition-colors", currentSection === 'play' && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Play</a>
+            <a href="/players" aria-current={navCurrent('players', '/players')} class:list={["hover:text-yellow-600 transition-colors", currentSection === 'players' && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Players</a>
+            <a href="/teams" aria-current={navCurrent('teams', '/teams')} class:list={["hover:text-yellow-600 transition-colors", currentSection === 'teams' && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Teams</a>
+            <a href="/rankings" aria-current={navCurrent('rankings', '/rankings')} class:list={["hover:text-yellow-600 transition-colors", currentSection === 'rankings' && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Rankings</a>
+            <a href="/game-modes" aria-current={navCurrent('game-modes', '/game-modes')} class:list={["hover:text-yellow-600 transition-colors", currentSection === 'game-modes' && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Game Modes</a>
+            <a href="/guides/" aria-current={navCurrent('guides', '/guides')} class:list={["hover:text-yellow-600 transition-colors", currentSection === 'guides' && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Guides</a>
           </nav>
           <details class="group relative md:hidden">
             <summary class="list-none cursor-pointer rounded-md border border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] px-3 py-2 text-sm font-semibold text-[var(--color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500">Menu</summary>
             <nav aria-label="Mobile site navigation" class="absolute right-0 top-full z-50 mt-2 flex min-w-48 flex-col rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-2 text-sm font-medium shadow-lg">
-              <a href="/" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Play</a>
-              <a href="/players" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Players</a>
-              <a href="/teams" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Teams</a>
-              <a href="/rankings" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Rankings</a>
-              <a href="/game-modes" aria-current={isGameModesPage ? 'page' : undefined} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", isGameModesPage && "font-bold text-[var(--color-ink)]"]}>Game Modes</a>
-              <a href="/guides/" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Guides</a>
+              <a href="/" aria-current={navCurrent('play', '/')} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", currentSection === 'play' && "font-bold text-[var(--color-ink)]"]}>Play</a>
+              <a href="/players" aria-current={navCurrent('players', '/players')} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", currentSection === 'players' && "font-bold text-[var(--color-ink)]"]}>Players</a>
+              <a href="/teams" aria-current={navCurrent('teams', '/teams')} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", currentSection === 'teams' && "font-bold text-[var(--color-ink)]"]}>Teams</a>
+              <a href="/rankings" aria-current={navCurrent('rankings', '/rankings')} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", currentSection === 'rankings' && "font-bold text-[var(--color-ink)]"]}>Rankings</a>
+              <a href="/game-modes" aria-current={navCurrent('game-modes', '/game-modes')} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", currentSection === 'game-modes' && "font-bold text-[var(--color-ink)]"]}>Game Modes</a>
+              <a href="/guides/" aria-current={navCurrent('guides', '/guides')} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", currentSection === 'guides' && "font-bold text-[var(--color-ink)]"]}>Guides</a>
             </nav>
           </details>
         </div>
