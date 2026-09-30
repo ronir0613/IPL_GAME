@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/GuideLayout.astro
 title: "Signature Pairs and Team Chemistry"
-description: "All twelve chemistry pairs in the current 16-0 Play engine, their one-point bonus, cap, and roster trade-offs."
+description: "All twelve chemistry pairs in 16-0 Play, their one-point bonus, cap, and roster trade-offs."
 slug: signature-pairs
 publishDate: "2026-09-29"
 updatedDate: "2026-09-29"
@@ -19,19 +19,19 @@ related:
   - { title: "Browse player profiles", href: "/players/" }
 ---
 
-The 16-0 Play engine contains a fixed list of twelve signature pairs. If both names in one of those pairs are present in the first eleven selected players, the team receives one chemistry point for that pair. The combined chemistry bonus is capped at five. This guide lists the names as they are written in the engine, explains the cap, and shows how to use the rule without treating it as a guarantee of a match result.
+16-0 Play recognizes twelve signature pairs. If both players in a listed pair are among your starting eleven, your team receives one chemistry point for that pair. The combined chemistry bonus is capped at five. This guide lists all twelve pairs and explains how to use the bonus without treating it as a guarantee of a match result.
 
-The pair list is a game mechanic, not an editorial ranking of cricket partnerships. A pair may be familiar to fans, but its game effect comes from the explicit strings in the source code. No automatic bonus is awarded merely because two players once appeared for the same franchise, played together in a season, or are popular picks. For how chemistry fits the full team-strength formula, read [ratings, stacking, and chemistry](/guides/ratings-star-stacking-chemistry/).
+The pair list is a game rule, not an editorial ranking of cricket partnerships. A pair may be familiar to fans, but only the combinations below earn this bonus. Two players do not receive an automatic bonus simply because they once played for the same franchise, appeared together in a season, or are popular picks. For how chemistry fits into team strength, read [ratings, stacking, and chemistry](/guides/ratings-star-stacking-chemistry/).
 
 ## <span id="what-a-pair-does"></span>What a pair does
 
-The engine makes a lowercase set from names in the selected eleven, then checks each configured two-name pair. When both names occur, it adds one point to `chemistryBonus`. At the end it applies `Math.min(chemistryBonus, 5)`. A complete pair therefore contributes to a bonus that is combined with other overall calculations, but chemistry alone cannot push this field above five.
+The game checks whether both players in each listed pair are in your starting eleven. Every complete pair adds one point, up to a maximum of five chemistry points. Chemistry contributes to the team's overall strength alongside other bonuses and deductions, but it cannot raise the chemistry total above five.
 
 The pair does not change a player's stored rating. It does not add a separate batting or bowling skill value. Instead, the bonus is added into the team overall calculation. Because batting and bowling are adjusted by the difference between overall and the raw average, that overall change can flow into those displayed team strength values as well. The effect is team-level and mediated by the formula.
 
 ## <span id="all-twelve-pairs"></span>All twelve pairs
 
-These are the exact twelve pairs currently defined in `src/lib/engine.ts`:
+These are the twelve signature pairs in the game:
 
 1. Virat Kohli and AB de Villiers
 2. MS Dhoni and Suresh Raina
@@ -46,11 +46,11 @@ These are the exact twelve pairs currently defined in `src/lib/engine.ts`:
 11. Shreyas Iyer and Rishabh Pant
 12. Yuzvendra Chahal and Kuldeep Yadav
 
-Some pairs use players with long associations in particular eras; others reflect the site's selected game pair data. The engine itself does not display a source citation for why a pair was chosen. The safe description is the game recognizes a combination. Do not extend that into unsupported claims about all seasons together or a real-world chemistry measurement.
+Some pairs reflect well-known associations between players. The bonus means only that this game recognizes the combination; it is not a measurement of real-world chemistry or a claim that the players were teammates in every season.
 
 You can compare the corresponding player records for [Virat Kohli](/players/virat-kohli/), [AB de Villiers](/players/ab-de-villiers/), [MS Dhoni](/players/ms-dhoni/), and [Suresh Raina](/players/suresh-raina/). Their profile pages show the game's own role and rating data, and some also contain Cricsheet career totals where the player identity was matched confidently. Those career totals do not change the pair rule.
 
-The same function contains four rivalry pairs: Virat Kohli and Gautam Gambhir; Rohit Sharma and David Warner; AB de Villiers and Quinton de Kock; and Hardik Pandya and Pat Cummins. Each complete rivalry subtracts one, with the combined rivalry penalty capped at three. Those names can intersect the signature list. For example, the engine can award a bonus for Kohli–de Villiers while also finding the Kohli–Gambhir rivalry if all three are selected. Both checks still run.
+The game also recognizes four rivalry pairs: Virat Kohli and Gautam Gambhir; Rohit Sharma and David Warner; AB de Villiers and Quinton de Kock; and Hardik Pandya and Pat Cummins. Each complete rivalry subtracts one point, up to a total deduction of three. A team can have a signature bonus and a rivalry deduction at the same time. For example, selecting Kohli, de Villiers, and Gambhir gives the Kohli–de Villiers bonus and the Kohli–Gambhir deduction.
 
 ## <span id="the-cap-and-other-adjustments"></span>The cap and other adjustments
 
@@ -66,13 +66,13 @@ Start with the XI's needs. If you already planned to select Virat Kohli as a bat
 
 Consider overseas limits too. Both players in some pairs may be marked overseas in the player data. The standard first XI cannot exceed four overseas players and the strength formula subtracts one point at two overseas, two at three, and three at four or more. A pair's one-point bonus can coexist with an overseas count deduction. It is not automatically a net positive to add two players from any pair.
 
-Pair picks can also affect rivalries. If you select both AB de Villiers and Quinton de Kock, the source lists that combination as a rivalry penalty. Their pair is not a signature pair, even though both are well-known players. If you add Virat Kohli and Gautam Gambhir to complete another combination, their rivalry is also checked. Learn the whole list rather than inferring a bonus from a remembered association.
+Your selections can complete rivalries as well as signature pairs. AB de Villiers and Quinton de Kock, for example, trigger a rivalry deduction rather than a chemistry bonus. Adding Virat Kohli and Gautam Gambhir completes another rivalry. Check the full list instead of assuming a familiar association earns a bonus.
 
 ## <span id="name-matching-caveat"></span>Name-matching caveat
 
-The engine compares lowercased names as exact strings in a set. It does not normalize punctuation, initials, nicknames, transliterations, or spelling variants at the point of chemistry lookup. The configured pair uses `robin uthappa`, for example. If a roster record instead spells a person differently, the name string may not match that entry. The duplicate page canonical map added for website search does not rewrite the name used by game logic.
+The game matches the names shown on its player cards. A spelling difference, nickname, or initials may mean a player does not count as part of a listed pair. For example, the signature list spells Robin Uthappa's name as “Robin Uthappa.” Check the displayed player names when confirming whether a pair is complete.
 
-This also means canonical URLs and chemistry are separate systems. Canonical tags tell search engines which player page is preferred; they do not merge game cards or mutate stored player names. Use the actual displayed roster name when checking a pair, and treat the provided list as the authoritative version for this build. You can verify candidates on the [player database](/players/).
+Player page addresses do not affect chemistry. Use the name shown in your lineup, and compare it with the [player profiles](/players/) and the pair list above.
 
 ## <span id="a-pair-based-xi-example"></span>A pair-based XI example
 
@@ -80,4 +80,4 @@ Suppose your planned XI already needs a wicketkeeper and several bowling contrib
 
 Now look at the cost. If adding Watson pushes the team to four overseas players, the quality penalty is three. If it results in three 92-plus players, stacking also applies. If the batting and bowling weights remain useful and the overall calculation shows the expected bonuses, the choice may fit; if it weakens a role or creates a larger penalty, the pair is not enough on its own to justify the pick.
 
-This kind of arithmetic makes the list useful. Choose combinations that already suit the side, then verify the bonus and all other values in the breakdown. For more examples, use [the XI-building method](/guides/build-playing-xi/), review [common draft mistakes](/guides/draft-mistakes/), and compare the complete [ratings explanation](/rating-system/). A pair is a known rule in the simulator, not a shortcut around the rest of squad construction.
+Use these pair rules to refine a lineup that already covers the roles you need. After selecting players, check the chemistry and rivalry values in the strength breakdown. For more selection advice, read [how to build a playing XI](/guides/build-playing-xi/), review [common draft mistakes](/guides/draft-mistakes/), and see the full [ratings explanation](/rating-system/). Chemistry is one part of squad building, not a shortcut around it.

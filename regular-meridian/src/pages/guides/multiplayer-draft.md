@@ -20,49 +20,49 @@ related:
   - { title: "Game modes", href: "/game-modes/" }
 ---
 
-The current multiplayer mode is a room-based squad auction. The lobby lets the host configure roster size, a pick timer, an overseas limit, and a short or long auction pool. The source also uses the word “draft” for the overall phase and for automatic AI roster filling, but the human player acquisition screen includes bids, a current bid, a highest bidder, and a purse. This guide describes that implemented flow rather than assuming a conventional snake draft.
+Multiplayer is a room-based squad auction. The host chooses the roster size, pick timer, overseas limit, and a short or long auction pool. Human players bid against one another, so the player selection works differently from a turn-by-turn snake draft.
 
-Use the lobby controls as the source of truth because settings can vary between rooms. These notes describe the code inspected for this build; details such as server availability and connection quality can change outside the game code. For the single-player roster method, see [how to build a playing XI](/guides/build-playing-xi/).
+Room settings can vary, so check the lobby before the auction begins. Connection quality and service availability can also affect an online game. For the single-player roster method, see [how to build a playing XI](/guides/build-playing-xi/).
 
 ## <span id="make-or-join-a-room"></span>Make or join a room
 
-The multiplayer system creates a five-character uppercase room code from letters and numbers chosen to avoid confusing characters such as O and I. One user hosts the room and others join with the code. The lobby shows linked users and the number of additional AI slots. The room is designed to contain ten teams in total; when the host starts, empty positions are filled by AI teams using available franchise codes.
+Create a room to host, or enter a five-character room code to join someone else's game. The lobby shows who has joined and how many AI teams will fill the remaining places. A room can contain ten teams in total.
 
-The host controls lobby settings. Other participants see the current configuration and cannot change it. The initial settings in the current code are fifteen roster rounds, a ten-second turn timer, a maximum of four overseas players, nine AI teams, and the short auction format. The host can cycle among the allowed values before starting. If there are more human participants, fewer AI slots are needed.
+The host chooses the room settings; other participants can see them but cannot change them. The starting setup is fifteen roster rounds, a ten-second timer, a four-player overseas limit, and the short auction pool. The host can adjust the available options before starting. More human participants means fewer AI teams are needed.
 
 Choose a room with enough time for everyone to understand the rules before the host starts the auction. The room code is a joining credential for the game session, so share it only with the people you want in the room. The interface includes copy and leave controls; leaving disconnects the local participant from that room flow.
 
 ## <span id="set-the-roster-rules"></span>Set the roster rules
 
-The roster size can be set to eleven players for an XI-only roster or fifteen for a roster with a bench. The turn timer choices are five, ten, or fifteen seconds. The overseas limit control offers four or five players for the multiplayer draft. The auction pool format can be short or long; the interface labels them as 140 and 320 respectively. Those labels describe available auction pool lengths, not a promise about how many total players each person will select.
+The host can choose an eleven-player roster or a fifteen-player roster with a bench. The timer can be five, ten, or fifteen seconds, and the overseas limit can be four or five. The short and long auction pools contain 140 and 320 candidates respectively; these are pool sizes, not the number of players each person selects.
 
-The default is fifteen picks and four overseas players. A host who chooses a different configuration changes the constraints the other players work under. Participants should read the roster fraction, overseas count, current budget, and active player details before placing a bid. A roster limit in an auction is not automatically the same as the standard single-player XI rule; the multiplayer match center validates the selected lineup against the room setting.
+The default is fifteen picks and four overseas players. A different host setting changes the rules for everyone in the room. Before bidding, check the roster count, overseas limit, remaining purse, and the player currently being offered. The room's overseas rule may differ from the standard single-player limit; the selected XI must follow the room setting.
 
-For a new group, the shorter roster can make choices easier to follow, while a bench-sized roster gives more room to cover roles. The exact balance depends on the people playing. This is a practical suggestion, not a coded advantage. Likewise, choosing a longer auction list provides more candidates, but it does not guarantee that a particular player will appear or be affordable.
+For a new group, a shorter roster can make choices easier to follow, while a bench-sized roster gives you more options. A longer auction pool offers more candidates, but does not guarantee a particular player will appear or be affordable.
 
 ## <span id="how-the-order-works"></span>How the order works
 
-When the host starts the multiplayer draft, the application combines human peer IDs and AI team IDs into a draft-order list, then shuffles that list. The starting order is therefore randomized. In the standard draft phase, the active index and round number advance as selections resolve. The code does not reverse the pick order on alternate rounds for human selections, so it should not be described as a classic snake draft unless a later code version changes that behavior.
+When the host starts, the order of teams is randomized. Human players then bid for the player on offer; picks do not alternate back and forth in a snake order. Take part in each auction while it is active, and watch the timer and current highest bid.
 
-The application also has AI roster filling that uses a “snake order” comment for how it distributes players among AI rosters. That is a separate operation from the live human auction. Confusing the two can leave players expecting the wrong turn sequence. In the auction stage, a player can bid against other participants; being first in the list does not mean that only one person gets a chance at each player.
+AI teams fill some of the remaining roster slots automatically. That process happens separately from the live auction. During an auction, multiple human participants can bid on the same player.
 
-If the room has fewer than ten humans, AI franchises fill the remaining team slots. The host's choices of franchise and the list of remaining franchises inform which AI codes are created. AI teams use their own valuation logic during bidding. A human's strategy therefore involves the auction's competition and the roster constraints, not just choosing the next name from a shared alternating list.
+If fewer than ten people join, AI teams fill the remaining places. They also bid during the auction, so expect competition for popular players. Plan around your team's needs and the room's roster limits rather than waiting for a personal turn in a rotating list.
 
 ## <span id="bidding-and-timers"></span>Bidding and timers
 
-The auction screen shows the active player, current bid, highest bidder, and bid timer. Base prices depend on rating, category, overseas status, and marquee or legends status. Bid increments also depend on the current bid bracket. The source code defines those values; this guide does not repeat the whole price table because it can be read from the current player and bid controls as the auction runs.
+The auction screen shows the player for sale, current bid, highest bidder, and timer. Starting prices depend on a player's rating, category, overseas status, and whether they are marked as a marquee or legend. Bid increases vary with the current price. Check the amount shown on screen before raising your bid.
 
-The configured turn timer begins at five, ten, or fifteen seconds. When it expires, the state advances through the auction flow. The host's client is responsible for resolving the timer and communicating state updates; the source comments say clients tick locally and re-sync when a game event occurs. A timer is therefore a pacing mechanism, not a guarantee that every user sees identical countdown updates at every instant.
+The host sets a five-, ten-, or fifteen-second timer. When it runs out, the auction moves on. Network delays can make countdowns appear slightly different for different players, so use the bid and highest-bidder information shown in the room.
 
-Watch the purse as well as the bid. The default purse is 12,000 lakhs, displayed as ₹120.00 crore. The application also reserves a minimum amount for each remaining roster slot so a team cannot spend its entire purse before filling its roster. The reserve calculation uses ₹20 lakhs per remaining slot. A bid that would breach the reserve or exceed the roster size is rejected by the client-side state logic.
+Watch your purse as well as the bid. Each team starts with ₹120 crore. The game keeps ₹20 lakhs available for each unfilled roster place, so you cannot spend the full purse too early. A bid is rejected if it would break that reserve or exceed your roster size.
 
 ## <span id="automatic-picks-and-ai"></span>Automatic picks and AI
 
-The game has an AI player-selection helper for automatic picks when time runs out or when filling remaining roster slots. It filters already-selected players, checks the current roster's overseas count, and may prioritize a wicketkeeper, batter, or bowler when four or fewer slots remain. It sorts the candidate pool by overall rating and selects the highest remaining candidate in the filtered pool.
+When the timer runs out or a roster needs an automatic pick, the game chooses from the remaining available players. It takes the overseas limit into account and may prioritize a wicketkeeper, batter, or bowler when only a few places remain. Ratings are also considered.
 
-If a constrained pool is empty, the helper has a final fallback to the highest-rated available player without applying the overseas filter. That behavior is a code fallback, not a general permission to ignore the room's cap for a human lineup. The match center separately checks the lineup and can reject it if it exceeds the configured maximum. A human should still satisfy the rule rather than relying on an automatic fallback.
+Automatic picks are not a reason to ignore the room's overseas limit when setting your own lineup. Before the match starts, check the selected XI against the limit shown in the lobby; an invalid lineup may be rejected.
 
-AI valuations are not identical to a human budget plan. The engine estimates player value from rating and applies adjustments such as role need, overseas status, and high-rating appeal. AI may stop bidding when a roster has reached its overseas cap. Because these are estimates, they can behave differently from a person using intuition or a favorite-player strategy.
+AI teams weigh ratings, roles, overseas status, and other player categories when bidding. They may stop pursuing overseas players after reaching the room limit. Their choices are not the same as a human's budget plan or favorite-player strategy.
 
 ## <span id="plan-your-roster-and-purse"></span>Plan your roster and purse
 
@@ -76,6 +76,6 @@ Keep track of overseas players as you bid. When you hit the room limit, addition
 
 Once the roster is complete, review your team and check the lineup before the season starts. The multiplayer match center lets participants choose an XI and may include match preparation, tactics, and a round simulation sequence. The selected playing XI must fit the room's overseas setting. If a lineup is rejected, count the overseas players first and confirm that the roster has the needed roles.
 
-Multiplayer state is shared through the configured Pusher service. The app sends game messages such as lobby updates, picks, bids, lineup or tactics updates, match results, and chat. A dropped connection can prevent timely state changes, so the UI includes connection guidance. If someone is disconnected, the AI automatic pick helper provides a way for the game flow to continue in some situations; it is not a claim that every network failure will recover without a host action.
+The room shares lobby updates, picks, bids, lineups, tactics, match results, and chat between participants. If a connection drops, updates may be delayed. Automatic picks can keep some parts of the auction moving, but they do not guarantee that every connection problem resolves without help from the host.
 
 The key to a useful session is to agree on settings, know whether the auction pool is short or long, and plan roles and budget before the timer is running. For the broader mode overview, see [Game Modes](/game-modes/). To understand which roster combinations can affect strength, read [team ratings and chemistry](/guides/ratings-star-stacking-chemistry/) and use the [XI-building checklist](/guides/build-playing-xi/).

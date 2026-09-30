@@ -2,85 +2,69 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout 
-  title="How Ratings Work in 16-0play | Simulation Engine Explained"
-  description="Understand the mathematics and logic behind player ratings, team chemistry, and match simulations in 16-0play."
+<Layout
+  title="How Player Ratings Work | 16-0 Play"
+  description="Learn how player roles, rating thresholds, chemistry, overseas limits, and recent form affect team strength in 16-0 Play."
 >
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12 md:py-20 text-[var(--color-body)] text-base leading-relaxed">
-    <h1 class="text-4xl md:text-5xl font-black text-[var(--color-ink)] tracking-tight mb-8">The 16-0play Rating System</h1>
-    
-    <p class="text-lg mb-10">
-      The 16-0play simulation engine uses a dynamic rating system designed to mirror the complexities of real cricket. Ratings are not static numbers; they interact with team composition, match conditions, and player form to determine the outcome of every match.
-    </p>
+  <article class="mx-auto w-full max-w-4xl px-4 py-12 text-[var(--color-body)] sm:px-6 md:py-16">
+    <header class="mb-10">
+      <h1 class="mb-5 text-4xl font-black tracking-tight text-[var(--color-ink)] sm:text-5xl">How player ratings and team strength work</h1>
+      <p class="text-lg leading-8">Player ratings are one part of building a strong side in 16-0 Play. A role determines where a player's rating helps; the other players in your XI can add bonuses or trigger deductions. Use the lineup breakdown to see how those pieces fit together. It explains your team's setup, but it cannot guarantee a match result.</p>
+    </header>
 
-    <div class="space-y-12">
+    <div class="space-y-10 leading-7">
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Base Player Ratings & Star Stacking</h2>
-        <p class="mb-4">
-          Every player in the database is assigned a base rating between 70 and 99. This rating is derived from their historical performances, peak statistical seasons, and their impact in the specific role they play.
-        </p>
-        <ul class="list-disc pl-6 space-y-2 mb-4">
-          <li><strong>90+ (Elite):</strong> Legendary, match-winning icons capable of carrying a team.</li>
-          <li><strong>80-89 (Star):</strong> Premium talent necessary for consistent victories.</li>
-          <li><strong>70-79 (Role Player):</strong> Reliable squad members who provide vital balance and depth.</li>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">Player ratings are game values</h2>
+        <p class="mb-4">Each profile shows a rating and a playing role. The rating helps the game compare squads; it is not an official ranking or a claim that one real cricketer is objectively better than another. Career runs and wickets shown on some profiles come from Cricsheet match records. Those real match totals are separate from the rating used in the game.</p>
+        <p>When choosing between players, consider what their role adds to your XI instead of sorting by rating alone. A slightly lower-rated player can be more useful if they strengthen an area your team is missing.</p>
+      </section>
+
+      <section>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">How roles affect batting and bowling</h2>
+        <p class="mb-4">The starting XI's ratings contribute to batting strength and bowling strength according to role. Batters and wicketkeepers help batting; specialist bowlers help bowling; all-rounders contribute to both. The balance differs by role:</p>
+        <ul class="list-disc space-y-2 pl-6">
+          <li><strong>BAT and WK:</strong> full contribution to batting strength.</li>
+          <li><strong>BOWL:</strong> full contribution to bowling strength.</li>
+          <li><strong>BAT_AR:</strong> strong batting contribution and a smaller bowling contribution.</li>
+          <li><strong>AR:</strong> substantial contributions to both batting and bowling.</li>
+          <li><strong>BOWL_AR:</strong> strong bowling contribution and a smaller batting contribution.</li>
         </ul>
-        <p class="mb-4">
-          <strong>Star Stacking Penalty:</strong> The engine penalizes top-heavy teams to encourage balance. Having more than two 92+ rated players incurs a team-wide penalty. Having more than one 95+ rated player incurs an additional heavy penalty. Furthermore, any overall team strength that exceeds 90 receives a 50% diminishing return penalty on the excess points.
-        </p>
+        <p class="mt-4">This is why role coverage matters. An XI filled with batters may have a healthy batting value but little help in its bowling value. A team with several all-rounders can cover both, while still needing enough specialist players for balance.</p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Team Chemistry & Rivalries</h2>
-        <p class="mb-4">
-          Matching specific players together can either boost your team's performance or create friction:
-        </p>
-        <ul class="list-disc pl-6 space-y-2 mb-4">
-          <li><strong>Signature Pairs (+1 Bonus):</strong> Reuniting iconic duos like <em>Virat Kohli & AB de Villiers</em> or <em>MS Dhoni & Suresh Raina</em> provides a chemistry boost to your overall team strength.</li>
-          <li><strong>Rivalry Penalty (-1 Penalty):</strong> Pairing players with historic rivalries (e.g. <em>Virat Kohli & Gautam Gambhir</em>) will actively harm your team's synergy.</li>
-        </ul>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">Rating stacking and the overall above 90</h2>
+        <p class="mb-4">Several very high ratings can still make a good team, but the game reduces some of their combined advantage. For players rated 92 or above, the first two avoid a stacking deduction; each additional player in that range loses two effective rating points. For ratings of 95 or above, the first avoids the extra deduction and each additional one loses three more points. A later 95-plus player can receive both deductions because they also meet the 92-plus threshold.</p>
+        <p class="mb-4">These points are taken from the affected players before their average contributes to team strength. The lineup breakdown spreads the total deduction across the players in the XI, so its displayed effect is smaller than simply subtracting every lost point from the final team value.</p>
+        <p>The game also softens an overall above 90 by removing half of the amount over 90. For example, an adjusted value of 94 becomes 92 before rounding. This is a diminishing return, not a hard cap: a team can still have an overall above 90.</p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Identity & Franchise Core Bonuses</h2>
-        <p class="mb-4">
-          The engine rewards teams that establish a clear tactical identity or maintain a franchise core:
-        </p>
-        <ul class="list-disc pl-6 space-y-2 mb-4">
-          <li><strong>Tactical Identities:</strong> Fielding 7+ Batters/Wicketkeepers grants a <em>Batting-Heavy</em> bonus. Fielding 5+ Bowlers grants a <em>Bowling-Heavy</em> bonus. Fielding 4+ All-Rounders creates an <em>All-Rounder Army</em>.</li>
-          <li><strong>Franchise Core:</strong> Selecting 3 or more players from the same original franchise provides a +1 chemistry bonus, and 5 or more players provides a +2 bonus.</li>
-          <li><strong>Overseas Quality Limit:</strong> While you are strictly limited to a maximum of 4 overseas players on the field, the engine applies a slight progressive penalty if you field 2 or more overseas players, simulating the challenge of integrating multiple international stars.</li>
-        </ul>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">Chemistry, rivalries, and team identity</h2>
+        <p class="mb-4">Some named pairs add one chemistry point when both players are in the starting XI. The total chemistry bonus is capped at five. The game also recognizes four rivalry pairs; each complete rivalry subtracts one point, up to a total deduction of three. A lineup can complete a bonus pair and a rivalry at the same time, so check both values before starting a match.</p>
+        <p class="mb-4">Role groups can earn team-identity points. Seven or more BAT/WK players activate Batting-Heavy, five or more BOWL players activate Bowling-Heavy, and four or more all-rounders activate All-Rounder Army. Each identity is worth one point. Keeping players from a former franchise together can also help: three from one team add one point, while five or more add two. Team-identity bonuses together are capped at five.</p>
+        <p>These bonuses can help refine a well-rounded XI, but they should not replace role coverage. See the <a class="underline underline-offset-4" href="/guides/signature-pairs/">complete pair list</a> to check which combinations the game recognizes.</p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Dynamic Form System</h2>
-        <p class="mb-4">
-          In 16-0play, a player's base rating is only the starting point. The engine calculates an active <strong>Form Score</strong> (represented by sparklines on player profiles) that adjusts their effective rating up or down for the next match.
-        </p>
-        <ul class="list-disc pl-6 space-y-2 mb-4">
-          <li><strong>Hot Streaks:</strong> Consistent high performances boost a player's form, pushing their effective rating past their base maximum. A team on a massive winning streak (e.g. 12+ games) enters "Dynasty Mode", granting massive momentum bonuses.</li>
-          <li><strong>Slumps:</strong> Successive poor matches will drop a player's form, making them a liability against elite opponents.</li>
-        </ul>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">Overseas players</h2>
+        <p class="mb-4">A standard XI can include up to four overseas players. The strength deduction begins before that limit: two overseas players subtract one point, three subtract two, and four subtract three. One or zero has no overseas deduction. Multiplayer rooms can use the host's setting of four or five, so check the lobby when you play online.</p>
+        <p>This is a team-balance rule, not a judgment about a player's quality. An overseas player can still be the right pick if they fill an important role or complete a useful pair. Compare the overall breakdown after making a change. The <a class="underline underline-offset-4" href="/guides/overseas-players/">overseas-player guide</a> explains the limits and trade-offs in more detail.</p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Match Simulation Logic</h2>
-        <p class="mb-4">
-          When two teams meet, the engine calculates the expected win probability by weighing the adjusted team ratings against each other. 
-        </p>
-        <p>
-          However, cricket is unpredictable. The engine incorporates controlled variance (representing pitch conditions, weather, and pure luck) to ensure that upsets are always possible. Furthermore, tight matches (40-60% win probability) can trigger "Clutch Player" events where individuals single-handedly flip the result. A team with a 95 overall rating can still lose to an 85 overall team if the form, risk profile, and variance fall the wrong way—which is what makes the 16-0 challenge so incredibly difficult.
-        </p>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">What form means in the game</h2>
+        <p class="mb-4">Form comes from recent performances during your game run; it is not a player's current real-life form. The game looks at up to five recent performances, giving more weight to the newest results. It groups the resulting score into a form category and uses the team's form to adjust its chance of winning. That squad adjustment is limited to six percentage points in either direction.</p>
+        <p>Form is separate from the career totals that may appear on a player profile. A high historical run total does not automatically raise the game's form, and a poor simulated match does not erase a player's real cricket record.</p>
       </section>
 
       <section>
-        <h2 class="text-2xl font-bold text-[var(--color-ink)] mb-4">Reading the strength breakdown</h2>
-        <p class="mb-4">The implementation uses the first eleven filled slots. It calculates batting and bowling averages with role-specific weights, then calculates an effective overall from the players, chemistry, identity bonuses, and deductions. After overall adjustments, the difference from the raw rating average is applied to the batting and bowling display values. Those numbers are connected parts of one calculation, not three independent forecasts.</p>
-        <p class="mb-4">For star stacking, the selected players are sorted by rating. The first two players rated 92 or higher have no 92-plus deduction; each additional 92-plus player loses two points from their effective contribution. Among ratings of 95 or higher, the first has no additional deduction and every later one loses three more points. A later 95-plus player can receive both deductions because they also meet the 92 threshold. The displayed stacking figure is the total deductions divided by the number of filled players.</p>
-        <p class="mb-4">The overseas deduction is one point for two overseas players, two for three, and three for four or more. Standard XI selection is capped at four. Multiplayer can use a host-selected overseas limit of four or five, so its setting is distinct. Four role identities may also contribute: batting-heavy requires seven BAT/WK roles, bowling-heavy requires five pure BOWL roles, and all-rounder army requires four AR/BAT_AR/BOWL_AR roles. A franchise core gives one point at three players and two at five or more.</p>
-        <p class="mb-4">The twelve signature pair checks add one point each up to a chemistry cap of five. Four separate rivalry checks subtract one each up to a cap of three. After these inputs are combined, any overall above 90 is reduced by half of its excess. This is a diminishing return, not a hard maximum of 90.</p>
-        <p>Form is generated during a game run from recent simulated player performances; it is separate from historical Cricsheet profile statistics. The form code stores up to five performances, classifies a score from 0 to 100, and converts categories to a squad win-probability adjustment capped at plus or minus six percentage points. For the names and composition of the pair rules, see the <a class="underline underline-offset-4" href="/guides/signature-pairs/">signature-pairs guide</a> and the <a class="underline underline-offset-4" href="/guides/ratings-star-stacking-chemistry/">complete calculation guide</a>.</p>
+        <h2 class="mb-4 text-2xl font-bold text-[var(--color-ink)]">Strength is not a match prediction</h2>
+        <p class="mb-4">Team strength helps shape the chance of winning, but matches include uncertainty. A higher-rated or better-balanced team can still lose an individual game. Review the lineup breakdown to understand your choices, then treat the result as one outcome rather than proof that the whole team is good or bad.</p>
+        <p>Rain events are also simplified. A match may be abandoned in the league or shortened and labeled DLS. That label does not mean the game uses the full official Duckworth–Lewis–Stern method. For more on season structure and match results, see <a class="underline underline-offset-4" href="/guides/dls-rain-events/">the rain and reduced-overs guide</a>.</p>
       </section>
+
+      <p class="border-t border-[var(--color-hairline)] pt-6">For practical selection advice, continue to <a class="underline underline-offset-4" href="/guides/build-playing-xi/">how to build a playing XI</a>, or browse the <a class="underline underline-offset-4" href="/guides/">strategy guides</a>.</p>
     </div>
-  </div>
+  </article>
 </Layout>

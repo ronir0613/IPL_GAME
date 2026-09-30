@@ -1,30 +1,111 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ExplorePage from '../components/Explore.tsx';
 ---
-<Layout title="Game Modes and Mechanics | 16-0 Play" description="Explore solo modes and multiplayer auction rules in 16-0 Play, with a code-checked guide to how the game works." hideHeader={true}>
+
+<Layout
+  title="Game Modes in 16-0 Play | Classic, Franchise, Gamble, Multiplayer"
+  description="Compare Classic, Franchise, Gamble, and Multiplayer in 16-0 Play. Learn how squads, auctions, ratings, and season results work."
+>
   <Fragment slot="head">
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://16-0play.com/game-modes/" />
-    <meta property="og:title" content="Game Modes and Mechanics | 16-0 Play" />
-    <meta property="og:description" content="Explore solo modes and multiplayer auction rules in 16-0 Play, with a code-checked guide to how the game works." />
+    <meta property="og:title" content="Game Modes in 16-0 Play" />
+    <meta property="og:description" content="Compare the four ways to play 16-0 Play and learn how team strength and season results work." />
   </Fragment>
-  <ExplorePage client:load />
-  <article class="mx-auto w-full max-w-4xl px-4 py-12 leading-7 text-[var(--color-body)] sm:px-6">
-    <h2 class="mb-5 text-3xl font-bold tracking-tight text-[var(--color-ink)]">Choosing a mode and reading its rules</h2>
-    <p class="mb-4">The game currently presents four main choices: Classic, Franchise, Gamble, and Multiplayer. Classic asks you to build an eleven-player side and take it into the season simulation. Franchise expands the roster to as many as twenty-five players, marks impact-player rules in its mode card, and offers season control options. Gamble generates a team from a randomly chosen philosophy and shows the resulting squad before you decide to continue. Multiplayer opens a room-based auction flow with human participants and AI franchises.</p>
-    <p class="mb-4">These modes share player data but do not expose every control in the same way. The standard solo XI allows up to four overseas players. Franchise roster building supports up to twenty-five total players and a higher overseas roster count, while the playing XI is checked separately. Multiplayer hosts select an eleven- or fifteen-player roster, a five-, ten-, or fifteen-second timer, a four- or five-player overseas setting, and a short or long auction pool. Check the setting shown in the lobby rather than carrying a rule from one mode into another.</p>
-    <h3 class="mb-3 mt-8 text-xl font-bold text-[var(--color-ink)]">Classic and Franchise</h3>
-    <p class="mb-4">Classic is the most direct way to learn the strength calculation: fill an XI, review roles and team values, then simulate the season. Franchise adds a larger roster and impact-player preparation, so reserves can matter at lineup time even though the strength calculation uses the selected first eleven. In the franchise flow, the app exposes control choices for how the season is simulated. The details shown in the app are the operative controls; they do not mean the game models every real franchise contract or player-aging event described in older page copy.</p>
-    <h3 class="mb-3 mt-8 text-xl font-bold text-[var(--color-ink)]">Gamble and Multiplayer</h3>
-    <p class="mb-4">Gamble assembles a side from a selected random team philosophy, reveals its strengths and weaknesses, and lets you continue with that squad. The generator uses player filters and constraints; it does not ask you to make individual selections during the initial generation. Multiplayer has a live room, team selection, bids, a purse, and timed auction decisions. The live human acquisition flow is an auction, not a standard snake draft. A separate AI fill path uses snake-order distribution when allocating players to AI rosters.</p>
-    <p class="mb-4">Across modes, calculated team strength is only one input to a simulated match. Ratings have role weights; the XI can gain chemistry and identity bonuses or incur stacking, overseas, and rivalry deductions. Form and random outcomes can affect results. A rain marker may show an abandoned match or a reduced-over event labelled DLS, but the source implements a simplified result-generation path rather than a full official DLS calculation.</p>
-    <p class="mb-4">The modes also differ in their roster screens. Standard Classic uses an eleven-player side and a four-player overseas cap. Franchise lets you build a deeper roster of up to twenty-five players, with a separate impact-bench selection before a match. Its overseas roster allowance is higher than the standard XI limit, but lineup validation still applies to the active side. The settings panel and ready state are the clearest guide to what is required before simulation.</p>
-    <p class="mb-4">Gamble works differently from a manual draft: the game picks a team philosophy, generates a constrained squad, and reveals the selection, projected record, strengths, and weaknesses. You can decide whether to continue with that team. Multiplayer is a room-based auction. Its lobby supports up to ten team slots shared by people and AI, a timer setting, roster size options, an overseas setting, and a choice of auction pool length. The host controls room settings, so coordinate those before the first bid.</p>
-    <p class="mb-4">There are important limits to the simulation. The game uses its own player ratings and generated form. The rain branch can abandon a regular-season match or mark a reduced-over result as DLS; it does not show a full official Duckworth–Lewis–Stern calculation. The standard fixture generator creates fourteen regular-season matches per team, then uses four playoff matches to decide the champion. Those source details clarify how to interpret the “16-0” challenge name without claiming that the league schedule itself has sixteen matches.</p>
-    <p class="mb-4">The simulator uses a different sequence for a full league and for the playoffs. The generated schedule groups ten teams into two sets of five, repeats each within-group pairing, and plays cross-group opponents once with one repeat per team. The four highest places move into Qualifier 1, the Eliminator, Qualifier 2, and the Final. A rain-abandoned league match awards one point to both teams; a completed match awards two points to the winner. These details matter when you read the table after a long run.</p>
-    <p class="mb-4">For players who want to understand the numbers, the team-strength calculation starts from the first eleven filled slots and applies role weights. It then checks exact chemistry and rivalry name pairs, role identities, franchise cores, overseas count, stacking, and diminishing returns above 90. The displayed figures explain the team's setup, but each match still has random outcomes. Review a lineup's breakdown before starting, then separate a calculated strength from the result of an individual match.</p>
-    <p class="mb-4">The mode descriptions on this page are an overview, not a substitute for the rules visible in a room or lineup screen. In multiplayer, a host controls draft settings and all players share those settings; in Franchise, reserves and an impact bench are distinct from the starting XI. If the interface shows a different roster size or overseas cap for the mode you are playing, follow that mode's current setting. The guides below document the inspected code and call out places where two modes differ.</p>
-    <p>Use <a class="underline underline-offset-4" href="/guides/play-16-0-play/">the beginner's guide</a> to get started, <a class="underline underline-offset-4" href="/guides/build-playing-xi/">the XI guide</a> for roster decisions, and <a class="underline underline-offset-4" href="/guides/multiplayer-draft/">the multiplayer guide</a> before joining a room. The <a class="underline underline-offset-4" href="/rating-system/">rating-system reference</a> explains the strength calculation in more detail.</p>
-  </article>
+
+  <div class="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 md:py-16">
+    <header class="mb-12 max-w-3xl">
+      <h1 class="mb-5 text-4xl font-black tracking-tight text-[var(--color-ink)] sm:text-5xl">Choose how you want to play</h1>
+      <p class="max-w-2xl text-lg leading-8 text-[var(--color-body)]">Build a cricket squad, guide it through a season, or bid for players with friends.</p>
+    </header>
+
+    <section aria-labelledby="mode-options">
+      <h2 id="mode-options" class="mb-6 text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">Four ways to take on the challenge</h2>
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-6 sm:p-7">
+          <h3 class="mb-3 text-xl font-bold text-[var(--color-ink)]">Classic</h3>
+          <p class="mb-5 leading-7 text-[var(--color-body)]">Pick an all-time team of Indian Premier League (IPL) players and play a full simulated season. This is the most direct way to learn player roles, team strength, and the race for the playoffs.</p>
+          <dl class="grid gap-3 border-t border-[var(--color-hairline)] pt-4 text-sm sm:grid-cols-2">
+            <div><dt class="font-semibold text-[var(--color-ink)]">Starting team</dt><dd class="mt-1 text-[var(--color-mute)]">11 players</dd></div>
+            <div><dt class="font-semibold text-[var(--color-ink)]">Overseas limit</dt><dd class="mt-1 text-[var(--color-mute)]">Up to 4 in the starting eleven</dd></div>
+          </dl>
+        </article>
+
+        <article class="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-6 sm:p-7">
+          <h3 class="mb-3 text-xl font-bold text-[var(--color-ink)]">Franchise</h3>
+          <p class="mb-5 leading-7 text-[var(--color-body)]">Manage a deeper squad and prepare for each match. Keep reserves for flexibility, then choose the eleven starters and impact bench before the game.</p>
+          <dl class="grid gap-3 border-t border-[var(--color-hairline)] pt-4 text-sm sm:grid-cols-2">
+            <div><dt class="font-semibold text-[var(--color-ink)]">Squad size</dt><dd class="mt-1 text-[var(--color-mute)]">Up to 25 players</dd></div>
+            <div><dt class="font-semibold text-[var(--color-ink)]">Overseas players</dt><dd class="mt-1 text-[var(--color-mute)]">Up to 8 in the squad, 4 in the starting eleven</dd></div>
+          </dl>
+        </article>
+
+        <article class="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-6 sm:p-7">
+          <h3 class="mb-3 text-xl font-bold text-[var(--color-ink)]">Gamble</h3>
+          <p class="mb-5 leading-7 text-[var(--color-body)]">The game builds a squad around a randomly chosen team philosophy. Review the players and their strengths, then decide whether you want to continue with that team. No wagering is involved.</p>
+          <dl class="grid gap-3 border-t border-[var(--color-hairline)] pt-4 text-sm sm:grid-cols-2">
+            <div><dt class="font-semibold text-[var(--color-ink)]">Squad selection</dt><dd class="mt-1 text-[var(--color-mute)]">Generated for you</dd></div>
+            <div><dt class="font-semibold text-[var(--color-ink)]">Your choice</dt><dd class="mt-1 text-[var(--color-mute)]">Continue or try another team</dd></div>
+          </dl>
+        </article>
+
+        <article class="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-6 sm:p-7">
+          <h3 class="mb-3 text-xl font-bold text-[var(--color-ink)]">Multiplayer</h3>
+          <p class="mb-5 leading-7 text-[var(--color-body)]">Create a room or join with its code, then build teams through a timed auction. Watch the bids and your purse as you compete with other people and AI teams for players.</p>
+          <dl class="grid gap-3 border-t border-[var(--color-hairline)] pt-4 text-sm sm:grid-cols-2">
+            <div><dt class="font-semibold text-[var(--color-ink)]">Room size</dt><dd class="mt-1 text-[var(--color-mute)]">Up to 10 teams</dd></div>
+            <div><dt class="font-semibold text-[var(--color-ink)]">Host settings</dt><dd class="mt-1 text-[var(--color-mute)]">Roster, timer, overseas limit, and auction pool</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="team-strength" class="mt-16 border-t border-[var(--color-hairline)] pt-12">
+      <div class="max-w-3xl">
+        <h2 id="team-strength" class="mb-4 text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">What affects team strength?</h2>
+        <p class="mb-6 leading-7 text-[var(--color-body)]">The rating on a player profile is only one part of your starting eleven. The game weighs each player's rating by role, then adjusts the team's values for lineup choices. Use the breakdown on the lineup screen to see how your selections fit together.</p>
+        <ul class="space-y-4 text-[var(--color-body)]">
+          <li><strong class="text-[var(--color-ink)]">Roles:</strong> Batters and wicketkeepers contribute to batting strength; specialist bowlers contribute to bowling strength. All-rounders help with both.</li>
+          <li><strong class="text-[var(--color-ink)]">Chemistry and rivalries:</strong> Some listed player pairs add chemistry points, while some pairings create a deduction. The <a class="font-medium underline underline-offset-4" href="/guides/signature-pairs/">signature-pairs guide</a> has the full list.</li>
+          <li><strong class="text-[var(--color-ink)]">Rating stacking:</strong> The first two players rated 92 or above avoid the 92-plus deduction. Additional high-rated players can lose some effective rating, with another deduction for later 95-plus players.</li>
+          <li><strong class="text-[var(--color-ink)]">Overseas players:</strong> A standard starting eleven can have up to four. Two overseas players lower overall by one point, three by two, and four by three. Multiplayer rooms may set a different limit.</li>
+          <li><strong class="text-[var(--color-ink)]">Team identity:</strong> Certain role mixes and groups of players from the same former franchise can add points. These bonuses help refine a lineup; they do not replace role coverage.</li>
+        </ul>
+        <p class="mt-6 leading-7 text-[var(--color-body)]">A team overall above 90 has diminishing returns: half of the amount above 90 is removed. That is not a hard cap. The <a class="font-medium underline underline-offset-4" href="/rating-system/">rating-system guide</a> explains these rules with examples.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="season-results" class="mt-16 border-t border-[var(--color-hairline)] pt-12">
+      <div class="max-w-3xl">
+        <h2 id="season-results" class="mb-4 text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">Season length and match results</h2>
+        <p class="mb-4 leading-7 text-[var(--color-body)]">A standard season has ten teams divided into two groups. Each team plays 14 regular-season matches. The top four move on to Qualifier 1, the Eliminator, Qualifier 2, and the Final. The “16-0” name is the challenge goal, not the number of regular-season matches.</p>
+        <p class="mb-4 leading-7 text-[var(--color-body)]">A win gives a team two points. If rain abandons a regular-season match, both teams receive one point and the match is counted as neither a win nor a loss. Rain can also shorten a match and label its result. The game does not use the official Duckworth–Lewis–Stern method that sets targets in real cricket. Read <a class="font-medium underline underline-offset-4" href="/guides/dls-rain-events/">the rain and reduced-overs guide</a> for details.</p>
+        <p class="leading-7 text-[var(--color-body)]">Calculated team strength helps shape the chance of winning, but it cannot guarantee a result. Form, match events, and randomness can still produce an upset.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="mode-questions" class="mt-16 border-t border-[var(--color-hairline)] pt-12">
+      <h2 id="mode-questions" class="mb-6 text-2xl font-bold text-[var(--color-ink)] sm:text-3xl">Common questions</h2>
+      <div class="max-w-3xl divide-y divide-[var(--color-hairline)]">
+        <details class="group py-4">
+          <summary class="cursor-pointer font-semibold text-[var(--color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-500">Which mode should I try first?</summary>
+          <p class="mt-3 leading-7 text-[var(--color-body)]">Start with Classic if you want to choose every player and learn how team strength works. Choose Franchise for a larger squad, Gamble for a team selected for you, or Multiplayer to bid with others.</p>
+        </details>
+        <details class="group py-4">
+          <summary class="cursor-pointer font-semibold text-[var(--color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-500">Does Gamble use real money?</summary>
+          <p class="mt-3 leading-7 text-[var(--color-body)]">No. Gamble is the name of a game mode that generates a team around a random philosophy. It does not ask you to place bets or wager money.</p>
+        </details>
+        <details class="group py-4">
+          <summary class="cursor-pointer font-semibold text-[var(--color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-yellow-500">Does the game use the official rain calculation?</summary>
+          <p class="mt-3 leading-7 text-[var(--color-body)]">No. The game can shorten a match and label its result, but it does not calculate targets with the full official Duckworth–Lewis–Stern method.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="mt-16 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-6 sm:p-8">
+      <h2 class="mb-3 text-2xl font-bold text-[var(--color-ink)]">Ready to build a team?</h2>
+      <p class="mb-5 max-w-2xl leading-7 text-[var(--color-body)]">Start a season, compare your lineup, and see how your choices hold up across the matches.</p>
+      <a href="/" class="inline-flex min-h-11 items-center justify-center rounded-lg bg-yellow-500 px-5 py-3 font-bold text-black transition-colors hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500">Play 16-0 Play</a>
+    </section>
+  </div>
 </Layout>

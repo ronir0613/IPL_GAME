@@ -15,14 +15,14 @@ The following counts are approximate plain-text body word counts, excluding fron
 
 | Guide | Approx. words |
 | --- | ---: |
-| How to Play 16-0 Play | 1,615 |
-| Ratings, Star Stacking, and Chemistry | 1,543 |
-| How to Build a Balanced Playing XI | 1,777 |
-| Signature Pairs and Team Chemistry | 1,305 |
-| Multiplayer Draft and Auction Strategy | 1,636 |
-| Rain, Reduced Overs, and Match Results | 1,448 |
-| Overseas Players and Squad Balance | 1,506 |
-| Draft Mistakes and How to Avoid Them | 1,068 |
+| How to Play 16-0 Play | 1,419 |
+| Ratings, Star Stacking, and Chemistry | 1,311 |
+| How to Build a Balanced Playing XI | 1,714 |
+| Signature Pairs and Team Chemistry | 1,236 |
+| Multiplayer Draft and Auction Strategy | 1,216 |
+| Rain, Reduced Overs, and Match Results | 1,086 |
+| Overseas Players and Squad Balance | 1,312 |
+| Eight Draft Mistakes and How to Avoid Them | 1,048 |
 
 ## Files created
 

@@ -21,6 +21,7 @@ const canonical = canonicalOverride ?? new URL(
 	Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`,
 	Astro.site ?? Astro.url
 ).href;
+const isGameModesPage = Astro.url.pathname.replace(/\/+$/, '') === '/game-modes';
 ---
 
 <!doctype html>
@@ -116,13 +117,20 @@ const canonical = canonicalOverride ?? new URL(
             <a href="/players" class="hover:text-yellow-600 transition-colors">Players</a>
             <a href="/teams" class="hover:text-yellow-600 transition-colors">Teams</a>
             <a href="/rankings" class="hover:text-yellow-600 transition-colors">Rankings</a>
-            <a href="/game-modes" class="hover:text-yellow-600 transition-colors">Game Modes</a>
+            <a href="/game-modes" aria-current={isGameModesPage ? 'page' : undefined} class:list={["hover:text-yellow-600 transition-colors", isGameModesPage && "text-[var(--color-ink)] underline decoration-yellow-500 decoration-2 underline-offset-8"]}>Game Modes</a>
             <a href="/guides/" class="hover:text-yellow-600 transition-colors">Guides</a>
           </nav>
-          <!-- Mobile Menu Placeholder -->
-          <div class="md:hidden flex items-center">
-            <a href="/players" class="text-xs font-bold bg-[var(--color-canvas-soft-2)] px-3 py-1.5 rounded text-[var(--color-ink)]">Menu</a>
-          </div>
+          <details class="group relative md:hidden">
+            <summary class="list-none cursor-pointer rounded-md border border-[var(--color-hairline)] bg-[var(--color-canvas-soft-2)] px-3 py-2 text-sm font-semibold text-[var(--color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500">Menu</summary>
+            <nav aria-label="Mobile site navigation" class="absolute right-0 top-full z-50 mt-2 flex min-w-48 flex-col rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas-soft)] p-2 text-sm font-medium shadow-lg">
+              <a href="/" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Play</a>
+              <a href="/players" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Players</a>
+              <a href="/teams" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Teams</a>
+              <a href="/rankings" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Rankings</a>
+              <a href="/game-modes" aria-current={isGameModesPage ? 'page' : undefined} class:list={["rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]", isGameModesPage && "font-bold text-[var(--color-ink)]"]}>Game Modes</a>
+              <a href="/guides/" class="rounded px-3 py-2 hover:bg-[var(--color-canvas-soft-2)]">Guides</a>
+            </nav>
+          </details>
         </div>
       </header>
     )}
